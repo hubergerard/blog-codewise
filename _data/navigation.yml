@@ -1,0 +1,12 @@
+#Please use the main menu items under the "text"
+
+- text: Accueil
+  url: http://www.codewise.fr/
+- text: Formations
+  url: http://www.codewise.fr/pages/services
+- text: Qui sommes-nous ?
+  url: http://www.codewise.fr/pages/about
+- text: Blog
+  url: /
+- text: Contact
+  url: http://www.codewise.fr/pages/contact

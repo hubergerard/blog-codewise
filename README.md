@@ -1,1 +1,1 @@
-# blog-codewise
+# codewise-blog
