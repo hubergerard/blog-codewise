@@ -19,7 +19,7 @@
     <meta name='description' content='{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}'>
     <meta name="keywords" content="{% if page.keywords %}{{ page.keywords}}{% else %}{{ site.keywords }}{% endif %}">
     <!-- Facebook Open Graph -->	
-    <meta content="{{ site.title }}" property="og:site_name">
+    <meta content="{{ site.title }}" property="og:site_name">	
     <meta property="og:locale" content="en_US" />
     {% if page.title %}<meta content="{{ page.title }}" property="og:title">{% else %}<meta content="{{ site.title }}" property="og:title">{% endif %}
     {% if page.title %}<meta content="article" property="og:type">{% else %}<meta content="website" property="og:type">{% endif %}
