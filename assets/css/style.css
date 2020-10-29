@@ -2096,3 +2096,14 @@ blockquote {
 	margin-bottom: 28px;
 	font-size: 1rem;
 }
+.max-height-25 {
+	max-height: 25px;
+}
+
+.mh-80-px {
+	max-height: 80px;
+}
+
+.mh-26-px {
+	max-height: 26px;
+}
