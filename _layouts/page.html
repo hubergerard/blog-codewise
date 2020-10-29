@@ -9,7 +9,13 @@ layout: default
         <div class="row align-items-center">
             <div class="col-xl-8 col-md-6 section-title">
                 <div class="breadcrumb-title sm-size">
+                    {% if page.title contains "WiseBlog" %}
                     <img src="/assets/img/header/blog-logo.png" class="mh-125-px"> 
+                    {% else %}
+                    <div class="breadcrumb-title sm-size">
+                        <h2>{{page.title}}</h2>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             <!-- <div class="col-xl-4 col-md-6 text-left text-md-right"> -->
