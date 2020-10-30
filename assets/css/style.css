@@ -1816,7 +1816,7 @@ label {
 	text-transform: uppercase;
 	margin: 5px;
 }
-.sidebar-tad  a:hover{
+.sidebar-tad a:hover{
 	background:#6c6ff8;
 	color:#fff;
 }
@@ -1964,7 +1964,7 @@ blockquote {
 }
 .pagination ul > li > a,
 .pagination ul > li > span {
-    float: none
+    float: none;
 }
 .pagination ul > li > a {
 	background: #FFF;
