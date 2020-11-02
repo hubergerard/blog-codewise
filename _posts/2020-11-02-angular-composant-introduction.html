@@ -1,0 +1,376 @@
+---
+layout: post
+title: "Comment faire financer ma formation professionnelle ?"
+date: 2020-10-26 09:56:20 +0100
+description: "Nous vous présentons les principales méthodes pour financer votre projet de formation professionnelle.
+CPF, FNE, plan de compétences ?"
+tags: education formation financement
+categories: [Formation et financements]
+author: "huber"
+post_image: "/assets/img/blog/article-financement.jpg"
+---
+
+<!-- wp:paragraph -->
+<p>Un composant Angular, à quoi ça sert ? Et comment les utiliser correctement ?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2>Sommaire</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul>
+    <li><a href="#definition">Un composant c’est quoi ? </a></li>
+    <li>
+        <a href="#communication">Communication entre composants </a>
+        <ul>
+            <li><a href="#view">La méthode View</a>
+                <ul>
+                    <li><a href="#input">@Input</a></li>
+                    <li><a href="#output">@Output</a></li>
+                </ul>
+            </li>
+            <li><a href="#content">La méthode Content</a>
+                <ul>
+                    <li><a href="#ng-content">La balise ng-content</a></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li><a href="#lifecycle">Cycle de vie d'un composant</a></li>
+    <li><a href="#more-information">Pour aller plus loin</a></li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 id="definition">Un composant c'est quoi ?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:image {"id":956,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img
+        src="https://i2.wp.com/zen-et-productif.fr/wp-content/uploads/2020/11/angular-component.png?fit=880%2C449&amp;ssl=1"
+        alt="Exemple de composant Angular" class="wp-image-956" />
+    <figcaption>Exemple de composant Angular</figcaption>
+</figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Un composant, c'est une classe Typescript avec des attributs, méthodes et constructeur et qui sert d'unité de
+    découpage visuel dans un projet front. On sépare en composants et pas seulement par langage (js, html, css ou autre)
+</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>On définit un composant (component) dans Angular par un ensemble de ressources :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul>
+    <li>une portion de HTML</li>
+    <li>une ou des feuilles de styles associée(s) à ce HTML</li>
+    <li>une classe TypeScript ou JavaScript</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Pour l'instancier, on utilise son sélecteur qui correspond à un tag HTML. Vous pouvez donc intégrer votre composant
+    directement dans un bloc HTML, en utilisant son tag HTML associé.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Un composant est réutilisable autant de fois que nécessaire. Par conséquent, on ne code un composant qu'une fois pour
+    plusieurs affichages.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Des hooks nous donnent accès à son cycle de vie et il peut posséder n entrée/sortie.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 id="communication">Communication entre composants</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Les méthodes dîtes <em>view </em>et <em>content </em>sont 2 approches différentes pour faire communiquer des
+    composants. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>La principale différence se trouve dans le partage du <em>scope </em>(la portée des variables) entre les composants
+    parent et enfant.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3 id="view-method">La méthode view</h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul>
+    <li>Scope isolé entre les composants</li>
+    <li>Couplage composant parent/enfant lourd</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Chaque composant gardant son scope isolé de l'autre, les directives Inputs et Outputs leur permettent de s’échanger
+    des valeurs.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 id="input">@Input</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Input, permet de spécifier une valeur en entrée du composant. Pour l'utiliser, on va devoir modifier le code à 2
+    endroits :</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul>
+    <li>Déclarez-le avec l'annotation @Input() dans le composant (fichier ts)</li>
+    <li>Liez-le en “one-way” binding avec [myInputVarNameHere] dans le template html du parent</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:image {"align":"right","id":958,"width":237,"height":84,"sizeSlug":"large"} -->
+<div class="wp-block-image">
+    <figure class="alignright size-large is-resized"><img
+            src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-input-html.png"
+            alt="code composant enfant - view input" class="wp-image-958" width="237" height="84" />
+        <figcaption>todo-list.html (parent)</figcaption>
+    </figure>
+</div>
+<!-- /wp:image -->
+
+<!-- wp:image {"align":"left","id":957,"width":247,"height":175,"sizeSlug":"large"} -->
+<div class="wp-block-image">
+    <figure class="alignleft size-large is-resized"><img
+            src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-input.png"
+            alt="code composant enfant - view input" class="wp-image-957" width="247" height="175" />
+        <figcaption>todo.ts (enfant)</figcaption>
+    </figure>
+</div>
+<!-- /wp:image -->
+
+<!-- wp:group -->
+<div class="wp-block-group">
+    <div class="wp-block-group__inner-container"></div>
+</div>
+<!-- /wp:group -->
+
+<!-- wp:heading {"level":4} -->
+<h4 id="output">@Output</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>@Output, permet de spécifier un événement en sortie du composant. Pour l'utiliser, vous devez modifier le code à 3
+    endroits : </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul>
+    <li>Intanciez un attribut de type EventEmitter dans le composant (ts) qu'on décore avec la directive @Output</li>
+    <li>Liez-le en event-binding avec (myOutputVariableName) dans le template HTML du parent</li>
+    <li>Faîtes appel à la fonction emit() de l'EventEmitter au moment ou l'output doit se produire</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:image {"id":960,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img
+        src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-output.png"
+        alt="code composant parent - view output" class="wp-image-960" />
+    <figcaption>todo.ts (enfant)</figcaption>
+</figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"id":959,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img
+        src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-output-html.png"
+        alt="code composant enfant - view output" class="wp-image-959" />
+    <figcaption>todo-list.html (parent)</figcaption>
+</figure>
+<!-- /wp:image -->
+
+<!-- wp:heading {"level":3} -->
+<h3 id="content">La méthode content</h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul>
+    <li>pas d’input/output</li>
+    <li>scope partagé entre les composants</li>
+    <li>plus souple, plus facilement réutilisable</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Dans certains cas, il n'est vraiment pas pratique de garder des scopes isolés. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Par exemple, si vous comptez réutiliser un composant souvent et que vous devez accéder à 5 de ses attributs, vous
+    allez devoir gérer beaucoup d'Input/Output. C'est souvent le cas quand vous voulez séparer des formulaires sur
+    plusieurs composants par exemple, ou rendre un formulaire générique.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Pour ces cas là, on peut choisir la méthode content. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>On aura donc un couplage plus faible mais une séparation néante des scopes entre les composants (le scope de l'enfant
+    n'existe pas, celui du parent contient tout).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":4} -->
+<h4 id="ng-content">la balise ng-content</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Pour mettre en place la projection de contenu de la méthode content, on va devoir modifier le code à 2 endroits :
+</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul>
+    <li>On ajoute du HTML à l'intérieur des balises de l'enfant, dans le fichier HTML du parent</li>
+    <li>On le récupère dans le composant enfant, en projetant son contenu dans une balise &lt;ng-content&gt;</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:image {"id":962,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img
+        src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-content.png"
+        alt="code composant parent - content" class="wp-image-962" />
+    <figcaption>app.ts (parent)</figcaption>
+</figure>
+<!-- /wp:image -->
+
+<!-- wp:image {"id":963,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img
+        src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-content-enfant.png"
+        alt="code composant enfant - content" class="wp-image-963" />
+    <figcaption>fa-input (composant enfant)</figcaption>
+</figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Si vous souhaitez bien comprendre les différents cas d'utilisation, je vous recommande ce tutoriel d'Angular
+    University : <a href="https://blog.angular-university.io/angular-ng-content/">Tutoriel pour maitriser la différence
+        view/content</a></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Passons maintenant au cycle de vie des composants !</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 id="lifecycle">Cycle de vie d'un composant</h2>
+<!-- /wp:heading -->
+
+<!-- wp:image {"id":961,"sizeSlug":"large"} -->
+<figure class="wp-block-image size-large"><img
+        src="https://zen-et-productif.fr/wp-content/uploads/2020/11/2-Angular-Les-composants1.png"
+        alt="Cycle de vie d'un composant Angular" class="wp-image-961" /></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Angular vous permet d'exécuter du Javascript lors de certains évènements liés au cycle de vie du component. </p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Cela peut s'avérer utile, par exemple pour lancer un appel API au chargement d'une page ou bien pour supprimer une
+    ressource lors de la destruction de l'instance du composant.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading {"level":3} -->
+<h3>ngOnChange</h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul>
+    <li>ne s’exécute pas si pas d’@Input</li>
+    <li>premier hook appelé après l’appel au constructeur</li>
+    <li>déclenché à chaque changement de donnée en entrée @Input()</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":3} -->
+<h3>ngOnInit</h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul>
+    <li>intervient après l’appel de ngOnChange()&nbsp;</li>
+    <li>déclenché après l’initialisation du composant</li>
+    <li>appelé uniquement une fois</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":3} -->
+<h3>ngDoCheck</h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul>
+    <li>intervient après l’appel de ngOnInit()&nbsp;</li>
+    <li> ne s’exécute pas si ngOnChange est implémentée</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":3} -->
+<h3>ngAfterContentInit</h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul>
+    <li>S'exécute lorsqu’un content (ng-content) est initialisé</li>
+    <li>@ContentChildren et @ContentChild sont valorisées</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":3} -->
+<h3> ngAfterContentChecked </h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul>
+    <li>exécuté à chaque détection de changement</li>
+    <li>@ContentChildren et @ContentChild sont valorisées </li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":3} -->
+<h3> ngAfterViewInit </h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul>
+    <li>exécuté une fois les vues enfants initialisé</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":3} -->
+<h3> ngAfterViewChecked </h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul>
+    <li>exécuté à chaque détection de changement</li>
+    <li>@ViewChildren et @ViewChild sont valorisées</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:heading {"level":3} -->
+<h3> ngOnDestroy </h3>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul>
+    <li>exécuté avant la suppression du composant</li>
+</ul>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 id="more-information">Pour aller plus loin</h2>
+<!-- /wp:heading -->
