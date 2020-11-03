@@ -1,8 +1,12 @@
+const currentScript = document.currentScript;
 const MIN_HEADER_LEVEL = 2;
 const MAX_HEADER_LEVEL = 4;
 const TOC_TITLE = 'Sommaire';
-const TEXT_MODE = 0;
-generateTableOfContent();
+let TEXT_MODE;
+$(document).ready(() => {
+    TEXT_MODE = currentScript.getAttribute("text-mode");
+    generateTableOfContent();
+})
 
 function appendHeaderListToElement(headerList, element, headerLevel) {
     if (headerLevel > MAX_HEADER_LEVEL || headerList.length === 0) return;
@@ -11,7 +15,7 @@ function appendHeaderListToElement(headerList, element, headerLevel) {
         const tocInnerList = document.createElement("ul");
         for (let j = 0; j < headerList.length; j++) {
             const anchor = headerList[j].previousElementSibling;
-            if (anchor && (anchor.getAttribute("class") == 'anchor' || TEXT_MODE)) {
+            if (anchor && (anchor.getAttribute("class") == 'anchor' || isTextMode())) {
                 let innerTocListItem = document.createElement("li");
                 if (anchor.getAttribute("class") == 'anchor') {
                     const id = anchor.getAttribute("id");
@@ -20,7 +24,7 @@ function appendHeaderListToElement(headerList, element, headerLevel) {
                     innerTocLink.setAttribute("href", "#" + id);
                     innerTocLink.innerText = headerList[j].innerText;
                     innerTocListItem.appendChild(innerTocLink);
-                } else if (TEXT_MODE) {
+                } else if (isTextMode()) {
                     innerTocListItem.innerText = headerList[j].innerText;
                 }
                 tocInnerList.appendChild(innerTocListItem);
@@ -39,4 +43,8 @@ function generateTableOfContent() {
     toc.appendChild(tocHeader);
     const headers = document.getElementsByTagName("h2");
     appendHeaderListToElement(headers, toc, MIN_HEADER_LEVEL);
+}
+
+function isTextMode() {
+    return TEXT_MODE === 'true' || TEXT_MODE === '1';
 }

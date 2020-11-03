@@ -8,10 +8,11 @@ tags: developpement web Angular
 categories: [Développement web]
 author: "huber"
 post_image: "/assets/img/blog/composants-angular.jpg"
+toc-text-mode: false
 ---
 
 <!-- wp:paragraph -->
-<p>Un composant Angular, à quoi ça sert ? Et comment les utiliser correctement ?</p>
+<p>Un composant Angular, à quoi ça sert ? Et comment s'en servir correctement ?</p>
 <!-- /wp:paragraph -->
 
 <div id="toc" class="blog-toc"></div>
@@ -21,18 +22,37 @@ post_image: "/assets/img/blog/composants-angular.jpg"
 <h2>Un composant c'est quoi ?</h2>
 <!-- /wp:heading -->
 
-<!-- wp:image {"id":956,"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img
-        src="https://i2.wp.com/zen-et-productif.fr/wp-content/uploads/2020/11/angular-component.png?fit=880%2C449&amp;ssl=1"
-        alt="Exemple de composant Angular" class="wp-image-956" />
-    <figcaption>Exemple de composant Angular</figcaption>
-</figure>
-<!-- /wp:image -->
+
+{% highlight ts %}
+@Component({
+    selector: 'app-todo',
+    templateUrl: './todo.component.html',  // or template: '<p>todo works!</p>',
+    styleUrls: ['./todo.component.css'], // or styles: ['p { color: red }'],
+    animations: [],
+    encapsulation: ViewEncapsulation.Emulated,
+    exportAs: 'todo'
+})
+export class TodoComponent  {
+    @Input()
+    options: any;
+    @Output()
+    notify: EventEmitter<string> = new EventEmitter<string>();
+    todos: string[];
+    constructor() { }
+    addTodo(message: string) {
+        this.todos.push(message);
+    }
+}
+{% endhighlight %} 
+<div class="figure-caption">Exemple de composant Angular</div>
 
 <!-- wp:paragraph -->
 <p>Un composant, c'est une classe Typescript avec des attributs, méthodes et constructeur et qui sert d'unité de
-    découpage visuel dans un projet front. On sépare en composants et pas seulement par langage (js, html, css ou autre)
+    découpage visuel dans un projet front. Il possède aussi des métadonées qu'on lui injecte via la directive @Component.
 </p>
+
+<p>L'idée est de séparer les pages web en plusieurs composants pour ne pas se contenter de découper par langage (les fameux dossiers js, html, css
+    ou autre). On donne ainsi une structure logique au projet et à nos fichiers.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -48,17 +68,17 @@ post_image: "/assets/img/blog/composants-angular.jpg"
 <!-- /wp:list -->
 
 <!-- wp:paragraph -->
-<p>Pour l'instancier, on utilise son sélecteur qui correspond à un tag HTML. Vous pouvez donc intégrer votre composant
-    directement dans un bloc HTML, en utilisant son tag HTML associé.</p>
+<p>Pour l'instancier, on utilise son sélecteur qui correspond à un tag HTML. Vous pouvez donc intégrer votre
+    composant directement dans un bloc HTML, en utilisant son tag HTML associé.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Un composant est réutilisable autant de fois que nécessaire. Par conséquent, on ne code un composant qu'une fois pour
-    plusieurs affichages.</p>
+<p>Un composant est réutilisable autant de fois que nécessaire. Par conséquent, on ne code un composant qu'une
+    fois pour plusieurs affichages.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Des hooks nous donnent accès à son cycle de vie et il peut posséder n entrée/sortie.</p>
+<p>On a également accès à son cycle de vie, via des hooks et il peut posséder n entrée/sortie pour communiquer avec d'autres composants.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
@@ -72,8 +92,8 @@ post_image: "/assets/img/blog/composants-angular.jpg"
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>La principale différence se trouve dans le partage du <em>scope </em>(la portée des variables) entre les composants
-    parent et enfant.</p>
+<p>La principale différence se trouve dans le partage du <em>scope </em>(la portée des variables) entre les
+    composants parent et enfant.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":3} -->
@@ -89,8 +109,8 @@ post_image: "/assets/img/blog/composants-angular.jpg"
 <!-- /wp:list -->
 
 <!-- wp:paragraph -->
-<p>Chaque composant gardant son scope isolé de l'autre, les directives Inputs et Outputs leur permettent de s’échanger
-    des valeurs.</p>
+<p>Chaque composant gardant son scope isolé de l'autre, les directives Inputs et Outputs leur permettent de
+    s’échanger des valeurs.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":4} -->
@@ -99,8 +119,8 @@ post_image: "/assets/img/blog/composants-angular.jpg"
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Input, permet de spécifier une valeur en entrée du composant. Pour l'utiliser, on va devoir modifier le code à 2
-    endroits :</p>
+<p>Input, permet de spécifier une valeur en entrée du composant. Pour l'utiliser, on va devoir modifier le code
+    à 2 endroits :</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:list -->
@@ -110,25 +130,22 @@ post_image: "/assets/img/blog/composants-angular.jpg"
 </ul>
 <!-- /wp:list -->
 
-<!-- wp:image {"align":"right","id":958,"width":237,"height":84,"sizeSlug":"large"} -->
-<div class="wp-block-image">
-    <figure class="alignright size-large is-resized"><img
-            src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-input-html.png"
-            alt="code composant enfant - view input" class="wp-image-958" width="237" height="84" />
-        <figcaption>todo-list.html (parent)</figcaption>
-    </figure>
-</div>
-<!-- /wp:image -->
+{% highlight ts %}
+@Component({
+    selector: 'app-todo',
+})
+export class TodoComponent {
+    @Input()
+    todo: any;
+    ...
+}
+{% endhighlight %}
+<div class="figure-caption">todo.component.ts (enfant)</div>
 
-<!-- wp:image {"align":"left","id":957,"width":247,"height":175,"sizeSlug":"large"} -->
-<div class="wp-block-image">
-    <figure class="alignleft size-large is-resized"><img
-            src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-input.png"
-            alt="code composant enfant - view input" class="wp-image-957" width="247" height="175" />
-        <figcaption>todo.component.ts (enfant)</figcaption>
-    </figure>
-</div>
-<!-- /wp:image -->
+{% highlight html %}
+<app-todo [todo]="todo"></app-todo>
+{% endhighlight %}
+<div class="figure-caption">todo-list.component.html (parent)</div>
 
 <!-- wp:group -->
 <div class="wp-block-group">
@@ -142,33 +159,35 @@ post_image: "/assets/img/blog/composants-angular.jpg"
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>@Output, permet de spécifier un événement en sortie du composant. Pour l'utiliser, vous devez modifier le code à 3
-    endroits : </p>
+<p>@Output, permet de spécifier un événement en sortie du composant. Pour l'utiliser, vous devez modifier le
+    code à 3 endroits : </p>
 <!-- /wp:paragraph -->
 
 <!-- wp:list -->
 <ul>
-    <li>Intanciez un attribut de type EventEmitter dans le composant (ts) qu'on décore avec la directive @Output</li>
+    <li>Intanciez un attribut de type EventEmitter dans le composant (ts) qu'on décore avec la directive @Output
+    </li>
     <li>Liez-le en event-binding avec (myOutputVariableName) dans le template HTML du parent</li>
     <li>Faîtes appel à la fonction emit() de l'EventEmitter au moment ou l'output doit se produire</li>
 </ul>
 <!-- /wp:list -->
 
-<!-- wp:image {"id":960,"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img
-        src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-output.png"
-        alt="code composant parent - view output" class="wp-image-960" />
-    <figcaption>todo.component.ts (enfant)</figcaption>
-</figure>
-<!-- /wp:image -->
+{% highlight ts %}
+@Component({
+    selector: 'app-todo'
+})
+export class TodoComponent {
+    @Output()
+    notify: EventEmitter<any> = new EventEmitter();
+    ...
+}
+{% endhighlight %}
+<div class="figure-caption">todo.component.ts (enfant)</div>
 
-<!-- wp:image {"id":959,"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img
-        src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-output-html.png"
-        alt="code composant enfant - view output" class="wp-image-959" />
-    <figcaption>todo-list.html (parent)</figcaption>
-</figure>
-<!-- /wp:image -->
+{% highlight html %}
+<app-todo (notify)="displayChecked($event)"></app-todo>
+{% endhighlight %}
+<div class="figure-caption">todo-list.component.html (parent)</div>
 
 <!-- wp:heading {"level":3} -->
 <a id="content" class="anchor"></a>
@@ -183,17 +202,64 @@ post_image: "/assets/img/blog/composants-angular.jpg"
 </ul>
 <!-- /wp:list -->
 
+<!-- wp:heading {"level":4} -->
+<a id="ng-content" class="anchor"></a>
+<h4>La balise ng-content</h4>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Pour mettre en place la projection de contenu de la méthode content, vous allez devoir modifier le code à 2
+    endroits :
+</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul>
+    <li>Ajoutez du HTML à l'intérieur des balises de l'enfant, dans le fichier HTML du parent</li>
+    <li>Récupérez-le dans le composant enfant, en projetant son contenu dans une balise &lt;ng-content&gt;</li>
+</ul>
+<!-- /wp:list -->
+
+{% highlight ts %}
+@Component({
+    selector: 'fa-input',
+    template: `
+            <i class="fa" [ngClass]="classes"></i>
+            <ng-content></ng-content>
+`
+})
+export class FaInputComponent {
+}
+{% endhighlight %}
+<div class="figure-caption">fa-input.component.ts (composant enfant)</div>
+
+{% highlight html %}
+<h1>FA Input</h1>
+<fa-input>
+    <input type=”email” placeholder=”Email”/>
+</fa-input>
+{% endhighlight %}
+<div class="figure-caption">app.component.html (parent)</div>
+
+<p>Vous remarquez que, dans le composant parent, on a placé du contenu html à l'intérieur de notre balise de composant &lt;fa-input&gt;</p>
+<p>Ce contenu est rendu disponible dans le composant fils via la balise &lt;ng-content&gt;. 
+    On dit que le contenu de la balise &lt;fa-input&gt; (parent) est projeté dans la balise &lt;ng-content&gt;</p>
+
+<p>Vous connaissez maintenant les principes de la méthode view et de la projection de contenu !</p>
+
 <a id="quel-cas-content" class="anchor"></a>
 <h4>Dans quel cas l'utiliser ?</h4>
 
 <!-- wp:paragraph -->
-<p>Dans certains cas, il n'est vraiment pas pratique de garder des scopes isolés. </p>
+<p>La plupart du temps, on utilise la méthode view avec des Input/Output pour structurer la circulation des données au sein d'une page.
+    Cela s'explique car le couplage entre les composants est forts, il s'agit d'un découpage spécifique à la page. De plus on souhaite isoler les scopes au possible.</p>
+<p>Mais dans certains cas, il n'est vraiment pas pratique de garder des scopes isolés, et donc d'utiliser la méthode view. </p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Par exemple, si vous comptez réutiliser un composant souvent et que vous devez accéder à 5 de ses attributs, vous
-    allez devoir gérer beaucoup d'Input/Output. C'est souvent le cas quand vous voulez séparer des formulaires sur
-    plusieurs composants par exemple, ou rendre un formulaire générique.</p>
+<p>Par exemple, si vous comptez réutiliser un composant souvent et que vous devez accéder à 5 de ses attributs,
+    vous allez devoir gérer beaucoup d'Input/Output. C'est souvent le cas quand vous voulez séparer des
+    formulaires sur plusieurs composants, ou rendre un formulaire générique.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -201,51 +267,15 @@ post_image: "/assets/img/blog/composants-angular.jpg"
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Vous aurez donc un couplage plus faible mais une séparation néante des scopes entre les composants (le scope de
-    l'enfant
-    n'existe pas, celui du parent contient tout).</p>
+<p>Vous aurez donc un couplage plus faible mais une séparation néante des scopes entre les composants (le scope
+    de l'enfant n'existe pas, celui du parent contient tout).</p>
 <!-- /wp:paragraph -->
-
 <!-- wp:paragraph -->
 <p>Si vous souhaitez bien comprendre les différents cas d'utilisation, je vous recommande ce tutoriel d'Angular
     University : <a href="https://blog.angular-university.io/angular-ng-content/" target="_blank">Tutoriel pour
         maitriser la différence
         view/content</a></p>
 <!-- /wp:paragraph -->
-
-<!-- wp:heading {"level":4} -->
-<a id="ng-content" class="anchor"></a>
-<h4>la balise ng-content</h4>
-<!-- /wp:heading -->
-
-<!-- wp:paragraph -->
-<p>Pour mettre en place la projection de contenu de la méthode content, vous allez devoir modifier le code à 2 endroits
-    :
-</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:list -->
-<ol>
-    <li>Ajoutez du HTML à l'intérieur des balises de l'enfant, dans le fichier HTML du parent</li>
-    <li>Récupérez-le dans le composant enfant, en projetant son contenu dans une balise &lt;ng-content&gt;</li>
-</ol>
-<!-- /wp:list -->
-
-<!-- wp:image {"id":962,"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img
-        src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-content.png"
-        alt="code composant parent - content" class="wp-image-962" />
-    <figcaption>app.component.ts (parent)</figcaption>
-</figure>
-<!-- /wp:image -->
-
-<!-- wp:image {"id":963,"sizeSlug":"large"} -->
-<figure class="wp-block-image size-large"><img
-        src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-content-enfant.png"
-        alt="code composant enfant - content" class="wp-image-963" />
-    <figcaption>fa-input.component.ts (composant enfant)</figcaption>
-</figure>
-<!-- /wp:image -->
 
 <!-- wp:paragraph -->
 <p>Passons maintenant au cycle de vie des composants !</p>
@@ -256,19 +286,18 @@ post_image: "/assets/img/blog/composants-angular.jpg"
 <h2>Cycle de vie d'un composant</h2>
 <!-- /wp:heading -->
 
-<!-- wp:image {"id":961,"sizeSlug":"large"} -->
 <figure class="wp-block-image size-large"><img
-        src="https://zen-et-productif.fr/wp-content/uploads/2020/11/2-Angular-Les-composants1.png"
-        alt="Cycle de vie d'un composant Angular" class="wp-image-961" width="600px" /></figure>
-<!-- /wp:image -->
+    src="https://zen-et-productif.fr/wp-content/uploads/2020/11/2-Angular-Les-composants1.png"
+    alt="Cycle de vie d'un composant Angular" class="wp-image-961" width="600px" /></figure>
 
 <!-- wp:paragraph -->
-<p>Angular vous permet d'exécuter du Javascript lors de certains évènements liés au cycle de vie du component. </p>
+<p>Angular vous permet d'exécuter du Javascript lors de certains évènements liés au cycle de vie du component.
+</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Cela peut s'avérer utile, par exemple pour lancer un appel API au chargement d'une page ou bien pour supprimer une
-    ressource lors de la destruction de l'instance du composant.</p>
+<p>Cela peut s'avérer utile, par exemple pour lancer un appel API au chargement d'une page ou bien pour
+    supprimer une ressource lors de la destruction de l'instance du composant.</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":3} -->
@@ -361,5 +390,11 @@ post_image: "/assets/img/blog/composants-angular.jpg"
 
 <!-- wp:heading -->
 <a id="more-information" class="anchor"></a>
-<h2>Pour aller plus loin</h2>
+<h2>Sources</h2>
+<ul>
+    <li>Guide officiel d'Angular sur les composants : <a href="https://angular.io/guide/architecture-components" target="_blank">Angular - Introduction to components and templates</a></li>
+    <li>Les Input/Output : <a href="https://angular.io/guide/inputs-outputs" target="_blank">@Input() and @Output() properties</a></li>
+    <li>Bien utiliser la méthode content : <a href="https://blog.angular-university.io/angular-ng-content/" target="_blank">How To Use ng-content To Improve Component API Design</a></li>
+    <li>Cycle de vie des composants : <a href="https://angular.io/guide/lifecycle-hooks" target="_blank">Angular - Hooking into the component lifecycle</a></li>
+</ul>
 <!-- /wp:heading -->
