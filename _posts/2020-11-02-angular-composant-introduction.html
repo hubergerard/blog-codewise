@@ -1,49 +1,24 @@
 ---
 layout: post
-title: "Comment faire financer ma formation professionnelle ?"
-date: 2020-10-26 09:56:20 +0100
-description: "Nous vous présentons les principales méthodes pour financer votre projet de formation professionnelle.
-CPF, FNE, plan de compétences ?"
-tags: education formation financement
-categories: [Formation et financements]
+title: "Angular - Les composants : Introduction"
+date: 2020-11-02 17:06:20 +0100
+description: "Un composant Angular, à quoi ça sert ? Et comment les utiliser correctement ? Un composant, c'est une
+classe TS qui sert d'unité de découpage visuel."
+tags: developpement web Angular
+categories: [Développement web]
 author: "huber"
-post_image: "/assets/img/blog/article-financement.jpg"
+post_image: "/assets/img/blog/composants-angular.jpg"
 ---
 
 <!-- wp:paragraph -->
 <p>Un composant Angular, à quoi ça sert ? Et comment les utiliser correctement ?</p>
 <!-- /wp:paragraph -->
 
-<!-- wp:heading -->
-<h2>Sommaire</h2>
-<!-- /wp:heading -->
-
-<!-- wp:list -->
-<ul>
-    <li><a href="#definition">Un composant c’est quoi ? </a></li>
-    <li>
-        <a href="#communication">Communication entre composants </a>
-        <ul>
-            <li><a href="#view">La méthode View</a>
-                <ul>
-                    <li><a href="#input">@Input</a></li>
-                    <li><a href="#output">@Output</a></li>
-                </ul>
-            </li>
-            <li><a href="#content">La méthode Content</a>
-                <ul>
-                    <li><a href="#ng-content">La balise ng-content</a></li>
-                </ul>
-            </li>
-        </ul>
-    </li>
-    <li><a href="#lifecycle">Cycle de vie d'un composant</a></li>
-    <li><a href="#more-information">Pour aller plus loin</a></li>
-</ul>
-<!-- /wp:list -->
+<div id="toc" class="blog-toc"></div>
 
 <!-- wp:heading -->
-<h2 id="definition">Un composant c'est quoi ?</h2>
+<a id="definition" class="anchor"></a>
+<h2>Un composant c'est quoi ?</h2>
 <!-- /wp:heading -->
 
 <!-- wp:image {"id":956,"sizeSlug":"large"} -->
@@ -87,7 +62,8 @@ post_image: "/assets/img/blog/article-financement.jpg"
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
-<h2 id="communication">Communication entre composants</h2>
+<a id="communication" class="anchor"></a>
+<h2>Communication entre composants</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
@@ -101,7 +77,8 @@ post_image: "/assets/img/blog/article-financement.jpg"
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":3} -->
-<h3 id="view-method">La méthode view</h3>
+<a id="view" class="anchor"></a>
+<h3>La méthode view</h3>
 <!-- /wp:heading -->
 
 <!-- wp:list -->
@@ -117,7 +94,8 @@ post_image: "/assets/img/blog/article-financement.jpg"
 <!-- /wp:paragraph -->
 
 <!-- wp:heading {"level":4} -->
-<h4 id="input">@Input</h4>
+<a id="input" class="anchor"></a>
+<h4>@Input</h4>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
@@ -147,7 +125,7 @@ post_image: "/assets/img/blog/article-financement.jpg"
     <figure class="alignleft size-large is-resized"><img
             src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-input.png"
             alt="code composant enfant - view input" class="wp-image-957" width="247" height="175" />
-        <figcaption>todo.ts (enfant)</figcaption>
+        <figcaption>todo.component.ts (enfant)</figcaption>
     </figure>
 </div>
 <!-- /wp:image -->
@@ -159,7 +137,8 @@ post_image: "/assets/img/blog/article-financement.jpg"
 <!-- /wp:group -->
 
 <!-- wp:heading {"level":4} -->
-<h4 id="output">@Output</h4>
+<a id="output" class="anchor"></a>
+<h4>@Output</h4>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
@@ -179,7 +158,7 @@ post_image: "/assets/img/blog/article-financement.jpg"
 <figure class="wp-block-image size-large"><img
         src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-output.png"
         alt="code composant parent - view output" class="wp-image-960" />
-    <figcaption>todo.ts (enfant)</figcaption>
+    <figcaption>todo.component.ts (enfant)</figcaption>
 </figure>
 <!-- /wp:image -->
 
@@ -192,7 +171,8 @@ post_image: "/assets/img/blog/article-financement.jpg"
 <!-- /wp:image -->
 
 <!-- wp:heading {"level":3} -->
-<h3 id="content">La méthode content</h3>
+<a id="content" class="anchor"></a>
+<h3>La méthode content</h3>
 <!-- /wp:heading -->
 
 <!-- wp:list -->
@@ -202,6 +182,9 @@ post_image: "/assets/img/blog/article-financement.jpg"
     <li>plus souple, plus facilement réutilisable</li>
 </ul>
 <!-- /wp:list -->
+
+<a id="quel-cas-content" class="anchor"></a>
+<h4>Dans quel cas l'utiliser ?</h4>
 
 <!-- wp:paragraph -->
 <p>Dans certains cas, il n'est vraiment pas pratique de garder des scopes isolés. </p>
@@ -214,35 +197,45 @@ post_image: "/assets/img/blog/article-financement.jpg"
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Pour ces cas là, on peut choisir la méthode content. </p>
+<p>Pour ces cas là, vous pouvez choisir la méthode content. </p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>On aura donc un couplage plus faible mais une séparation néante des scopes entre les composants (le scope de l'enfant
+<p>Vous aurez donc un couplage plus faible mais une séparation néante des scopes entre les composants (le scope de
+    l'enfant
     n'existe pas, celui du parent contient tout).</p>
 <!-- /wp:paragraph -->
 
+<!-- wp:paragraph -->
+<p>Si vous souhaitez bien comprendre les différents cas d'utilisation, je vous recommande ce tutoriel d'Angular
+    University : <a href="https://blog.angular-university.io/angular-ng-content/" target="_blank">Tutoriel pour
+        maitriser la différence
+        view/content</a></p>
+<!-- /wp:paragraph -->
+
 <!-- wp:heading {"level":4} -->
-<h4 id="ng-content">la balise ng-content</h4>
+<a id="ng-content" class="anchor"></a>
+<h4>la balise ng-content</h4>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Pour mettre en place la projection de contenu de la méthode content, on va devoir modifier le code à 2 endroits :
+<p>Pour mettre en place la projection de contenu de la méthode content, vous allez devoir modifier le code à 2 endroits
+    :
 </p>
 <!-- /wp:paragraph -->
 
 <!-- wp:list -->
-<ul>
-    <li>On ajoute du HTML à l'intérieur des balises de l'enfant, dans le fichier HTML du parent</li>
-    <li>On le récupère dans le composant enfant, en projetant son contenu dans une balise &lt;ng-content&gt;</li>
-</ul>
+<ol>
+    <li>Ajoutez du HTML à l'intérieur des balises de l'enfant, dans le fichier HTML du parent</li>
+    <li>Récupérez-le dans le composant enfant, en projetant son contenu dans une balise &lt;ng-content&gt;</li>
+</ol>
 <!-- /wp:list -->
 
 <!-- wp:image {"id":962,"sizeSlug":"large"} -->
 <figure class="wp-block-image size-large"><img
         src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-content.png"
         alt="code composant parent - content" class="wp-image-962" />
-    <figcaption>app.ts (parent)</figcaption>
+    <figcaption>app.component.ts (parent)</figcaption>
 </figure>
 <!-- /wp:image -->
 
@@ -250,28 +243,23 @@ post_image: "/assets/img/blog/article-financement.jpg"
 <figure class="wp-block-image size-large"><img
         src="https://zen-et-productif.fr/wp-content/uploads/2020/11/angular-component-content-enfant.png"
         alt="code composant enfant - content" class="wp-image-963" />
-    <figcaption>fa-input (composant enfant)</figcaption>
+    <figcaption>fa-input.component.ts (composant enfant)</figcaption>
 </figure>
 <!-- /wp:image -->
-
-<!-- wp:paragraph -->
-<p>Si vous souhaitez bien comprendre les différents cas d'utilisation, je vous recommande ce tutoriel d'Angular
-    University : <a href="https://blog.angular-university.io/angular-ng-content/">Tutoriel pour maitriser la différence
-        view/content</a></p>
-<!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
 <p>Passons maintenant au cycle de vie des composants !</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:heading -->
-<h2 id="lifecycle">Cycle de vie d'un composant</h2>
+<a id="lifecycle" class="anchor"></a>
+<h2>Cycle de vie d'un composant</h2>
 <!-- /wp:heading -->
 
 <!-- wp:image {"id":961,"sizeSlug":"large"} -->
 <figure class="wp-block-image size-large"><img
         src="https://zen-et-productif.fr/wp-content/uploads/2020/11/2-Angular-Les-composants1.png"
-        alt="Cycle de vie d'un composant Angular" class="wp-image-961" /></figure>
+        alt="Cycle de vie d'un composant Angular" class="wp-image-961" width="600px" /></figure>
 <!-- /wp:image -->
 
 <!-- wp:paragraph -->
@@ -290,7 +278,7 @@ post_image: "/assets/img/blog/article-financement.jpg"
 <!-- wp:list -->
 <ul>
     <li>ne s’exécute pas si pas d’@Input</li>
-    <li>premier hook appelé après l’appel au constructeur</li>
+    <li>1er hook appelé après l’appel au constructeur</li>
     <li>déclenché à chaque changement de donnée en entrée @Input()</li>
 </ul>
 <!-- /wp:list -->
@@ -372,5 +360,6 @@ post_image: "/assets/img/blog/article-financement.jpg"
 <!-- /wp:list -->
 
 <!-- wp:heading -->
-<h2 id="more-information">Pour aller plus loin</h2>
+<a id="more-information" class="anchor"></a>
+<h2>Pour aller plus loin</h2>
 <!-- /wp:heading -->

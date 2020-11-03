@@ -53,6 +53,12 @@ a,
 	-o-transition: all 0.3s ease-out 0s;
 	transition: all 0.3s ease-out 0s;
 }
+a.anchor {
+	position: relative;
+	visibility: hidden;
+	display: block;
+	top: -92.5px;
+}
 a:focus,
 .button:focus {
 	text-decoration: none;
@@ -2085,6 +2091,23 @@ blockquote {
 }
 
 .blog-content ul {
+	margin-bottom: 28px;
+}
+
+.blog-content .blog-toc ul {
+	margin-bottom: 0;
+}
+
+.blog-toc li ul {
+	margin-left: 30px;
+	margin-bottom: 0;
+}
+
+.blog-toc {
+	border: solid 1px grey;
+	display: inline-block;
+	padding: 10px;
+	background-color: #f8f9fa;
 	margin-bottom: 28px;
 }
 
