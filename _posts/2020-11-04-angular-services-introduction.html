@@ -1,0 +1,262 @@
+---
+layout: post
+title: "Angular - Les services : Introduction"
+date: 2020-11-04 17:55:20 +0100
+description: "Un service Angular, qu'est-ce que c'est ? Et comment les utiliser correctement ? Un service, c'est une classe TS, injectable dans une app Angular."
+tags: developpement web Angular
+categories: [Développement web]
+author: "huber"
+post_image: "/assets/img/blog/angular-service/services-angular.jpg"
+toc-text-mode: false
+---
+
+<p>Un service Angular, à quoi ça sert ? Et comment s'en servir correctement ?</p>
+
+<div id="toc" class="blog-toc"></div>
+
+<a id="definition" class="anchor"></a>
+<h2>Un service c'est quoi ?</h2>
+
+<a id="concept" class="anchor"></a>
+<h3>En terme de concept</h3>
+
+<p>Un service est une classe TS composée d'attributs et de méthodes, dont l'instanciation est gérée par Angular.</p>
+
+<p>Un service est, sauf cas spécifique, un singleton (design pattern) : une seule instance de l’objet est utilisée à travers toute l’application.</p>
+
+<p>Une fois instancié, il est injectable dans n'importe lequel de vos composants ou dans un autre service.</p>
+<p>Ils permettent de :</p>
+<ul>
+    <li>réutiliser du code entre différents composants </li>
+    <li>faciliter l'échange des données </li>
+    <li>centraliser les appels de service </li>
+    <li> séparer les responsabilités visuelles (component) et fonctionnelles/techniques (service)</li>
+</ul>
+    
+<a id="cas-utilisation" class="anchor"></a>
+<h3>Cas d’utilisation</h3>
+    
+<ul>
+    <li>
+    Communication avec une API
+    </li>
+    <li>
+        Communication avec une base de données
+    </li>
+    <li>
+        Implémentation d’un cache d’objets
+    </li>
+    <li>
+        Gestion de la session utilisateur côté client
+    </li> 
+    ...
+</ul>
+<p>
+    Pour faire simple, la responsabilité des @Component se limite à afficher et formater la donnée, toute autre opération doit être déléguée à un service.
+</p>
+
+<a id="creer-service" class="anchor"></a>
+<h2>Créer un service</h2>
+
+<p>
+    Pour générer un nouveau service, utilisez votre angular-cli en tapant simplement dans votre console :
+</p>
+
+{% highlight shell %}
+ng g s todo
+{% endhighlight %}
+
+<p>
+    Assurez-vous d'avoir bien installé <a href="https://cli.angular.io/" target="_blank">Angular CLI</a>.
+</p>
+
+<p>
+    Voici un exemple de service, qui est capable d'ajouter une tâche ToDo, à une liste de tâches stockée dans le service lui-même.
+</p>
+
+{% highlight typescript %}
+import { Injectable } from '@angular/core';
+import { Todo } from './todo';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class TodoService {
+todos: Todo[];
+
+constructor() {}
+
+    create(todo: Todo) {
+        this.todos.push(todo);
+    }
+}
+{% endhighlight %}
+<div class="figure-caption">Service TodoService</div>
+
+<p>
+    L’annotation @Injectable est nécessaire pour la prise en compte du service par l’injection de dépendance.
+    La propriété “provideIn” spécifie l'injecteur de dépendance utilisé.
+    Ici ‘root’ donc le service est injectable dans tous les composants de l’application.
+</p>
+<p>
+    Vous pouvez spécifier un module à la place de root, pour utiliser l’injecteur de ce module (voir ci-dessous <a href="#injecteur-dependance-angular">L'injecteur d'Angular</a>).
+</p>
+
+<a id="utiliser-service" class="anchor"></a>
+<h2>Utiliser un service</h2>
+<p>
+    Un service peut être injecté dans un autre service, ou dans un composant, en l’ajoutant en paramètre du constructeur.
+</p>
+
+{% highlight typescript %}
+@Component({...})
+export class TodoListComponent {
+
+    // liste des todos à afficher
+    todos: Todo[];
+
+    // todo à créer
+    todo: Todo = new Todo();
+
+    constructor(private service: TodoService) { }
+
+    /**
+    * Ajout d'un élément à la todo list
+    */
+    add() {
+        this.service.create(this.todo);
+        this.todo = new Todo();
+    }
+    [...]
+}
+{% endhighlight %}
+<div class="figure-caption">Injection du service TodoService dans le composant TodoList</div>
+
+<p>
+    Observez que l’injection du service se fait en spécifiant le type TS du service dans le constructeur.
+</p>
+
+<p>Une fois le service injecté, toutes les méthodes définies “public” dans le service deviennent accessibles. On peut donc faire appel dans la méthode add à this.service.create().</p>
+
+<a id="injection-dependance" class="anchor"></a>
+<h2>Injection de dépendances</h2>
+
+<p>
+    Pour bien comprendre comment fonctionne ce passage d'une instance de service à travers l'application, revoyons ensemble comment fonctionne un injecteur de dépendances.
+</p>
+
+<a id="principe-injection-dependance" class="anchor"></a>
+<h3>Le principe</h3>
+
+<p>L'injection de dépendances (DI) est un design pattern.</p>
+<p>
+    Un élément A a besoin d’un élément B. On veut fournir alors à A l’élément B. 
+    Ce n’est pas au codeur de fournir la dépendance, c’est au framework, on parle alors d’inversion de contrôle.
+
+</p>
+<p>
+    
+</p>
+<img src="/assets/img/blog/angular-service/inversion-of-control-ioc-2.gif"/>
+<div class="image-caption">Inversion de contrôle (IoC)</div>
+
+</p>
+<p>
+    Mettre en place l'injection de dépendances vous permet de déléguer à un objet tiers la création des objets dont les différentes parties de l'application (ex : modules, composants, services) vont avoir besoin.
+</p>
+<p>
+    L’injecteur va donc se charger d'instancier les objets demandés et de les envoyer aux objets qui en ont besoin.
+</p>
+<p>
+    L’injection de dépendance vous permet d'optimiser le nombre d'instances créées, leur gestion au sein de l'application (et le temps de code !), en déléguant toutes ces tâches au framework.
+</p>
+
+<a id="injecteur-dependance-angular" class="anchor"></a>
+<h3>L'injecteur de dépendances d'Angular</h3>
+
+<p>Il existe plusieurs injecteurs de dépendance dans Angular qui interviennent à différents niveaux :</p>
+
+<ul>
+    <li>L’injecteur root </li>
+    <li>L’injecteur par module</li>
+    <li>L’injecteur par composant</li>
+</ul>
+
+<a id="injecteur-root" class="anchor"></a>
+<h4>L'injecteur root</h4>
+
+<p>
+    Il s'agit de l’injecteur principal, accessible à travers tous les modules, services, components, .etc de votre application.
+</p>
+
+{% highlight ts %}
+@Injectable({
+    // le service sera injectable dans tous les modules
+    providedIn: 'root' 
+})
+export class TodoService {
+    [...]
+}
+{% endhighlight %}
+<div class="figure-caption">L'injecteur root</div>
+
+<a id="injecteur-module" class="anchor"></a>
+<h4>L'injecteur par module</h4>
+
+<p>
+    L’injecteur par module : lors de la création d’un service la propriété “providedIn” permet de spécifier le module qui sera chargé de l’injection, le service ne sera alors pas accessible en dehors du module (sauf si import du module)
+</p>
+{% highlight ts %}
+@Injectable({
+    // le service sera injectable dans UserModule
+    providedIn: UserModule 
+})  
+export class TodoService {
+    [...]
+}
+{% endhighlight %}
+<div class="figure-caption">Injecteur par module</div>
+
+<a id="injecteur-composant" class="anchor"></a>
+<h4>L'injecteur par composant</h4>
+
+<p>
+    L’injecteur par composant permet de spécifier quels sont les services à injecter pour un composant, en précisant la propriété “providers” au niveau du component :
+</p>
+
+{% highlight ts %}
+@Injectable() // pas de 'providedIn' spécifier
+export class TodoService {
+    [...]
+}
+{% endhighlight %}
+<div class="figure-caption">todo.service.ts</div>
+
+<p>
+    Les services à injecter ne seront instanciés qu’à l’instanciation du component. Notez que dans ce cas, les services ne sont plus des singletons. 
+    Car il peut en exister plusieurs instances au sein d'une même exécution.
+</p>
+
+{% highlight ts %}
+@Component({
+    [...]
+    providers: [TodoService]   // injection 
+})
+export class TodoListComponent { 
+    [...] 
+    constructor(private service: TodoService) { }
+}
+{% endhighlight %}
+<div class="figure-caption">todo-list.component.ts</div>
+<p>
+    J'espère que ça vous a été utile. Bon code !
+</p>
+
+<a id="more-information" class="anchor"></a>
+<h2>Sources</h2>
+<ul>
+    <li>Guide officiel d'Angular sur l'injection de dépendances : <a href="https://angular.io/guide/architecture-services" target="_blank">Angular - Introduction to services and dependency injection</a></li>
+    <li>Une Cheatsheet Angualr : <a href="https://angular.io/guide/cheatsheet" target="_blank">Angular - Cheat Sheet</a></li>
+    <li>La partie Service du tutoriel Angular : <a href="https://angular.io/tutorial/toh-pt4" target="_blank">How To Use ng-content To Improve Component API Design</a></li>
+    <li>Cycle de vie des composants : <a href="https://angular.io/guide/lifecycle-hooks" target="_blank">Add services</a></li>
+</ul>
