@@ -11,17 +11,13 @@ post_image: "/assets/img/blog/composants-angular.jpg"
 toc-text-mode: false
 ---
 
-<!-- wp:paragraph -->
+
 <p>Un composant Angular, à quoi ça sert ? Et comment s'en servir correctement ?</p>
-<!-- /wp:paragraph -->
 
 <div id="toc" class="blog-toc"></div>
 
-<!-- wp:heading -->
 <a id="definition" class="anchor"></a>
 <h2>Un composant c'est quoi ?</h2>
-<!-- /wp:heading -->
-
 
 {% highlight ts %}
 @Component({
@@ -61,80 +57,52 @@ export class TodoComponent  {
 <p>Un composant, c'est une classe Typescript avec des attributs, méthodes et constructeur et qui sert d'unité de
     découpage visuel dans un projet front. Il possède aussi des métadonnées qu'on lui injecte via la directive @Component.
 </p>
-<!-- wp:paragraph -->
 <p>On définit un composant dans Angular par un ensemble de ressources :</p>
-<!-- /wp:paragraph -->
 
-<!-- wp:list -->
 <ul>
     <li>une portion de HTML</li>
     <li>une ou des feuilles de styles associée(s) à ce HTML</li>
     <li>une classe TypeScript ou JavaScript</li>
 </ul>
-<!-- /wp:list -->
 
-<!-- wp:paragraph -->
 <p>Pour l'instancier, on utilise son sélecteur qui correspond à un tag HTML. Vous pouvez donc intégrer votre
     composant directement dans un bloc HTML, en utilisant son tag HTML associé.</p>
-<!-- /wp:paragraph -->
 
-<!-- wp:paragraph -->
 <p>Un composant est réutilisable autant de fois que nécessaire. Par conséquent, on ne code un composant qu'une
     fois pour plusieurs affichages.</p>
-<!-- /wp:paragraph -->
 
-<!-- wp:paragraph -->
 <p>On a également accès à son cycle de vie, via des hooks et il peut posséder n entrée/sortie pour communiquer avec d'autres composants.</p>
-<!-- /wp:paragraph -->
 
-<!-- wp:heading -->
 <a id="communication" class="anchor"></a>
 <h2>Communication entre composants</h2>
-<!-- /wp:heading -->
 
-<!-- wp:paragraph -->
 <p>Les méthodes dites <em>view </em>et <em>content </em>sont 2 approches différentes pour faire communiquer des
     composants. </p>
-<!-- /wp:paragraph -->
 
-<!-- wp:paragraph -->
 <p>La principale différence se trouve dans le partage du <em>scope </em>(la portée des variables) entre les
     composants parent et enfant.</p>
-<!-- /wp:paragraph -->
 
-<!-- wp:heading {"level":3} -->
 <a id="view" class="anchor"></a>
 <h3>La méthode view</h3>
-<!-- /wp:heading -->
 
-<!-- wp:list -->
 <ul>
     <li>Scope isolé entre les composants</li>
     <li>Couplage composant parent/enfant lourd</li>
 </ul>
-<!-- /wp:list -->
 
-<!-- wp:paragraph -->
 <p>Chaque composant gardant son scope isolé de l'autre, les directives Inputs et Outputs leur permettent de
     s’échanger des valeurs.</p>
-<!-- /wp:paragraph -->
 
-<!-- wp:heading {"level":4} -->
 <a id="input" class="anchor"></a>
 <h4>@Input</h4>
-<!-- /wp:heading -->
 
-<!-- wp:paragraph -->
 <p>Input, permet de spécifier une valeur en entrée du composant. Pour l'utiliser, on va devoir modifier le code
     à 2 endroits :</p>
-<!-- /wp:paragraph -->
 
-<!-- wp:list -->
 <ul>
     <li>Déclarez-le avec l'annotation @Input() dans le composant (fichier ts)</li>
     <li>Liez-le en “one-way” binding avec [myInputVarNameHere] dans le template html du parent</li>
 </ul>
-<!-- /wp:list -->
 
 {% highlight ts %}
 @Component({
@@ -153,30 +121,22 @@ export class TodoComponent {
 {% endhighlight %}
 <div class="figure-caption">todo-list.component.html (parent)</div>
 
-<!-- wp:group -->
 <div class="wp-block-group">
     <div class="wp-block-group__inner-container"></div>
 </div>
-<!-- /wp:group -->
 
-<!-- wp:heading {"level":4} -->
 <a id="output" class="anchor"></a>
 <h4>@Output</h4>
-<!-- /wp:heading -->
 
-<!-- wp:paragraph -->
 <p>@Output, permet de spécifier un événement en sortie du composant. Pour l'utiliser, vous devez modifier le
     code à 3 endroits : </p>
-<!-- /wp:paragraph -->
 
-<!-- wp:list -->
 <ul>
     <li>Instanciez un attribut de type EventEmitter dans le composant (ts) qu'on décore avec la directive @Output
     </li>
     <li>Liez-le en event-binding avec (myOutputVariableName) dans le template HTML du parent</li>
     <li>Faîtes appel à la fonction emit() de l'EventEmitter au moment ou l'output doit se produire</li>
 </ul>
-<!-- /wp:list -->
 
 {% highlight ts %}
 @Component({
@@ -195,36 +155,26 @@ export class TodoComponent {
 {% endhighlight %}
 <div class="figure-caption">todo-list.component.html (parent)</div>
 
-<!-- wp:heading {"level":3} -->
 <a id="content" class="anchor"></a>
 <h3>La méthode content</h3>
-<!-- /wp:heading -->
 
-<!-- wp:list -->
 <ul>
     <li>pas d’input/output</li>
     <li>scope partagé entre les composants</li>
     <li>plus souple, plus facilement réutilisable</li>
 </ul>
-<!-- /wp:list -->
 
-<!-- wp:heading {"level":4} -->
 <a id="ng-content" class="anchor"></a>
 <h4>La balise ng-content</h4>
-<!-- /wp:heading -->
 
-<!-- wp:paragraph -->
 <p>Pour mettre en place la projection de contenu de la méthode content, vous allez devoir modifier le code à 2
     endroits :
 </p>
-<!-- /wp:paragraph -->
 
-<!-- wp:list -->
 <ul>
     <li>Ajoutez du HTML à l'intérieur des balises de l'enfant, dans le fichier HTML du parent</li>
     <li>Récupérez-le dans le composant enfant, en projetant son contenu dans une balise &lt;ng-content&gt;</li>
 </ul>
-<!-- /wp:list -->
 
 {% highlight ts %}
 @Component({
@@ -256,145 +206,94 @@ export class FaInputComponent {
 <a id="quel-cas-content" class="anchor"></a>
 <h4>Dans quel cas l'utiliser ?</h4>
 
-<!-- wp:paragraph -->
 <p>La plupart du temps, on utilise la méthode view avec des Input/Output pour structurer la circulation des données au sein d'une page.
     Cela s'explique car le couplage entre les composants est fort, il s'agit d'un découpage spécifique à la page. De plus on souhaite isoler les scopes au possible.</p>
 <p>Mais dans certains cas, il n'est vraiment pas pratique de garder des scopes isolés, et donc d'utiliser la méthode view. </p>
-<!-- /wp:paragraph -->
 
-<!-- wp:paragraph -->
 <p>Par exemple, si vous comptez réutiliser un composant souvent et que vous devez accéder à 5 de ses attributs,
     vous allez devoir gérer beaucoup d'Input/Output. C'est souvent le cas quand vous voulez séparer des
     formulaires sur plusieurs composants, ou rendre un formulaire générique.</p>
-<!-- /wp:paragraph -->
 
-<!-- wp:paragraph -->
 <p>Pour ces cas-là, vous pouvez choisir la méthode content. </p>
-<!-- /wp:paragraph -->
 
-<!-- wp:paragraph -->
 <p>Vous aurez donc un couplage plus faible mais une séparation néante des scopes entre les composants (le scope
     de l'enfant n'existe pas, celui du parent contient tout).</p>
-<!-- /wp:paragraph -->
-<!-- wp:paragraph -->
 <p>Si vous souhaitez bien comprendre les différents cas d'utilisation, je vous recommande ce tutoriel d'Angular
     University : <a href="https://blog.angular-university.io/angular-ng-content/" target="_blank">Tutoriel pour
         maitriser la différence
         view/content</a></p>
-<!-- /wp:paragraph -->
 
-<!-- wp:paragraph -->
 <p>Passons maintenant au cycle de vie des composants !</p>
-<!-- /wp:paragraph -->
 
-<!-- wp:heading -->
 <a id="lifecycle" class="anchor"></a>
 <h2>Cycle de vie d'un composant</h2>
-<!-- /wp:heading -->
 
 <figure class="wp-block-image size-large"><img
     src="/assets/img/blog/angular-composant/Les-composants1.jpg"
     alt="Cycle de vie d'un composant Angular" class="wp-image-961" width="600px" /></figure>
 
-<!-- wp:paragraph -->
 <p>Angular vous permet d'exécuter du Javascript lors de certains évènements liés au cycle de vie du component.
 </p>
-<!-- /wp:paragraph -->
 
-<!-- wp:paragraph -->
 <p>Cela peut s'avérer utile, par exemple pour lancer un appel API au chargement d'une page ou bien pour
     supprimer une ressource lors de la destruction de l'instance du composant.</p>
-<!-- /wp:paragraph -->
 
-<!-- wp:heading {"level":3} -->
 <h3>ngOnChange</h3>
-<!-- /wp:heading -->
 
-<!-- wp:list -->
 <ul>
     <li>ne s’exécute pas si pas d’@Input</li>
     <li>1er hook appelé après l’appel au constructeur</li>
     <li>déclenché à chaque changement de donnée en entrée @Input()</li>
 </ul>
-<!-- /wp:list -->
 
-<!-- wp:heading {"level":3} -->
 <h3>ngOnInit</h3>
-<!-- /wp:heading -->
 
-<!-- wp:list -->
 <ul>
     <li>intervient après l’appel de ngOnChange()&nbsp;</li>
     <li>déclenché après l’initialisation du composant</li>
     <li>appelé uniquement une fois</li>
 </ul>
-<!-- /wp:list -->
 
-<!-- wp:heading {"level":3} -->
 <h3>ngDoCheck</h3>
-<!-- /wp:heading -->
 
-<!-- wp:list -->
 <ul>
     <li>intervient après l’appel de ngOnInit()&nbsp;</li>
     <li> ne s’exécute pas si ngOnChange est implémentée</li>
 </ul>
-<!-- /wp:list -->
 
-<!-- wp:heading {"level":3} -->
 <h3>ngAfterContentInit</h3>
-<!-- /wp:heading -->
 
-<!-- wp:list -->
 <ul>
     <li>s'exécute lorsqu’un content (ng-content) est initialisé</li>
     <li>@ContentChildren et @ContentChild sont valorisées</li>
 </ul>
-<!-- /wp:list -->
 
-<!-- wp:heading {"level":3} -->
 <h3> ngAfterContentChecked </h3>
-<!-- /wp:heading -->
 
-<!-- wp:list -->
 <ul>
     <li>exécuté à chaque détection de changement</li>
     <li>@ContentChildren et @ContentChild sont valorisées </li>
 </ul>
-<!-- /wp:list -->
 
-<!-- wp:heading {"level":3} -->
 <h3> ngAfterViewInit </h3>
-<!-- /wp:heading -->
 
-<!-- wp:list -->
 <ul>
     <li>exécuté une fois les vues enfants initialisé</li>
 </ul>
-<!-- /wp:list -->
 
-<!-- wp:heading {"level":3} -->
 <h3> ngAfterViewChecked </h3>
-<!-- /wp:heading -->
 
-<!-- wp:list -->
 <ul>
     <li>exécuté à chaque détection de changement</li>
     <li>@ViewChildren et @ViewChild sont valorisées</li>
 </ul>
-<!-- /wp:list -->
 
-<!-- wp:heading {"level":3} -->
 <h3> ngOnDestroy </h3>
-<!-- /wp:heading -->
 
-<!-- wp:list -->
 <ul>
     <li>exécuté avant la suppression du composant</li>
 </ul>
-<!-- /wp:list -->
 
-<!-- wp:heading -->
 <a id="more-information" class="anchor"></a>
 <h2>Sources</h2>
 <ul>
@@ -403,4 +302,3 @@ export class FaInputComponent {
     <li>Bien utiliser la méthode content : <a href="https://blog.angular-university.io/angular-ng-content/" target="_blank">How To Use ng-content To Improve Component API Design</a></li>
     <li>Cycle de vie des composants : <a href="https://angular.io/guide/lifecycle-hooks" target="_blank">Angular - Hooking into the component lifecycle</a></li>
 </ul>
-<!-- /wp:heading -->
