@@ -82,9 +82,9 @@ import { Todo } from './todo';
     providedIn: 'root'
 })
 export class TodoService {
-todos: Todo[];
+    todos: Todo[];
 
-constructor() {}
+    constructor() {}
 
     create(todo: Todo) {
         this.todos.push(todo);
@@ -111,7 +111,6 @@ constructor() {}
 {% highlight typescript %}
 @Component({...})
 export class TodoListComponent {
-
     // liste des todos à afficher
     todos: Todo[];
 

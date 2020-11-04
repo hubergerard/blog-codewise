@@ -256,3 +256,7 @@
 .highlight .gi {
     color: #a6e22e;
 }
+
+.highlight .language-shell {
+    color: white;
+}
