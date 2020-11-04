@@ -59,7 +59,7 @@ export class TodoComponent  {
 <h3>En terme de code</h3>
 
 <p>Un composant, c'est une classe Typescript avec des attributs, méthodes et constructeur et qui sert d'unité de
-    découpage visuel dans un projet front. Il possède aussi des métadonées qu'on lui injecte via la directive @Component.
+    découpage visuel dans un projet front. Il possède aussi des métadonnées qu'on lui injecte via la directive @Component.
 </p>
 <!-- wp:paragraph -->
 <p>On définit un composant dans Angular par un ensemble de ressources :</p>
@@ -93,7 +93,7 @@ export class TodoComponent  {
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
-<p>Les méthodes dîtes <em>view </em>et <em>content </em>sont 2 approches différentes pour faire communiquer des
+<p>Les méthodes dites <em>view </em>et <em>content </em>sont 2 approches différentes pour faire communiquer des
     composants. </p>
 <!-- /wp:paragraph -->
 
@@ -171,7 +171,7 @@ export class TodoComponent {
 
 <!-- wp:list -->
 <ul>
-    <li>Intanciez un attribut de type EventEmitter dans le composant (ts) qu'on décore avec la directive @Output
+    <li>Instanciez un attribut de type EventEmitter dans le composant (ts) qu'on décore avec la directive @Output
     </li>
     <li>Liez-le en event-binding avec (myOutputVariableName) dans le template HTML du parent</li>
     <li>Faîtes appel à la fonction emit() de l'EventEmitter au moment ou l'output doit se produire</li>
@@ -258,7 +258,7 @@ export class FaInputComponent {
 
 <!-- wp:paragraph -->
 <p>La plupart du temps, on utilise la méthode view avec des Input/Output pour structurer la circulation des données au sein d'une page.
-    Cela s'explique car le couplage entre les composants est forts, il s'agit d'un découpage spécifique à la page. De plus on souhaite isoler les scopes au possible.</p>
+    Cela s'explique car le couplage entre les composants est fort, il s'agit d'un découpage spécifique à la page. De plus on souhaite isoler les scopes au possible.</p>
 <p>Mais dans certains cas, il n'est vraiment pas pratique de garder des scopes isolés, et donc d'utiliser la méthode view. </p>
 <!-- /wp:paragraph -->
 
@@ -269,7 +269,7 @@ export class FaInputComponent {
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
-<p>Pour ces cas là, vous pouvez choisir la méthode content. </p>
+<p>Pour ces cas-là, vous pouvez choisir la méthode content. </p>
 <!-- /wp:paragraph -->
 
 <!-- wp:paragraph -->
@@ -293,7 +293,7 @@ export class FaInputComponent {
 <!-- /wp:heading -->
 
 <figure class="wp-block-image size-large"><img
-    src="https://zen-et-productif.fr/wp-content/uploads/2020/11/2-Angular-Les-composants1.png"
+    src="/assets/img/blog/angular-composant/Les-composants1.jpg"
     alt="Cycle de vie d'un composant Angular" class="wp-image-961" width="600px" /></figure>
 
 <!-- wp:paragraph -->
@@ -347,7 +347,7 @@ export class FaInputComponent {
 
 <!-- wp:list -->
 <ul>
-    <li>S'exécute lorsqu’un content (ng-content) est initialisé</li>
+    <li>s'exécute lorsqu’un content (ng-content) est initialisé</li>
     <li>@ContentChildren et @ContentChild sont valorisées</li>
 </ul>
 <!-- /wp:list -->
