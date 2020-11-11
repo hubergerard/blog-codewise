@@ -688,6 +688,9 @@
 .primary-color {
 	color: #222;
 }
+.grey-color {
+	color: grey;
+}
 .z-index{
 	z-index: 9;
 }

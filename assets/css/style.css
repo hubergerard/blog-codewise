@@ -2655,7 +2655,37 @@ h3 {
 }
 
 .figure-caption {
-    margin-top: -10px;
+    margin-top: -10px;  
     margin-bottom: 20px;
     font-style: italic;
+}
+
+.quote {
+    margin-bottom: 28px;
+    background: #4b43d91c;
+    padding: 1em;
+    padding-left: 2em;
+    border-radius: 1em;
+    color: grey;
+}
+
+.quote-icon {
+    position: relative;
+    bottom: -21px;
+    left: -9px;
+    margin-top: -30px;
+    font-size: 2em;
+    color: #4b43d9;
+    background-clip: border-box;
+    border-radius: 1em;
+    background-color: white;
+}
+
+.quote-block {
+    margin-top: -20px;
+}
+
+.related-post-item {
+    font-size: 15px;
+    color: black;
 }

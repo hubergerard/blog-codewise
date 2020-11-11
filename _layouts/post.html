@@ -34,10 +34,61 @@ layout: default
                     </div>
                     <div class="blog-content">
                        {{content}}
-                        <div class="row mt-30">
+                       <div class="row mt-30">
+                           <h2 class="col-12">Articles liés</h2>
+
+                            {% assign maxRelated = 4 %}
+                            {% assign minCommonTags =  1 %}
+                            {% assign maxRelatedCounter = 0 %}
+                            
+                            {% for post in site.posts %}
+                                {% assign sameTagCount = 0 %}
+                                {% assign commonTags = '' %}
+                            
+                                {% for category in post.categories %}
+                                    {% if post.url != page.url %}
+                                        {% if page.categories contains category %}
+                                            {% assign sameTagCount = sameTagCount | plus: 1 %}
+                                            {% capture tagmarkup %} <a href="/category/{{category | slugify}}" rel="tag">{{category}}</a> {% endcapture %}
+                                            {% assign commonTags = commonTags | append: tagmarkup %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if sameTagCount >= minCommonTags %}
+                                <div class="col-4 related-posts">
+                                    <div class="services-box w-100">
+                                        {% if post.post_image %}
+                                        <div class="services-img mb-0">
+                                            <a href="{{ post.url }}">
+                                                <img src="{{post.post_image}}" class="img-fluid" alt="{{page.title}}"></img>
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                        <div class="services-content">  
+                                            <div class="related-post-item">
+                                                <a href="{{ post.url }}">
+                                                    <h4 class="mb-0">{{post.title}}</h4>  
+                                                </a>                                          
+                                                <p class="mb-1">{{post.date | date: "%d %b %Y"}}</p>
+                                            </div>
+                                            </a>
+                                            <div class="blog-post-tag">
+                                                {{ commonTags }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% assign maxRelatedCounter = maxRelatedCounter | plus: 1 %}
+                                  {% if maxRelatedCounter >= maxRelated %}
+                                    {% break %}
+                                  {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                       </div>
+                        <div class="row mt-50">
                             <div class="col-xl-6 col-lg-6 col-md-6">
                                 <div class="blog-post-tag">
-                                 {{page | tags | capitalize}}
+                                    {{page | tags | capitalize}}
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-6">
@@ -45,6 +96,7 @@ layout: default
                             </div>
                         </div>
                     </div>
+
                     <div class="post-comments mt-50">
                         <div class="latest-comments">
                            {% include disqus_comments.html %}
