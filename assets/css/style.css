@@ -2674,6 +2674,10 @@ h3 {
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
 }
 
+code {
+    font-size: 100%;
+}
+
 .quote {
     margin-bottom: 28px;
     background: #4b43d91c;
