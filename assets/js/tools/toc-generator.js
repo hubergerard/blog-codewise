@@ -1,10 +1,14 @@
 const currentScript = document.currentScript;
 const MIN_HEADER_LEVEL = 2;
-const MAX_HEADER_LEVEL = 4;
 const TOC_TITLE = 'Sommaire';
-let TEXT_MODE;
+let MAX_HEADER_LEVEL = 4;
+let TEXT_MODE = false;
+
 $(document).ready(() => {
+    const maxDepth = currentScript.getAttribute("max-depth");
+    MAX_HEADER_LEVEL = maxDepth === '' ? 4 : maxDepth;
     TEXT_MODE = currentScript.getAttribute("text-mode");
+    console.log(maxDepth);
     generateTableOfContent();
 })
 
