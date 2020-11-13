@@ -19,7 +19,7 @@ toc-text-mode: false
 <a id="definition" class="anchor"></a>
 <h2>Un composant c'est quoi ?</h2>
 
-{% highlight ts %}
+{% highlight ts linenos %}
 @Component({
     selector: 'app-todo',
     templateUrl: './todo.component.html',  // or template: '<p>todo works!</p>',
@@ -40,7 +40,7 @@ export class TodoComponent  {
     }
 }
 {% endhighlight %} 
-<div class="figure-caption">Exemple de composant Angular</div>
+<div class="code-caption">Exemple de composant Angular</div>
 
 <a id="concept" class="anchor"></a>
 <h3>En terme de concept</h3>
@@ -90,7 +90,7 @@ export class TodoComponent  {
     <li>Couplage composant parent/enfant lourd</li>
 </ul>
 
-<p>Chaque composant gardant son scope isolé de l'autre, les directives Inputs et Outputs leur permettent de
+<p>Chaque composant gardant son scope isolé de l'autre, les directives @Inputs et @Outputs leur permettent de
     s’échanger des valeurs.</p>
 
 <a id="input" class="anchor"></a>
@@ -105,7 +105,7 @@ export class TodoComponent  {
     <li>Liez-le en “one-way” binding avec [myInputVarNameHere] dans le template html du parent</li>
 </ul>
 
-{% highlight ts %}
+{% highlight ts linenos %}
 @Component({
     selector: 'app-todo',
 })
@@ -115,12 +115,12 @@ export class TodoComponent {
     ...
 }
 {% endhighlight %}
-<div class="figure-caption">todo.component.ts (enfant)</div>
+<div class="code-caption">todo.component.ts (enfant)</div>
 
-{% highlight html %}
+{% highlight html linenos %}
 <app-todo [todo]="todo"></app-todo>
 {% endhighlight %}
-<div class="figure-caption">todo-list.component.html (parent)</div>
+<div class="code-caption">todo-list.component.html (parent)</div>
 
 <div class="wp-block-group">
     <div class="wp-block-group__inner-container"></div>
@@ -139,7 +139,7 @@ export class TodoComponent {
     <li>Faîtes appel à la fonction emit() de l'EventEmitter au moment ou l'output doit se produire</li>
 </ul>
 
-{% highlight ts %}
+{% highlight ts linenos %}
 @Component({
     selector: 'app-todo'
 })
@@ -149,12 +149,12 @@ export class TodoComponent {
     ...
 }
 {% endhighlight %}
-<div class="figure-caption">todo.component.ts (enfant)</div>
+<div class="code-caption">todo.component.ts (enfant)</div>
 
-{% highlight html %}
+{% highlight html linenos %}
 <app-todo (notify)="displayChecked($event)"></app-todo>
 {% endhighlight %}
-<div class="figure-caption">todo-list.component.html (parent)</div>
+<div class="code-caption">todo-list.component.html (parent)</div>
 
 <a id="content" class="anchor"></a>
 <h3>La méthode content</h3>
@@ -177,7 +177,7 @@ export class TodoComponent {
     <li>Récupérez-le dans le composant enfant, en projetant son contenu dans une balise &lt;ng-content&gt;</li>
 </ul>
 
-{% highlight ts %}
+{% highlight ts linenos %}
 @Component({
     selector: 'fa-input',
     template: `
@@ -188,15 +188,15 @@ export class TodoComponent {
 export class FaInputComponent {
 }
 {% endhighlight %}
-<div class="figure-caption">fa-input.component.ts (composant enfant)</div>
+<div class="code-caption">fa-input.component.ts (composant enfant)</div>
 
-{% highlight html %}
+{% highlight html linenos %}
 <h1>FA Input</h1>
 <fa-input>
     <input type=”email” placeholder=”Email”/>
 </fa-input>
 {% endhighlight %}
-<div class="figure-caption">app.component.html (parent)</div>
+<div class="code-caption">app.component.html (parent)</div>
 
 <p>Vous remarquez que, dans le composant parent, on a placé du contenu html à l'intérieur de notre balise de composant &lt;fa-input&gt;</p>
 <p>Ce contenu est rendu disponible dans le composant fils via la balise &lt;ng-content&gt;. 
@@ -209,13 +209,13 @@ export class FaInputComponent {
 
 <p>La plupart du temps, on utilise la méthode view avec des Input/Output pour structurer la circulation des données au sein d'une page.
     Cela s'explique car le couplage entre les composants est fort, il s'agit d'un découpage spécifique à la page. De plus on souhaite isoler les scopes au possible.</p>
-<p>Mais dans certains cas, il n'est vraiment pas pratique de garder des scopes isolés, et donc d'utiliser la méthode view. </p>
+<p>Mais dans certains cas, il n'est vraiment pas pratique de garder des scopes isolés, et donc d'utiliser <a href="#view">la méthode view.</a></p>
 
 <p>Par exemple, si vous comptez réutiliser un composant souvent et que vous devez accéder à 5 de ses attributs,
     vous allez devoir gérer beaucoup d'Input/Output. C'est souvent le cas quand vous voulez séparer des
     formulaires sur plusieurs composants, ou rendre un formulaire générique.</p>
 
-<p>Pour ces cas-là, vous pouvez choisir la méthode content. </p>
+<p>Pour ces cas-là, vous pouvez choisir <a href="#content">la méthode content</a>. </p>
 
 <p>Vous aurez donc un couplage plus faible mais une séparation néante des scopes entre les composants (le scope
     de l'enfant n'existe pas, celui du parent contient tout).</p>

@@ -1,11 +1,44 @@
+.highlight {
+    display: block;
+    text-align: center;
+    margin: 0;
+}
 
-
-.highlight pre {
-    padding: 30px;
+.highlight>pre {
+    display: inline-block;
+    padding: 10px;
+    padding-left: 20px;
+    margin-bottom: 28px;
+    border-radius: 5px;
+    width: 98%;
+    text-align: left;
 }
 
 .highlight pre {
     background-color: #272822;
+    color: white;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', 'Droid Sans Mono', monospace;
+    font-size: 12px;
+}
+
+.highlight pre.lineno {
+    border: none;
+    opacity: 0.6;
+    margin: 0;
+    margin-right: 10px;
+}
+
+.highlight .code pre {
+    margin: 0;
+}
+
+.highlight .lineno {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .highlight .hll {
@@ -257,6 +290,16 @@
     color: #a6e22e;
 }
 
+.highlight .dl {
+    color: #a6e22e;
+}
+
 .highlight .language-shell {
+    color: white;
+    font-family: monospace;
+    font-size: .875rem
+}
+
+.highlight .language-html {
     color: white;
 }
