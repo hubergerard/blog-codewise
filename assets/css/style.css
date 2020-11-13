@@ -2654,10 +2654,24 @@ h3 {
     max-height: 125px;
 }
 
-.figure-caption {
-    margin-top: -10px;  
-    margin-bottom: 20px;
+.image-caption {  
+    margin-bottom: 28px;
+    padding-left: 12px;
     font-style: italic;
+    margin-top: 4px;
+    color: grey;
+}
+
+.code-caption {
+    margin-top: -33px;  
+    margin-bottom: 28px;
+    padding-left: 12px;
+    font-style: italic;
+    color:grey;
+}
+
+.img-shadow {
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
 }
 
 .quote {

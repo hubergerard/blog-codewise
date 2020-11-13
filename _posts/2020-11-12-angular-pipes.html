@@ -6,7 +6,7 @@ description: "Qu'est-ce qu'un pipe dans le framework Angular ? Dans cet article,
 tags: developpement web Angular
 categories: [Développement web]
 author: "huber"
-post_image: "/assets/img/blog/composants-angular.jpg"
+post_image: "/assets/img/blog/angular-pipes/angular-pipes.jpg"
 toc-text-mode: false
 toc-depth: 4
 ---
@@ -22,12 +22,12 @@ toc-depth: 4
     Le pipe est un moyen d’appliquer des transformations sur nos données, directement depuis le template HTML.
 </p>
 
-{% highlight html %}
+{% highlight html linenos %}
 {% raw %}
 <p> Date de réception : {{ receptionDate | date | uppercase }} </p>
 {% endraw %}
 {% endhighlight %} 
-<div class="figure-caption">Exemple de pipe Angular</div>
+<div class="code-caption">Exemple de pipe Angular</div>
 
 <a id="pipe-concept" class="anchor"></a>
 <h3>En terme de concept</h3>
@@ -50,19 +50,19 @@ toc-depth: 4
 </p>
 <p>On commence par déclarer une variable <code>birthday</code> dans le fichier TypeScript de notre composant.</p>
 
-{% highlight ts %}
+{% highlight ts linenos %}
 public birthday: Date = new Date(1988, 3, 15);
 {% endhighlight %} 
-<div class="figure-caption">any.component.ts</div>
+<div class="code-caption">any.component.ts</div>
 
 <p>Ensuite, dans notre HTML on souhaite l'afficher dans un format user-friendly et lisible.</p>
 
-{% highlight html %}
+{% highlight html linenos %}
 {% raw %}
 <p>La date de naissance du héros est {{ birthday | date: 'mediumDate' }}</p>
 {% endraw %}
 {% endhighlight %} 
-<div class="figure-caption">any.component.html</div>
+<div class="code-caption">any.component.html</div>
 
 <p>
     Dans cet exemple, le pipe <code>DatePipe</code> prend en entrée la valeur <code>birthday</code> et le paramètre <code>'mediumDate'</code>. 
@@ -73,7 +73,7 @@ public birthday: Date = new Date(1988, 3, 15);
 <p>Finalement, on obtient en sortie :</p>
 
 <img src="/assets/img/blog/angular-pipes/angular-pipes-exemple.png" class="img-shadow"></img>
-<div class="figure-caption">http://localhost:4200</div>
+<div class="image-caption">http://localhost:4200</div>
 
 <a id="2-types-pipes" class="anchor"></a>
 <h2>Les 2 types de pipe</h2>
@@ -105,7 +105,7 @@ public birthday: Date = new Date(1988, 3, 15);
     Par défaut, le format est <code>'mediumDate'</code>. 
 </p>
 
-{% highlight ts %}
+{% highlight ts linenos %}
 {% raw %}
 {{ dateObj | date }}               // output is 'Jun 15, 2015'
 {{ dateObj | date:'medium' }}      // output is 'Jun 15, 2015, 9:43:11 PM'
@@ -113,7 +113,7 @@ public birthday: Date = new Date(1988, 3, 15);
 {{ dateObj | date:'mm:ss' }}       // output is '43:11'
 {% endraw %}
 {% endhighlight %} 
-<div class="figure-caption">Utilisation de DatePipe</div>
+<div class="code-caption">Utilisation de DatePipe</div>
 
 <p><span class="font-weight-bold">Input : </span> Un objet JS <code>Date</code></p>
 <p><span class="font-weight-bold">Output : </span> Une chaîne de caractères formatée</p>
@@ -125,12 +125,12 @@ public birthday: Date = new Date(1988, 3, 15);
     Le <a href="https://angular.io/api/common/UpperCasePipe" target="_blank"><code>UpperCasePipe</code></a> sert à passer un texte en majuscule.
 </p>
       
-{% highlight ts %}
+{% highlight ts linenos %}
 {% raw %}
 {{ 'hello world!' | uppercase }}     // output is 'HELLO WORLD!'
 {% endraw %}
 {% endhighlight %} 
-<div class="figure-caption">Utilisation de UpperCasePipe</div>
+<div class="code-caption">Utilisation de UpperCasePipe</div>
     
 <p><span class="font-weight-bold">Input : </span> Une chaîne de caractères</p>
 <p><span class="font-weight-bold">Output : </span> Une chaîne de caractères en majuscules</p>
@@ -141,12 +141,12 @@ public birthday: Date = new Date(1988, 3, 15);
 <p>
     Le <a href="https://angular.io/api/common/LowerCasePipe" target="_blank"><code>LowerCasePipe</code></a> sert à passer un texte en minuscule.
 </p>
-{% highlight ts %}
+{% highlight ts linenos %}
 {% raw %}
 {{ 'HELLO WORLD!' | lowercase }}     // output is 'hello world!'
 {% endraw %}
 {% endhighlight %} 
-<div class="figure-caption">Utilisation de LowerCasePipe</div>
+<div class="code-caption">Utilisation de LowerCasePipe</div>
 
 <p><span class="font-weight-bold">Input : </span> Une chaîne de caractères </p>
 <p><span class="font-weight-bold">Output : </span> Une chaîne de caractères en minuscules</p>
@@ -157,7 +157,7 @@ public birthday: Date = new Date(1988, 3, 15);
 <p>
     Le <a href="https://angular.io/api/common/CurrencyPipe" target="_blank"><code>CurrencyPipe</code></a> sert à formater un nombre en écriture monétaire.
 </p>
-{% highlight html %}
+{% highlight html linenos %}
 {% raw %}
 <!--output '$0.26'-->
 <p>Amount: {{amount | currency}}</p>
@@ -166,7 +166,7 @@ public birthday: Date = new Date(1988, 3, 15);
 <p>Amount: {{amount | currency:'CAD'}}</p>
 {% endraw %}
 {% endhighlight %} 
-<div class="figure-caption">Utilisation de CurrencyPipe</div>
+<div class="code-caption">Utilisation de CurrencyPipe</div>
 
 <p><span class="font-weight-bold">Input : </span> Une valeur numérique </p>
 <p><span class="font-weight-bold">Output : </span> Une chaîne de caractères formatée pour afficher un montant</p>
@@ -177,7 +177,7 @@ public birthday: Date = new Date(1988, 3, 15);
 <p>
     Le <a href="https://angular.io/api/common/DecimalPipe" target="_blank"><code>DecimalPipe</code></a> sert à formater un nombre en écriture décimale.
 </p>
-{% highlight html %}
+{% highlight html linenos %}
 {% raw %}
 <!--output '2.718'-->
 <p>e (no formatting): {{e | number}}</p>
@@ -192,7 +192,7 @@ public birthday: Date = new Date(1988, 3, 15);
 <p>e (french): {{e | number:'4.5-5':'fr'}}</p>
 {% endraw %}
 {% endhighlight %} 
-<div class="figure-caption">Utilisation de DecimalPipe</div>
+<div class="code-caption">Utilisation de DecimalPipe</div>
 
 <p><span class="font-weight-bold">Input : </span> Une valeur numérique </p>
 <p><span class="font-weight-bold">Output : </span> Une chaîne de caractères qui représente un nombre avec une virgule décimale</p>
@@ -203,7 +203,7 @@ public birthday: Date = new Date(1988, 3, 15);
 <p>
     Le <a href="https://angular.io/api/common/PercentPipe" target="_blank"><code>PercentPipe</code></a> sert à formater un nombre en pourcentage.
 </p>
-{% highlight html %}
+{% highlight html linenos %}
 {% raw %}
 <!--output '26%'-->
 <p>A: {{a | percent}}</p>
@@ -212,7 +212,7 @@ public birthday: Date = new Date(1988, 3, 15);
 <p>B: {{b | percent:'4.3-5'}}</p>
 {% endraw %}
 {% endhighlight %} 
-<div class="figure-caption">Utilisation de PercentPipe</div>
+<div class="code-caption">Utilisation de PercentPipe</div>
 
 <p><span class="font-weight-bold">Input : </span> Une valeur numérique </p>
 <p><span class="font-weight-bold">Output : </span> Une chaîne de caractères qui représente le nombre en pourcentage</p>
@@ -248,7 +248,7 @@ ng g p exponential
 
 <p>Ca devrait vous générer un composant semblable à celui-ci :</p>
 
-{% highlight ts %}
+{% highlight ts linenos %}
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
@@ -262,7 +262,7 @@ export class ExponentialPipe implements PipeTransform {
 
 }
 {% endhighlight %}
-<div class="figure-caption">exponential.pipe.ts</div>
+<div class="code-caption">exponential.pipe.ts</div>
 
 <a id="mapping-pipe" class="anchor"></a>
 <h4>Coder la transformation des données (mapping)</h4>
@@ -283,7 +283,7 @@ export class ExponentialPipe implements PipeTransform {
     La valeur en entrée du pipe et la valeur de retour seront de type <code>number</code> également.
 </p>
 
-{% highlight ts %}
+{% highlight ts linenos %}
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({name: 'exponential'})
@@ -293,7 +293,7 @@ export class ExponentialPipe implements PipeTransform {
     }
 }
 {% endhighlight %}
-<div class="figure-caption">exponential.pipe.ts</div>
+<div class="code-caption">exponential.pipe.ts</div>
 
 <a id="utilisation-pipe" class="anchor"></a>
 <h4>Utiliser notre nouveau pipe</h4>
@@ -311,13 +311,13 @@ export class ExponentialPipe implements PipeTransform {
 
 <p>Ce qui nous donne :</p>
 
-{% highlight html %}
+{% highlight html linenos %}
 {% raw %}
 <h2>2 exponentiel 10</h2>
 <p>Résultat: {{2 | exponential: 10}}</p>
 {% endraw %}
 {% endhighlight %}
-<div class="figure-caption">exponential.pipe.html</div>
+<div class="code-caption">exponential.pipe.html</div>
 
 <a id="chainer-pipes" class="anchor"></a>
 <h2>Comment chainer les pipes ?</h2>
@@ -326,12 +326,12 @@ export class ExponentialPipe implements PipeTransform {
     Etant donné qu'ils ont tous une valeur d'entrée et de sortie, il est possible de chainer les pipes.
 </p>
 
-{% highlight html %}
+{% highlight html linenos %}
 {% raw %}
 <p> Date de réception : {{ receptionDate | date | uppercase }} </p>
 {% endraw %}
 {% endhighlight %} 
-<div class="figure-caption">Exemple de chainage de pipe Angular</div>
+<div class="code-caption">Exemple de chainage de pipe Angular</div>
 
 <p>
     Dans cet exemple, le DatePipe est appelé en premier et transforme la date en <code>string</code>.
