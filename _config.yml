@@ -3,8 +3,8 @@ email: "themeaffairs@gmail.com"
 description: >- # this means to ignore newlines until "baseurl:"
  CodeWise - Formations pour développeurs. Des formations techniques, soft-skills, management.
 baseurl: # the subpath of your site, e.g. /blog
-url: http://www.codewise.fr # the base hostname & protocol for your site, e.g. http://example.com or  https://tradejk.netlify.com
-blog-url: http://blog.codewise.fr
+url: https://www.codewise.fr # the base hostname & protocol for your site, e.g. http://example.com or  https://tradejk.netlify.com
+blog-url: https://blog.codewise.fr
 facebook_url: 
 twitter_url: 
 github_url:  https://github.com/hubergerard
