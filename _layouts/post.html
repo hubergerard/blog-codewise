@@ -2,6 +2,39 @@
 layout: default
 ---
 {% include header.html %}
+{% assign wordcount = page.content | number_of_words %}
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "name": "{{page.title}}",
+        "headline": "{{page.title}}",
+        "description": "{{page.description}}",
+        "genre":"{{ page.category }}",
+        "keywords":"{{ page.keywords }}",
+        "datePublished":"{{page.date | date: '%Y-%m-%d'}}",
+        "provider": {
+            "@type": "Organization",
+            "name": "{{site.title}}",
+            "sameAs": "{{site.url}}"
+        },
+        "audience": "Développeurs webs",
+        "author": {
+            "@type": "Person",
+            "name": "{{site.author}}"
+        },
+        "image":{  
+            "@type":"ImageObject",
+            "contentUrl":"{{site.url}}{{page.post_image}}",
+            "url":"{{site.url}}{{page.post_image}}",
+            "height":"360",
+            "width":"540"
+        },
+        "wordCount":"{{ wordcount }}",
+        "timeRequired": "{{wordcount | divided_by: 500}}M",
+        "articleBody":"{{ page.content | strip_html | xml_escape | normalize_whitepace | strip_newlines | strip }}"
+    }
+    </script>
 <main>
 <!-- breadcrumb-area -->
 <section class="breadcrumb-area grey-bg" style="background-image:url({{site.cover_image}})">
@@ -33,7 +66,9 @@ layout: default
                         <img src="{{page.post_image}}" alt="{{page.title}}"/>
                     </div>
                     <div class="blog-content">
-                       {{content}}
+                        <div id="post-content">
+                            {{content}}
+                        </div>
                        <div class="row mt-30">
                            <h2 class="col-12">Articles liés</h2>
 
