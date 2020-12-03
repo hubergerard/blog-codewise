@@ -1835,6 +1835,7 @@ label {
     font-style: italic;
     width: 60%;
     margin: 0 auto 55px;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .contact-form input {
