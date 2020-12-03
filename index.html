@@ -9,26 +9,29 @@ title: WiseBlog, veille pour développeurs webs
         <div class="row">
             <div class="col-lg-8 blog-post-items">
               {% for post in paginator.posts %}
-                <div class="blog-wrapper mb-40">
+                <div class="blog-wrapper mb-40 card shadow">
                     <div class="blog-thumb">
                         <a href="{{post.url}}">
                             <img class="img-fluid" src="{{post.post_image}}" alt="{{post.title}}"/>
                         </a>
                     </div>
-                    <div class="meta-info">
-                        <ul>
-                            <li class="posts-time">{{post.date | date_to_long_string}}</li>
-                        </ul>
+                    <div class="blog-description">
+                        <div class="meta-info">
+                            <ul>
+                                <li class="posts-time">{{post.date | date_to_long_string}}</li>
+                            </ul>
+                        </div>
+                        <div class="blog-content">
+                            <h2 class="blog-title">
+                                <a href="{{post.url}}">{{post.title}}</a>
+                            </h2>
+                            <p>{{post.excerpt | strip_html | truncatewords:"30"}}</p>
+                        </div>
+                        <div class="link-box">
+                            <a class="btn read-more-button" style="color: white;" href="{{post.url}}">Lire la suite</a>
+                        </div>
                     </div>
-                    <div class="blog-content">
-                        <h2 class="blog-title">
-                            <a href="{{post.url}}">{{post.title}}</a>
-                        </h2>
-                        <p>{{post.excerpt | strip_html | truncatewords:"30"}}</p>
-                    </div>
-                    <div class="link-box">
-                        <a href="{{post.url}}">Lire la suite</a>
-                    </div>
+                    
                 </div>
               {% endfor %}
              {% include pagination.html %}
