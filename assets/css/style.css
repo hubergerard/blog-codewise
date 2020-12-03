@@ -1874,10 +1874,6 @@ label {
     box-shadow: 10px 20px 30px rgba(0, 0, 0, .12);
 }
 
-.blog-thumb {
-    margin-bottom: 0px;
-}
-
 .blog-title {
     display: inline-block;
     font-size: 30px;
