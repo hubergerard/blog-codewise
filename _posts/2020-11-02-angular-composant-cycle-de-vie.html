@@ -1,0 +1,126 @@
+---
+layout: post
+title: "Angular - Cycle de vie d'un composant"
+date: 2021-03-12 11:50:10 +0100
+description: "Une instance de composant Angular possède un cycle de vie. Votre application peut utiliser des méthodes de hooks pour agir lors des évènements clé du cycle de vie."
+tags: developpement web Angular lifecycle component
+categories: [Développement web]
+author: "huber"
+post_image: "/assets/img/blog/angular-composant/angular_lifecycle.jpg"
+toc-text-mode: false
+---
+
+<p>Dans cet article, vous allez découvrir le cycle de vie d'un Component Angular en détail.</p>
+
+<div id="toc" class="blog-toc"></div>
+
+<a id="definition" class="anchor"></a>
+<h2>Définition</h2>
+
+<p>
+    Le cycle de vie correspond aux différentes étapes de la vie d'une instance.
+    Il débute toujours par une instanciation et termine par la destruction de l'instance, donc la désallocation des ressources mémoire qui lui sont affectées.
+</p> 
+
+<p> 
+    Un hook (crochet) est une méthode qui s'exécute lors de certains évènements liés au cycle de vie. 
+    Cela permet à votre app Angular d'exécuter du code JavaScript lors de ces évènements.
+</p>
+
+<p>Cela peut s'avérer utile, par exemple pour lancer un appel vers une API au chargement d'une page ou bien pour
+    libérer une ressource lors de la destruction de l'instance du composant.</p>
+
+
+<a id="cycle-de-vie-etapes" class="anchor"></a>
+<h2>Les étapes du cycle de vie (dans l'ordre)</h2>
+
+<figure class="wp-block-image size-large"><img
+    src="/assets/img/blog/angular-composant/Les-composants1.jpg"
+    alt="Cycle de vie d'un composant Angular" width="600px" /></figure>
+
+<p>Sur ce diagramme, vous observez l'ordre d'enchainement des hooks en vous fiant aux numéros inscrits à côté de chaque étape.</p>
+
+<p>Voici un détail de chacun de ces hooks, dans l'ordre où ils sont appelés.</p>
+
+<a id="constructeur" class="anchor"></a>
+<h3>1. Le constructeur</h3>
+
+<p> Le cycle commence par l'appel du constructeur, juste après l'instanciation du Component.</p>
+<p> Dans le constructeur, placez uniquement les initialisations de variable locales avec des valeurs simples.</p>
+code
+<p> Ne placez aucune initialisation complexe dans le constructeur. Vous voulez des Component qui se contruisent sans consommer beaucoup de ressources et de manière sure.</p>
+
+<a id="OnChanges" class="anchor"></a>
+<h3>2. Détecter les changements d'Input</h3>
+<p> Angular appelle le hook ngOnChanges() dès qu'il détecte un changement dans les propriétés passées en Input.</p>
+code
+<a id="OnInit" class="anchor"></a>
+<h3>3. Initialiser le composant</h3>
+
+<p>Utilisez la méthode ngOnInit() dans les 2 cas suivants :</p>
+<ul>
+    <li>Vous voulez mettre en place une initialisation complexe (donc hors du constructeur), typiquement appeler une API qui charge les données de votre page.</p>
+    <li>Vous devez modifier l'état de votre component après le chargement des attributs passés en @Input </li>
+</ul>
+code
+
+<a id="DoCheck" class="anchor"></a>
+<h3>4. Réagir à tous les changements du DOM</h3>
+
+<p>Vous souhaitez réagir à un changement du DOM qui est indétectable par vos autres hooks ?</p><p> Dans ce cas vous devrez utiliser la méthode ngDoCheck()</p>
+code
+<p>Cette méthode vous permet de réagir à tout changement dans la page qui ne serait pas détecté par le framework.</p>
+<p>Attention à ne pas l'utiliser plus que nécessaire : cette méthode coûte énormément de ressources et peut donc diminuer les performances globales de votre application.</p>
+
+<a id="AfterContent" class="anchor"></a>
+<h3>5. Détecter les changements de ng-content</h3>
+<p>
+    La méthode ngAfterContentInit() est déclenchée lorsque le contenu de la balise ng-content est reçu pour la première fois.
+</p>
+
+<p>
+    ngAfterContentchecked() est déclenchée à chaque fois que le contenu de cette balise est modifié dynamiquement.
+</p>
+code
+<a id="AfterView" class="anchor"></a>
+<h3>6. Accéder au DOM </h3>
+<p>
+    La méthode ngAfterViewInit() est déclenchée lorsque le contenu des variables décorées par @ViewChild ou @ViewChildren est reçu pour la première fois.
+</p>
+<p>
+    ngAfterViewchecked() est déclenchée à chaque fois que le contenu de ces variables est modifié.
+</p>
+code
+<a id="OnDestroy" class="anchor"></a>
+<h3>7. Détruire l'instance proprement</h3>
+
+<p>
+    Le hook ngOnDestroy() vous permet de libérer des ressources avant la destruction de l'instance du composant.
+</p>
+<ul>
+    <li>
+        Appliquez unsubscribe() aux Observables auxquels le composant est souscrit.
+    </li>
+    <li>
+        Arrêtez vos timers
+    </li>
+    <li>
+        Désouscrivez-vous également des Promise et callbacks qui viennent de services partageables.
+    </li>
+</ul>
+<p>ngOnDestroy() peut aussi servir à envoyer un Event pour signaler la destruction à un autre Component.</p>
+
+code
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        La prochaine étape, quand vous êtes à l'aise avec le concept de composants : <a href="/angular-services-introduction">Les services Angular</a>.
+    </div>
+</div>
+
+<a id="more-information" class="anchor"></a>
+<h2>Sources</h2>
+<ul>
+    <li> Documentation Angular : <a href="https://angular.io/guide/lifecycle-hooks" target="_blank">Angular - Hooking into the component lifecycle</a></li>
+    <li> Learn Angular : <a rel="nofollow" href="https://www.learn-angular.fr/le-cycle-de-vie-dun-component/" target="_blank">Angular - Cycle de vie d'un composant</a></li>
+</ul>
