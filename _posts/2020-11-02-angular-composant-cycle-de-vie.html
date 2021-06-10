@@ -47,13 +47,36 @@ toc-text-mode: false
 
 <p> Le cycle commence par l'appel du constructeur, juste après l'instanciation du Component.</p>
 <p> Dans le constructeur, placez uniquement les initialisations de variable locales avec des valeurs simples.</p>
-code
-<p> Ne placez aucune initialisation complexe dans le constructeur. Vous voulez des Component qui se contruisent sans consommer beaucoup de ressources et de manière sure.</p>
+
+{% highlight ts linenos %}
+constructor() {
+    this.title = "Constructor";
+    this.details = "Life cycle component";
+}
+{% endhighlight %} 
+<div class="code-caption">any.component.ts</div>
+
+<p> Ne placez aucune initialisation complexe dans le constructeur. Vous voulez des Component qui se contruisent sans consommer beaucoup de ressources et de manière sûre.</p>
 
 <a id="OnChanges" class="anchor"></a>
 <h3>2. Détecter les changements d'Input</h3>
 <p> Angular appelle le hook ngOnChanges() dès qu'il détecte un changement dans les propriétés passées en Input.</p>
-code
+
+{% highlight ts linenos %}
+@Input() lastname: string;
+
+constructor() {}
+
+ngOnChanges() {
+  this.uppercase(this.lastname);
+}
+
+private uppercase(input: string) {
+  input = input.toUpperCase();
+}
+{% endhighlight %}
+<div class="code-caption">OnChanges.component.ts</div>
+
 <a id="OnInit" class="anchor"></a>
 <h3>3. Initialiser le composant</h3>
 
@@ -62,13 +85,29 @@ code
     <li>Vous voulez mettre en place une initialisation complexe (donc hors du constructeur), typiquement appeler une API qui charge les données de votre page.</p>
     <li>Vous devez modifier l'état de votre component après le chargement des attributs passés en @Input </li>
 </ul>
-code
+
+{% highlight ts linenos %}
+    studentList: Array<any>;
+
+    constructor(private studentService: StudentService){}
+
+    ngOnInit(){
+        this.getStudent();
+    }
+
+    getStudent(){
+        this.studentService
+            .getStudentsFromService()
+            .subscribe(students =>  this.studentList = students);
+    }
+{% endhighlight %}
+<div class="code-caption">OnInit.component.ts</div>
 
 <a id="DoCheck" class="anchor"></a>
 <h3>4. Réagir à tous les changements du DOM</h3>
 
 <p>Vous souhaitez réagir à un changement du DOM qui est indétectable par vos autres hooks ?</p><p> Dans ce cas vous devrez utiliser la méthode ngDoCheck()</p>
-code
+
 <p>Cette méthode vous permet de réagir à tout changement dans la page qui ne serait pas détecté par le framework.</p>
 <p>Attention à ne pas l'utiliser plus que nécessaire : cette méthode coûte énormément de ressources et peut donc diminuer les performances globales de votre application.</p>
 
@@ -77,20 +116,114 @@ code
 <p>
     La méthode ngAfterContentInit() est déclenchée lorsque le contenu de la balise ng-content est reçu pour la première fois.
 </p>
+<h4>Exemple ContentChild</h4>
 
-<p>
-    ngAfterContentchecked() est déclenchée à chaque fois que le contenu de cette balise est modifié dynamiquement.
+{% highlight html linenos %}
+<app-child-component>
+    <div #name >Krishna</div>
+</app-child-component>
+{% endhighlight %}
+<div class="code-caption">parent.component.html</div>
+
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-child-component',
+    template: '<ng-content></ng-content>',
+    styleUrls: ['./new-component.component.scss']
+})
+export class ChildComponent implements AfterContentInit  {
+  
+    @ContentChild('name') nameRef: ElementRef;
+  
+    ngAfterContentInit(): void {
+  
+        console.log(this.nameRef);
+    }
+}
+{% endhighlight %}
+  <div class="code-caption">child.component.ts</div>
+
+<h4>Exemple ContentChildren</h4>
+
+{% highlight html linenos %}
+<app-child-component>
+    <div #name >Mahesh</div>
+    <div #name >Krishna</div>
+</app-child-component>
+{% endhighlight %}
+<div class="code-caption">parent.component.html</div>
+
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-child-component',
+    template: '<ng-content></ng-content>',
+    styleUrls: ['./new-component.component.scss']
+})
+export class ChildComponent implements AfterContentInit  {
+  
+    @ContentChildren('name') nameRef: QueryList<ElementRef>;
+  
+    ngAfterContentInit(): void {
+  
+        console.log(this.nameRef);
+    }
+}
+{% endhighlight %}
+  <div class="code-caption">child.component.ts</div>
+
+  <p>
+    Utilisez ngAfterContentchecked() si vous voulez déclencher le hook à chaque fois que le contenu de cette balise est modifié dynamiquement.
 </p>
-code
+
 <a id="AfterView" class="anchor"></a>
 <h3>6. Accéder au DOM </h3>
 <p>
     La méthode ngAfterViewInit() est déclenchée lorsque le contenu des variables décorées par @ViewChild ou @ViewChildren est reçu pour la première fois.
 </p>
+<h4>Exemple ViewChild</h4>
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-child-component',
+    template: '<div #age> 20 </div>',
+    styleUrls: ['./new-component.component.scss']
+  })
+export class ChildComponent implements AfterViewInit  {
+  
+    @ViewChild('age') ageRef: ElementRef;
+  
+    ngAfterViewInit(): void {
+  
+      console.log(this.ageRef);
+    }
+}
+{% endhighlight %}
+<div class="code-caption">child.component.ts</div>
+
+<h4>Exemple ViewChildren</h4>
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-child-component',
+    template: `<div #age>20 </div>
+                <div #age>24 </div>`,
+    styleUrls: ['./new-component.component.scss']
+  })
+export class ChildComponent implements AfterViewInit  {
+  
+    @ViewChildren('age') ageRef: QueryList<ElementRef>;
+  
+    ngAfterViewInit(): void {
+  
+      console.log(this.ageRef);
+    }
+}
+{% endhighlight %}
+<div class="code-caption">child.component.ts</div>
 <p>
     ngAfterViewchecked() est déclenchée à chaque fois que le contenu de ces variables est modifié.
 </p>
-code
+
 <a id="OnDestroy" class="anchor"></a>
 <h3>7. Détruire l'instance proprement</h3>
 
@@ -110,7 +243,23 @@ code
 </ul>
 <p>ngOnDestroy() peut aussi servir à envoyer un Event pour signaler la destruction à un autre Component.</p>
 
-code
+{% highlight ts linenos %}
+export class OnDestroyComponent implements OnInit {
+
+    subscription : Subscription;
+  
+    ngOnInit(): void {
+      var observable = interval(1000);
+      this.subscription = observable.subscribe(x => console.log(x));
+    }
+  
+    ngOnDestroy(): void {
+      this.subscription.unsubscribe();
+    }
+}
+{% endhighlight %}
+<div class="code-caption">OnDestroy.component.ts</div>
+
 <div class="quote-block">
     <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
     <div class="quote">
