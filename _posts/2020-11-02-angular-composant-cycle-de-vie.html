@@ -10,43 +10,43 @@ post_image: "/assets/img/blog/angular-composant/angular_lifecycle.jpg"
 toc-text-mode: false
 ---
 
-<p>Dans cet article, vous allez découvrir le cycle de vie d'un Component Angular en détail.</p>
+<p>Dans cet article, vous allez découvrir le cycle de vie d'un composant Angular en détail.</p>
 
 <div id="toc" class="blog-toc"></div>
 
 <a id="definition" class="anchor"></a>
 <h2>Définition</h2>
 
-<p>
-    Le cycle de vie correspond aux différentes étapes de la vie d'une instance.
-    Il débute toujours par une instanciation et termine par la destruction de l'instance, donc la désallocation des ressources mémoire qui lui sont affectées.
-</p> 
-
-<p> 
-    Un hook (crochet) est une méthode qui s'exécute lors de certains évènements liés au cycle de vie. 
-    Cela permet à votre app Angular d'exécuter du code JavaScript lors de ces évènements.
+<p><strong>Le cycle de vie correspond aux différentes étapes de la vie d'une instance.</strong> 
+            Il débute toujours par une instanciation et termine par la destruction de l'instance, 
+            donc la désallocation des ressources mémoire qui lui sont affectées.
 </p>
 
-<p>Cela peut s'avérer utile, par exemple pour lancer un appel vers une API au chargement d'une page ou bien pour
-    libérer une ressource lors de la destruction de l'instance du composant.</p>
+<p><strong>Un hook</strong> (crochet) <strong>est une méthode qui s'exécute lors de certains événements liés au cycle de vie</strong>. 
+            Cela permet à votre app Angular d'exécuter du code JavaScript lors de ces événements.
+</p>
+
+<p>De plus, cela peut s'avérer utile, par exemple pour lancer un appel vers une API au chargement d'une page 
+    ou bien pour libérer une ressource lors de la destruction de l'instance du composant.
+</p>
 
 
 <a id="cycle-de-vie-etapes" class="anchor"></a>
-<h2>Les étapes du cycle de vie (dans l'ordre)</h2>
+<h2>Les étapes du cycle de vie d'un composant</h2>
 
 <figure class="wp-block-image size-large"><img
     src="/assets/img/blog/angular-composant/Les-composants1.jpg"
     alt="Cycle de vie d'un composant Angular" width="600px" /></figure>
 
-<p>Sur ce diagramme, vous observez l'ordre d'enchainement des hooks en vous fiant aux numéros inscrits à côté de chaque étape.</p>
+<p>Par exemple, sur ce diagramme, vous observez l'ordre d'enchainement des hooks en vous fiant aux numéros inscrits à côté de chaque étape.</p>
 
 <p>Voici un détail de chacun de ces hooks, dans l'ordre où ils sont appelés.</p>
 
 <a id="constructeur" class="anchor"></a>
 <h3>1. Le constructeur</h3>
 
-<p> Le cycle commence par l'appel du constructeur, juste après l'instanciation du Component.</p>
-<p> Dans le constructeur, placez uniquement les initialisations de variable locales avec des valeurs simples.</p>
+<p><strong>Le cycle commence par l'appel du constructeur</strong>, juste après l'instanciation du Component.</p>
+<p>Dans le constructeur,<strong> placez uniquement les initialisations de variable locales</strong> avec des valeurs simples.</p>
 
 {% highlight ts linenos %}
 constructor() {
@@ -56,11 +56,15 @@ constructor() {
 {% endhighlight %} 
 <div class="code-caption">any.component.ts</div>
 
-<p> Ne placez aucune initialisation complexe dans le constructeur. Vous voulez des Component qui se contruisent sans consommer beaucoup de ressources et de manière sûre.</p>
+<p>Ainsi, ne placez <strong>aucune initialisation complexe dans le constructeur.</strong> 
+    Vous voulez des composant qui se construisent sans consommer beaucoup de ressources et de manière sûre.
+</p>
 
 <a id="OnChanges" class="anchor"></a>
 <h3>2. Détecter les changements d'Input</h3>
-<p> Angular appelle le hook ngOnChanges() dès qu'il détecte un changement dans les propriétés passées en Input.</p>
+<p><strong>Immédiatement après le constructeur, Angular appelle le hook ngOnChanges()</strong> 
+    dès qu'il détecte un changement dans les propriétés passées en Input.
+</p>
 
 {% highlight ts linenos %}
 @Input() lastname: string;
@@ -82,9 +86,11 @@ private uppercase(input: string) {
 
 <p>Utilisez la méthode ngOnInit() dans les 2 cas suivants :</p>
 <ul>
-    <li>Vous voulez mettre en place une initialisation complexe (donc hors du constructeur), typiquement appeler une API qui charge les données de votre page.</p>
-    <li>Vous devez modifier l'état de votre component après le chargement des attributs passés en @Input </li>
-</ul>
+    <li>
+        <strong>Vous voulez mettre en place une initialisation complexe </strong>
+        (donc hors du constructeur), typiquement appeler une API qui charge les données de votre page.</li>
+        <li><strong>Vous devez modifier l'état de votre component après le chargement des attributs passés en @Input</strong></li>
+    </ul>
 
 {% highlight ts linenos %}
     studentList: Array<any>;
@@ -106,15 +112,21 @@ private uppercase(input: string) {
 <a id="DoCheck" class="anchor"></a>
 <h3>4. Réagir à tous les changements du DOM</h3>
 
-<p>Vous souhaitez réagir à un changement du DOM qui est indétectable par vos autres hooks ?</p><p> Dans ce cas vous devrez utiliser la méthode ngDoCheck()</p>
+<p>Vous souhaitez réagir à un changement du DOM qui est indétectable par vos autres hooks ?</p>
+<p> Dans ce cas vous devrez utiliser la méthode ngDoCheck()</p>
 
-<p>Cette méthode vous permet de réagir à tout changement dans la page qui ne serait pas détecté par le framework.</p>
-<p>Attention à ne pas l'utiliser plus que nécessaire : cette méthode coûte énormément de ressources et peut donc diminuer les performances globales de votre application.</p>
+<p>
+    <strong>Cette méthode vous permet de réagir à tout changement dans la page qui ne serait pas détecté par le framework.</strong>
+</p>
+<p>
+    <strong>Attention</strong> ! Ne l'utilisez pas plus que nécessaire : cette méthode coûte énormément de ressources et peut donc diminuer les performances globales de votre application.
+</p>
+<p>De ce fait, vous ne verrez pas beaucoup ce hook !</p>
 
 <a id="AfterContent" class="anchor"></a>
 <h3>5. Détecter les changements de ng-content</h3>
 <p>
-    La méthode ngAfterContentInit() est déclenchée lorsque le contenu de la balise ng-content est reçu pour la première fois.
+    <strong>La méthode ngAfterContentInit() est déclenchée lorsque le contenu de la balise ng-content est reçu pour la première fois.</strong>
 </p>
 <h4>Exemple ContentChild</h4>
 
@@ -174,14 +186,17 @@ export class ChildComponent implements AfterContentInit  {
   <div class="code-caption">child.component.ts</div>
 
   <p>
-    Utilisez ngAfterContentchecked() si vous voulez déclencher le hook à chaque fois que le contenu de cette balise est modifié dynamiquement.
+      <strong>Il y a aussi le hook ngAfterContentchecked()</strong> 
+        qui est déclenché à chaque fois que le contenu de cette balise est modifié dynamiquement.
 </p>
 
 <a id="AfterView" class="anchor"></a>
 <h3>6. Accéder au DOM </h3>
 <p>
-    La méthode ngAfterViewInit() est déclenchée lorsque le contenu des variables décorées par @ViewChild ou @ViewChildren est reçu pour la première fois.
+    <strong>La méthode ngAfterViewInit() est déclenchée lorsque le contenu des variables décorées par @ViewChild 
+        ou @ViewChildren est reçu pour la première fois</strong>.
 </p>
+
 <h4>Exemple ViewChild</h4>
 {% highlight ts linenos %}
 @Component({
@@ -221,27 +236,28 @@ export class ChildComponent implements AfterViewInit  {
 {% endhighlight %}
 <div class="code-caption">child.component.ts</div>
 <p>
-    ngAfterViewchecked() est déclenchée à chaque fois que le contenu de ces variables est modifié.
+    <strong>ngAfterViewchecked()</strong> est déclenchée à chaque fois que le contenu de ces variables est modifié.
 </p>
 
 <a id="OnDestroy" class="anchor"></a>
 <h3>7. Détruire l'instance proprement</h3>
 
 <p>
-    Le hook ngOnDestroy() vous permet de libérer des ressources avant la destruction de l'instance du composant.
+    <strong>Enfin le hook ngOnDestroy() vous permet de libérer des ressources avant la destruction de l'instance du composant.</strong>
 </p>
+
 <ul>
     <li>
         Appliquez unsubscribe() aux Observables auxquels le composant est souscrit.
     </li>
     <li>
-        Arrêtez vos timers
+        Arrêtez vos timers.
     </li>
     <li>
         Désouscrivez-vous également des Promise et callbacks qui viennent de services partageables.
     </li>
 </ul>
-<p>ngOnDestroy() peut aussi servir à envoyer un Event pour signaler la destruction à un autre Component.</p>
+<p>En dernier lieu, ngOnDestroy() peut aussi servir à envoyer un Event pour signaler la destruction à un autre Component.</p>
 
 {% highlight ts linenos %}
 export class OnDestroyComponent implements OnInit {
@@ -266,6 +282,12 @@ export class OnDestroyComponent implements OnInit {
         La prochaine étape, quand vous êtes à l'aise avec le concept de composants : <a href="/angular-services-introduction">Les services Angular</a>.
     </div>
 </div>
+
+<h3>Conclusion</h3>
+<p>Nous venons de voir toutes les étapes d'un cycle de vie d'un Component et les hooks qui y sont associés.</p>
+<p>Si il vous reste des questions, n'hésitez pas à nous contacter via cette 
+    <a href="https://codewise.fr/pages/contact" target="_blank" rel="noreferrer noopener">page</a> !
+</p>
 
 <a id="more-information" class="anchor"></a>
 <h2>Sources</h2>
