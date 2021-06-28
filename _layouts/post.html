@@ -69,6 +69,21 @@ layout: default
                         <div id="post-content">
                             {{content}}
                         </div>
+                        <h4>Auteur</h4>
+                        <div id="author-content">
+                            
+                            {% assign author = site.data.authors[page.author] %}
+                            <div id="infos_author">
+                                <img id="image_author" src="{{author.image}}" class="rounded-circle" alt="image auteur" width="100" height="100">
+                                <div id="name_email_author">
+                                    <span id="name_author">{{author.name}}</span>
+                                    <span id="email_author">{{author.email}}</span>
+                                </div>
+
+                            </div>
+                            <span id="bio_author">"{{author.bio}}"</span>
+                            
+                        </div>
                        <div class="row mt-30">
                            <h2 class="col-12">Articles liés</h2>
 

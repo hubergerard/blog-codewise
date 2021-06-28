@@ -15,7 +15,7 @@ logo: "/assets/img/logo/logo.png"
 logo_2: "/assets/img/logo/logo2.png"
 mailchimp_list: "https://themeix.us16.list-manage.com/subscribe/post?u=307862c135e4548eecf86f389&amp;id=342411fb35"
 mailchimp_input_name: "b_307862c135e4548eecf86f389_342411fb35"
-author: "Huber GERARD"
+author: "Huber"
 permalink: "/:title"
 
 
@@ -36,6 +36,8 @@ collections:
   features:
     output: true
   services:
+    output: true
+  authors:
     output: true
 
 ########################################################
