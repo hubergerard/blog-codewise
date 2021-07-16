@@ -2,12 +2,14 @@ huber:
     name: Huber GERARD
     email: huber@codewise.com
     linkedin: http://facebook.com/monica_powell
-    bio: Monica Powell is a web technologist that cares about increasing the visiblity of underestimated individuals in technology.
-    image: /assets/img/author-img1.jpg
+    title: Fondateur de CodeWise / Ingénieur en informatique
+    bio: "Attiré par la pédagogie et le coaching de développeurs webs, j'ai fondé CodeWise en 2020 dans le but de favoriser l'accès à un savoir technique de qualité dans le milieu du dev web. Mon travail : des fois je code, des fois je forme ! Hormis l'IT, je suis un fan de nature, sports en tous genre et yoga."
+    image: /assets/img/user/huber_gerard.jpg
   
 lucas:
     name: Lucas BENTO-VERSACE
     email: lucas@codewise.com
+    title: Alternant chez Codewise / Étudiant en développement web
     linkedin: http://facebook.com/themeix
-    bio: Themeix received the &#35;GIRLBOSS award from Sophia Amoruso’s Girl Boss Foundation. She’s currently focusing on making tech more.
-    image: /assets/img/user/user_test.png
+    bio: "Alternant chez Codewise, passioné par l'informatique et les technologies depuis mon plus jeune âge. J'ai découvert le monde du web et depuis je ne m'en lasse pas ! Fan de jeux vidéos, de sports et de musiques. "
+    image: /assets/img/user/lucas_bv.jpg
