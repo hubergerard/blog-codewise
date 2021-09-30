@@ -48,14 +48,14 @@ Ces directives sont fournies par Angular et vous permettent d'ajouter, retirer o
 <a id="NgIf" class="anchor"></a>
 <h4>NgIf</h4>
 
-{% highlight ts linenos %}
+{% highlight html linenos %}
 <p *ngIf="condition">Affiche ce paragraphe si la condition est vraie.</p>
 {% endhighlight %} 
 
 <a id="NgFor" class="anchor"></a>
 <h4>NgFor</h4>
 
-{% highlight ts linenos %}
+{% highlight html linenos %}
     <ol>
         <li *ngFor="let user of users"> {{user.name}} {{user.lastname}} </li>
     </ol>
@@ -64,7 +64,7 @@ Ces directives sont fournies par Angular et vous permettent d'ajouter, retirer o
 <a id="NgSwitch" class="anchor"></a>
 <h4>NgSwitch</h4>
 
-{% highlight ts linenos %}
+{% highlight html linenos %}
     <div [ngSwitch]=”expression à évaluer”>
         <p *ngSwitchCase=”valeur_1”> Ce paragraphe est affiché si l’expression évaluée équivaut à valeur_1 .</p>
         <p *ngSwitchCase=”valeur_2”> Affiche ce paragraphe si l’expression à évaluer est égal à valeur_2.</p>
@@ -107,7 +107,7 @@ Sur un élément que vous souhaitez stylisé ajoutez : [ngClass]
 et si l’expression est vraie alors Angular appliquera la classe.
 </p>
 
-{% highlight ts linenos %}
+{% highlight html linenos %}
 <div [ngClass]="{ 'card' : isCard && isFirst, 'card bg-blue' : isCard && isSecond, '': false }"></div>
 {% endhighlight %} 
 
@@ -144,7 +144,7 @@ etatTrois: boolean;
 
 <p>Pour définir les styles de l'élément, ajoutez une ngStyle à currentStyles sur votre élément.</p>
 
-{% highlight ts linenos %}
+{% highlight html linenos %}
 <div [ngStyle]="currentStyles">Le texte de cette div est initialement en italic, d'épaisseur normale, et de grande taille (24px).</div>
 {% endhighlight %} 
 
@@ -161,7 +161,7 @@ etatTrois: boolean;
 <p>Ensuite ajoutez une liaison sur l’élément HTML comme ceci :</p>
 
 
-{% highlight ts linenos %}
+{% highlight html linenos %}
 <label for="example-ngModel">[(ngModel)]:</label>
 <input [(ngModel)]="currentItem.name" id="example-ngModel">
 {% endhighlight %} 
@@ -178,7 +178,7 @@ etatTrois: boolean;
 
 {% highlight ts linenos %}
 ng generate directive <nom>
-ng g d </nom>
+ng g d <nom>
 {% endhighlight %} 
 
 <p>Cela aura pour effet de créer les fichier typescript : </p>
@@ -217,8 +217,8 @@ export class <nom>Directive {
 </p>
 
 <p>
-    De plus, Ajoutez ElementRef dans le constructor() pour injecter une référence à l'élément DOM hôte, 
-    l'élément auquel vous appliquez appAnyDirective.
+  De plus, Ajoutez ElementRef dans le constructor() pour injecter une référence à l'élément DOM hôte, 
+  l'élément auquel vous appliquez appAnyDirective.
 </p>
 
 <p>Pour terminer, écrivez la logique votre directive :</p>
@@ -239,12 +239,11 @@ import { Directive, ElementRef } from '@angular/core';
 
 export class AnyDirective {
 
-    constructor(el: ElementRef) {
+  constructor(el: ElementRef) {
 
-       el.nativeElement.style.backgroundColor = 'blue';
+    el.nativeElement.style.backgroundColor = 'blue';
 
-    }
-
+  }
 }
 {% endhighlight %} 
 
@@ -384,7 +383,7 @@ export class CustomDirective implements OnInit {
 <p>Output permet de déclarer des événements de la directive auxquels le composant peut s’abonner. 
     Le nom de l'événement doit être sous forme de chaîne de caractères dans le paramètre outputs :</p>
 
-{% highlight ts linenos %}
+{% highlight html linenos %}
 <custom-directive textToDisplay="Valeur défini depuis le template"></custom-directive> 
 {% endhighlight %} 
 
