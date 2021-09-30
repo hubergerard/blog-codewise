@@ -43,16 +43,16 @@ Ces directives sont fournies par Angular et vous permettent d'ajouter, retirer o
 </ol>
 
 <a id="exemple-structural-directives" class="anchor"></a>
-<h3>Exemple</h3>
+<h3>Exemples</h3>
 
-<a id="NgIf" class="anchor"></a>
+<a id="NgIf"></a>
 <h4>NgIf</h4>
 
 {% highlight html linenos %}
 <p *ngIf="condition">Affiche ce paragraphe si la condition est vraie.</p>
 {% endhighlight %} 
 
-<a id="NgFor" class="anchor"></a>
+<a id="NgFor"></a>
 <h4>NgFor</h4>
 
 {% highlight html linenos %}
@@ -61,7 +61,7 @@ Ces directives sont fournies par Angular et vous permettent d'ajouter, retirer o
     </ol>
 {% endhighlight %} 
 
-<a id="NgSwitch" class="anchor"></a>
+<a id="NgSwitch"></a>
 <h4>NgSwitch</h4>
 
 {% highlight html linenos %}
@@ -97,10 +97,10 @@ les styles et les classes.
 </ol>
 
 <a id="exemple-directives-attributs-integrees" class="anchor"></a>
-<h2>Exemple</h2>
+<h3>Exemples</h3>
 
-<a id="NgClass" class="anchor"></a>
-<h3>NgClass</h3>
+<a id="NgClass"></a>
+<h4>NgClass</h4>
 
 <p>On peut ajouter ou supprimer plusieurs classes CSS simultanément avec ngClass. 
 Sur un élément que vous souhaitez stylisé ajoutez : [ngClass] 
@@ -111,8 +111,8 @@ et si l’expression est vraie alors Angular appliquera la classe.
 <div [ngClass]="{ 'card' : isCard && isFirst, 'card bg-blue' : isCard && isSecond, '': false }"></div>
 {% endhighlight %} 
 
-<a id="NgStyle" class="anchor"></a>
-<h3>NgStyle</h3>
+<a id="NgStyle"></a>
+<h4>NgStyle</h4>
 
 <p>NgStyle permet de définir plusieurs styles, selon l'état du composant.</p>
 <p>Dans votre composant :</p>
@@ -148,8 +148,8 @@ etatTrois: boolean;
 <div [ngStyle]="currentStyles">Le texte de cette div est initialement en italic, d'épaisseur normale, et de grande taille (24px).</div>
 {% endhighlight %} 
 
-<a id="NgModel" class="anchor"></a>
-<h3>NgModel</h3>
+<a id="NgModel"></a>
+<h4>NgModel</h4>
 
 <p>Utilisez la directive NgModel sur un input pour réaliser une liaison bidirectionnelle entre votre template et votre component. 
     Une variable annotée "ngModel" sera dite "bindée". Donc si l'utilisateur modifie la donnée côté template, elle est aussitôt modifié en temps réel dans le component. 
@@ -450,7 +450,7 @@ export class CustomDirective {
 <a id="sources" class="anchor"></a>
 <h2>Sources</h2>
 
-<ol>
-    <li><a href="https://cdiese.fr/angular-directives/">Cdièse - Angular Directive</a></li>
-    <li><a href="https://angular.io/guide/attribute-directives">Angular - Attribute Directive</a></li>
-</ol>
+<ul>
+    <li>Cdièse - <a href="https://cdiese.fr/angular-directives/"> Angular Directive</a></li>
+    <li>Angular - <a href="https://angular.io/guide/attribute-directives"> Attribute Directive</a></li>
+</ul>
