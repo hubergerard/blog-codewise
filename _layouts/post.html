@@ -2,6 +2,39 @@
 layout: default
 ---
 {% include header.html %}
+{% assign wordcount = page.content | number_of_words %}
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "name": "{{page.title}}",
+        "headline": "{{page.title}}",
+        "description": "{{page.description}}",
+        "genre":"{{ page.category }}",
+        "keywords":"{{ page.keywords }}",
+        "datePublished":"{{page.date | date: '%Y-%m-%d'}}",
+        "provider": {
+            "@type": "Organization",
+            "name": "{{site.title}}",
+            "sameAs": "{{site.url}}"
+        },
+        "audience": "Développeurs webs",
+        "author": {
+            "@type": "Person",
+            "name": "{{site.author}}"
+        },
+        "image":{  
+            "@type":"ImageObject",
+            "contentUrl":"{{site.url}}{{page.post_image}}",
+            "url":"{{site.url}}{{page.post_image}}",
+            "height":"360",
+            "width":"540"
+        },
+        "wordCount":"{{ wordcount }}",
+        "timeRequired": "{{wordcount | divided_by: 500}}M",
+        "articleBody":"{{ page.content | strip_html | xml_escape | normalize_whitepace | strip_newlines | strip }}"
+    }
+    </script>
 <main>
 <!-- breadcrumb-area -->
 <section class="breadcrumb-area grey-bg" style="background-image:url({{site.cover_image}})">
@@ -15,7 +48,7 @@ layout: default
             <div class="col-xl-4 col-md-6 text-left text-md-right">
                 <div class="breadcrumb">
                     <ul>
-                        <li><a href="{{site.url}}">Blog</a></li>
+                        <li><a href="{{site.blog-url}}">Blog</a></li>
                         <li class="text-white pl-1">{{page.categories[0] | capitalize }}</li>
                     </ul>
                 </div>
@@ -29,15 +62,84 @@ layout: default
         <div class="row">
             <div class="col-lg-8 blog-post-items">
                 <div class="blog-wrapper mb-60">
-                    <div class="blog-thumb">
+                    <div class="blog-thumb mb-30">
                         <img src="{{page.post_image}}" alt="{{page.title}}"/>
                     </div>
                     <div class="blog-content">
-                       {{content}}
-                        <div class="row mt-30">
+                        <div id="post-content">
+                            {{content}}
+                        </div>
+                        <h4>Auteur</h4>
+                        <div id="author-content">
+                            
+                            {% assign author = site.data.authors[page.author] %}
+                            <div id="infos_author">
+                                <img id="image_author" src="{{author.image}}" class="rounded-circle" alt="image auteur" width="100" height="100">
+                                <div id="name_email_author">
+                                    <span class="font-weight-bold" id="name_author">{{author.name}}</span>
+                                    <span class="font-weight-bold" id="name_author">{{author.title}}</span>
+                                    <span id="email_author">{{author.email}}</span>
+                                </div>
+
+                            </div>
+                            <span id="bio_author">"{{author.bio}}"</span>
+                            
+                        </div>
+                       <div class="row mt-30">
+                           <h2 class="col-12">Articles liés</h2>
+
+                            {% assign maxRelated = 4 %}
+                            {% assign minCommonTags =  1 %}
+                            {% assign maxRelatedCounter = 0 %}
+                            
+                            {% for post in site.posts %}
+                                {% assign sameTagCount = 0 %}
+                                {% assign commonTags = '' %}
+                            
+                                {% for category in post.categories %}
+                                    {% if post.url != page.url %}
+                                        {% if page.categories contains category %}
+                                            {% assign sameTagCount = sameTagCount | plus: 1 %}
+                                            {% capture tagmarkup %} <a href="/category/{{category | slugify}}" rel="tag">{{category}}</a> {% endcapture %}
+                                            {% assign commonTags = commonTags | append: tagmarkup %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if sameTagCount >= minCommonTags %}
+                                <div class="col-4 related-posts mb-4">
+                                    <div class="services-box w-100">
+                                        {% if post.post_image %}
+                                        <div class="services-img mb-2">
+                                            <a href="{{ post.url }}">
+                                                <img src="{{post.post_image}}" class="img-fluid" alt="{{page.title}}"></img>
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                        <div class="services-content">  
+                                            <div class="related-post-item">
+                                                <a href="{{ post.url }}">
+                                                    <h4 class="mb-1">{{post.title}}</h4>  
+                                                </a>                                          
+                                                <p class="mb-1">{{post.date | date: "%d %b %Y"}}</p>
+                                            </div>
+                                            </a>
+                                            <div class="blog-post-tag">
+                                                {{ commonTags }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% assign maxRelatedCounter = maxRelatedCounter | plus: 1 %}
+                                  {% if maxRelatedCounter >= maxRelated %}
+                                    {% break %}
+                                  {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                       </div>
+                        <div class="row mt-50">
                             <div class="col-xl-6 col-lg-6 col-md-6">
                                 <div class="blog-post-tag">
-                                 {{page | tags | capitalize}}
+                                    {{page | tags | capitalize}}
                                 </div>
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-6">
@@ -45,6 +147,7 @@ layout: default
                             </div>
                         </div>
                     </div>
+
                     <div class="post-comments mt-50">
                         <div class="latest-comments">
                            {% include disqus_comments.html %}
@@ -59,4 +162,4 @@ layout: default
     </div>
 </div>
 </main>
-<script src="/assets/js/tools/toc-generator.js" text-mode="{{page.toc-text-mode}}"></script>
+<script src="/assets/js/tools/toc-generator.js" text-mode="{{page.toc-text-mode}}" max-depth="{{page.toc-depth}}"></script>

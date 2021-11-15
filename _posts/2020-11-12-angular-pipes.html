@@ -1,0 +1,363 @@
+---
+layout: post
+title: "Angular - Les pipes"
+date: 2020-11-11 17:06:20 +0100
+description: "Qu'est-ce qu'un pipe dans le framework Angular ? Dans cet article, apprenez à vous servir des pipes natifs Angular et créez-en de nouveaux."
+tags: developpement web Angular
+categories: [Développement web]
+author: "huber"
+post_image: "/assets/img/blog/angular-pipes/angular-pipes.webp"
+toc-text-mode: false
+toc-depth: 4
+---
+
+<p>Qu'est-ce qu'un pipe dans le framework Angular ? Dans cet article, apprenez à vous servir des pipes natifs Angular et créez-en de nouveaux.</p>
+
+<div id="toc" class="blog-toc"></div>
+
+<a id="definition" class="anchor"></a>
+<h2>Un pipe c'est quoi ?</h2>
+
+<p>
+    Le pipe est un moyen d’appliquer des transformations sur nos données, directement depuis le template HTML.
+</p>
+
+{% highlight html linenos %}
+{% raw %}
+<p> Date de réception : {{ receptionDate | date | uppercase }} </p>
+{% endraw %}
+{% endhighlight %} 
+<div class="code-caption">Exemple de pipe Angular</div>
+
+<a id="pipe-concept" class="anchor"></a>
+<h3>En terme de concept</h3>
+
+<p>Un pipe est défini par :</p>
+
+<ul>
+    <li>une donnée en entrée (paramètre)</li>
+    <li>une donnée en sortie (valeur de retour)</li>
+    <li>une fonction de transformation (mapping)</li>
+</ul>
+<p> Et optionellement, on peut envoyer un paramètre en plus de la valeur d'input.</p>
+<p> Dans Angular, on distingue 2 types de pipes : les pipes natifs - venant des librairies Angular - et les pipes custom que vous codez vous-même.</p>
+
+<a id="pipe-code" class="anchor"></a>
+<h3>En terme de code</h3>
+
+<p>
+    Prenons pour exemple le pipe <code> date</code> natif dans Angular : 
+</p>
+<p>On commence par déclarer une variable <code>birthday</code> dans le fichier TypeScript de notre composant.</p>
+
+{% highlight ts linenos %}
+public birthday: Date = new Date(1988, 3, 15);
+{% endhighlight %} 
+<div class="code-caption">any.component.ts</div>
+
+<p>Ensuite, dans notre HTML on souhaite l'afficher dans un format user-friendly et lisible.</p>
+
+{% highlight html linenos %}
+{% raw %}
+<p>La date de naissance du héros est {{ birthday | date: 'mediumDate' }}</p>
+{% endraw %}
+{% endhighlight %} 
+<div class="code-caption">any.component.html</div>
+
+<p>
+    Dans cet exemple, le pipe <code>DatePipe</code> prend en entrée la valeur <code>birthday</code> et le paramètre <code>'mediumDate'</code>. 
+    Notez bien que pour passer un paramètre, on utilise des "<code>:</code>". 
+    Si le pipe accepte plusieurs paramètres, on peut les lui passer en séparant les paramètres entre eux par des "<code>:</code>" aussi.
+</p>
+
+<p>Finalement, on obtient en sortie :</p>
+
+<img src="/assets/img/blog/angular-pipes/angular-pipes-exemple.png" class="img-shadow"></img>
+<div class="image-caption">http://localhost:4200</div>
+
+<a id="2-types-pipes" class="anchor"></a>
+<h2>Les 2 types de pipe</h2>
+
+<p>
+    Pour la plupart des besoins, un pipe natif est déjà codé dans une librairie Angular. Mais dans certains cas, il faut le coder soi-même !
+</p>
+
+<a id="pipe-natif-angular" class="anchor"></a>
+<h3>Les pipes natifs Angular</h3>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        Les pipes natifs viennent de la librairie <a href="https://angular.io/api/common" target="_blank"><code>@angular/common</code></a>.
+    </div>
+</div>
+
+<p>
+    Voyons ensemble les pipes natifs les plus courants.
+</p>
+
+<a id="date-pipe" class="anchor"></a>
+<h4>DatePipe</h4>
+<p>
+    Le <a href="https://angular.io/api/common/DatePipe" target="_blank"><code>DatePipe</code></a> sert à formater une date.
+</p>
+<p>
+    Utilisez-le avec un des formats prédéfinis ou selon une "format-string" que vous pouvez définir.
+    Par défaut, le format est <code>'mediumDate'</code>. 
+</p>
+
+{% highlight ts linenos %}
+{% raw %}
+{{ dateObj | date }}               // output is 'Jun 15, 2015'
+{{ dateObj | date:'medium' }}      // output is 'Jun 15, 2015, 9:43:11 PM'
+{{ dateObj | date:'shortTime' }}   // output is '9:43 PM'
+{{ dateObj | date:'mm:ss' }}       // output is '43:11'
+{% endraw %}
+{% endhighlight %} 
+<div class="code-caption">Utilisation de DatePipe</div>
+
+<p><span class="font-weight-bold">Input : </span> Un objet JS <code>Date</code></p>
+<p><span class="font-weight-bold">Output : </span> Une chaîne de caractères formatée</p>
+
+<a id="uppercase-pipe" class="anchor"></a>
+<h4>UpperCasePipe</h4>
+
+<p>
+    Le <a href="https://angular.io/api/common/UpperCasePipe" target="_blank"><code>UpperCasePipe</code></a> sert à passer un texte en majuscule.
+</p>
+      
+{% highlight ts linenos %}
+{% raw %}
+{{ 'hello world!' | uppercase }}     // output is 'HELLO WORLD!'
+{% endraw %}
+{% endhighlight %} 
+<div class="code-caption">Utilisation de UpperCasePipe</div>
+    
+<p><span class="font-weight-bold">Input : </span> Une chaîne de caractères</p>
+<p><span class="font-weight-bold">Output : </span> Une chaîne de caractères en majuscules</p>
+
+<a id="lowercase-pipe" class="anchor"></a>
+<h4>LowerCasePipe</h4>
+
+<p>
+    Le <a href="https://angular.io/api/common/LowerCasePipe" target="_blank"><code>LowerCasePipe</code></a> sert à passer un texte en minuscule.
+</p>
+{% highlight ts linenos %}
+{% raw %}
+{{ 'HELLO WORLD!' | lowercase }}     // output is 'hello world!'
+{% endraw %}
+{% endhighlight %} 
+<div class="code-caption">Utilisation de LowerCasePipe</div>
+
+<p><span class="font-weight-bold">Input : </span> Une chaîne de caractères </p>
+<p><span class="font-weight-bold">Output : </span> Une chaîne de caractères en minuscules</p>
+
+<a id="currency-pipe" class="anchor"></a>
+<h4>CurrencyPipe</h4>
+
+<p>
+    Le <a href="https://angular.io/api/common/CurrencyPipe" target="_blank"><code>CurrencyPipe</code></a> sert à formater un nombre en écriture monétaire.
+</p>
+{% highlight html linenos %}
+{% raw %}
+<!--output '$0.26'-->
+<p>Amount: {{amount | currency}}</p>
+
+<!--output 'CA$0.26'-->
+<p>Amount: {{amount | currency:'CAD'}}</p>
+{% endraw %}
+{% endhighlight %} 
+<div class="code-caption">Utilisation de CurrencyPipe</div>
+
+<p><span class="font-weight-bold">Input : </span> Une valeur numérique </p>
+<p><span class="font-weight-bold">Output : </span> Une chaîne de caractères formatée pour afficher un montant</p>
+
+<a id="decimal-pipe" class="anchor"></a>
+<h4>DecimalPipe</h4>
+
+<p>
+    Le <a href="https://angular.io/api/common/DecimalPipe" target="_blank"><code>DecimalPipe</code></a> sert à formater un nombre en écriture décimale.
+</p>
+{% highlight html linenos %}
+{% raw %}
+<!--output '2.718'-->
+<p>e (no formatting): {{e | number}}</p>
+
+<!--output '002.71828'-->
+<p>e (3.1-5): {{e | number:'3.1-5'}}</p>
+
+<!--output '0,002.71828'-->
+<p>e (4.5-5): {{e | number:'4.5-5'}}</p>
+
+<!--output '0 002,71828'-->
+<p>e (french): {{e | number:'4.5-5':'fr'}}</p>
+{% endraw %}
+{% endhighlight %} 
+<div class="code-caption">Utilisation de DecimalPipe</div>
+
+<p><span class="font-weight-bold">Input : </span> Une valeur numérique </p>
+<p><span class="font-weight-bold">Output : </span> Une chaîne de caractères qui représente un nombre avec une virgule décimale</p>
+
+<a id="percent-pipe" class="anchor"></a>
+<h4>PercentPipe</h4>
+
+<p>
+    Le <a href="https://angular.io/api/common/PercentPipe" target="_blank"><code>PercentPipe</code></a> sert à formater un nombre en pourcentage.
+</p>
+{% highlight html linenos %}
+{% raw %}
+<!--output '26%'-->
+<p>A: {{a | percent}}</p>
+
+<!--output '0,134.950%'-->
+<p>B: {{b | percent:'4.3-5'}}</p>
+{% endraw %}
+{% endhighlight %} 
+<div class="code-caption">Utilisation de PercentPipe</div>
+
+<p><span class="font-weight-bold">Input : </span> Une valeur numérique </p>
+<p><span class="font-weight-bold">Output : </span> Une chaîne de caractères qui représente le nombre en pourcentage</p>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        Pour une liste complète des pipes natifs, référez vous à la documentation Angular : <a href="https://angular.io/api/common#pipes" target="_blank">Documentation @angular/common - Les pipes</a>.
+    </div>
+</div>
+
+<a id="creer-son-propre-pipe" class="anchor"></a>
+<h3>Créer son propre pipe</h3>
+
+<p>  
+    Il est tout à fait possible et même recommandé de créer sa propre petite armada de pipes.
+    Prenons comme exemple un pipe de calcul d'exponentielle, qui prend en entrée : une valeur numérique et un exposant.
+</p>
+
+<a id="cli-generer-pipe" class="anchor"></a>
+<h4>Générer un pipe avec le CLI Angular</h4>
+
+<p> Entrez simplement la commande suivante à la racine de votre projet :</p>
+{% highlight shell %}
+ng generate pipe exponential
+{% endhighlight %}
+<p>
+    ou alors
+</p>
+{% highlight shell %}
+ng g p exponential
+{% endhighlight %}
+
+<p>Ca devrait vous générer un composant semblable à celui-ci :</p>
+
+{% highlight ts linenos %}
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+name: 'exponential'
+})
+export class ExponentialPipe implements PipeTransform {
+
+    transform(value: unknown, ...args: unknown[]): unknown {
+        return null;
+    }
+
+}
+{% endhighlight %}
+<div class="code-caption">exponential.pipe.ts</div>
+
+<a id="mapping-pipe" class="anchor"></a>
+<h4>Coder la transformation des données (mapping)</h4>
+
+<p>
+    Dans le code du pipe généré par le CLI, remarquez la présence d'une méthode <code>transform()</code> qui prend en entrée 
+    une valeur, <code>value</code>, et un tableau de paramètres <code>...args</code>.
+</p>
+<p>
+    Cette méthode vient de l'interface <code>PipeTransform</code> qui est implémentée par notre pipe. À nous alors d'implémenter cette méthode !
+</p>
+<p>
+    Dans nôtre cas, on ne s'attend à recevoir qu'un paramètre : l'exposant. 
+    On peut donc remplacer le spread operator <code>...</code> par une simple variable <code>exponent</code> typée en <code>number</code>.
+</p>
+</p>
+<p>
+    La valeur en entrée du pipe et la valeur de retour seront de type <code>number</code> également.
+</p>
+
+{% highlight ts linenos %}
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({name: 'exponential'})
+export class ExponentialPipe implements PipeTransform {
+    transform(value: number, exponent?: number): number {
+        return Math.pow(value, isNaN(exponent) ? 1 : exponent);
+    }
+}
+{% endhighlight %}
+<div class="code-caption">exponential.pipe.ts</div>
+
+<a id="utilisation-pipe" class="anchor"></a>
+<h4>Utiliser notre nouveau pipe</h4>
+
+<p>
+    Pour appeler votre nouveau pipe, placez-vous dans votre fichier HTML, à l'intérieur d'une interpolation (les doubles accolades<code>{% raw %} {{}}{% endraw %}</code>) et inscrivez-y :
+</p>
+<ul>
+    <li>Une valeur numérique</li>
+    <li>Le symbole <code>|</code></li>
+    <li>Le nom de votre pipe : <code>exponential</code></li>
+    <li>Le symbole <code>:</code></li>
+    <li>La valeur de l'exposant à calculer</li>
+</ul>
+
+<p>Ce qui nous donne :</p>
+
+{% highlight html linenos %}
+{% raw %}
+<h2>2 exponentiel 10</h2>
+<p>Résultat: {{2 | exponential: 10}}</p>
+{% endraw %}
+{% endhighlight %}
+<div class="code-caption">exponential.pipe.html</div>
+
+<a id="chainer-pipes" class="anchor"></a>
+<h2>Comment chainer les pipes ?</h2>
+
+<p>
+    Etant donné qu'ils ont tous une valeur d'entrée et de sortie, il est possible de chainer les pipes.
+</p>
+
+{% highlight html linenos %}
+{% raw %}
+<p> Date de réception : {{ receptionDate | date | uppercase }} </p>
+{% endraw %}
+{% endhighlight %} 
+<div class="code-caption">Exemple de chainage de pipe Angular</div>
+
+<p>
+    Dans cet exemple, le DatePipe est appelé en premier et transforme la date en <code>string</code>.
+    On fait ensuite appel au pipe UpperCasePipe, pour passer cette string en majuscule.
+</p>
+<p>
+    Vous pouvez en chainer autant que vous le souhaitez à condition que les types d'entrée et de sortie soient compatibles.
+</p>
+<p>
+    Vous savez tout. Il ne vous reste plus qu'à essayer par vous même. 
+</p>
+<p>
+    Bon code !
+</p>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        La prochaine étape, quand vous êtes à l'aise avec le concept de pipes : <a href="#">#####################</a>.
+    </div>
+</div>
+
+<a id="more-information" class="anchor"></a>
+<h2>Sources</h2>
+<ul>
+    <li>Les pipes natifs Angular : <a href="https://angular.io/api/common#pipes" target="_blank">Documentation @angular/common</a></li>
+    <li>Guide Angular - Les pipes : <a href="https://angular.io/guide/pipes" target="_blank">Transforming Data Using Pipes</a></li>
+</ul>

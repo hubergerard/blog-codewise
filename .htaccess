@@ -1,0 +1,7 @@
+RewriteEngine On
+
+## http -> https ET www -> no-www
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301]
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ 
+RewriteRule ^ https://blog.%1%{REQUEST_URI} [R=301,L,NE,QSA]

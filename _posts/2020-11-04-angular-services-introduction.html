@@ -6,7 +6,7 @@ description: "Un service Angular, qu'est-ce que c'est ? Et comment les utiliser 
 tags: developpement web Angular
 categories: [Développement web]
 author: "huber"
-post_image: "/assets/img/blog/angular-service/services-angular.jpg"
+post_image: "/assets/img/blog/angular-service/services-angular.webp"
 toc-text-mode: false
 ---
 
@@ -91,7 +91,7 @@ export class TodoService {
     }
 }
 {% endhighlight %}
-<div class="figure-caption">Service TodoService</div>
+<div class="code-caption">Service TodoService</div>
 
 <p>
     L’annotation @Injectable est nécessaire pour la prise en compte du service par l’injection de dépendance.
@@ -107,6 +107,13 @@ export class TodoService {
 <p>
     Un service peut être injecté dans un autre service, ou dans un composant, en l’ajoutant en paramètre du constructeur.
 </p>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        Si le concept de composant Angular ne vous est pas familier, référez-vous à cet article : <a href="/angular-composant-introduction" target="_blank">Angular - Les composants : Introduction</a>.
+    </div>
+</div>
 
 {% highlight typescript %}
 @Component({...})
@@ -129,7 +136,7 @@ export class TodoListComponent {
     [...]
 }
 {% endhighlight %}
-<div class="figure-caption">Injection du service TodoService dans le composant TodoList</div>
+<div class="code-caption">Injection du service TodoService dans le composant TodoList</div>
 
 <p>
     Observez que l’injection du service se fait en spécifiant le type TS du service dans le constructeur.
@@ -197,7 +204,7 @@ export class TodoService {
     [...]
 }
 {% endhighlight %}
-<div class="figure-caption">L'injecteur root</div>
+<div class="code-caption">L'injecteur root</div>
 
 <a id="injecteur-module" class="anchor"></a>
 <h4>L'injecteur par module</h4>
@@ -214,7 +221,7 @@ export class TodoService {
     [...]
 }
 {% endhighlight %}
-<div class="figure-caption">Injecteur par module</div>
+<div class="code-caption">Injecteur par module</div>
 
 <a id="injecteur-composant" class="anchor"></a>
 <h4>L'injecteur par composant</h4>
@@ -229,7 +236,7 @@ export class TodoService {
     [...]
 }
 {% endhighlight %}
-<div class="figure-caption">todo.service.ts</div>
+<div class="code-caption">todo.service.ts</div>
 
 <p>
     Les services à injecter ne seront instanciés qu’à l’instanciation du component. Notez que dans ce cas, les services ne sont plus des singletons. 
@@ -246,10 +253,17 @@ export class TodoListComponent {
     constructor(private service: TodoService) { }
 }
 {% endhighlight %}
-<div class="figure-caption">todo-list.component.ts</div>
+<div class="code-caption">todo-list.component.ts</div>
 <p>
-    J'espère que ça vous a été utile. Bon code !
+    J'espère que ça vous a été utile. N'hésitez pas à me faire vos retours en commentaire !
 </p>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        La prochaine étape, quand vous êtes à l'aise avec le concept de services : <a href="/angular-pipes">Les pipes</a>.
+    </div>
+</div>
 
 <a id="more-information" class="anchor"></a>
 <h2>Sources</h2>

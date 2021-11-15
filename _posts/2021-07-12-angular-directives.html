@@ -1,0 +1,487 @@
+---
+layout: post
+title: "Angular - Les Directives - comment les utiliser et pourquoi ?"
+date: 2021-07-12 9:40:50 +0100
+description: "Dans cet article vous allez découvrir les directives d'Angular, comment les utiliser et dans quel
+contexte."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/article_angular_directive.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<p><span class="font-weight-bold">Besoin d’ajouter des comportements aux objets de votre DOM ?</span>
+  Dans cet article, vous allez découvrir les directives du framework Angular : comment on les utilise, et dans quels
+  cas.
+</p>
+<div id="toc" class="blog-toc"></div>
+
+<a id="qu'est-ce-qu'une-directive" class="anchor"></a>
+<h2>Qu’est-ce qu’une directive ?</h2>
+
+<p>
+  <span class="font-weight-bold">Pour commencer, une définition : les directives d'Angular sont des classes qui
+    ajoutent un comportement supplémentaire aux éléments du DOM.</span>
+</p>
+<p>
+  Ces directives s'appliqueront dans vos fichiers HTML, sur les balises de composants
+  et/ou balises HTML.
+</p>
+
+<a id="directives-types" class="anchor"></a>
+<h2>Les différents types de directives</h2>
+
+<p>On dit qu'une directive est <span class="font-weight-bold">structurelle</span> lorsqu'elle modifie la structure du
+  DOM, c'est-à-dire lorsqu'on ajoute, supprime ou déplace une balise.</p>
+<p>Lorsqu'on dit par contre qu'une directive est une <span class="font-weight-bold">directive d'attribut</span>, on
+  parle d'une directive qui change un attribut de l'élément du DOM, sans modifier la structure du DOM dans son ensemble.
+</p>
+<p>On peut aussi parler de directive <span class="font-weight-bold">native</span> ou <span
+    class="font-weight-bold">intégrée</span> lorsqu'elle est fournie par Angular.</p>
+
+<a id="structural-directives" class="anchor"></a>
+<h2>Structural directives</h2>
+
+<p>Commençons donc par voir les <span class="font-weight-bold">Structural directives</span> qui permettent de travailler
+  sur la structure de votre HTML.
+  Ces directives sont fournies par Angular et vous permettent d'ajouter, retirer ou déplacer les éléments du DOM.
+</p>
+
+<p>Elles sont très peu nombreuses donc faciles à retenir. Tant mieux, parce qu'elles sont importante à maitriser.</p>
+<p>
+  En voici la liste complète :
+<ul>
+  <li>*NgIf</li>
+  <li>*NgFor</li>
+  <li>[NgSwitch], *NgSwitchCase, *NgSwitchDefault</li>
+</ul>
+</p>
+
+<a id="exemple-structural-directives" class="anchor"></a>
+<h3>Exemples d'utilisation</h3>
+
+  <p> Voyons comment utiliser ces 3 directives :</p>
+
+  <a id="NgIf"></a>
+  <h4>NgIf</h4>
+
+  <p>Charge une balise sur la page uniquement si la condition est vraie.</p>
+{% highlight html linenos %}
+<p *ngIf="condition">Affiche ce paragraphe si la condition est vraie.</p>
+{% endhighlight %}
+  <div class="code-caption">Chargement conditionnel</div>
+
+  <a id="NgFor"></a>
+  <h4>NgFor</h4>
+
+  <p>Permet de dupliquer une balise.</p>
+
+{% highlight html linenos %}{% raw %}
+<ol>
+  <li *ngFor="let user of users"> {{user.name}} {{user.lastname}} </li>
+</ol>
+{% endraw %}{% endhighlight %}
+  <div class="code-caption">Liste HTML générée par Angular</div>
+
+  <p> Dans cet exemple, la balise <span class="code">&lt;li&gt;&lt;/li&gt;</span> est dupliquée autant de fois qu'il y a
+    de user dans la variable users.
+    Chaque user devient alors accessible depuis la variable définie dans le let du *ngFor</p>
+
+  <a id="NgSwitch"></a>
+  <h4>NgSwitch</h4>
+
+{% highlight html linenos %}
+<div [ngSwitch]="expression à évaluer">
+  <p *ngSwitchCase="valeur_1"> Ce paragraphe est affiché si l’expression évaluée == valeur_1.</p>
+  <p *ngSwitchCase="valeur_2"> Affiche ce paragraphe si l’expression à évaluer == valeur_2.</p>
+  <p *ngSwitchDefault> Affiche ce paragraphe si aucune des valeurs n'est égale à l'expression.</p>
+</div>
+{% endhighlight %}
+  <div class="code-caption">Plusieurs affichages différents selon la valeur d'une expression</div>
+
+  <p>C'est tout pour les directives structurelles !</p>
+
+  <a id="attribute-directives" class="anchor"></a>
+  <h2>Attribute directives </h2>
+
+  <p>Voyons maintenant les <span class="font-weight-bold">Attributes directives</span>.
+    Ce sont des classes TS ayant comme décorateur “@Directive”
+    permettant d'agir sur les attributs d’éléments du DOM.
+  </p>
+
+  <a id="attribute-directives" class="anchor"></a>
+  <h3>Directives d'attributs intégrées </h3>
+
+  <p>Avec les directives d’attributs intégrées d'Angular,
+    vous pouvez gérer certains éléments de votre DOM tels que les formulaires,
+    les styles et les classes.
+  </p>
+
+  <p>On retrouve notamment :
+  <ul>
+    <li>NgClass</li>
+    <li>NgStyle</li>
+    <li>NgModel</li>
+  </ul>
+  </p>
+
+  <a id="exemple-directives-attributs-integrees" class="anchor"></a>
+  <h3>Exemples d'utilisation</h3>
+
+  <a id="NgClass"></a>
+  <h4>NgClass</h4>
+
+  <p><span class="font-weight-bold">On peut ajouter ou supprimer plusieurs classes CSS simultanément avec ngClass.</span>
+    Sur un élément que vous souhaitez styliser ajoutez un ngClass [ngClass]
+    et si l’expression évaluée renvoie true, alors Angular appliquera la classe.
+  </p>
+
+{% highlight html linenos %}
+<div [ngClass]="{ 'card' : isCard && isFirst,
+                  'card bg-blue' : isCard && isSecond,
+                  '': false }">
+</div>
+{% endhighlight %}
+  <div class="code-caption">test.component.html</div>
+
+  <a id="NgStyle"></a>
+  <h4>NgStyle</h4>
+
+  <p><span class="font-weight-bold">NgStyle permet de définir plusieurs styles, selon l'état du composant.</span></p>
+  <p>Dans votre composant :</p>
+
+{% highlight ts linenos %}
+currentStyles: Record<string, string> = {};
+
+setCurrentStyles() {
+  etatUn: boolean;
+  etatDeux: boolean = true;
+  etatTrois: boolean;
+  this.currentStyles = {
+    'font-style': this.etatUn ? 'italic' : 'normal',
+    'font-weight': !this.etatDeux ? 'bold' : 'normal',
+    'font-size': this.etatTrois ? '24px' : '12px'
+  };
+}
+{% endhighlight %}
+<div class="code-caption">test-style.component.ts</div>
+
+    <p>Puis côté html, on applique les styles à la balise en les passant à la directive ngStyle.</p>
+
+{% highlight html linenos %}
+<div [ngStyle]="currentStyles">
+  Le texte de cette div est initialement en italique, 
+  d'épaisseur normale, et de grande taille (24px).
+</div>
+{% endhighlight %}
+<div class="code-caption">test-style.component.html</div>
+
+    <a id="NgModel"></a>
+    <h4>NgModel</h4>
+
+    <p><span class="font-weight-bold">La directive NgModel nous permet d'agir sur l'attribut "value" de nos balises</span></p>
+    <p>C'est dans l'attribut value qu'on retrouve la valeur saisie par un utilisateur dans une balise input.</p>
+    <p><span class="font-weight-bold">NgModel s'utilise donc sur un input pour réaliser une liaison bidirectionnelle entre votre template et
+      votre component.</span>
+    </p>
+
+{% highlight html linenos %}
+<label for="example-ngModel">[(ngModel)]:</label>
+<input [(ngModel)]="currentItem.name" id="example-ngModel">
+{% endhighlight %}
+<div class="code-caption">test-ng-model.component.ts</div>
+
+    <p>
+      Une variable annotée "ngModel" sera dite "two-way bindée". Donc si l'utilisateur modifie la donnée côté template, elle est
+      aussitôt modifié en temps réel dans le component.
+      Et vice-versa si vous changez la valeur depuis le component, la valeur sera actualisée instantanément sur le
+      template.
+    </p>
+
+    <div class="quote-block">
+      <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+      <div class="quote">
+        NB : Pour utiliser NgModel, vous devez importer FormsModule dans votre module. <a target= "_blank" href="https://angular.io/api/forms/NgModel">Doc Angular</a>.
+      </div>
+    </div>
+    <p></p>
+
+    <p>Toutefois, attention car avec cette syntaxe on ne peut définir qu’une seule propriété liée.
+      C’est à dire que la valeur de l’input ne peut pas être liée à 2 attributs de composant ou +.
+    </p>
+    <p>
+      Pour ce cas précis vous devrez utiliser les reactive forms. Nous les verrons dans un prochain article dédié aux
+      formulaires.
+    </p>
+
+    <a id="creer-directive" class="anchor"></a>
+    <h3>Créer sa propre directive d'attribut</h3>
+
+    <a id="generer-directive" class="anchor"></a>
+    <h4>Générer le squelette de la directive</h4>
+
+    <p>En premier lieu, pour créer une directive, utilisez la commande de la CLI : </p>
+
+{% highlight console linenos %}
+ng generate directive <nom>
+ng g d <nom>
+{% endhighlight %}
+
+        <p>Cela aura pour effet de créer les fichiers typescript : 
+          <ul>
+            <li>src/app/&lt;nom&gt;.directive.ts </li>
+            <li>un fichier de test correspondant : src/app/&lt;nom&gt;.directive.spec.ts </li>
+          </ul>
+        </p>
+
+        <p>Et également de déclarer la classe directive dans le fichier AppModule.</p>
+
+        <p>Voici le contenu généré par la CLI dans le fichier src/app/&lt;nom&gt;.directive.ts :</p>
+
+{% highlight ts linenos %}
+import { Directive } from '@angular/core';
+
+@Directive({
+  selector: '[app<Nom>]'
+})
+export class <nom>Directive {
+  constructor() { }
+}
+{% endhighlight %}
+<div class="code-caption">&lt;nom&gt;.directive.ts</div>
+
+      <p>La propriété selector du décorateur spécifie le sélecteur d'attribut de la directive, [app-<Nom>].
+          C'est en plaçant ce sélecteur sur une balise de votre template que vous pourrez utiliser votre
+          directive.
+      </p>
+
+      <p>Vous pouvez donc désormais écrire la logique votre directive !</p>
+
+      <a id="exemple-create-directive" class="anchor"></a>
+      <h4>Ecrire la logique de votre directive</h4>
+
+      <p>Voici une directive qui colore en bleu le background de l'élément DOM sur lequel on l'utilise :</p>
+
+{% highlight ts linenos %}
+import { Directive, ElementRef } from '@angular/core';
+
+@Directive({
+  selector: '[appAnyDirective]'
+})
+export class AnyDirective {
+
+  constructor(el: ElementRef) {
+    el.nativeElement.style.backgroundColor = 'blue';
+  }
+}
+{% endhighlight %}
+<div class="code-caption">Injection du ElementRef dans any.directive.ts</div>
+
+
+<p>
+  Vous remarquez que l'on a importé ElementRef depuis @angular/core. 
+  ElementRef est un wrapper qui nous permet d’accéder directement à l'élément du
+  DOM.
+</p>
+
+<p>
+  Donc si vous ajoutez un ElementRef dans le constructor(), Angular vous y injecte une référence à l'élément DOM hôte,
+  l'élément auquel vous appliquez appAnyDirective ! Vous pouvez ensuite manipuler votre objet du DOM via cette référence.
+</p>
+
+      <a id="apply-attribute-directive" class="anchor"></a>
+      <h4>Utiliser votre directive d'attribut</h4>
+
+      <p>Finalement, pour utiliser la directive,
+        ajoutez comme attribut à la balise le nom de la directive que vous avez précédemment créée.
+      </p>
+
+{% highlight html linenos %}
+<p appAnyDirective>Arrière plan bleu</p>.
+{% endhighlight %}
+<div class="code-caption">sample.component.ts</div>
+
+      <a id="conf-directive" class="anchor"></a>
+      <h2>Configuration des directives</h2>
+
+        <a id="param-selector" class="anchor"></a>
+        <h3>Le paramètre selector</h3>
+
+        <p>Le paramètre <span class="font-weight-bold">selector</span> est le plus important car il va indiquer comment on utilisera la
+          directive.
+          En effet, selon la syntaxe qu’on utilisera, la directive sera représentée par un objet du DOM, une classe CSS ou un attribut dans
+          une
+          balise HTML.
+        </p>
+
+        <p>Le <span class="font-weight-bold">selector</span> se paramètre dans le décorateur @Directive() : </p>
+
+{% highlight ts linenos %}
+@Directive({
+ selector: <valeur>
+})
+export class AnyDirective {}
+{% endhighlight %}
+
+        <a id="directive-balise" class="anchor"></a>
+        <h4>Directive utilisée en tant que balise</h4>
+
+        <p><span class="font-weight-bold">selector: 'any-directive'</span></p>
+
+        <p>Dans ce cas-ci, la directive doit être utilisée comme élément dans le template :</p>
+
+{% highlight html linenos %}
+<any-directive></any-directive>
+{% endhighlight %}
+
+        <p><span class="font-weight-bold">D'ailleurs, saviez-vous que Component est une classe fille de Directive </span>(Component extends Directive) <span class="font-weight-bold">?</span></p>
+        <p>Un Component n'est en fait qu'une directive à laquelle on a associé une vue (template HTML)</p>
+
+
+        <a id="directive-attribute" class="anchor"></a>
+        <h4>Directive utilisée en tant qu'attribut</h4>
+
+        <p><span class="font-weight-bold">selector: '[any-directive]'</span></p>
+        <p>C'est le cas le plus courant ! En effet <span class="font-weight-bold">le plus souvent, les directives sont utilisées en tant qu'attribut.</span></p>
+
+        <p>Dans ce cas-ci, la directive doit être utilisée comme attribut de la balise :</p>
+
+{% highlight html linenos %}
+<div any-directive></div>
+{% endhighlight %}
+
+        <p>Optionnellement, on peut aussi vouloir <span class="font-weight-bold">passer une valeur à cet attribut :</span></p>
+
+{% highlight html linenos %}
+<div [any-directive]="valeur"></div>
+{% endhighlight %}
+
+        <p>Dans ce cas là <span class="font-weight-bold">on récupère la valeur passé grâce à un input </span>(de même nom que le selector) dans la
+          directive :</p>
+
+{% highlight ts linenos %}
+@Input() appAnyDirective= '';
+{% endhighlight %}
+
+        <a id="directive-class-css" class="anchor"></a>
+        <h4>Directive utilisée en tant que classe CSS</h4>
+
+        <p><span class="font-weight-bold">selector: '.any-directive'</span> </p>
+
+        <p>Dans cet exemple on utilise la directive sous forme de classe CSS.</p>
+
+{% highlight html linenos %}
+<div class="any-directive"></div>
+{% endhighlight %}
+
+        <a id="param-input" class="anchor"></a>
+        <h3>Le paramètre inputs</h3>
+
+        <p>Si je décide d'utiliser ma directive en tant que balise, elle pourra gérer des entrées/sorties.</p>
+
+        <p>Inputs permet donc d’utiliser des paramètres d’entrée dans la directive.
+          Le nom du paramètre doit être sous forme de chaîne de caractères dans l'attribut inputs :
+        </p>
+
+{% highlight ts linenos %}
+import { Directive, ElementRef, Renderer2, OnInit } from '@angular/core';
+
+@Directive({
+  selector: 'custom-directive',
+  inputs: [ 'textToDisplay' ]
+})
+
+export class CustomDirective implements OnInit {
+
+  textToDisplay: string;
+
+  constructor(private elem: ElementRef, private renderer: Renderer2) {}
+
+  ngOnInit(): void {
+    let newText = this.renderer.createText(this.textToDisplay);
+    this.renderer.appendChild(this.elem.nativeElement, newText);
+  }
+}
+{% endhighlight %}
+
+        <p>Ici, la propriété ElementRef.nativeElement nous permet d’accéder directement à l’objet du DOM.</p>
+
+        <p>Le paramètre de type Renderer2 est une classe permettant de manipuler les éléments du
+          DOM.
+        </p>
+
+        <p>Que faisons-nous concrètement ? On transmet la valeur à partir du template, pour qu'elle soit utilisée dans la directive :</p>
+
+{% highlight html linenos %}
+<custom-directive textToDisplay="Valeur défini depuis le template"></custom-directive>
+{% endhighlight %}
+
+        <a id="param-output" class="anchor"></a>
+        <h3>Le paramètre outputs</h3>
+
+        <p>Output permet de déclarer des événements de la directive auxquels le composant peut s’abonner.
+          Le nom de l'événement doit être sous forme de chaîne de caractères dans le paramètre outputs :</p>
+
+{% highlight html linenos %}
+<custom-directive textToDisplay="Valeur défini depuis le template"></custom-directive>
+{% endhighlight %}
+
+        <a id="exemple-param-output" class="anchor"></a>
+        <h4>Exemple</h4>
+
+        <p>Prenons l'exemple d'une directive qui crée un bouton capable d'émettre un événement.</p>
+
+{% highlight ts linenos %}
+import { Directive, ElementRef, Renderer2 } from '@angular/ core';
+
+@Directive({
+  selector: 'custom-directive',
+  outputs: [ 'anyEvent' ]
+})
+export class CustomDirective {
+
+  anyEvent: EventEmitter<string> = new EventEmitter<string>();
+  constructor(private elem: ElementRef, private renderer: Renderer2) {
+    let Button = this.renderer.createElement('button');
+    let buttonText = this.renderer.createText('Cliquez');
+    // On ajoute du texte au bouton
+    this.renderer.appendChild(Button, buttonText);
+    // On ajoute la callback correspondant au clique sur le bouton
+    this.renderer.listen(Button, 'click', () => this.buttonClicked());
+    // On ajoute le bouton à l'élément (le composant)
+    this.renderer.appendChild(this.elem.nativeElement, Button);
+  }
+
+  private buttonClicked(): void {
+    this.anyEvent.emit('message');
+  }
+}
+{% endhighlight %}
+
+            <a id="param-provider" class="anchor"></a>
+            <h3>Le paramètre providers</h3>
+
+            <p>Enfin, nous avons le paramètre providers pour injecter des services dans la directive. Voir
+              l’<a href="http://localhost:4000/angular-parametrer-injection-dependance#injector-component" target="_blank">article sur l’injection de dépendance</a> pour plus de détails.</p>
+
+            <a id="conclusion" class="anchor"></a>
+            <h2>Conclusion</h2>
+
+            <p>Pour conclure, vous avez maintenant les connaissances qu’il faut pour savoir quand et pourquoi
+              utiliser les directives,
+              n'hésitez pas à poser des questions en commentaires !
+            </p>
+
+            <a id="sources" class="anchor"></a>
+            <h2>Sources</h2>
+
+            <ul>
+              <li>Cdièse - <a href="https://cdiese.fr/angular-directives/"> Angular Directive</a></li>
+              <li>Angular - <a href="https://angular.io/guide/attribute-directives"> Attribute Directive</a></li>
+              <li>Différence entre @Directive().inputs et @Input() - <a href="https://www.bennadel.com/blog/3608-directive-inputs-and-input-are-not-functionally-equivalent-in-angular-7-2-13.htm">@Directive().inputs And @Input() Are Not Functionally Equivalent In Angular 7.2.13 </a></li>
+               
+            </ul>
