@@ -1868,6 +1868,7 @@ label {
     background: #fff;
     overflow: hidden;
     padding: 20px;
+    box-shadow: 6px 5px 11px -3px rgba(170, 170, 170, 0.45);
 }
 
 .home-blog-wrapper {
