@@ -1864,6 +1864,10 @@ label {
 
 /* 14. Blog */
 
+li{
+    list-style: none !important;
+}
+
 .blog-wrapper {
     background: #fff;
     overflow: hidden;
