@@ -1864,15 +1864,11 @@ label {
 
 /* 14. Blog */
 
-li{
-    list-style: none !important;
-}
-
 .blog-wrapper {
     background: #fff;
     overflow: hidden;
     padding: 20px;
-    box-shadow: 6px 5px 11px -3px rgba(170, 170, 170, 0.45);
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
 }
 
 .home-blog-wrapper {
