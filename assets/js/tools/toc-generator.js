@@ -19,19 +19,20 @@ function appendHeaderListToElement(headerList, element, headerLevel) {
     if (headerList.length) {
         const tocInnerList = document.createElement("ul");
         for (let j = 0; j < headerList.length; j++) {
-            
+            resetTitleNumbers(headerLevel);
             const anchor = headerList[j].previousElementSibling;
             if (anchor && (anchor.getAttribute("class") == 'anchor' || isTextMode())) {
                 let innerTocListItem = document.createElement("li");
+                innerTocListItem.setAttribute('class', 'liToc');
                 if (anchor.getAttribute("class") == 'anchor') {
                     const id = anchor.getAttribute("id");
                     headerList[j].previousElementSibling.id = id;
                     const innerTocLink = document.createElement("a");
                     innerTocLink.setAttribute("href", "#" + id);
-                    innerTocLink.innerText = `${titleNumbers.depth1}.${titleNumbers.depth2}.${titleNumbers.depth3} - ${headerList[j].innerText}`;
+                    innerTocLink.innerText = displayTitleNumbers(headerLevel, headerList, j);
                     innerTocListItem.appendChild(innerTocLink);
                 } else if (isTextMode()) {
-                    innerTocListItem.innerText = `${titleNumbers.depth1}.${titleNumbers.depth2}.${titleNumbers.depth3} - ${headerList[j].innerText}`;
+                    innerTocListItem.innerText = displayTitleNumbers(headerLevel, headerList, j);
                 }
                 incrementTitleNumbers(headerLevel);
                 tocInnerList.appendChild(innerTocListItem);
@@ -49,16 +50,20 @@ function generateTableOfContent() {
     tocHeader.innerText = TOC_TITLE;
     toc.appendChild(tocHeader);
     const headers = document.getElementsByTagName("h2");
-    titleNumbers = {
-        depth1: 1,
-        depth2: 1,
-        depth3: 1,
-    }
+    createTitleNumbers();
     appendHeaderListToElement(headers, toc, MIN_HEADER_LEVEL);
 }
 
 function isTextMode() {
     return TEXT_MODE === 'true' || TEXT_MODE === '1';
+}
+
+function createTitleNumbers(){
+    titleNumbers = {
+        depth1: 1,
+        depth2: 1,
+        depth3: 1,
+    }
 }
 
 function incrementTitleNumbers(headerLevel) {
@@ -75,11 +80,22 @@ function incrementTitleNumbers(headerLevel) {
 }
 
 function resetTitleNumbers(headerLevel) {
-    if (headerLevel == 2) {
+    if (headerLevel === 2) {
         titleNumbers.depth2 = 1;
         titleNumbers.depth3 = 1;
     }
-    if (headerLevel == 3) {
+    if (headerLevel === 3) {
         titleNumbers.depth3 = 1;
+    }
+}
+
+function displayTitleNumbers(headerLevel, headerList, j){
+    switch(headerLevel){
+        case 2:
+            return `${titleNumbers.depth1}. ${headerList[j].innerText}`;
+        case 3:
+            return `${titleNumbers.depth1}.${titleNumbers.depth2} ${headerList[j].innerText}`;
+        case 4:
+            return `${titleNumbers.depth1}.${titleNumbers.depth2}.${titleNumbers.depth3} ${headerList[j].innerText}`;
     }
 }

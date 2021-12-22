@@ -1865,11 +1865,15 @@ label {
 /* 14. Blog */
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 #tab-crit-framework{
     width: 100%;
     margin-bottom: 20px;
 =======
 li{
+=======
+.liToc{
+>>>>>>> 504bfd4... modify algo summary
     list-style: none !important;
 >>>>>>> 9f1a2a4... add article for framework js and images
 }
