@@ -2,7 +2,7 @@
 layout: post
 title: "Framework javascript : Lequel choisir ?"
 date: 2021-11-12 9:40:50 +0100
-description: "Dans cet article vous allez découvrir quels frameworks sont utiles et pourquoi"
+description: "Dans cet article vous trouverez un comparatif des frameworks front-end les plus courants."
 tags: developpement web Angular
 categories: [Développement web]
 author: "lucas"
@@ -13,21 +13,24 @@ author: lucas
 lang: fr
 ---
 
-<p><span class="font-weight-bold">Impossible de connaître tous les frameworks, et difficile de savoir rapidement lequel est approprié à son projet.
-  C’est pourquoi nous vous avons rédiger cet article afin de vous orienter autour de trois des frameworks front les plus populaires, pour passer en revue leurs avantages, inconvénients et leurs caractéristiques propre.  
+<p><span class="font-weight-bold">Dans cet article vous trouverez un comparatif des frameworks front-end les plus
+    courants.</span>
+  Nous allons passer en revue leurs avantages, inconvénients et leurs caractéristiques propres.
 </p>
 <div id="toc" class="blog-toc"></div>
 
 <a id="tableau-des-criteres" class="anchor"></a>
 <h2>Tableau des critères</h2>
 
-<img id="tab-crit-framework" src="assets/img/blog/framework-javascript/tab_framework.png" alt="tableau des critères framework javascript">
+<img id="tab-crit-framework" src="assets/img/blog/framework-javascript/tab_framework.png"
+  alt="tableau des critères framework javascript">
 
-  <h4>Description des critères</h4>
+<h3>Description des critères</h3>
 <ul class="list-group">
   <li class="list-group-item">Maintenabilité : Facilité à évoluer dans le temps</li>
   <li class="list-group-item">Scalabilité : Facilité à s’adapter à de grands projets</li>
-  <li class="list-group-item">Apprentissage sur long termes : Il sera plus intéressant de choisir un framework où l’on aura moins besoin de se remettre à jours au niveau de ses connaissances.</li>
+  <li class="list-group-item">Apprentissage sur long terme : Il sera plus intéressant de choisir un framework où l’on
+    aura moins besoin de se remettre à jours au niveau de ses connaissances.</li>
   <li class="list-group-item">Performances : temps de réponses du framework (mesures + articles)</li>
   <li class="list-group-item">Communauté : Nombres repository github et threads Stackoverflow</li>
 </ul>
@@ -35,110 +38,120 @@ lang: fr
 <a id="vuejs" class="anchor"></a>
 <h2>Vue.js</h2>
 
-<h4>Présentation</h4>
+<h3>Présentation</h3>
 
 <p>
-  Vue.js est le framework javascript créer en 2013 par Evan YOU, le plus simple à appréhender de la liste. Aussi appelé « Vue », l’un des gros avantages de ce framework est sa simplicité car il offre un choix réduit. Selon votre niveau d’expérience il s’adapte à tout type de niveau que sa sois pour les débutants ou les développeurs avancés.
-  Le templating et sa stylisation sont en HTML, CSS ce qui vous fera gagner pas mal de temps d’adaptation.
-  Vue permet d’étendre le HTML avec des attributs HTML appelés : « directives ».
+  <span class="font-weight-bold">Vue.js est un framework javascript créé en 2013 par Evan YOU</span>, le plus simple à
+  appréhender de la liste. Aussi appelé « Vue », l’un des gros avantages de ce framework est sa simplicité car il offre
+  un choix réduit de fonctionnalité bien travaillées.
+  Il est adapté à tous les niveaux, de débutant à expert.
+  Le templating et le styling sont rédigés directement en HTML, CSS ce qui vous permettra de commencer à l'utiliser
+  rapidement.
+</p>
+<p>
+  Vue vous permet d’étendre le HTML avec des attributs HTML appelés : « directives ».
   Les composants Vue encapsule le HTML pour rendre le code réutilisable.
-  Un point important est que Vue a pour notion le DOM virtuel comme dans d’autres frameworks javascript. Cette notion est importante car l’intérêt est d’éviter de mettre le DOM d’origine à jour à chaque modification.
+  Un point important est que Vue utilise le DOM virtuel comme dans d’autres frameworks JavaScript.
+  Cette notion est importante car l’intérêt est d’éviter de mettre le DOM d’origine à jour à chaque modification.
 </p>
 
-<h4>Inconvénients</h4>
+<h3>Inconvénients</h3>
 
 <ul>
-  <li>  Le plus récent des framworks et donc le moins optimisé, quelques problèmes d’intégration parfois.</li>
-  <li>  Une communauté beaucoup plus faible que les autres frameworks.</li>
-  <li>  N’intègre pas tous les outils nécessaires à la création d’une application front.</li>
+  <li> Le plus récent des framworks et donc le moins stable, quelques problèmes d’intégration parfois.</li>
+  <li> Une communauté plus petite que les 2 autres frameworks cités dans cet article.</li>
+  <li> Nécessite d'utiliser des librairies externes pour coder une application front complète.</li>
 </ul>
 
-<h4>Avantages</h4>
+<h3>Avantages</h3>
 
 <ul>
-  <li>  S’Adapte en fonction de vos compétences</li>
-  <li>  Relativement Simple</li>
-  <li>  HTML, CSS</li>
+  <li> Facile à appréhender pour un débutant</li>
+  <li> Le code est rédigé rapidement</li>
+  <li> HTML, CSS utilisés de manière native</li>
 </ul>
 
 <a id="reactjs" class="anchor"></a>
 <h2>React.js</h2>
 
-<h4>Présentation</h4>
+<h3>Présentation</h3>
 
 <p>
-  ReactJs, qu’on appelle aussi React, est un framework JavaScript, créée par Facebook en 2013.
-  Il permet aussi de concevoir des interfaces utilisateurs web via la création de composants dépendants.
-  React intègre aussi la notion de DOM virtuel.
-  Très flexible et plus performant que d’autres framework il reste un outil apprécié par les développeurs, avec une communauté et une équipe solide la développant.
-  Le templating est recommandé avec JSX.
-  Les caractéristiques de React sont les composants et le flux de données unidirectionnel.
+  <span class="font-weight-bold">React.js, qu’on appelle couramment React, est un framework JavaScript, créée par
+    Facebook en 2013.</span>
+  Il permet de concevoir des interfaces utilisateurs web via la création de composants dépendants.
+  React utilise, comme Vue.js, le DOM virtuel pour calculer le rendering.
+  Très flexible et performant, il est un outil apprécié par les développeurs, avec une grande communauté et une équipe
+  de développement qui n'a plus à faire ses preuves.
+  Le templating est généralement basé sur la librairie JSX.
+  On peut voir React comme une librairies de composants et de gestion de flux de données unidirectionnels.
 </p>
 
-<h4>Inconvénients</h4>
+<h3>Inconvénients</h3>
 
 <ul>
-  <li>  Templating en JSX et non en HTML</li>
-  <li>  Manque de documentations</li>
-  <li>  Offre beaucoup de choix aux développeurs : pas toujours confortable.</li>
-  <li>  Demande des bibliothèques externes pour la réalisation d’une application complète.</li>
+  <li> Templating en JSX et non en HTML, phase d'apprentissage obligatoire</li>
+  <li> Une documentation pas toujours très claire</li>
+  <li> Demande l'utilisation de bibliothèques externes pour la réalisation d’une application complète.</li>
 </ul>
 
-<h4>Avantages</h4>
+<h3>Avantages</h3>
 
 <ul>
-  <li>  Composants et modèle de données</li>
-  <li>  Open source il est mis à jour régulièrement et s’adapte aux contraintes actuelles.</li>
-  <li>  Utilisation simple des composants</li>
+  <li> Composants et modèles de données</li>
+  <li> Open source, il est mis à jour régulièrement et s’adapte aux contraintes actuelles.</li>
+  <li> Utilisation simple des composants</li>
+  <li> Très pratique lorsqu'on a des besoins graphiques poussés</li>
 </ul>
 
 <a id="angular" class="anchor"></a>
 <h2>Angular</h2>
 
-<h4>Présentation</h4>
+<h3>Présentation</h3>
 
 <p>
-  Un cadre des framework javascript les plus populaires et le plus utilisés pour créer des applications côté utilisateur. 
-  Angular n’est pas nouveau, il existe depuis un certain temps AngularJs était la première version et était très différente de l’actuelle !
-  En effet Angular est dotée de beaucoup plus d’outils et de fonctionnalité que la précédente version. Par exemple, l’injection de dépendance, liaisons de données, tests unitaires etc… Ce qui rend Angular a tout type de tâche de développement en amont.
-  Très flexible en termes de développement, il répond aux besoins de : composants (d’encapsulation de fonctionnalités), le templating, le routing, gestions d’erreurs, de communiquer avec l’API.
+  <span class="font-weight-bold">Angular a été créé en 2016 par Google.</span>
+  Il est le successeur d'AngularJs, paru en 2009. Attention à ne pas confondre les 2 quand vous cherchez des ressources
+  !
+  En effet Angular est dotée de beaucoup plus d’outils et de fonctionnalité que la précédente version, et il n'y pas de
+  rétrocompatibilité entre ces 2 versions.
+  Très flexible en termes de développement, il répond aux besoins front en terme de : composants (d’encapsulation de
+  fonctionnalités), templating, routing, gestions d’erreurs, communications avec des APIs.
+  <span class="font-weight-bold">Contrairement à Vue et React, Angular n'est pas une simple librairie de component qu'il
+    faut coupler à d'autres. Il est un framework complet.</span>
+  Ce qui lui confère un gros avantage en terme de stabilité et d'évolutivité.
 </p>
 
-<h4>Inconvénients</h4>
+<h3>Inconvénients</h3>
 
 <ul>
-  <li>  Apprentissage long et ardu ce qui peut être décourageant dans un premier temps.</li>
-  <li>  Tellement complet qu’il peut paraître assez complexe.</li>
+  <li> Apprentissage long et ardu ce qui peut être décourageant dans un premier temps.</li>
+  <li> Un peu plus verbeux que les 2 autres frameworks cités dans cet article</li>
 </ul>
 
-<h4>Avantages</h4>
+<h3>Avantages</h3>
 
 <ul>
-  <li>  Grosse communauté</li>
-  <li>  Bonne documentation</li>
-  <li>  HTML, CSS pris en charge</li>
-  <li>  Robuste et performant</li>
+  <li> Grosse communauté</li>
+  <li> Documentation exhaustive</li>
+  <li> HTML, CSS pris en charge nativement</li>
+  <li> Stable et performant</li>
 </ul>
 
 <a id="conclusion" class="anchor"></a>
 <h2>Conclusion</h2>
 
 <p>
-  Après avoir vu en globalité les 3 frameworks javascript les plus populaire du moment, on se demanderai presque toujours lequel choisir ! la réponse est que chaque framework est utile pour un type précis de projet.
-  Mais en analysant les informations on peut remarquer qu’Angular dispose de tous les outils nécessaires et fonctionnalités qu’une interface d’application pourrait avoir besoin. Bien sûr l’inconvénient est qu’il donc plus difficile à appréhender.
-  React et Vue sont plus simple mais vous allez aussi vous rendre compte que : 
+  Après avoir vu en globalité les 3 frameworks javascript les plus populaire du moment, on pourrait encore se demander
+  lequel choisir.
+  La réponse est que chaque framework est utile pour un type précis de projet.
+  Vous vous tournerez plutôt vers du React pour un besoin graphique poussé, vers Vue si vous cherchez simplement à
+  exposer des fonctionnalités et données de vos API, et vers Angular si vous codez des progiciels.
+  Mais en réalité vous pouvez tout faire avec les 3 frameworks, donc il faudra choisir en fonction de vos affinités.
 </p>
-<ul>
-  <li>il vous faut du routing</li>
-  <li>que votre application grossit</li>
-  <li>que vous n’avez pas d’architecture</li>
-  <li>que vous n’avez pas de gestion d’erreur</li>
-  <li>etc…</li>
-</ul>
 <p>
-  Vue est avant tout un bon choix pour transformer un site web existant en application d’une manière progressive.
-  Finalement vous devrez ajouter tout cela avec des heures de configurations à la clé.
-  Le temps gagné dans l’apprentissage est peut-être perdu dans le manque d’outils ?
+  J'espère que vous avez apprécié ce comparatif. Faites-nous signe dans les commentaires si vous pensez qu'il y a
+  d'autres infos à ajouter !
 </p>
 
 <a id="sources" class="anchor"></a>
@@ -146,10 +159,17 @@ lang: fr
 
 <ul>
   <li>Codeur - <a href="https://www.codeur.com/blog/choisir-framework-javascript/">Choisir framework javascript</a></li>
-  <li>Wanadev - <a href="https://www.wanadev.fr/227-react-vue-angular-quel-framework-front-choisir-en-2021/">Quel framework en 2021?</a></li>
-  <li>Esokia - <a href="https://esokia.com/fr/blog/angular-reactjs-vuejs-quelle-technologie-choisir-pour-votre-projet-digital">Angular, React, Vue quelle technologie choisir ?</a></li>
-  <li>Dyma - <a href="https://blog.dyma.fr/quel-framework-choisir-en-2020-angular-vue-js-ou-react/">Angular, Vue ou React ?</a></li>
-  <li>Iocean<a href="https://www.iocean.fr/actualite/frameworks-javascript">Les caractéristiques des framework front-end ?</a></li>
-  <li>Ideamotive<a href="https://www.ideamotive.co/blog/best-frontend-frameworks"></a>Les meilleurs frameworks front-end</li>
-  <li>Kicklox<a href="https://www.kicklox.com/blog-client/frameworks-javascript-2021-popularite/">Popularité des framworks javascript</a></li>
+  <li>Wanadev - <a href="https://www.wanadev.fr/227-react-vue-angular-quel-framework-front-choisir-en-2021/">Quel
+      framework en 2021?</a></li>
+  <li>Esokia - <a
+      href="https://esokia.com/fr/blog/angular-reactjs-vuejs-quelle-technologie-choisir-pour-votre-projet-digital">Angular,
+      React, Vue quelle technologie choisir ?</a></li>
+  <li>Dyma - <a href="https://blog.dyma.fr/quel-framework-choisir-en-2020-angular-vue-js-ou-react/">Angular, Vue ou
+      React ?</a></li>
+  <li>Iocean - <a href="https://www.iocean.fr/actualite/frameworks-javascript">Les caractéristiques des framework front-end
+      ?</a></li>
+  <li>Ideamotive - <a href="https://www.ideamotive.co/blog/best-frontend-frameworks">Les meilleurs frameworks front-end</a>
+  </li>
+  <li>Kicklox - <a href="https://www.kicklox.com/blog-client/frameworks-javascript-2021-popularite/">Popularité des
+      frameworks javascript</a></li>
 </ul>
