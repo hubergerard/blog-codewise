@@ -34,10 +34,11 @@ function appendHeaderListToElement(headerList, element, headerLevel) {
                 } else if (isTextMode()) {
                     innerTocListItem.innerText = displayTitleNumbers(headerLevel, headerList, j);
                 }
-                incrementTitleNumbers(headerLevel);
+                
                 tocInnerList.appendChild(innerTocListItem);
                 const innerHeaders = $(headerList[j]).nextUntil('h' + headerLevel, 'h' + (headerLevel + 1));
                 appendHeaderListToElement(innerHeaders, innerTocListItem, headerLevel + 1);
+                incrementTitleNumbers(headerLevel);
             }
         }
         element.appendChild(tocInnerList);
@@ -90,6 +91,7 @@ function resetTitleNumbers(headerLevel) {
 }
 
 function displayTitleNumbers(headerLevel, headerList, j){
+    console.log(headerLevel, titleNumbers.depth1);
     switch(headerLevel){
         case 2:
             return `${titleNumbers.depth1}. ${headerList[j].innerText}`;
