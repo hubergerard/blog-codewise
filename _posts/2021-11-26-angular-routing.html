@@ -21,45 +21,51 @@ lang: fr
 <a id="qu-est-ce-que-le-routing" class="anchor"></a>
 <h2>Qu'est-ce que le routing ?</h2>
 <p>
-    Avant de rentrer dans le vif du sujet un peu d’histoire !
+    Avant de rentrer dans le vif du sujet, un peu d’histoire !
+</p>
+
+<h3>Historique</h3>
+<p>
+Pendant longtemps, pour naviguer sur internet, le visiteur cliquait sur un lien pour recharger intégralement une nouvelle page.
+Ce n'est qu'au milieu des années 2000 (Entre 2002 et 2005) qu'une nouvelle API Javascript fait son apparition dans les navigateurs internet: <span class="font-weight-bold">XMLHttpRequest</span> (souvent appelé Ajax).
 </p>
 
 <p>
-Pendant des décennies, pour naviguer sur internet, le visiteur cliquait sur un lien pour recharger intégralement une nouvelle page.
-Ce n'est qu'au milieu des années 2000 (Entre 2002 et 2005) qu'une nouvelle API Javascript fait son apparition dans les navigateurs internet: XMLHttpRequest (souvent appelé Ajax).
+    L'utilisation de cette API permet de télécharger des données depuis un serveur distant afin de mettre à jour du contenu sans avoir à recharger intégralement la page dans le navigateur.
 </p>
-
 <p>
-    L'utilisation de cette API permet de télécharger des données depuis un serveur distant afin de mettre à jour du contenu sans avoir à recharger intégralement la page dans le navigateur
     Il restait néanmoins un problème: il était impossible de modifier l'adresse courante dans le navigateur. Il était donc compliqué pour un visiteur de se situer ou de partager son contenu. Les développeurs ont donc détourné l'utilisation de l'anchor dans les adresses pour créer des pseudo-adresses du type:
-    <br>
+    <br/>
     https://www.mon-super-site.fr/#/blog/article/21
 </p>
 
 <p>
-Il a fallu attendre l'arrivée de l'HTML5 pour avoir l'API History.
+Pour contrer correctement le problème, il a fallu attendre l'arrivée de l'API History.
 Elle permet le changement de l'adresse courante dans le navigateur et de manipuler l'historique depuis du code javascript.
-Donc le routing avec Angular c’est ce qui permet à l’application de charger du contenu selon l’URL sans rafraîchir la page !
-
+</p>
+<p>
+  On a donc vu à partir de là apparaitre des librairies de routing fonctionnelles et les premières SPA (Single Page Application).
 </p>
 
-<img src="assets/img/blog/angular-routing/routing.gif" alt="">
+<img src="assets/img/blog/angular-routing/routing.gif" alt="Exemple d'utilisation de l'API History">
+<div class="image-caption">Manipulation d'URL via l'API History</div>
 
+<h3> Définition</h3>
+  <p class="font-weight-bold">
+    Le routing correspond au fait d'associer une action à un certain chemin d'URL</p>
 
+    <p> Dans le cas d'Angular, il s’agit en réalité d’une instruction d’affichage, car une route associe une adresse à un component.
+  </p>
 <a id="creer-route" class="anchor"></a>
 <h2>Créer des routes</h2>
 
 <p>
-Tout d’abord qu’est-ce qu’une route dans une application Angular ?
+Si votre projet est créé via la CLI, on vous proposera le routing pour votre application. 
+Si vous avez acceptez, un fichier app-routing.module.ts sera créé dans votre projet.
 </p>
 
 <p>
-Il s’agit en réalité d’une instruction d’affichage, car une route associe une adresse à un component.
-</p>
-
-<p>
-Si votre projet est créé via la CLI on vous proposera le routing pour votre application. 
-À partir de là, vous avez accepter le routing, désormais dans votre fichier app-routing.module.ts vous devriez avoir ceci :
+  Voici un exemple de fichier app-routing.module.ts :
 </p>
 
 {% highlight ts linenos %}
@@ -69,142 +75,106 @@ import { FirstComponent } from './first/first.component';
 import { SecondComponent } from './second/second.component';
  
 const routes: Routes = [
- { path: 'exemple-route', component: FirstComponent },
- { path: '', component: SecondComponent }
+   { path: 'exemple-route', component: FirstComponent },
+   { path: '', component: SecondComponent }
 ];
-{% endhighlight %} 
+{% endhighlight %}
+<div class="code-caption">app-routing.module.ts</div>
 
 <p>
-Dans notre constante “routes” de type Routes, nous avons donc nos objets routes commençant par “path”. 
-Dans cet objet, la première valeur est le nom de la route qui sera dans l’URL, 
-par exemple en suivant ce que nous avons ci-dessus cela donnera dans l’URL :
+Dans notre constante "routes", on retrouve la configuration des routes. 
+La propriété "path"  contient le nom de la route qui sera dans l’URL.
+</p>
+<p>
+La deuxième propriété de l’objet route correspond au component qui sera affiché lors du chargement de cette URL.
+</p>
+<p>
+Par exemple, dans le code ci-dessus on a défini les routes suivantes :
 </p>
 
 <p>
-localhost:4200/exemple-route<br>
-localhost:4200/
+http://localhost:4200/exemple-route<br>
+http://localhost:4200/
 </p>
 
 <p>
-La deuxième valeur dans l’objet route comme vous pouvez le voir, c’est le component qui sera affiché à la vue de cette route.<br>
-Le path vide, qui correspond à la racine de l'application, affichera le SecondComponent.<br>
-Ensuite nous avons le RouterModule, ce module contient toute la logique et les mécanismes pour insérer les composants dans notre page.
+La première URL chargera le component FirstComponent et la deuxième chargera SecondComponent.
 </p>
-
-<a id="naviguer-routerLink" class="anchor"></a>
-<h2>Naviguer avec le routerLink</h2>
 
 <p>
-Maintenant nous allons utiliser la directive routerLink qui est l’équivalent de l’attribut href de la balise <a>, ce qui nous permettra de naviguer dans l’application.<br>
-
-En réalité l’attribut href rechargerait la page ce qui n’est pas ce que l’on recherche.
-On peut aussi passer une liste de paramètres à la directive routerLink.<br>
-
-Les deux liens de l’exemple ont le même comportement.    
+  Cette configuration est à charger via le RouterModule, fourni par Angular, dans votre AppModule.
+  Tout cela est fait pour vous, si vous passez par la CLI pour ajouter le routing.
 </p>
+<a id="naviguer-routing" class="anchor"></a>
+<h2>Naviguer à travers les routes</h2>
+<p>
+  Maintenant, voyons comment naviguer à travers nos différentes routes.
+</p>
+
+<a id="naviguer-routerlink" class="anchor"></a>
+<h3>Naviguer via un routerLink</h3>
+
+<p>Nous allons utiliser la directive routerLink qui est l’équivalent de l’attribut href de la balise &lt;a&gt;, ce qui nous permettra de naviguer dans l’application.</p>
+
+<p>Sauf qu'en réalité, l’attribut href rechargerait la page via le navigateur ce qui n’est pas ce que l’on recherche.</p>
+<p> 2 syntaxes sont possibles. Les deux liens de l’exemple ci-dessous ont le même comportement.    
+</p>
+
 
 {% highlight html linenos %}
 <nav>
-    <ul>
-      <li>
-        <a routerLink="/articles">Articles</a>
-      </li>
-      <li>
-          <a [routerLink]="[‘/contact‘, id]">Contactez-nous</a>
-      </li>
-    </ul>
-  </nav>
-{% endhighlight %} 
+  <ul>
+    <li>
+      <a routerLink="/contact/{{id}}">Articles</a>
+    </li>
+    <li>
+      <a [routerLink]="['/contact', id]">Contactez-nous</a>
+    </li>
+  </ul>
+</nav>
+{% endhighlight %}
+<div class="code-caption">exemple.component.html</div>
 
 <a id="naviguer-router" class="anchor"></a>
-<h2>Naviguer avec le router</h2>
+<h3>Naviguer avec l'objet Router</h3>
 
 <p>
-Nous avons aussi une deuxième option de navigation mais cela passera côté code. En effet pour naviguer en Typescript, il suffit d’injecter le service Router dans le composant.
-C’est avec la méthode ‘navigate’ que nous déclenchons la navigation vers la nouvelle adresse passée en paramètre.
+Il existe aussi une deuxième option de navigation qui permet de naviguer depuis la partie TS du component. Pour cela, il suffit d’injecter le service Router dans le composant.
+</p>
+<p>
+C’est avec la méthode 'navigate' que nous déclenchons la navigation vers la nouvelle adresse passée en paramètre.
 </p>
 
 {% highlight ts linenos %}
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.scss']
-   })
-   export class AppComponent {
-    title = 'router-demo';
-    constructor(private router: Router){}
-    navigateToContact(){
-      this.router.navigate(['/contact'])
-    }
-   }
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
+})
+export class AppComponent {
+  title = 'router-demo';
+  constructor(private router: Router){}
+  navigateToContact(){
+    this.router.navigate(['/contact']);
+  }
+}
 {% endhighlight %}
+<div class="code-caption">app.component.ts</div>
+
 <p>
-Notez de passer un tableau en paramètre.
+Notez qu'il faut passer un tableau en paramètre.
 </p>
 
 <a id="parametres-routes" class="anchor"></a>
-<h2>Paramètres des routes</h2>
+<h2>Les paramètres de route</h2>
 
 <p>
-Imaginons que nous avons une liste de pokémons, listPokemonComponent, et nous voulons en afficher qu’un seul sur la page en détails.
-Dans ce cas, nous aurons besoin des paramètres de routes.<br>
-Alors créons un component singlePokemon, listPokemon et un service pokemon !
+Imaginons que nous avons un service qui permet de gérer une liste de pokémons.
+Ce service nous permet d'obtenir les données concernant un Pokemon en passant l'id en paramètre.
 </p>
 
 <p>
-Pour rappel : ng g c et ng g s pour créer un component et un service via la CLI.
-</p>
-
-<p>
-Créons une route dans notre fichier app-routing.module.ts en ajoutant deux points “:” 
-pour indiquer que le fragment de route qui suit sera un paramètre.
-</p>
-
-{% highlight ts linenos %}
-const routes: Routes = [
- { path: 'pokemons', component: ListPokemonComponent },
-{ path: 'pokemon/:id', component: SinglePokemonComponent },
-];
-{% endhighlight %}
-
-<p>
-Ainsi peu importe le chemin:  pokemon/a ou pokemon/1 etc… cela affichera la page avec le SinglePokemonComponent.
-</p>
-
-{% highlight ts linenos %}
-@Component({
-selector: 'app-single-pokemon',
-templateUrl: './single-pokemon.component.html',
-styleUrls: ['./single-pokemon.component.scss']
-})
-export class SinglePokemonComponent implements OnInit {
-
-name: string = 'Exemple';
-status: string = 'Statut';
-
-constructor(private pokemonService: pokemonService) { }
-
-ngOnInit() {
-    }
-}
-{% endhighlight %}
-
-{% highlight html linenos %}
-<p>{{ name }}</p>
-<p>{{ status }}</p>
-{% endhighlight %}
-
-<p>
-Maintenant nous allons injecter dans notre component ActivatedRoute pour récupérer l’id de l’URL et le service pokemon.
-</p>
-
-{% highlight ts linenos %}
-constructor(private pokemonService: PokemonService,
-private route: ActivatedRoute) { }
-{% endhighlight %}
-
-<p>
-Dans notre service générons quelques pokémons à la main dans un tableau d’objet et une méthode pour les récupérer via leur id :
+  Voici à quoi ressemblerait un tel service :
 </p>
 
 {% highlight ts linenos %}
@@ -215,131 +185,179 @@ import { Injectable } from '@angular/core';
 })
 export class  PokemonService {
  
- pokemons = [
-   {
-     id: 1,
-     name: 'Salameche',
-     status: 'En forme'
-   },
-   {
-     id: 2,
-     name: 'Pikachu',
-     status: 'KO'
-   },
-   {
-     id: 3,
-     name: 'Bulbizar',
-     status: 'En forme'
-   }
+  pokemons = [
+    {
+      id: 1,
+      name: 'Salameche',
+      status: 'En forme'
+    },
+    {
+      id: 2,
+      name: 'Pikachu',
+      status: 'KO'
+    },
+    {
+      id: 3,
+      name: 'Bulbizar',
+      status: 'En forme'
+    }
+  ];
+ 
+  constructor() { }
+ 
+  getAllPokemons(){
+    return this.pokemons;
+  }
+
+  getPokemonById(id: number){
+    return this.pokemons.find(p => p.id === id);
+  }
+}
+{% endhighlight %}
+<div class="code-caption">pokemon.service.ts</div>
+
+<p>
+  On souhaite de notre côté, créer un component pour afficher un pokémon sur une page de détails. Dans un cas comme celui-ci, nous aurons besoin des paramètres de routes.
+</p>
+
+<p>
+  Créons donc une route dans notre fichier app-routing.module.ts en ajoutant deux points ':' pour indiquer que le fragment de route qui suit sera un paramètre.
+</p>
+
+{% highlight ts linenos %}
+const routes: Routes = [
+ { path: 'pokemons', component: ListPokemonComponent },
+ { path: 'pokemon/:id', component: SinglePokemonComponent },
 ];
- 
- constructor() { }
- 
-getAllPokemons(){
-   return this.pokemons;
- }
- getPokemonById(id: number){
-   const pokemon = this.pokemons.find(
-     (p) => {
-       return p.id === id;
-     }
-   );
-   return pokemon;
- }
-}
 {% endhighlight %}
+<div class="code-caption">app-routing.module.ts</div>
 
 <p>
-Maintenant retournons sur notre singlePokemonComponent, et implémentons notre ngOnInit() de sorte que selon l’URL, le bon pokémon s’affiche sur la page !
-Ce qui donne :
+Ainsi peu importe le chemin:  'pokemon/a' ou 'pokemon/1' etc… cela chargera le component SinglePokemonComponent.
+</p>
+
+<p>
+  Notre component ressemblera de base à quelque chose comme ça :
 </p>
 
 {% highlight ts linenos %}
-ngOnInit(): void {
-    this.route.paramMap.subscribe((params: ParamMap) =>{
-      this.id = parseInt(params.get('id'));
-      this.name = this.pokemonService.getPokemonById(this.id).name;
-      this.status = this.pokemonService.getPokemonById(this.id).status;
-    }); 
-{% endhighlight %}
-
-<p>
-Petites explications, alors depuis l’objet route (d’activatedRoute) nous avons un objet paramMap qui est de type observable qui contient une carte des paramètres dont on va pouvoir récupérer la valeur !
-Donc nous récupérons la valeur du paramètre ‘id’ et nous la stockons dans la propriété id de notre composant.
-Ensuite tout ça dans la même souscription ( il y aura un chapître qui traitera les observables ) on récupère les noms et statuts pour les assigner à notre composant selon l’id.
-</p>
-
-<p>
-Tout cela est fonctionnel mais il nous manque le listPokemonComponent.
-</p>
-
-{% highlight ts linenos %}
-import { Component, OnInit } from '@angular/core';
-import { PokemonService } from '../pokemon.service';
- 
 @Component({
- selector: 'app-list-pokemon',
- templateUrl: './list-pokemon.component.html',
- styleUrls: ['./list-pokemon.component.scss']
+  selector: 'app-single-pokemon',
+  templateUrl: './single-pokemon.component.html',
+  styleUrls: ['./single-pokemon.component.scss']
 })
-export class ListPokemonComponent implements OnInit {
- 
- pokemons: any[] = [];
- 
- constructor(private pokemonService: PokemonService) { }
- 
- ngOnInit(): void {
-   this.pokemons = this.pokemonService.getAllPokemons();
- }
+export class SinglePokemonComponent implements OnInit {
+
+  name: string = '';
+  status: string = '';
+
+  constructor(private pokemonService: pokemonService) { }
+
+  ngOnInit() {
+  }
 }
 {% endhighlight %}
+<div class="code-caption">single-pokemon.component.ts</div>
+
+{% highlight html linenos %}{% raw %}
+<p>{{ name }}</p>
+<p>{{ status }}</p>
+{% endraw %}{% endhighlight %}
+<div class="code-caption">single-pokemon.component.html</div>
 
 <p>
-Donc ici il s’agit de récupérer tous les pokémons et de les stocker dans un tableau.
+Maintenant, nous allons injecter dans notre component le service ActivatedRoute pour récupérer l’id dans l’URL et l'utiliser dans le service PokemonService.
 </p>
 
 <p>
-Il nous reste plus qu’à les afficher :
+  Ce qui devrait nous donner quelque chose comme ça :
+</p>
+
+{% highlight ts linenos %}
+@Component({
+  selector: 'app-single-pokemon',
+  templateUrl: './single-pokemon.component.html',
+  styleUrls: ['./single-pokemon.component.scss']
+})
+export class SinglePokemonComponent implements OnInit {
+
+  name: string = '';
+  status: string = '';
+
+  constructor(private pokemonService: PokemonService,
+    private route: ActivatedRoute) { }
+
+  ngOnInit(): void {
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      const id = parseInt(params.get('id'));
+      const pokemon = this.pokemonService.getPokemonById(id);
+      this.name = pokemon.name;
+      this.status = pokemon.status;
+    }); 
+  }
+}
+{% endhighlight %}
+<div class="code-caption">single-pokemon.component.ts</div>
+
+<p>
+  <span class="font-weight-bold">Petite explication :</span> depuis l’objet route (d’activatedRoute) nous avons un objet paramMap qui est de type Observable et qui contient une carte des paramètres dont on va pouvoir récupérer la valeur !
+</p>
+<p>
+  Donc nous récupérons la valeur du paramètre 'id' en souscrivant à cet Observable et nous contactons le service avec cet id.
+</p>
+<p>
+Pour finir, on récupère les noms et statuts pour les assigner à nos attributs de composants, afin qu'il soit capable de les afficher.
+</p>
+
+<p>
+  On peut donc maintenant accéder à notre page de détails d'un pokemon via le router :
 </p>
 
 {% highlight html linenos %}
-<h2>Liste de pokémons</h2>
- 
-<ul>
- <li *ngFor="let pokemon of pokemons">
-   <a [routerLink]="['/pokemon', pokemon.id]">{{ pokemon.name }}</a>
- </li>
-</ul>
+// Crée un lien vers la page de détails du pokémon 1
+<a [routerLink]="['/pokemon', 1]">{{ pokemon.name }}</a>
+
 {% endhighlight %}
+<div class="code-caption">exemple.component.ts</div>
 
 <a id="redirection" class="anchor"></a>
 <h2>Redirection</h2>
 
 <p>
-Il est aussi possible de rediriger l’utilisateur, par exemple si l’utilisateur renseigne une URL qui n’existe pas 
-au sein de l’application nous pourrions le rediriger vers une page 404.
+Il est aussi possible de rediriger l’utilisateur avec le routeur d'Angular.
+</p>
+<p>
+Par exemple si l’utilisateur renseigne une URL qui n’existe pas au sein de l’application nous pourrions le rediriger vers une page 404 personnalisée.
 </p>
 
 <p>
-Pour ce faire créons un component NotFoundComponent et ajoutons ces deux lignes dans nos routes :
+Pour ce faire, nous allons utiliser la propriété 'redirectTo' dans la définition de nos routes : 
 </p>
 
 {% highlight ts linenos %}
-{ path: 'not-found', component: NotFoundComponent },
-{ path: '**', redirectTo: 'not-found' }
+const routes: Routes = [
+  { path: 'not-found', component: NotFoundComponent },
+  { path: '**', redirectTo: 'not-found' }
+]
 {% endhighlight %}
+<div class="code-caption">app-routing.module.ts</div>
 
 <p>
-La première est la route directe vers la page 404, la seconde est une route ‘wildcard’ qui redirigera toute route inconnue vers la page 404.
-Ainsi quand l’utilisateur renseignera une URL qui n’existe pas il sera redirigé vers le chemin ‘not-found’ qui affichera la page 404.
+La première route est la route directe vers le component 404.
+La seconde est une route 'wildcard' qui redirigera toute route inconnue vers la page 404.
+</p>
+<p>
+Ainsi quand l’utilisateur renseignera une URL qui n’existe pas il sera redirigé vers le chemin 'not-found' qui affichera la page 404.
 </p>
 
 <a id="notions-avancees" class="anchor"></a>
-<h2>Notions anvancées</h2>
+<h2>Notions avancées</h2>
 
 <p>
-Malheureusement nous ne verrons pas tout dans cet article car il est destiné aux débutants et limite certaines notions. Entre autres les notions telles que les routes imbriquées, le lazyloading, les guards et les resolvers.
-En attendant notre prochain article je vous conseille de lire la documentation Angular pour découvrir tout cela !    
+Malheureusement nous ne verrons pas tout dans cet article car il est destiné aux débutants et se limite donc aux notions de base.
+</p>
+<p> Sachez toutefois qu'il existe des concepts tels que les routes imbriquées, le lazyloading, les guards et les resolvers.
+En attendant nos prochains articles je vous conseille de lire la <a href="https://angular.io/guide/router" target="_blank">documentation Angular</a> pour découvrir tout cela !    
 </p>
 
 <a id="more-information" class="anchor"></a>
