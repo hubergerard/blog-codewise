@@ -2673,3 +2673,24 @@ code {
 .read-more-button {
     border-radius: 3px;
 }
+
+.tableOperator{
+    table-layout: fixed;
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.tableOperator > thead > tr > td {
+    font-weight: bold;
+    text-align: center;
+}
+
+.tableOperator > tbody > tr > td {
+    text-align: center;
+    padding: 4px;
+}
+
+.tableOperator tbody tr:nth-child(odd){
+    background-color: rgb(221, 221, 221);
+}
+
