@@ -1,0 +1,246 @@
+---
+layout: post
+title: "Javascript - Les structures de contrôles"
+date: 2021-12-23 9:14:00 +0100
+description: "Qu’est-ce qu’une structure de contrôle ? Et Pourquoi les utiliser dans notre code ?"
+tags: developpement web javascript
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/javascript-soc/cover_js_soc.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+    
+<div id="toc" class="blog-toc"></div>
+
+<a id="definition" class="anchor"></a>
+<h2>Définition</h2>
+
+<p>
+Une structure de contrôle en informatique est une instruction particulière pouvant diriger le programme dans tel ou tel cas. 
+Cela offre au programme plus de fléxibilité et de comportements.
+</p>
+
+<a id="if-else-condition" class="anchor"></a>
+<h2>Condition if/else</h2>
+
+<p>
+    L’instruction <b>if</b> est une structure pour tester des conditions. Elle permet d'exécuter une série d'instructions si la condition est vérifiée. 
+    Grâce au mot-clé <b>else</b> nous pouvons spécifier des instructions dans le cas où la condition n’est pas vérifiée.
+</p>
+
+<img class="article-img" style="width: 100%;" src="assets/img/blog/javascript-soc/instr_if_else.png" alt="syntax structure of control">
+
+<p>Exemple : </p>
+
+{% highlight js linenos %}
+const balance = 50;
+// 50 is greater than 0 => the condition is truthy.
+if (balance >= 0 {
+// Executes this statement
+console.log("Your balance is positive");
+} else {
+// Do not execute this statement
+console.log("Your balance is negative");
+}
+// expected output : Your balance is positive
+{% endhighlight %} 
+
+{% highlight js linenos %}
+const balance = -100;
+// -100 is lesser than 0 => the condition is falsy.
+if (balance >= 0 {
+// Do not execute this statement
+console.log("Your balance is positive");
+} else {
+// Executes this statement
+console.log("Your balance is negative");
+}
+// expected output : Your balance is negative
+{% endhighlight %} 
+
+
+<a id="switch-case" class="anchor"></a>
+<h2>Switch case</h2>
+
+<p>
+La condition switch case permet de faire plusieurs test sur la même variable => gain de lisibilité et optimisation de code.
+</p>
+
+<p>
+Cette instruction conditionnel simplifie le test de plusieurs valeurs d'une variable, car cette opération aurait été compliquée
+(mais faisable) avec des <b>if imbriqués</b>.
+</p>
+
+<img class="article-img" src="/assets/img/blog/javascript-soc/instruc_switch.png" alt="instruction switch case">
+
+
+{% highlight js linenos %}
+const city = "Berlin";
+// This evaluates city value
+switch(city) {
+	case "Madrid":
+		console.log("Spain is wild !");
+		break;
+	// It matches this case
+	case "Berlin":
+		console.log("Germany is wild !");
+		break;
+	case "Lisbon":
+		console.log("Portugal is wild !");
+		break;
+	default:
+		console.log("This city is not wild yet !")
+}
+// expected output: Germany is wild !
+{% endhighlight %}
+
+{% highlight js linenos %}
+const city = "New York";
+// This evaluates city value
+switch(city) {
+	case "Madrid":
+		console.log("Spain is wild !");
+		break;
+	case "Berlin":
+		console.log("Germany is wild !");
+		break;
+	case "Lisbon":
+		console.log("Portugal is wild !");
+		break;
+    // It does not match the cases
+	default:
+		console.log("This city is not wild yet !")
+}
+// expected output: This city is not wild yet !
+{% endhighlight %} 
+
+<p>
+Le mot-clé <b>break</b> est impératif après l'instruction pour stopper le switch si la condition est validée.
+</p>
+
+<a id="loop-while" class="anchor"></a>
+<h2>Boucle while</h2>
+
+<p>
+L’instruction <b>while</b> permet de spécifier un bloc d’instructions qui sera répété tant que la condition est vérifiée.
+</p>
+
+<p>
+<b>Attention, si la condition est toujours vérifiée le bloc d’instructions sera exécuté de façon infinie.</b>
+</p>
+
+{% highlight js linenos %}
+// Initialize a counter i to 0
+let i = 0;
+// Evaluates condition and executes statements
+// if condition is truthy
+while(i < 3) {
+	console.log("This is a loop");
+	i = i + 1;
+}
+// When the condition is falsy it executes the next statement
+console.log("End of program");
+
+// i value is 0, 0 < 3 is truthy
+// output : This is a loop
+
+// i value is 1, 1 < 3 is truthy
+// output : This is a loop
+
+// i value is 2, 2 < 3 is truthy
+// output : This is a loop
+
+// i value is 3, 3 < 3 is falsy
+// output : End of program
+{% endhighlight %} 
+
+<a id="loop-do-while" class="anchor"></a>
+<h2>Boucle do while</h2>
+
+<p>
+L’instruction <b>do while</b> se comporte comme la boucle <b>while</b> à l’exception
+que les instructions de la boucle seront exécutées au moins une fois avant de tester la condition.
+</p>
+
+{% highlight js linenos %}
+// Initialize a counter i to 0
+let i = 0;
+// Executes statements
+do{
+	console.log("This is a loop");
+	// Increment i
+	i = i + 1;
+}
+while(i < 3); // Evaluates the condition and executes statements
+// If the condition is truthy
+
+// When the condition is falsy it executes the next statement
+console.log("End of program");
+
+// i is not tested the first time
+// output : This is a loop
+
+// i value is 1, 1 < 3 is truthy
+// output : This is a loop
+
+// i value is 2, 2 < 3 is truthy
+// output : This is a loop
+
+// i value is 3, 3 < 3 is falsy
+// output : End of program
+{% endhighlight %} 
+
+<a id="loop-for" class="anchor"></a>
+<h2>Boucle for</h2>
+
+<p>
+La boucle <b>for</b> à l'avantage de spécifier sur la même ligne séparée par des <b>;</b> 
+</p>
+
+<ul>
+    <li>L'initialisation du compteur</li>
+    <li>La condition à vérifier</li>
+    <li>l'incrémentation du compteur</li>
+</ul>
+
+{% highlight js linenos %}
+// Initialize a counter i to 0
+// Evaluates the condition and executes statements
+// If condition is truthy
+for (let i = 0; i < 3; i++) {
+	console.log("This is a loop");
+}
+	
+ // Evaluates the condition and executes statements
+// If the condition is truthy
+
+// When the condition is falsy it executes the next statement
+console.log("End of program");
+
+// i value is 0, 0 < 3 is truthy
+// output : This is a loop
+
+// i value is 1, 1 < 3 is truthy
+// output : This is a loop
+
+// i value is 2, 2 < 3 is truthy
+// output : This is a loop
+
+// i value is 3, 3 < 3 is falsy
+// output : End of program
+{% endhighlight %} 
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+Vous venez de découvrir les structures de contrôles en JavaScript. 
+Si vous avez des idées d’amélioration pour cet article, laissez-nous un commentaire !
+</p>
+
+<p>
+Et si vous avez réussi à tout suivre, vous pouvez passer au chapitre suivant : “Cat Game”
+</p>
