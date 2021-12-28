@@ -1,0 +1,190 @@
+---
+layout: post
+title: "Javascript - Les tableaux"
+date: 2021-12-28 9:14:00 +0100
+description: "Dans cet article, vous allez apprendre comment utiliser les tableaux en javascript"
+tags: developpement web javascript
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/javascript-tableau/cover_js_array.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<div id="toc" class="blog-toc"></div>
+
+<a id="definition" class="anchor"></a>
+<h2>Définition</h2>
+
+<p>
+En informatique, un tableau (array en anglais) est une structure de données qui consiste en un ensemble d'éléments ordonnés accessibles par leur indice (ou index). 
+C'est une structure de données de base que l'on retrouve dans chaque langage de programmation.
+</p>
+
+<a id="declaration" class="anchor"></a>
+<h2>Déclaration</h2>
+
+<p>
+Il existe plusieurs manière de déclarer un tableau en JS :
+</p>
+
+<ul>
+    <li>
+        La méthode la plus rapide et la plus utilisée est d’utiliser les “[ ]”.
+    </li>
+    <li>
+        Il est également possible de déclarer un tableau en utilisant le constructeur “Array”
+    </li>
+</ul>
+
+<p>
+Attention il y a une différence entre les deux méthodes.
+</p>
+
+
+{% highlight js linenos %}
+// Create an empty array
+const articles = [];
+
+// Create an empty array
+const shops = new Array();
+
+// Create an array containing the value 5
+const notes = [5];
+console.log(notes);
+
+// Create an array with 5 empty elements
+const bulletin = new Array(5);
+console.log(bulletin);
+{% endhighlight %} 
+
+<a id="acceder-element-tableau" class="anchor"></a>
+<h2>Accéder à un élément du tableau</h2>
+
+<p>
+Un tableau peut être déclaré avec plusieurs éléments séparés par des virgules.
+</p>
+
+<p>
+On accède à un élément par son index.
+</p>
+
+<p>
+Le 1er élément du tableau a pour index 0.
+</p>
+
+<p>
+Accéder à l’élément à l’index 1 revient à récupérer le 2ème élément de notre tableau.
+</p>
+
+<p>
+Si on accède à un index supérieur ou égale à la taille du tableau la valeur récupérée sera undefined.
+</p>
+
+
+{% highlight js linenos %}
+const cities = ["Berlin", "Lisbon", "Madrid", "Paris"];
+console.log(cities[O]); // => Berlin
+console.log(cities[1]); // => Lisbon
+console.log(cities[4]); // => undefined
+{% endhighlight %} 
+
+<a id="parcourir-tableau" class="anchor"></a>
+<h2>Parcourir un tableau</h2>
+
+<p>
+On peut connaître la longueur d’un tableau en accédant à la propriété length.
+</p>
+
+<p>
+On peut utiliser une boucle pour parcourir un tableau.
+</p>
+
+<p>
+A chaque itération dans la boucle on utilise la variable compteur (i) comme valeur d’index pour accéder à l’élément.
+</p>
+
+{% highlight js linenos %}
+const cities = ["Berlin", "Lisbon", "Madrid", "Paris"];
+console.log(cities.length); // => 4
+for(let i = 0; i < cities.length; i++;){
+    console.log(cities[i]);
+}
+
+// expected output :
+// Berlin
+// Lisbon
+// Madrid 
+// Paris
+{% endhighlight %} 
+
+<p>
+Mais il y a aussi une autre manière de faire :
+</p>
+
+<p>
+Le tableau appartient à une famille d’objetqu’on appelle : itérables
+</p>
+
+<p>
+Les itérables peuvent être parcours avec une boucle for .. of 
+</p>
+
+<p>
+On déclare une variable (ex : city)  qui va prendre tour à tour chaque valeur du tableau 
+</p>
+
+{% highlight js linenos %}
+const cities = ["Berlin", "Lisbon", "Madrid", "Paris"];
+
+for(const city of cities){
+    console.log(city);
+}
+// Berlin
+// Lisbon
+// Madrid 
+// Paris
+{% endhighlight %} 
+
+<a id="a-savoir" class="anchor"></a>
+<h2>À savoir</h2>
+
+<p>
+Nous pouvons mélanger plusieurs type de données dans un même tableau :
+</p>
+
+{% highlight js linenos %}
+const tab = ["Berlin", 12, false, Object];
+{% endhighlight %} 
+
+<p>Les tableaux en javascript sont muables</p>
+
+<p>
+    Qu'est-ce que veut dire muable ? c'est une chose qui peut être modifiable :
+</p>
+
+{% highlight js linenos %}
+const tab = [81, 12, 283, 29, 7];
+console.log(tab = tab.sort((a, b) => a - b));
+// expected output : [7, 12, 29, 81, 283]
+{% endhighlight %} 
+
+<p>
+Dans cet exemple nous avons utilisé une méthode de tableau de mutateurs "sort()", biensûr il en existe d'autres et avec ceux-ci des méthodes de tableau non-mutateur,
+qui elles ne modifie pas le tableau mais en renvoie la représentation selon la méthode.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+
+<p>
+Si vous avez des idées d’amélioration pour cet article, laissez-nous un commentaire !
+</p>
+        
+<p>
+Et si vous avez réussi à suivre, vous pouvez passer au chapitre suivant : “Javascript - Les fonctions"
+</p>
+    
