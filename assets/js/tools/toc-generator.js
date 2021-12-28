@@ -8,7 +8,6 @@ $(document).ready(() => {
     const maxDepth = currentScript.getAttribute("max-depth");
     MAX_HEADER_LEVEL = maxDepth === '' ? 4 : maxDepth;
     TEXT_MODE = currentScript.getAttribute("text-mode");
-    console.log(maxDepth);
     generateTableOfContent();
 })
 
