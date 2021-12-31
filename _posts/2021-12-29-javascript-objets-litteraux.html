@@ -1,0 +1,298 @@
+---
+layout: post
+title: "Javascript - Les objets littéraux"
+date: 2021-12-28 9:14:00 +0100
+description: "Dans cet article, vous allez apprendre comment déclarer et utiliser les objets littéraux en javascript"
+tags: developpement web javascript
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/javascript-objets/cover_js_object.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<div id="toc" class="blog-toc"></div>
+
+<a id="definition" class="anchor"></a>
+<h2>Définition</h2>
+
+<p>
+Un objet c'est un ensemble de propriétées (ou d'attributs), et de méthodes cohérentes entre elles.
+</p>
+
+<a id="definition" class="anchor"></a>
+<h2>Regrouper des données</h2>
+
+<p>
+    Nous avons découvert précédemment les tableaux, qui permettent de regrouper des données dans une même structure.
+</p>
+
+<p>
+    Dans un tableau, les données peuvent être de types différents (nombres, chaînes, booléens, etc.). 
+</p>
+
+{% highlight js linenos %}
+const mixedTypes = [1,2, true, "string"];
+{% endhighlight %} 
+
+<p>
+    Maintenant, admettons qu’on veuille regrouper des données sur une personne. On pourrait être tenté de le faire dans un tableau, e
+    n indiquant, dans l’ordre : le prénom, le nom, l’année de naissance, la Seulement, voilà : 
+    chaque donnée est accessible par un index numérique… pour obtenir la nationalité, il faut utiliser personData[3]. 
+    Pas très pratique, car il faut mémoriser, par coeur, à quelle donnée correspond chaque indice !
+</p>
+
+{% highlight js linenos %}
+const person = ["Simon", "Dupont", 1987, "French"];
+console.log(person[3]); // Affiche la nationnalité
+{% endhighlight %} 
+
+<a id="definition" class="anchor"></a>
+<h2>Les objets littéraux</h2>
+
+<p>
+    Les objets offrent une autre façon de regrouper des données, au sein d’une même structure. 
+    Si les tableaux permettent d’accéder aux données via une “clé” numérique (l’index, un nombre entier), 
+    les objets permettent d’y accéder via une “clé” de type chaîne.
+</p>
+
+<p>
+    Voici comment on pourrait stocker les données d’une personne dans un objet, et accéder à sa nationalité :
+</p>
+
+{% highlight js linenos %}
+const personObject = {
+    firstname: "Simon",
+    lastName: "Dupont",
+    birthYear: 1987,
+    nationality: "French"
+};
+console.log(personObject.nationality); // Affiche la nationnalité
+{% endhighlight %} 
+
+<a id="declaration-objet" class="anchor"></a>
+<h2>Déclaration d'objet</h2>
+
+<p>
+Il y a plusieurs manière de déclarer un objet mais nous allons nous attarder sur la création d'objet littéral :
+</p>
+
+<p>
+    un objet vide :
+</p>
+
+{% highlight js linenos %}
+const emptyObject = {};
+{% endhighlight %} 
+
+<p>
+    un objet avec des attributs et méthodes :
+</p>
+
+{% highlight js linenos %}
+let student = {
+	name : ['Simon','Dupont'],
+	age : 22,
+	mail : 'simon.dupont@gmail.com',
+
+	bonjour: function(){
+		alert('Bonjour, je suis ' + this.name[0] + ", j'ai " + this.age + ' ans');
+	}
+}
+{% endhighlight %} 
+
+<p>
+    Le nommage des clés est moins contraint que celui des variables : on peut utiliser comme clé une chaîne, un nombre, un booléen, mais la clé sera de toute façon convertie en chaîne.
+</p>
+
+<p>
+On parle d'objet littéral car chacune de ses propriétés et de ses méthodes a été défini lors de sa création. 
+Par abus de langage on confondra l'objet et la variable qui le stock en citant : "l'objet".
+</p>
+
+<a id="propriete-objet" class="anchor"></a>
+<h2>Acceder aux propriétés d'un objet</h2>
+
+<p>
+Le caractère point : "." nous permet d'accéder aux propriétés de l'objet, on appel cela un accesseur.
+</p>
+
+{% highlight js linenos %}
+let student = {
+	name : ['Simon','Dupont'],
+	age : 22,
+	mail : 'simon.dupont@gmail.com',
+
+	bonjour: function(){
+		console.log('Bonjour, je suis ' + this.name[0] + ", j'ai " + this.age + ' ans');
+	}
+}
+
+console.log(student.name[0]);
+console.log(student.age);
+student.bonjour();
+// expected output :
+// "Simon"
+// 22
+// Bonjour, je suis Simon j'ai 22 ans
+{% endhighlight %} 
+
+<p>
+    Grâce à cela nous pouvons aussi modifier les attributs :
+</p>
+
+{% highlight js linenos %}
+let student = {
+	name : ['Simon','Dupont'],
+	age : 22,
+	mail : 'simon.dupont@gmail.com',
+
+	bonjour: function(){
+		console.log('Bonjour, je suis ' + this.name[0] + ", j'ai " + this.age + ' ans');
+	}
+}
+student.age = 23;
+student.displayAge = function(){
+    console.log(student.age);
+}
+student.displayAge();
+// expected output :
+// 23
+{% endhighlight %} 
+
+<p>
+    Et enfin nous pouvons aussi en définir de nouveaux !
+</p>
+
+{% highlight js linenos %}
+let student = {
+	name : ['Simon','Dupont'],
+	age : 22,
+	mail : 'simon.dupont@gmail.com',
+
+	bonjour: function(){
+		console.log('Bonjour, je suis ' + this.name[0] + ", j'ai " + this.age + ' ans');
+	}
+}
+student.notes = [12,13,9,16];
+console.log(student);
+
+// expected output :
+// {name: ["Simon", "Dupont"], age: 22, mail: "simon.dupont@gmail.com", bonjour: function, notes: [12, 13, 9, 16]}
+{% endhighlight %} 
+
+<p>
+    On voit bien que la nouvelle propriété notes à bien été ajouté à l'objet student.
+</p>
+
+<p>
+   Il y a aussi une autre méthode pour accéder aux propriété d'un objet, 
+   c'est une syntaxe qui utilise les crochets et qui par contre ne permet pas les mêmes choses que la méthode précédente,
+    car dans celle-ci nous ne pourrons pas modifier ou définir de méthode à notre objet.
+</p>
+
+<p>
+    Donc grâce aux crochets nous allons pouvoir utiliser notre objet comme si il était un tableau assosiatif dont les clés sont les noms des propriétés et les valeurs sont les valeurs associés.
+</p>
+
+<p>
+    Par exemple pour accéder a la valeur complète de la propriété name de l'objet on écrira : student['name'], pour accéder à la valeur du premier élément du tableau name : student['name'][0]
+</p>
+
+<p>
+    Cette syntaxe fonctionne aussi pour l'affectation et la création d'attributs au sein d'un objet.
+</p>
+
+{% highlight js linenos %}
+let student = {
+	name : ['Simon','Dupont'],
+	age : 22,
+	mail : 'simon.dupont@gmail.com',
+
+	bonjour: function(){
+		console.log('Bonjour, je suis ' + this.name[0] + ", j'ai " + this.age + ' ans');
+	}
+};
+student['notes'] = [12,13,9,16];
+student['age'] = 23;
+console.log(student);
+
+// expected output :
+// {name: ["Simon", "Dupont"], age: 23, mail: "simon.dupont@gmail.com", bonjour: function, notes: [12, 13, 9, 16]}
+{% endhighlight %} 
+
+<a id="mot-clé-this" class="anchor"></a>
+<h2>Le mot-clé this</h2>
+
+<p>
+    Au sein de la méthode bonjour on peut remarquer ce fameux mot-clé this, il apparaît fréquemment dans les langages orientés objets.
+    Dans le cas présent, il fait référence à l'objet qui est manipulé donc entre autre cela veut dire : prend l'attribut name de cet objet (student) qui sera donc Simon.
+</p>
+
+<p>
+    Lorsqu'on écrira student.bonjour();
+    le mot-clé this dans la méthode sera remplacé par student au moment de l'éxécution.
+</p>
+
+<a id="verif-propriete" class="anchor"></a>
+<h2>Vérifier l'existence d'une propriété</h2>
+
+<p>
+    Nous avons plusieurs choix qui s'offre à nous pour vérifier l'existence d'une propriété sur un objet.
+</p>
+
+<p>
+    Avec key in obj :
+</p>
+
+{% highlight js linenos %}
+const simon = { firstName: 'Simon', lastName: 'Dupont' };
+const john = { firstName
+ 'John' };
+console.log('lastName' in mary); // true
+console.log('lastName' in john); // false
+{% endhighlight %}
+
+<p>
+    Avec obj.hasOwnProperty(key) :
+</p>
+
+{% highlight js linenos %}
+console.log(simon.hasOwnProperty('lastName')); // true
+console.log(john.hasOwnProperty('lastName')); // false
+{% endhighlight %}
+
+<p>
+    Avec obj[key] !== undefined:
+</p>
+
+{% highlight js linenos %}
+console.log(simon['lastName'] !== undefined); // true
+console.log(john['lastName'] !== undefined); // false
+{% endhighlight %}
+
+<a id="suppr-propriete" class="anchor"></a>
+<h2>Supprimer une propriété</h2>
+
+{% highlight js linenos %}
+delete obj['firstName'];
+delete obj.lastName;
+{% endhighlight %}
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà nous avons vu les objets littéraux, mais ce n'est qu'une infime partie sur la conception objet ! 
+    Nous verrons plus tard dans un autre article sur la programmation orienté objet toutes les possibilités qui s'offre à nous.
+</p>
+
+<p>
+    Si vous avez des idées d’amélioration pour cet article, laissez-nous un commentaire !
+</p>
+
+<p>
+    Si tout est clair pour vous, rendez-vous au prochain article : "La manipulation du DOM".
+</p>
