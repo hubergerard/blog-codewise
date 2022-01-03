@@ -1,0 +1,220 @@
+---
+layout: post
+title: "Javascript - Manipulation du DOM"
+date: 2021-12-31 9:14:00 +0100
+description: "Dans cet article, vous allez apprendre ce qu'est le DOM et comment le manipuler"
+tags: developpement web javascript
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/javascript-dom/cover_js_dom.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<div id="toc" class="blog-toc"></div>
+
+<a id="definition" class="anchor"></a>
+<h2>Définition</h2>
+
+<p><b>DOM (document object model) : </b></p>
+<p>
+    Pour commencer qu'est-ce que le DOM? Le DOM est une représentation entièrement orientée objet de la page web
+    et peut être manipulé à l'aide d'un langage de script comme Javascript.
+    la représentation du document (HTML ou XML) à travers le DOM permet de le voir comme un groupe structuré de noeuds d'objets
+    possédant différentes propriétés et méthodes.
+    Le DOM est la représentation en arborescence de la page.
+</p>
+
+<p><b>Noeud (node) : </b></p>
+
+<p>
+    Un noeud est un objet du DOM, on peut retrouver : element, Text, Attr, Document, Comment, etc...
+</p>
+
+<p><b>Élément (element) : </b></p>
+
+<p>
+    Un élément est un type de noeud, par exemple : &lt;p&gt;, &lt;div&gt;, etc...
+</p>
+
+<a id="context" class="anchor"></a>
+<h2>Contexte</h2>
+
+<p>
+    Le javascript permet de rendre les pages web plus dynamiques et interactives. 
+    Avant JavaScript, l’interaction de l’utilisateur avec la page web se limitait à visiter des liens et à soumettre des formulaires.
+</p>
+
+<p>
+    Désormais le javascript rend possibles :
+</p>
+
+<ul>
+    <li>
+        La manipulation des éléments d’une page web : que ce soit leur contenu ou leurs attributs, parmi lesquels les classes, le style, etc.
+    </li>
+    <li>
+        La prise en compte des actions de l’utilisateur, tel qu’un clic sur un élément, un glisser-déposer d’un élément vers un autre, etc.
+    </li>
+</ul>
+
+<p>
+    Lorsqu’on visite une page web, le navigateur récupère du code HTML qu’il analyse, pour construire une structure hiérarchique de “noeuds”.
+</p>
+
+<img class="article-img" src="/assets/img/blog/javascript-dom/dom-model.png" alt="DOM-model">
+
+<a id="manipulation" class="anchor"></a>
+<h2>Manipulation</h2>
+
+<p>
+    <b>Changer le contenu de l'element body : </b>
+</p>
+
+{% highlight js linenos %}
+// Try this in your browser's console, on any webpage
+
+// Replace the body's content with our own
+document.body.innerHTML = '<h1>I change the body with this title !</h1>'
+
+// Apply styles to the body (much like in CSS)
+document.body.style.color = 'red';
+document.body.style.fontSize = '60px';
+{% endhighlight %} 
+
+<p>
+    <b>Récupération d'une balise par son id : </b>
+</p>
+
+<p>
+    document.getElementById('idOfElement') permet de récupérer un élément via son id.
+</p>
+
+{% highlight html linenos %}
+<body>
+    <p id="first">Premier paragraphe</p>
+    <p id="second">Second paragraphe</p>
+    <p id="third">Troisième paragraphe</p>
+</body>
+{% endhighlight %} 
+
+{% highlight js linenos %}
+// Get the paragraph with id second
+const secondElem = document.getElementbyId('second');
+
+// Alter both its content and style
+secondElem.innerHTML = '<em>Je modifie son contenu</em> et son style';
+secondElem.style.fontWeight = 'bold';
+{% endhighlight %}
+
+<p>
+    <b>Récupération de plusieurs balises : </b>
+</p>
+
+<p>
+    On peut récupérer plusieurs éléments en un seul appel :
+</p>
+
+<ul>
+    <li>
+        Par leur nom de balise avec document.getElementsByTagName()
+    </li>
+    <li>
+        Par leur classe avec document.getElementsByClassName()
+    </li>
+</ul>
+
+{% highlight html linenos %}
+<button>Premier bouton</button>
+<button class="red">Second bouton</button>
+<p class="red">Paragraphe avec la même classe que le second bouton</p>
+{% endhighlight %}
+
+{% highlight js linenos %}
+// Get all the button element
+const allButtons = document.getElementsbyTagName('button');
+
+// Alter the button's style with loop beacause the variable is an array
+for(let i = 0; i < allButtons.length ; i++;){
+    allButton[i].style.backgroundColor = 'yellow';
+}
+// Get all elements having the class "red"
+const allWithRed = document.getElementsByClassName('red');
+for(let i = 0; i < allWithRed.length; i++;){
+    allWithRed[i].style.color = 'red';
+}
+{% endhighlight %}
+
+
+<a id="evenement" class="anchor"></a>
+<h2>Évènement</h2>
+
+<p>
+    <b>Réagir à un clic sur un élément : </b>
+</p>
+
+<p>
+    element.addEventListener() permet de détecter un évènement d’un certain type (click, mouseover, etc.), 
+    et d’appeler une fonction quand il se produit. D’où ces deux paramètres (type d’évènement en 1er, fonction en 2ème).
+</p>
+
+{% highlight html linenos %}
+<body>
+    <button id="button1">Change mon texte !</button>
+</body>
+{% endhighlight %}
+
+{% highlight js linenos %}
+// Get the button
+const firstButton = document.getElementById('button1');
+// Initialize a counter
+let count = 0;
+// Attach an event listener for the click event
+firstButton.addEventListener('click', () => {
+    count += 1;
+    const text = "J'ai cliqué " + count + "fois";
+    firstButton.innerHTML = text;
+});
+{% endhighlight %}
+
+<p>
+    <b>Réagir à un événement change sur plusieurs éléments : </b>
+</p>
+
+{% highlight html linenos %}
+<select>
+    <option value="kiwis">Kiwis</option>
+    <option value="bananes">Bananes</option>
+</select>
+
+<select>
+    <option value="carottes">Carottes</option>
+    <option value="tomates">Tomates</option>
+</select>
+
+<div>Je veux manger des <span id="show-choice">?</span>.</div>
+{% endhighlight %}
+
+{% highlight js linenos %}
+const choiceSpan = document.getElementById('show-shoice');
+const selectors = document.getElementByTagName('select');
+// Attach an event listener to each of the select elements,
+//  responding to the "change" event
+for(let i = 0; i < selectors.length; i++;){
+    selectors[i].addEventListener('change', event => {
+        // Eventy target is the selector that has been changed,
+        // its value is that of the selected option
+        choiceSpan.innerHTML = event.target.value;
+    });
+}
+{% endhighlight %}
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà nous avons vu ce qu'est le DOM et sa manipulation.
+    Si vous avez des idées d’amélioration pour cet article, laissez-nous un commentaire !
+</p>
