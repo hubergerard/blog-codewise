@@ -246,9 +246,9 @@ Un bloc d'instruction représente l'ensemble des instructions contenues entre de
 <p>
   Voyons de plus près la différence entre "let" et "var".
 </p>
-<p>
-  Exemple avec let :
-</p>
+
+<a id="portee-let" class="anchor"></a>
+<h3>Exemple avec let</h3>
 
 {% highlight js linenos %}
 // name n'est pas accessible avant d'être déclarée, on obtient donc une erreur
@@ -268,9 +268,8 @@ console.log(age); // => // => ReferenceError : name is not defined
 {% endhighlight %} 
 <div class="code-caption">Exemple montrant la portée d'une variable déclarée avec "let"</div>
 
-<p>
-Exemple avec var :
-</p>
+<a id="portee-var" class="anchor"></a>
+<h2>Exemple avec var</h2>
 
 {% highlight js linenos %}
 // avec "var" la variable est accessible au dessus de la déclaration, mais elle n'a pas encore de valeur.
