@@ -130,7 +130,7 @@ const favoriteSchool = "CodeWise";
 favoriteSchool = "Another School"; // => TypeError: Assignement to constant variable.
 {% endhighlight %}
 
-<a id="declaration-const" class="anchor"></a>
+<a id="declaration-var" class="anchor"></a>
 <h3>Déclaration avec var</h3>
 
 <p>Le keyword "var" est similaire à "let". Néanmoins il y a une différence dans la portée de la variable que nous verrons plus bas</p>
@@ -165,15 +165,16 @@ let age = 25;
 <p>
   Mais on peut également assigner une valeur après la déclaration, pour assigner une nouvelle valeur à notre variable, qui écrasera la valeur précédente.
 </p>
-<p>
-  Notez qu'on peut utiliser la valeur courante d’une variable pour calculer une nouvelle valeur à lui assigner.
-</p>
 
 {% highlight js linenos %}
 let age = 25; // age value is 25
 age = 26; // age value is 26
 age = age + 1 // age value is 27
 {% endhighlight %} 
+
+<p>
+  Notez qu'on peut utiliser la valeur courante d’une variable pour calculer une nouvelle valeur à lui assigner.
+</p>
 
 <a id="type-variable" class="anchor"></a>
 <h2>Type d’une variable</h2>
@@ -191,7 +192,7 @@ En JavaScript comme dans différents langages, nous manipulons plusieurs types d
 </ul>
 
 <p>
-On peut connaître le type d’une variable avec le mot-clé "typeof" :
+On peut connaître le type d’une variable avec l'opérateur "typeof" :
 </p>
 
 {% highlight js linenos %}
@@ -206,7 +207,8 @@ const user = {
     age : 25
 }
 typeof user; // => "object"
-{% endhighlight %} 
+{% endhighlight %}
+<div class="code-caption">Exemple d'utilisation de l'opérateur typeof</div>
 
 
 <a id="portee-variable" class="anchor"></a>
@@ -248,7 +250,7 @@ Un bloc d'instruction représente l'ensemble des instructions contenues entre de
 </p>
 
 <a id="portee-let" class="anchor"></a>
-<h3>Exemple avec let</h3>
+<h3>La portée de let</h3>
 
 {% highlight js linenos %}
 // name n'est pas accessible avant d'être déclarée, on obtient donc une erreur
@@ -269,7 +271,7 @@ console.log(age); // => // => ReferenceError : name is not defined
 <div class="code-caption">Exemple montrant la portée d'une variable déclarée avec "let"</div>
 
 <a id="portee-var" class="anchor"></a>
-<h2>Exemple avec var</h2>
+<h3>La portée de var</h3>
 
 {% highlight js linenos %}
 // avec "var" la variable est accessible au dessus de la déclaration, mais elle n'a pas encore de valeur.
