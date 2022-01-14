@@ -2677,20 +2677,26 @@ code {
 .tableOperator{
     table-layout: fixed;
     width: 100%;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
+    border: 1px solid rgb(201, 201, 201)
 }
 
-.tableOperator > thead > tr > td {
-    font-weight: bold;
-    text-align: center;
-}
-
-.tableOperator > tbody > tr > td {
+.tableOperator td {
     text-align: center;
     padding: 4px;
+    border: 1px solid rgb(201, 201, 201);
 }
 
-.tableOperator tbody tr:nth-child(odd){
+.tableOperator > thead td {
+    font-weight: bold;
+    background-color:rgb(29, 140, 214, 0.5);
+}
+
+.tableOperator > tbody td:first-child {
+    font-weight: bold;
+}
+
+.tableOperator > tbody > tr:nth-child(odd){
     background-color: rgb(221, 221, 221);
 }
 
