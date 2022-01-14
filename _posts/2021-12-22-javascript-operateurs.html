@@ -1,0 +1,564 @@
+---
+layout: post
+title: "Javascript - Les opérateurs"
+date: 2021-12-21 9:14:00 +0100
+description: "En JavaScript, comment effectuer des calculs, des comparaisons, des affectations pour donner à notre code des instructions ?"
+tags: developpement web javascript operateurs
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/javascript-operator/cover_js_operator.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="definition" class="anchor"></a>
+<h2>Définition</h2>
+
+<p>
+Le langage JavaScript possède différents types d’opérateurs que vous pouvez utiliser pour calculer des expressions, comparer des valeurs, valider votre code, etc.
+</p>
+<p>
+    Les opérateurs sont une fonctionnalité indispensable à tout langage de programmation.
+</p>
+
+<a id="operateur-arithmetique" class="anchor"></a>
+<h2>Opérateurs arithmétiques</h2>
+
+<p>
+Dans cette section, vous allez voir tous les opérateurs de calcul que vous pouvez utiliser dans votre code :
+</p>
+
+<table class="tableOperator">
+    <thead>
+        <tr>
+            <td>
+                Opérateur
+            </td>
+            <td>
+                Description
+            </td>
+            <td>
+                Expression
+            </td>
+            <td>
+                Commentaire
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                +
+            </td>
+            <td>
+                Addition
+            </td>
+            <td>
+                a + b
+            </td>
+            <td>
+
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                -
+            </td>
+            <td>
+                Soustraction
+            </td>
+            <td>
+                a - b
+            </td>
+            <td>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                *
+            </td>
+            <td>
+                Multiplication
+            </td>
+            <td>
+                a * b
+            </td>
+            <td>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                /
+            </td>
+            <td>
+                Division
+            </td>
+            <td>
+                a / b
+            </td>
+            <td>
+                La division est toujours une division décimale, le résultat n'est jamais arrondi.
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                %
+            </td>
+            <td>
+                Modulo
+            </td>
+            <td>
+                a % b
+            </td>
+            <td>
+                Permet d'obtenir le reste d'une division entière.
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                -
+            </td>
+            <td>
+                Moins unaire
+            </td>
+            <td>
+                -a
+            </td>
+            <td>
+                Inverse le signe du nombre.
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<a id="operateur-comparaison" class="anchor"></a>
+<h2>Opérateurs de comparaisons</h2>
+
+<p>
+Ces opérateurs permettent de comparer deux expressions. Ils renvoient un booléen correspondant au résultat de la-dite comparaison : true si la comparaison est vraie, false sinon.
+</p>
+
+<table class="tableOperator">
+    <thead>
+        <tr>
+            <td>
+                Opérateur
+            </td>
+            <td>
+                Description
+            </td>
+            <td>
+                Expression
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <
+            </td>
+            <td>
+                Strictement inférieur
+            </td>
+            <td>
+                a < b
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                >
+            </td>
+            <td>
+                Strictement supérieur
+            </td>
+            <td>
+                a > b
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <=
+            </td>
+            <td>
+                Inférieur ou égal
+            </td>
+            <td>
+                a <= b
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                >=
+            </td>
+            <td>
+                Supérieur ou égal
+            </td>
+            <td>
+                a >= b
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                ===
+            </td>
+            <td>
+                Égalité
+            </td>
+            <td>
+                a === b
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                !==
+            </td>
+            <td>
+                Différent
+            </td>
+            <td>
+                a !== b
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                instanceOf
+            </td>
+            <td>
+                Instance de classe
+            </td>
+            <td>
+                refObjet instanceof Type
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<a id="operateur-logique" class="anchor"></a>
+<h2>Opérateurs logiques</h2>
+
+<p>
+Ceux-ci permettent de calculer des expressions logiques qui vous permettent de construire des conditions.
+Tous les opérateurs logiques renvoient un booléen, comme les opérateurs de comparaison.
+</p>
+
+<table class="tableOperator">
+    <thead>
+        <tr>
+            <td>
+                Opérateur
+            </td>
+            <td>
+                Description
+            </td>
+            <td>
+                Expression
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                &&
+            </td>
+            <td>
+                ET
+            </td>
+            <td>
+                a && b
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                ||
+            </td>
+            <td>
+                OU
+            </td>
+            <td>
+                a || b
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                !
+            </td>
+            <td>
+                NON
+            </td>
+            <td>
+                !a
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+Voici la table de vérité de ces opérateurs. Cette table vous permet de vérifier le résultat renvoyé par chaque opérateur en fonction des valeurs d'entrée.
+</p>
+
+<table class="tableOperator">
+    <thead>
+        <tr>
+            <td>
+                a
+            </td>
+            <td>
+                b
+            </td>
+            <td>
+                a && b
+            </td>
+            <td>
+                a || b
+            </td>
+            <td>
+                !a
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                true
+            </td>
+            <td class="font-weight-bold">
+                true
+            </td>
+            <td>
+                true
+            </td>
+            <td>
+                true
+            </td>
+            <td>
+                false
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                true
+            </td>
+            <td class="font-weight-bold">
+                false
+            </td>
+            <td>
+                false
+            </td>
+            <td>
+                true
+            </td>
+            <td>
+                false
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                false
+            </td>
+            <td class="font-weight-bold">
+                true
+            </td>
+            <td>
+                false
+            </td>
+            <td>
+                true
+            </td>
+            <td>
+                true
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                false
+            </td>
+            <td class="font-weight-bold">
+                false
+            </td>
+            <td>
+                false
+            </td>
+            <td>
+                false
+            </td>
+            <td>
+                true
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<a id="operateur-affectation" class="anchor"></a>
+<h2>Opérateurs d'affectations</h2>
+
+<p>
+Les opérateurs d'affectation vous permettent de modifier la valeur d'une variable.
+</p>
+
+<table class="tableOperator">
+    <thead>
+        <tr>
+            <td>
+                Opérateur
+            </td>
+            <td>
+                Description
+            </td>
+            <td>
+                Expression
+            </td>
+            <td>
+                Commentaire
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                =
+            </td>
+            <td>
+                Affectation
+            </td>
+            <td>
+                a = Expr
+            </td>
+            <td>
+                Affecte à la variable la valeur d'expression et renvoie cette valeur.
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                +=
+            </td>
+            <td>
+                Addition
+            </td>
+            <td>
+                a += Expr
+            </td>
+            <td>
+                variable = variable + Expr
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                -=
+            </td>
+            <td>
+                Soustraction
+            </td>
+            <td>
+                a -= Expr
+            </td>
+            <td>
+                variable = variable - Expr
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                ++
+            </td>
+            <td>
+                Incrémentation
+            </td>
+            <td>
+                ++a; ou <br> a++;
+            </td>
+            <td>
+                pré-incrémentation ou post-incrémentation
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                --
+            </td>
+            <td>
+                Décrémentation
+            </td>
+            <td>
+                --a; ou <br> a--;
+            </td>
+            <td>
+                pré-décrémentation ou post-décrémentation
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                new
+            </td>
+            <td>
+                Affectation
+            </td>
+            <td>
+                a = new Classe();
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<a id="operateur-conditionnel" class="anchor"></a>
+<h2>Opérateurs conditionnels</h2>
+
+<p>
+Aussi appelés "opérateurs ternaires", c'est le seul opérateur à contenir 3 opérandes. Il est utilisé comme une alternative aux blocs if/else.
+</p>
+
+<img style="width: 100%;" src="/assets/img/blog/javascript-operator/operator_ternary.png" alt="operator-ternary">
+
+<P>Exemple :</P>
+
+{% highlight js linenos %}
+let i = (j < 7) ? 1 : -1 ;
+{% endhighlight %} 
+
+<p>Explication : On affectera à la variable "i" :</p>
+<ul>
+    <li>
+        1 si "j" est inférieur à 7
+    </li>
+    <li>
+        -1 si "j" est supérieur à 7
+    </li>
+</ul>
+
+<a id="Conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Vous venez de découvrir les principaux opérateurs de JavaScript. 
+</p>
+<p>
+    Ces opérateurs existent dans tous les langages de programmation, seul la syntaxe peut varier.
+    N'hésitez pas à tester les opérateurs, dans une console de navigateur par exemple, pour bien ancrer leur fonctionnement.
+</p>
+
+<p>
+    Quand vous vous sentez à l'aise avec les opérateurs, vous pouvez passer au chapitre suivant : <a href="/javascript-structures-controle">JavaScript : Les structures de contrôle</a>
+</p>
+<p>
+    Si vous avez des idées d’amélioration pour cet article, laissez-nous un commentaire !
+</p>
