@@ -1864,10 +1864,16 @@ label {
 
 /* 14. Blog */
 
+#tab-crit-framework{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
 .blog-wrapper {
     background: #fff;
     overflow: hidden;
     padding: 20px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
 }
 
 .home-blog-wrapper {
