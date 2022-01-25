@@ -1,0 +1,279 @@
+---
+layout: post
+title: "ES6 - Javascript fait peau neuve !"
+date: 2022-01-25 12:10:50 +0100
+description: "Vous cherchez à comprendre comment fonctionne le routing aveC Angular ? vous êtes à la bonne adresse !"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/es6/cover_es6.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<div id="toc" class="blog-toc"></div>
+
+<a id="new-keyword" class="anchor"></a>
+<h2>Nouveaux mot-clés</h2>
+
+<a id="keyword-let" class="anchor"></a>
+<h3>Let</h3>
+
+<p>
+    Le mot-clé <b>let</b> permet de déclarer une variable limitée à la portée du bloc, donc elle n'existe que dans le bloc ou elle a été déclarée contrairement à une variable déclarée avec le mot-clé var.
+</p>
+
+<p>Exemple</p>
+
+{% highlight js linenos %}
+function swop(x, y) {
+    if (x != y) {
+        var bef = x;
+        let temp = x;
+        x = y;
+        y = temp;
+    }
+    console.log(typeof(bef));   // number
+    console.log(typeof(tmp));   // undefined
+}
+{% endhighlight %}
+
+<p>
+    Le console log est en dehors du bloc de la fonction. On remarque que la variable ‘bef’ déclarée avec var existe en dehors du bloc de la fonction, ce qui n’est pas le cas de ‘temp’.
+</p>
+
+<a id="dont-use-var-keyword" class="anchor"></a>
+<h3>Pourquoi il ne faut plus utiliser le mot-clé var</h3>
+
+<p>
+    Les faits suivants ont été observé avec le mot-clé <b>var</b> :
+</p>
+
+<ul>
+    <li>
+        la variable continue d'exister en dehors du bloc (comme nous l’avons vu précédemment).
+    </li>
+    <li>
+        la référence de la variable existe dès l'entrée dans la fonction donc avant la ligne de déclaration ! 
+    </li>
+</ul>
+
+<p>
+    Les développeurs sont habitués à des scopes qui s'arrêtent au niveau du bloc d'instruction dans lequel ils sont définis
+    pour éviter de créer des effets de bords dans notre code, il est donc vivement déconseillé d'utiliser var.
+</p>
+
+<a id="const-keyword" class="anchor"></a>
+<h3>Const</h3>
+
+<p>
+    Si vous avez une variable qui ne change pas de valeur, préférez utiliser le mot-clé <b>const</b>.
+</p>
+
+<p>
+    Une constante ne peut pas être déclarée à nouveau. Si vous n'êtes pas sûr de devoir muter une référence, déclarez-la en constante jusqu'à ce que vous ayez besoin de la modifier.
+</p>
+
+<p>
+    Exemple
+</p>
+
+{% highlight js linenos %}
+const ENV = "dev";
+{% endhighlight %}
+
+<a id="template-literal" class="anchor"></a>
+<h2>Template literal</h2>
+
+<a id="interpolation" class="anchor"></a>
+<h3>Interpolation</h3>
+
+<p>
+    Les templates literals à la différence d’une chaîne de caractère classique, utilisent les anti quotes (`) à la place des simples ou double quotes pour être déclarés.
+</p>
+
+<p>
+    La template string va nous permettre d’évaluer des variables à l’intérieur de la chaîne, c’est ce qu’on appelle une interpolation.
+</p>
+
+<p>Exemple</p>
+
+{% highlight js linenos %}
+let name = "Pierre";
+let age = 28;
+let result = `Je m’appelle ${name} et j'ai ${age} ans`;
+{% endhighlight %}
+
+<p>
+    Pour interpoler la variable elle doit être encapsulée d’une accolade ouvrante et fermante et précédée du symbole dollar.
+</p>
+
+<p>
+    L’espace entre les accolades n’est pas réservé qu’aux variables, il peut contenir du code javascript, des opérations, des appels de fonctions et autres.
+</p>
+
+<a id="string-multiline" class="anchor"></a>
+<h3>Chaîne de caractères multi-ligne</h3>
+
+<p>
+    Avec les templates literals plus besoin de concaténer des chaînes avec un saut de ligne.
+</p>
+
+<p>
+    Le modèle de libellés ES6 résout le problème avec la prise en charge de chaîne multiligne.
+</p>
+
+<p>
+    Exemple
+</p>
+
+{% highlight js linenos %}
+const modele = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Test</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>`
+{% endhighlight %}
+
+<a id="default-param" class="anchor"></a>
+<h2>Paramètre par défaut</h2>
+
+<p>
+    Avec ES6 vous pouvez utiliser des paramètres par défaut dans vos fonctions :
+</p>
+
+{% highlight js linenos %}
+let sum = function (x = 0, y = 0) {
+    return x + y;
+};
+{% endhighlight %}
+
+<p>
+    Ce qui peut nous éviter de faire planter le programme et/ou de vérifier si les paramètres sont bien utilisés et les tester dans le code.
+</p>
+
+<a id="for-of" class="anchor"></a>
+<h2>Boucle for-of</h2>
+
+<p>
+    En javascript, il n’y a toujours pas de foreach mais il y a une nouvelle façon d’itérer sur un tableau avec <b>for-of</b>.
+</p>
+
+<p>Exemple</p>
+
+{% highlight js linenos %}
+let fruits = [ "banana", "apple", "strawberry", "orange" ];
+
+for (let fruit of fruits) {
+    console.log(fruit);
+}
+{% endhighlight %}
+
+<a id="evolution-litteral-object" class="anchor"></a>
+<h2>Évolution des objets littéraux</h2>
+
+<p>
+    Il est désormais possible d’avoir une écriture plus légère concernant la déclaration de méthode pour les objets littéraux.
+    Plus besoin d’écrire le mot-clé <b>function</b>.
+</p>
+
+<p>Exemple</p>
+
+{% highlight js linenos %}
+let literalObject = {
+    init() {
+        this.display("Hello !") ;
+    },
+    display(message) {
+        console.log(message);
+    }
+};
+{% endhighlight %}
+
+<a id="object" class="anchor"></a>
+<h2>Objet</h2>
+
+<a id="class" class="anchor"></a>
+<h3>Les classes</h3>
+
+<p>
+    Comme pour un objet littéral nous n’avons plus besoin d’écrire le mot-clé <b>function</b> pour déclarer une méthode.
+</p>
+
+<p>
+    Nous pouvons même omettre le point virgule après la déclaration de la classe.
+</p>
+
+<p>
+    Cependant l’encapsulation des données n’est pas effective ce qui a pour effet que vos attributs et méthodes sont accessibles depuis l'extérieur de la classe.
+</p>
+
+<a id="heritage" class="anchor"></a>
+<h3>Héritage</h3>
+
+<p>
+    Avec ES6 nous pouvons désormais utiliser <b>l’héritage simple</b> avec javascript, en utilisant le mot-clé extends sur la classe qui doit hériter.
+</p>
+
+<p>Exemple</p>
+
+{% highlight js linenos %}
+class Developer extends Person {
+    constructor(name, age, skills) {
+        super(name, age);
+        this.skills = skills;
+    }
+{% endhighlight %}
+
+<p>
+    On remarque aussi qu’on peut appeler une méthode parente avec le mot-clé <b>super</b>.
+</p>
+
+<a id="arrow-function" class="anchor"></a>
+<h2>Arrow function</h2>
+
+<p>
+    Les fonctions fléchées ou arrow functions permettent d’avoir une syntaxe plus courte que les expressions de fonctions classique, elles sont souvent anonymes et ne sont pas faites pour être utilisées en tant que méthode.
+</p>
+
+<p>Exemple</p>
+
+<p>avant :</p>
+
+{% highlight js linenos %}
+hello = function() {
+    return "Hello World!";
+  }
+{% endhighlight %}
+
+<p>maintenant :</p>
+
+{% highlight js linenos %}
+hello = () => {
+    return "Hello World!";
+  }  
+{% endhighlight %}
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Nous avons donc vu les nouveautés d’ES6 qui nous permettent de créer des applications web plus facilement.
+    Enfin si vous voulez savoir si un navigateur prend en charge une fonctionnalité d’ES6 consulter cette <a href="http://kangax.github.io/compat-table/es6/">page</a> .
+</p>
+
+<p>
+    J'espère que vous avez apprécié cet article. Faites-nous signe dans les commentaires si vous pensez qu'il y a
+    d'autres infos à ajouter !
+</p>        
+  
