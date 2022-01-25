@@ -104,6 +104,33 @@ La première URL chargera le component FirstComponent et la deuxième chargera S
   Cette configuration est à charger via le RouterModule, fourni par Angular, dans votre AppModule.
   Tout cela est fait pour vous, si vous passez par la CLI pour ajouter le routing.
 </p>
+
+<a id="router-outlet" class="anchor"></a>
+<h2>Positionner le routeur avec router-outlet</h2>
+
+<p>
+  A l'aide de la directive router-outlet, dans le template on va marquer l'emplacement où sera inseré le composant par le routeur.
+</p>
+<p>
+  Exemple
+</p>
+{% highlight html linenos %}
+<header>
+  <h1>Welcome to Router Demo !</h1>
+  <nav>
+    <!-- Some links -->
+  </nav>
+ </header>
+ <body>
+  <main>
+    <router-outlet></router-outlet>
+    <!-- Component will be inserted here! -->
+  </main>
+</body>
+ 
+{% endhighlight %}
+<p>Postionner le router-outlet est indispensable pour que votre routeur puisse fonctionner</p>
+
 <a id="naviguer-routing" class="anchor"></a>
 <h2>Naviguer à travers les routes</h2>
 <p>
