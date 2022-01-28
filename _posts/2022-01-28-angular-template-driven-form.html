@@ -1,0 +1,217 @@
+---
+layout: post
+title: "Angular - Template Driven Form"
+date: 2021-11-26 16:10:50 +0100
+description: "Comment réaliser un formulaire Angular avec les templates driven form ?"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-driven-dorm/cover_angular_driven_form.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<div id="toc" class="blog-toc"></div>
+
+<a id="activate-form" class="anchor"></a>
+<h2>Activer les formulaires</h2>
+
+<p>
+    Pour commencer à utiliser les formulairex template driven form 
+    il est nécessaire d’importer le module FormsModule dans le fichier app.module.ts.
+</p>
+
+{% highlight ts linenos %}
+import { NgModule }      from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule }   from '@angular/forms';
+import { AppComponent }  from './app.component';
+
+@NgModule({
+ imports: [
+   BrowserModule,
+   FormsModule,
+ ],
+ declarations: [
+   AppComponent,
+ ],
+ providers: [],
+ bootstrap: [ AppComponent, ]
+})
+export class AppModule { }
+{% endhighlight %}
+
+<a id="value-ngmodel" class="anchor"></a>
+<h2>Récupérer la valeur dans le component</h2>
+
+<a id="ngmodel" class="anchor"></a>
+<h3>NgModel</h3>
+
+<p>
+    La directive ngModel sert à lier la valeur des contrôles HTML (input,select, textarea) aux données de l’application.
+</p>
+
+<p>
+    Le ngModel n’est utile que dans le cas d’un formulaire “template driven”.
+</p>
+
+<p>
+    Pour commencer nous devons créer un input dans notre template (partie html) 
+    et lui appliquer la directive ngModel avec pour attribut une propriété existante du côté application :
+</p>
+
+{% highlight ts linenos %}
+<input type="text" [(ngModel)]="favoriteColor">
+{% endhighlight %}
+
+<p>
+    exempleComponent.html
+</p>
+
+<p>
+    Et déclarer notre variable (si ce n’est déjà fait) dans le fichier typescript lié au template :
+</p>
+
+{% highlight ts linenos %}
+favoriteColor;
+{% endhighlight %}
+
+<p>
+    exempleComponent.ts
+</p>
+
+<p>
+    Nous pouvons lier n’importe quel propriété même celle d’un objet : 
+</p>
+
+{% highlight ts linenos %}
+<input type="text" [(ngModel)]="User.favoriteColor">
+{% endhighlight %}
+
+<a id="2way-binding" class="anchor"></a>
+<h3>Two way binding</h3>
+
+<p>
+    La liaison bi-directionnelle utilise la syntaxe de la liaison de propriété : [] et de la liaison d'événement : (). 
+    Si une seule de ces liaisons est appliquée alors ce sera donc unidirectionnel.
+</p>
+
+<p>
+    On l’applique dans angular comme ceci : [()], 
+    cela veut dire que la propriété attribuée à la directive [(ngModel)] est mise à jour en temps réel dans le HTML et le TS.
+</p>
+
+<p>
+    Nous pouvons modifier la donnée dans les deux sens. testez en affichant la propriété favoriteColor dans votre template :
+</p>
+
+{% highlight ts linenos %}
+<input type="text" [(ngModel)]="favoriteColor">
+{{ favoriteColor }}
+{% endhighlight %}
+
+<a id="form-validation" class="anchor"></a>
+<h2>Validation de formulaire</h2>
+
+<p>
+    Pour ajouter une validation à un template driven form, il faut au préalable appliquer un attribut de validation HTML comme ceci : 
+</p>
+
+{% highlight ts linenos %}
+<input required type="text" [(ngModel)]="favoriteColor">
+{% endhighlight %}
+
+<p>
+    Ou bien :
+</p>
+
+{% highlight ts linenos %}
+<input minlength="2" type="text" [(ngModel)]="favoriteColor">
+{% endhighlight %}
+
+<p>
+    Ensuite il faut créer une variable locale qui sera accessible dans le template qui nous donnera toutes les informations sur l’input :
+</p>
+
+{% highlight ts linenos %}
+<input type="text" [(ngModel)]="User.favoriteColor" #inputColor="ngModel">
+{% endhighlight %}
+
+<p>
+    Angular exécute la validation chaque fois que la valeur de l’input est modifiée, 
+    il génère ensuite une liste d’erreurs de validation si les conditions ne sont pas respectées.
+</p>
+
+<img class="img" src="/assets/img/blog/angular-driven-dorm/validation_form.png" alt="validation form">
+
+<a id="display-errors" class="anchor"></a>
+<h3>Afficher les erreurs de validation</h3>
+
+<p>
+    Il va bien falloir que notre utilisateur sache pourquoi l’envoi du formulaire est bloqué !
+</p>
+
+{% highlight ts linenos %}
+<div *ngIf="inputColor.invalid && (inputColor.dirty || inputColor.touched)">
+    class="alert alert-danger">
+  <p *ngIf="inputColor.errors.required">
+    Le champ est obligatoire
+  </p>
+   <p *ngIf="inputColor.errors.minlength">
+    Response must be at least 2 characters long.
+  </p>
+  
+  <p *ngIf="inputColor.errors.forbiddenName">
+    White is not a color.
+  </p>
+ </div>
+{% endhighlight %}
+
+<p>
+    Grâce à la variable locale (#inputColor) que nous avons défini auparavant, 
+    nous accédons aux erreurs qu’Angular à générer selon les conditions requises. Si le champ est vide, 
+    alors inputColor.errors.required sera true et affichera la div correspondante.
+</p>
+
+<a id="form-submit" class="anchor"></a>
+<h2>Soumission du formulaire</h2>
+
+<p>
+    Pour terminer l’utilisateur doit pouvoir soumettre le formulaire après l’avoir rempli, 
+    le bouton du formulaire ne fait rien par lui-même, il déclenche un évènement en raison de son type (type=”submit”).
+</p>
+
+<p>
+    Pour ce faire il faut lier la propriété ngSubmit du formulaire avec la méthode défini du côté TS : 
+</p>
+
+{% highlight ts linenos %}
+<form (ngSubmit)="onSubmit()" #userForm="ngForm">
+    <label for="inputColor">{{ favoriteColor }}</label>
+    <input name="inputColor" type="text" [(ngModel)]="User.favoriteColor" #inputColor="ngModel">
+    <button type="submit">Envoyer</button>
+</form>
+{% endhighlight %}
+
+<p>
+    Vous remarquerez que nous avons défini la variable de référence de modèle #userForm pour accéder au formulaire contenant le bouton 
+    et créer une liaison d’événement. Cela nous donnera l’occasion d’activer le bouton si le formulaire est valide !
+</p>
+
+{% highlight ts linenos %}
+<button type="submit" class="btn btn-success" [disabled]="!userForm.form.valid">Submit</button>
+{% endhighlight %}
+
+<a id="form-submit" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Dans cet article nous avons vu comment créer des template driven form avec Angular. Du ngModel, 
+    à la définition de two way binding, comment gérer les validations, les afficher et comment soumettre un formulaire.
+</p>
+
+<p>
+    J’espère que cet article vous sera utile ! N'hésitez pas à nous laisser un commentaire si vous voyez des choses à ajouter !
+</p>
