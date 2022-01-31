@@ -1,0 +1,186 @@
+---
+layout: post
+title: "Angular - FormBuilder"
+date: 2022-08-30 16:10:50 +0100
+description: "Dans cet article, découvrez comment utiliser le FormBuilder d'Angular."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/article-formbuilder/cover_article_formbuilder.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="definition-formbuilder" class="anchor"></a>
+<h2>Qu'est-ce que l'objet FormBuilder ?</h2>
+
+<p>
+    <span class="fw-bold">Le FormBuilder est un objet fourni par Angular, qui facilite la création de formulaires réactifs.</span> 
+    Plus exactement, le FormBuilder fournit du sucre syntaxique pour créer de nouvelles instances de FormGroup, FormControl et FormArray.
+</p>
+
+<a id="comment-utiliser-formbuilder" class="anchor"></a>
+<h2>Comment utiliser un FormBuilder ?</h2>
+
+<p>
+    Tout d'abord il faudra l'importer dans votre composant : 
+</p>
+
+{% highlight ts linenos %}
+import { FormBuilder } from '@angular/forms'
+{% endhighlight %}
+
+<p>
+    Ensuite il faut l'injecter dans votre composant, via le constructeur :
+</p>
+
+{% highlight ts linenos %}
+constructor(private formBuilder: FormBuilder) {}
+{% endhighlight %}
+
+<p>
+    Vous pouvez ensuite commencer à utiliser les méthodes du FormBuilder.
+</p>
+
+<a id="methodes-formbuilder" class="anchor"></a>
+<h2>Les méthodes du FormBuilder</h2>
+
+<p>Il n'y a que 3 méthodes fournies par le FormBuilder.</p>
+
+<a id="control-methode" class="anchor"></a>
+<h3>La méthode <code>control()</code></h3>
+
+<p>
+    <span class="fw-bold">Plutôt intuitive, la méthode <code>control()</code> permet de créer une instance de FormControl.</span>
+</p>
+
+{% highlight ts linenos %}
+this.control = formBuilder.control({value: 'my val', disabled: true});
+{% endhighlight %}
+
+<p>
+    Dans cet exemple, la méthode crée un FormControl disabled et avec une valeur initiale.
+</p>
+
+<p>
+    Pour rappel, le FormControl permet de contrôler la valeur du champ, le statut de validation du champ, 
+    les interactions utilisateurs et les événements liés à ce champ.
+</p>
+
+<a id="group-methode" class="anchor"></a>
+<h3>La méthode <code>group()</code></h3>
+
+<p>
+    <span class="fw-bold">La méthode <code>group()</code> permet de faciliter la création d'une instance de FormGroup,</span> et des instances de FormControl que contient le FormGroup.
+</p>
+<p>
+    Dans le hook OnInit de votre composant, créez le formulaire avec la méthode <code>group()</code> du FormBuilder :
+</p>
+
+{% highlight ts linenos %}
+this.contactForm = this.formBuilder.group({
+    firstname: [''],
+    lastname: [''],
+    email: ['', Validators.required],
+    gender: [''],
+    country: [''],
+});
+{% endhighlight %}
+
+<p>
+    <span class="fw-bold">Vous remarquez que la méthode <code>group()</code> prend en paramètre un objet de configuration.</span>
+    Dans cet objet, chaque clé fait référence à une instance de FormControl qui sera créée pour vous.
+    Chaque valeur associée à une clé prend la forme d'un tableau, qui contient les configurations du FormControl.
+</p>
+<p>
+    <span class="fw-bold">On peut passer en 2ème paramètre un autre objet</span> qui sert à appliquer des configurations à tous les FormControls en même temps.
+</p>
+
+{% highlight ts linenos %}
+this.contactForm = this.formBuilder.group({
+    firstname: [''],
+    lastname: [''],
+}, { validators: Validators.required, updateOn: 'blur' });
+{% endhighlight %}
+
+<a id="array-methode" class="anchor"></a>
+<h3>La méthode <code>array()</code></h3>
+
+<p>
+    <span class="fw-bold">Cette méthode permet d'instancier un FormArray. </span>
+    Contrairement à la méthode <code>group()</code> où chaque contrôle est représenté par une paire clé-valeur, 
+    dans le FormArray les contrôles font partie d'un tableau.
+</p>
+
+{% highlight ts linenos %}
+this.skills = this.formBuilder.array([]);
+{% endhighlight %}
+
+<p><span class="fw-bold">On passe généralement un tableau vide en paramètre de la méthode <code>array()</code>,</span> car les controls sont gérés dynamiquement.</p>
+
+<a id="formbuilder-advantage" class="anchor"></a>
+<h2>Avantages du FormBuilder</h2>
+
+<p>
+    <span class="fw-bold">Il n'y a qu'un vrai avantage à utiliser le FormBuilder : rendre le code plus clair et plus concis.</span>
+</p>
+<p>
+    Angular fournit cet objet car les reactive forms sont généralement très lourds à instancier en terme de quantité de code. Le FormBuilder enlève le besoin d'écrire du code technique et vous permet de vous focaliser sur la configuration de votre formulaire.
+</p>
+<p>
+    En utilisant le FormBuilder, vous raccourcissez la taille du code, évitez d'écrire du code qui n'apporte pas d'information concrète sur votre formulaire et vous limitez le risque d'erreur lié à la déclaration d'un très gros objet.
+</p>
+<p> <span class="fw-bold">De plus, vous pouvez évitez les répétitions grâce aux configurations globales</span> sur les FormGroup et les FormArray.</p>
+
+<p>Voici un exemple. Sans FormBuilder :</p>
+
+{% highlight ts linenos %}
+profileForm = new FormGroup({ 
+    email: this.emailFormControl, 
+    firstName: new FormControl(''), 
+    lastName: new FormControl(''), 
+    address: new FormGroup({ 
+        street: new FormControl('', Validators.required), 
+        city: new FormControl('', Validators.required), 
+        state: new FormControl('', Validators.required), 
+        zip: new FormControl('', Validators.required) 
+    })
+});     
+{% endhighlight %}
+
+<p>
+    Avec FormBuilder :
+</p>
+
+{% highlight ts linenos %}
+constructor(private fb: FormBuilder) { }
+
+profileForm = this.fb.group({ 
+    email: this.emailFormControl, 
+    firstName: [''], 
+    lastName: [''], 
+    address: this.fb.group({ 
+        street: [''], 
+        city: [''], 
+        state: [''], 
+        zip: [''] 
+    }, { validators: Validators.required }),
+});
+{% endhighlight %}
+
+<p>
+    Aucun doute, gros gain de code et de lisibilité !
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    J'espère vous avoir convaincu d'utiliser le FormBuilder. Vous devriez avoir toutes les infos nécessaires pour commencer à vous en servir.
+</p>
+
+<P>
+    N'hésitez pas à nous laisser un commentaire si vous voyez des choses à ajouter !
+</P>
