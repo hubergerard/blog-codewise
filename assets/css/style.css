@@ -1620,6 +1620,7 @@ label {
     height: 330px;
     background-size: cover;
     background-position: 100% 100%;
+    z-index: -1;
 }
 
 .footer-logo {
