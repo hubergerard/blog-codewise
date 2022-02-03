@@ -1,0 +1,137 @@
+---
+layout: post
+title: "Angular - Pipe json"
+date: 2022-02-03 10:10:50 +0100
+description: "Dans cet article nous allons découvrir le pipe json d'Angular et comment l'utiliser"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/angular-pipe-json/cover_article_json_pipe.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<div id="toc" class="blog-toc"></div>
+
+<a id="json-pipe" class="anchor"></a>
+<h2>Le pipe json</h2>
+
+<p>
+    Lorsque que nous confectionnons notre code, 
+    il arrive souvent d’avoir des erreurs et passer parfois du temps sur de petites erreurs faciles à déceler si nous avons les bons outils.
+</p>
+
+<p>
+    Pour cela Angular fournit un pipe “json”, 
+    qui nous permettra de convertir une valeur de n’importe quel type en chaîne au format JSON, 
+    assez utile pour le débogage quand parfois Angular nous affiche [Object object] dans notre template alors que nous voulions afficher une valeur !
+</p>
+
+
+<a id="how-use-it" class="anchor"></a>
+<h2>Comment l'utiliser ?</h2>
+
+<p>
+    Nous n’avons même pas besoin de l’importer , 
+    les directives comme les pipes d’Angular viennent du CommonModule qui lui même est réexporté par le BrowserModule 
+    et est inclus de base dans votre fichier app.module.ts.
+</p>
+
+<p>
+    Pour commencer essayons d’afficher un objet dans notre template :
+</p>
+{% highlight ts linenos %}
+    {% raw %}{{ val }}{% endraw %}
+{% endhighlight %}
+
+<p>
+    Bien sûr du côté ts, il vous faudra donc une donnée existante :
+</p>
+
+{% highlight ts linenos %}
+val: Object = {foo: 'bar', baz: 'qux', nested: {xyz: 3, numbers: [1, 2, 3, 4, 5]}};
+{% endhighlight %}
+
+<p>
+    Voilà ce que nous avons dans le template :
+</p>
+{% highlight ts linenos %}
+[object Object]
+{% endhighlight %}
+
+<p>
+    C’est pas tellement ce qu’on voulait ! alors pourquoi cette réponse ? 
+    Eh bien parce que Angular affiche le contenu de la variable, or cette variable contient une référence vers l’objet et non pas son contenu.
+</p>
+
+<p>
+    En réponse à cela nous avons le pipe json qui peut nous aider à y voir plus clair dans notre objet pour en sélectionner les attributs à afficher.
+</p>
+
+<p>
+    Pour utiliser le pipe json il suffit donc dans votre template d’afficher une valeur avec l’interpolation et d’indiquer le pipe en question sans oublier la barre verticale comme ceci  : 
+</p>
+
+{% highlight html linenos %}
+<pre>
+    {% raw %}{{ val | json}}{% endraw %}
+</pre>
+{% endhighlight %}
+
+<p>
+    Il est préférable d’afficher le résultat dans une balise &lt;pre&gt; pour un affichage plus lisible.
+</p>
+
+<p>
+    Sur le template voici le résultat de la transformation du pipe de notre objet :
+</p>
+
+{% highlight ts linenos %}
+{
+    "foo": "bar",
+    "baz": "qux",
+    "nested": {
+      "xyz": 3,
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  }
+{% endhighlight %}
+
+<p>
+    Nous avons pris l’exemple d’un objet mais comme dit précédemment, le pipe json convertit n'importe quel type.
+</p>
+
+<p>
+    Maintenant nous savons comment est structuré notre objet et ce qu’il contient nous pouvons désormais afficher une donnée comme ceci :
+</p>
+
+{% highlight ts linenos %}
+    {% raw %}{{ val.foo }}{% endraw %}
+{% endhighlight %}
+
+<p>
+    Et Angular nous affiche bien :
+</p>
+
+{% highlight html linenos %}
+    bar
+{% endhighlight %}
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà pour le pipe json, c’est relativement simple si vous avez déjà suivi l’article sur les pipes.
+</p>
+
+<p>
+    N’hésitez pas à laisser un commentaire, en espérant que cela vous a plu !
+</p>
