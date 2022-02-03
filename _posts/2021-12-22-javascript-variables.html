@@ -235,7 +235,10 @@ typeof user; // => "object"
 Un bloc d'instruction représente l'ensemble des instructions contenues entre deux accolades.
 </p>
 
-<img src="/assets/img/blog/javascript-variable/ex_instruction.png" alt="syntaxe instruction">
+<figure class="text-center">
+  <img src="assets/img/blog/javascript-variable/ex_instruction.png" alt="Convention de nommage en JS"/>
+  <figcaption class="image-caption">Syntaxe d'un bloc d'instruction</figcaption>
+</figure>
 
 <p>
 <span class="font-weight-bold">Règle d’indentation :</span> les instructions mises entre accolades sont indentées. C'est à dire qu'on les décale vers la droite de 2 ou 4 espaces pour améliorer la lisibilité du code.
@@ -274,7 +277,8 @@ console.log(age); // => // => ReferenceError : name is not defined
 <h3>La portée de var</h3>
 
 {% highlight js linenos %}
-// avec "var" la variable est accessible au dessus de la déclaration, mais elle n'a pas encore de valeur.
+// avec "var" la variable est accessible au dessus de la déclaration, 
+// mais elle n'a pas encore de valeur.
 console.log(name); // => undefined
 
 var name = "John"; // déclaration et initialisation d'une variable "name" globale

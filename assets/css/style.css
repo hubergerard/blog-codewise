@@ -2680,6 +2680,10 @@ code {
     border-radius: 3px;
 }
 
+.article-img {
+    width: 100%;
+}
+
 .tableOperator{
     table-layout: fixed;
     width: 100%;
