@@ -49,6 +49,10 @@ body {
     overflow: hidden
 }
 
+a {
+    text-decoration: none;
+}
+
 a, .button {
     -webkit-transition: all 0.3s ease-out 0s;
     -moz-transition: all 0.3s ease-out 0s;
