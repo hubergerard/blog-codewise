@@ -66,6 +66,10 @@ layout: default
                         <img src="{{page.post_image}}" alt="{{page.title}}"/>
                     </div>
                     <div class="blog-content">
+                        <p>{{ page.description }} </p>
+                        <nav>
+                            <div id="toc" class="blog-toc"></div>
+                        </nav>
                         <div id="post-content">
                             {{content}}
                         </div>
