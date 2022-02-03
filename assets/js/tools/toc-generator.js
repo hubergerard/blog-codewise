@@ -96,8 +96,8 @@ function displayTitleNumbers(headerLevel, headerList, j){
         case 2:
             return `${titleNumbers.depth1}. ${headerList[j].innerText}`;
         case 3:
-            return `${titleNumbers.depth1}.${titleNumbers.depth2} ${headerList[j].innerText}`;
+            return `${titleNumbers.depth1}.${titleNumbers.depth2}. ${headerList[j].innerText}`;
         case 4:
-            return `${titleNumbers.depth1}.${titleNumbers.depth2}.${titleNumbers.depth3} ${headerList[j].innerText}`;
+            return `${titleNumbers.depth1}.${titleNumbers.depth2}.${titleNumbers.depth3}. ${headerList[j].innerText}`;
     }
 }
