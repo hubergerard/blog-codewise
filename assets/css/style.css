@@ -1868,10 +1868,16 @@ label {
 
 /* 14. Blog */
 
+#tab-crit-framework{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
 .blog-wrapper {
     background: #fff;
     overflow: hidden;
     padding: 20px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
 }
 
 .home-blog-wrapper {
@@ -2678,26 +2684,32 @@ code {
     border-radius: 3px;
 }
 
+.article-img {
+    width: 100%;
+}
+
 .tableOperator{
     table-layout: fixed;
     width: 100%;
-    margin-bottom: 50px;
+    margin-bottom: 40px;
+    border: 1px solid rgb(201, 201, 201)
 }
 
-.tableOperator > thead > tr > td {
-    font-weight: bold;
-    text-align: center;
-}
-
-.tableOperator > tbody > tr > td {
+.tableOperator td {
     text-align: center;
     padding: 4px;
+    border: 1px solid rgb(201, 201, 201);
 }
 
-.tableOperator tbody tr:nth-child(odd){
+.tableOperator > thead td {
+    font-weight: bold;
+    background-color:rgb(29, 140, 214, 0.5);
+}
+
+.tableOperator > tbody td:first-child {
+    font-weight: bold;
+}
+
+.tableOperator > tbody > tr:nth-child(odd){
     background-color: rgb(221, 221, 221);
-}
-
-.article-img{
-    width: 100%;
 }

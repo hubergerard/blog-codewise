@@ -66,6 +66,10 @@ layout: default
                         <img src="{{page.post_image}}" alt="{{page.title}}"/>
                     </div>
                     <div class="blog-content">
+                        <p>{{ page.description }} </p>
+                        <nav>
+                            <div id="toc" class="blog-toc"></div>
+                        </nav>
                         <div id="post-content">
                             {{content}}
                         </div>
@@ -162,4 +166,4 @@ layout: default
     </div>
 </div>
 </main>
-<script src="/assets/js/tools/toc-generator.js" text-mode="{{page.toc-text-mode}}" max-depth="{{page.toc-depth}}"></script>
+<script src="/assets/js/tools/toc-generator.js" text-mode="{{page.toc-text-mode}}" max-depth="{{page.toc-depth}}" defer></script>

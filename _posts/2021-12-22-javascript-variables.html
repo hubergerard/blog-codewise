@@ -1,0 +1,338 @@
+---
+layout: post
+title: "Javascript - Les variables"
+date: 2021-12-22 9:14:00 +0100
+description: "Qu’est-ce qu’une variable ? Pour les débutants en programmation nous allons découvrir ce sujet avec le langage javascript."
+tags: developpement web javascript
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/javascript-variable/cover_js_variable.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="historique" class="anchor"></a>
+<h2>Historique</h2>
+
+<p>
+Tout d’abord, un peu d’histoire : le Javascript a été créé en 1995 en seulement 10 jours par Brendan Eich.
+</p>
+<p>
+  À la base, son nom d’origine est Mocha. Ce qui a évolué en Livescript puis en Javascript tel que nous le connaissons.
+  Il est disponible premièrement sur le navigateur NetScape, puis à partir de 1996, Javascript devient un standard et est supporté par tous les navigateurs.
+</p>
+<p>
+  En 1997, le langage est standardisé sous le nom ECMAScript.
+  Javascript est une implémentation d’ECMAScript (ES) (la version la plus récente est la 8ème : ES8)
+</p>
+
+<a id="definition" class="anchor"></a>
+<h2>Définition</h2>
+
+<p>
+Qu’est-ce qu’une variable ? 
+</p>
+<p>
+En informatique, une variable est un élément de code qui fait référence à une position de mémoire 
+qui contient de la donnée et qui peut successivement prendre différentes valeurs au cours de l’exécution d’un programme.
+</p>
+<p>
+Nous verrons des exemples un peu plus loin dans cet article.
+</p>
+
+<a id="convention-de-nommage" class="anchor"></a>
+<h2>Convention de nommage</h2>
+
+<p>
+  En tant que développeur, 
+  nous sommes soumis à des conventions pour nommer nos variables.
+</p>
+<p> 
+  Pourquoi ? Pour une question de lisibilité du code et de maintenabilité.
+</p>
+
+<p>
+  En JavaScript, un nom de variable doit obligatoirement commencer par une lettre (minuscule ou majuscule), un "$" ou un "_".
+  Un nom de variable peut aussi contenir des chiffres, et les caractères spéciaux "$" et "_".
+</p>
+<p>
+  Mais attention : on ne peut pas faire commencer le nom de la variable par un chiffre !
+</p>
+
+<p>
+  Notez aussi que les espaces sont interdits dans le nom d’une variable. Cela produirait forcément une erreur.
+</p>
+
+<figure class="text-center">
+  <img src="assets/img/blog/javascript-variable/convention-nommage.png" alt="Convention de nommage en JS"/>
+  <figcaption class="image-caption">Convention de nommage en JS</figcaption>
+</figure>
+
+<p>
+  Aussi, on choisira un nom qui donne du sens à la variable, de préférence en anglais. Par exemple, pour stocker mon prénom dans le programme je nommerai ma variable "firstName".
+</p>
+
+<p>
+Vous remarquerez qu’il n’y a pas d’espace et qu’à partir du deuxième mot on utilise une majuscule. 
+Cette convention de nommage s’appelle lower camelCase, le tout premier mot de la variable commence toujours par une minuscule et les suivants sont marqués par une majuscule en début de mot.
+</p>
+
+<figure class="text-center">
+  <img src="assets/img/blog/javascript-variable/camel-case.png" alt="Exemples camelCase"/>
+  <figcaption class="image-caption">Exemples de variables nommées avec le casing camelCase</figcaption>
+</figure>
+
+<a id="declaration" class="anchor"></a>
+<h2>Déclaration</h2>
+
+<p>
+Une variable doit obligatoirement être déclarée, c'est-à-dire qu'on lui réserve un emplacement dans la mémoire.
+De manière optionnelle, il est possible de lui assigner une valeur au moment de la déclaration.
+</p>
+
+<p>
+< mot-clé de déclaration > < nom de la variable > [ = valeur de départ ] ;
+</p>
+
+<p>
+  Quelques exemples :
+</p>
+{% highlight js linenos %}
+// Déclaration simple, on réserve l'espace mémoire
+let firstName;
+// Déclaration avec assignation de valeur
+let ageOfParticipant = 28;
+{% endhighlight %}
+
+<p>
+Voyons maintenant les différents mots-clés qui nous permettent de déclarer en JavaScript.
+</p>
+
+<a id="declaration-let" class="anchor"></a>
+<h3>Déclaration avec let</h3>
+
+<p>Le keyword "let" nous permet de déclarer une variable dont la valeur peut changer.</p>
+
+{% highlight js linenos %}
+let nombre = 150; // nombre value is 150
+nombre = 42; // nombre value is 42
+{% endhighlight %} 
+
+<a id="declaration-const" class="anchor"></a>
+<h3>Déclaration avec const</h3>
+
+<p>Le keyword "const" nous permet de déclarer une variable dont la valeur est constante. Elle ne peut PAS changer.</p>
+
+{% highlight js linenos %}
+const favoriteSchool = "CodeWise";
+favoriteSchool = "Another School"; // => TypeError: Assignement to constant variable.
+{% endhighlight %}
+
+<a id="declaration-var" class="anchor"></a>
+<h3>Déclaration avec var</h3>
+
+<p>Le keyword "var" est similaire à "let". Néanmoins il y a une différence dans la portée de la variable que nous verrons plus bas</p>
+<p>"var" est déprécié depuis le passage à ES6 et devrait toujours être remplacé par un "let".</p>
+
+<p>
+En conclusion, selon le mot-clé que vous utilisez, la portée et la manière d'utiliser la variable peuvent changer.
+</p>
+
+<a id="assignation" class="anchor"></a>
+<h2>L’assignation</h2>
+
+<p>
+Comme vu dans les exemples précédents, pour assigner une valeur à une variable, on utilise l’opérateur d’affectation "=".
+</p>
+
+<div class="quote-block">
+  <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+  <div class="quote">
+      Il est très important de bien distinguer la déclaration (réservation d'espace mémoire) de l'assignation (aussi appelée définition) qui revient à écrire une valeur dans cet espace mémoire.
+  </div>
+</div>
+
+<p>
+On peut assigner une valeur lors de la déclaration de la variable, ce qu'on appelle l’initialisation.
+</p>
+
+{% highlight js linenos %}
+let age = 25;
+{% endhighlight %}
+
+<p>
+  Mais on peut également assigner une valeur après la déclaration, pour assigner une nouvelle valeur à notre variable, qui écrasera la valeur précédente.
+</p>
+
+{% highlight js linenos %}
+let age = 25; // age value is 25
+age = 26; // age value is 26
+age = age + 1 // age value is 27
+{% endhighlight %} 
+
+<p>
+  Notez qu'on peut utiliser la valeur courante d’une variable pour calculer une nouvelle valeur à lui assigner.
+</p>
+
+<a id="type-variable" class="anchor"></a>
+<h2>Type d’une variable</h2>
+
+<p>
+En JavaScript comme dans différents langages, nous manipulons plusieurs types de données :
+</p>
+
+<ul>
+    <li>Des nombres (Number), entiers ou à virgule.</li>
+    <li>Des chaînes de caractères (String).</li>
+    <li>Des tableaux (Array).</li>
+    <li>Des objets (Object).</li>
+    <li>Des booléens (Boolean), pouvant contenir la valeur true ou false.</li>
+</ul>
+
+<p>
+On peut connaître le type d’une variable avec l'opérateur "typeof" :
+</p>
+
+{% highlight js linenos %}
+const firstName = "John";
+typeof firstname; // => "string"
+
+const age = 25;
+typeof age; // => "number"
+
+const user = {
+    firstName : "John",
+    age : 25
+}
+typeof user; // => "object"
+{% endhighlight %}
+<div class="code-caption">Exemple d'utilisation de l'opérateur typeof</div>
+
+
+<a id="portee-variable" class="anchor"></a>
+<h2>Portée d’une variable</h2>
+
+<p>
+  La portée d'une variable correspond à l'ensemble des endroits dans votre code où la variable est accessible.
+</p>
+<p>
+  Une variable est généralement déclarée à l’intérieur d’un bloc d’instruction. Dans ce cas, elle est connue jusqu’à la fin du bloc d’instruction.
+</p>
+<p>
+  On dit que sa portée se limite au bloc d'instruction dans lequel elle est déclarée.
+</p>
+
+<div class="quote-block">
+  <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+  <div class="quote">
+    Si une variable est déclarée en dehors de tout bloc d'instruction, on dit que c'est une variable globale. Elle est alors disponible dans tout le fichier.
+  </div>
+</div>
+
+<p>
+Un bloc d'instruction représente l'ensemble des instructions contenues entre deux accolades.
+</p>
+
+<figure class="text-center">
+  <img src="assets/img/blog/javascript-variable/ex_instruction.png" alt="Convention de nommage en JS"/>
+  <figcaption class="image-caption">Syntaxe d'un bloc d'instruction</figcaption>
+</figure>
+
+<p>
+<span class="font-weight-bold">Règle d’indentation :</span> les instructions mises entre accolades sont indentées. C'est à dire qu'on les décale vers la droite de 2 ou 4 espaces pour améliorer la lisibilité du code.
+</p>
+
+<p>
+  <span class="font-weight-bold">Cas exceptionnel : </span>lorsqu'une variable est déclarée avec le mot-clé "var", sa portée est limitée à la fonction dans laquelle elle est déclarée et non pas au bloc d'instruction dans lequel elle est située.
+</p>
+
+<p>
+  Voyons de plus près la différence entre "let" et "var".
+</p>
+
+<a id="portee-let" class="anchor"></a>
+<h3>La portée de let</h3>
+
+{% highlight js linenos %}
+// name n'est pas accessible avant d'être déclarée, on obtient donc une erreur
+console.log(name); // => ReferenceError : name is not defined
+
+let name = "John"; // déclaration et initialisation d'une variable "name" globale
+
+if (name === "John") {
+  let age = 25; // déclaration de "age" dans le bloc
+  console.log(age); // => 25
+}
+console.log(name); // => "John", accessible car déclarée de manière globale
+
+// age n'est pas accessible en dehors du bloc, on obtient donc une erreur
+console.log(age); // => // => ReferenceError : name is not defined
+
+{% endhighlight %} 
+<div class="code-caption">Exemple montrant la portée d'une variable déclarée avec "let"</div>
+
+<a id="portee-var" class="anchor"></a>
+<h3>La portée de var</h3>
+
+{% highlight js linenos %}
+// avec "var" la variable est accessible au dessus de la déclaration, 
+// mais elle n'a pas encore de valeur.
+console.log(name); // => undefined
+
+var name = "John"; // déclaration et initialisation d'une variable "name" globale
+
+if (name === "John") {
+  var age = 25; // déclaration de "age" dans le bloc
+  console.log(age); // => 25
+}
+console.log(name); // => "John", accessible car déclarée de manière globale
+
+// age a été assignée dans le bloc mais elle reste accessible en dehors.
+console.log(age); // => 25
+
+{% endhighlight %}
+<div class="code-caption">Exemple montrant la portée d'une variable déclarée avec "var"</div>
+
+<p>
+  C'est pour cette raison qu'on évite au maximum d'utiliser "var". C'est un comportement beaucoup plus imprévisible et contre-intuitif qui peut créer ce qu'on appelle des effets de bord.
+</p>
+
+<a id="constante" class="anchor"></a>
+<h2>Constante</h2>
+
+<p>
+Comme son nom l’indique, c'est une varibale qui n'est pas variable (oui oui) mais constante !
+</p>
+<p>
+Une constante est déclarée avec le mot-clé "const", et ne peut être initialisée qu’une fois. On ne peut pas lui réassigner d’autres valeur.
+</p>
+<p>
+Toutes les variables dont les valeurs ne sont pas réassignées devraient être déclarées avec const pour des raisons de performance et simplicité de lecture du code
+</p>
+{% highlight js linenos %}
+const favoriteSchool = "CodeWise";
+favoriteSchool = "Another School"; // => TypeError: Assignement to constant variable.
+{% endhighlight %}
+<p>
+  La portée d'une variable déclarée avec le keyword "const" est limitée à son bloc d'instruction, exactement comme pour "let".
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+Vous venez de découvrir les variables en JavaScript. 
+</p>
+<p>
+Chaque langage utilise un standard différent de nommage ou de syntaxe mais les principes restent toujours les mêmes.
+Si vous avez des idées d’amélioration pour cet article, laissez-nous un commentaire !
+</p>
+
+<div class="quote-block">
+  <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+  <div class="quote">
+      Si vous avez réussi à tout suivre, félicitations ! Vous pouvez passez au chapitre suivant : <a href="/javascript-les-operateurs">JavaScript - Les opérateurs</a>.
+  </div>
+</div>

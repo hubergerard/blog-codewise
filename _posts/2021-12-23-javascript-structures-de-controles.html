@@ -2,7 +2,7 @@
 layout: post
 title: "Javascript - Les structures de contrôles"
 date: 2021-12-23 9:14:00 +0100
-description: "Qu’est-ce qu’une structure de contrôle ? Et Pourquoi les utiliser dans notre code ?"
+description: "Qu’est-ce qu’une structure de contrôle ? Et pourquoi les utiliser dans notre code ?"
 tags: developpement web javascript
 categories: [Développement web]
 author: "lucas"
@@ -12,226 +12,275 @@ toc-depth: 5
 author: lucas
 lang: fr
 ---
-    
-<div id="toc" class="blog-toc"></div>
 
 <a id="definition" class="anchor"></a>
 <h2>Définition</h2>
 
 <p>
-Une structure de contrôle en informatique est une instruction particulière pouvant diriger le programme dans tel ou tel cas. 
-Cela offre au programme plus de fléxibilité et de comportements.
+Une structure de contrôle en informatique est une instruction permettant de diriger le fil d'exécution d'un programme. 
+Tous les langages de programmation les implémentent.
 </p>
+<p>
+	Les structures de contrôles se divisent en 2 familles :
+	<ul>
+		<li>les structures de test</li>
+		<li>les boucles</li>
+	</ul>
+</p>
+
+<p>Dans cet article, vous allez découvrir comment on les utlise en JavaScript.</p>
+
+<a id="conditions" class="anchor"></a>
+<h2>Les conditions</h2>
+
+<p>Les structures de condition nous permettent de faire éxécuter une instruction en fonction du résultat d'un test.</p>
 
 <a id="if-else-condition" class="anchor"></a>
-<h2>Condition if/else</h2>
+<h3>Condition if / else</h3>
 
 <p>
-    L’instruction <b>if</b> est une structure pour tester des conditions. Elle permet d'exécuter une série d'instructions si la condition est vérifiée. 
-    Grâce au mot-clé <b>else</b> nous pouvons spécifier des instructions dans le cas où la condition n’est pas vérifiée.
+    L’instruction <span class="font-weight-bold">if</span> est une structure de contrôle qui permet de tester des conditions.
+</p>
+<p> Elle permet d'exécuter une série d'instructions si la condition est vérifiée. </p>
+<p>
+	Grâce au mot-clé <span class="font-weight-bold">else</span> nous pouvons spécifier des instructions à exécuter dans le cas où la condition n’est pas vérifiée.
 </p>
 
-<img class="article-img" style="width: 100%;" src="assets/img/blog/javascript-soc/instr_if_else.png" alt="syntax structure of control">
+<img class="article-img" src="assets/img/blog/javascript-soc/instr_if_else.png" alt="syntax structure of control">
+<div class="image-caption">Syntaxe d'une instruction if / else</div>
 
-<p>Exemple : </p>
+<a id="if-else-exemples" class="anchor"></a>
+<h4>Exemples</h4>
 
 {% highlight js linenos %}
 const balance = 50;
-// 50 is greater than 0 => the condition is truthy.
-if (balance >= 0 {
-// Executes this statement
-console.log("Your balance is positive");
+
+// 50 est supérieur à 0 => la condition est vraie (truthy).
+if (balance >= 0) {
+  console.log("Le solde est positif");
 } else {
-// Do not execute this statement
-console.log("Your balance is negative");
+  console.log("Le solde est négatif");
 }
-// expected output : Your balance is positive
-{% endhighlight %} 
+
+// Output : Le solde est positif
+{% endhighlight %}
+<div class="code-caption">Le bloc "if" est déclenché</div>
 
 {% highlight js linenos %}
 const balance = -100;
-// -100 is lesser than 0 => the condition is falsy.
-if (balance >= 0 {
-// Do not execute this statement
-console.log("Your balance is positive");
-} else {
-// Executes this statement
-console.log("Your balance is negative");
-}
-// expected output : Your balance is negative
-{% endhighlight %} 
 
+// -100 est inférieur à 0 => la condition est fausse (falsy).
+if (balance >= 0) {
+  console.log("Le solde est positif");
+} else {
+  console.log("Le solde est négatif");
+}
+// Output : Le solde est négatif
+{% endhighlight %}
+<div class="code-caption">Le bloc "else" est déclenché</div>
 
 <a id="switch-case" class="anchor"></a>
-<h2>Switch case</h2>
+<h3>Switch / case</h3>
 
 <p>
-La condition switch case permet de faire plusieurs test sur la même variable => gain de lisibilité et optimisation de code.
+La structure de contrôle <span class="font-weight-bold">switch / case</span> permet de faire plusieurs tests sur la même expression => gain de lisibilité et optimisation du code.
 </p>
 
 <p>
-Cette instruction conditionnel simplifie le test de plusieurs valeurs d'une variable, car cette opération aurait été compliquée
-(mais faisable) avec des <b>if imbriqués</b>.
+Cette instruction conditionnelle simplifie le test de plusieurs valeurs possibles pour une expression donnée, car cette opération aurait été plus verbeuse
+(mais faisable) avec des <span class="font-weight-bold">if / else imbriqués</span>.
 </p>
 
 <img class="article-img" src="/assets/img/blog/javascript-soc/instruc_switch.png" alt="instruction switch case">
+<div class="image-caption">Syntaxe d'une instruction switch / case</div>
 
+<a id="switch-exemples" class="anchor"></a>
+<h4>Exemples</h4>
 
 {% highlight js linenos %}
 const city = "Berlin";
-// This evaluates city value
+
+// Le switch évalue la valeur de "city"
 switch(city) {
-	case "Madrid":
-		console.log("Spain is wild !");
-		break;
-	// It matches this case
-	case "Berlin":
-		console.log("Germany is wild !");
-		break;
-	case "Lisbon":
-		console.log("Portugal is wild !");
-		break;
-	default:
-		console.log("This city is not wild yet !")
+  case "Madrid":
+    console.log("Spain is awesome !");
+    break;
+  // Le case "Berlin" correspond à la valeur de "city"
+  case "Berlin":
+    console.log("Germany is awesome !");
+    break;
+  case "Lisbon":
+    console.log("Portugal is awesome !");
+    break;
+  default:
+    console.log("This city is not awesome yet !");
 }
-// expected output: Germany is wild !
+
+// Output: Germany is awesome !
 {% endhighlight %}
+<div class="code-caption">Le case "Berlin" est activé</div>
+
+<p>
+	Vous pouvez remarquer la présence d'un case nommé <span class="font-weight-bold">"default"</span>. Il est activé lorsqu'aucun autre case n'a matché avec la valeur de l'expression testée.
+</p>
 
 {% highlight js linenos %}
 const city = "New York";
-// This evaluates city value
+
+// Le switch évalue la valeur de "city"
 switch(city) {
-	case "Madrid":
-		console.log("Spain is wild !");
-		break;
-	case "Berlin":
-		console.log("Germany is wild !");
-		break;
-	case "Lisbon":
-		console.log("Portugal is wild !");
-		break;
-    // It does not match the cases
-	default:
-		console.log("This city is not wild yet !")
+  case "Madrid":
+    console.log("Spain is awesome !");
+    break;
+  case "Berlin":
+    console.log("Germany is awesome !");
+    break;
+  case "Lisbon":
+    console.log("Portugal is awesome !");
+    break;
+  // Aucun case ne correspond à la valeur de "city"
+  default:
+    console.log("This city is not awesome yet !");
 }
-// expected output: This city is not wild yet !
-{% endhighlight %} 
+
+// Output: This city is not awesome yet !
+{% endhighlight %}
+<div class="code-caption">Le case "default" est activé</div>
 
 <p>
-Le mot-clé <b>break</b> est impératif après l'instruction pour stopper le switch si la condition est validée.
+Le mot-clé <span class="font-weight-bold">break</span> est impératif après l'instruction pour sortir du switch après l'exécution d'un case.
 </p>
 
-<a id="loop-while" class="anchor"></a>
-<h2>Boucle while</h2>
+<a id="boucles" class="anchor"></a>
+<h2>Les boucles</h2>
+
+<p>Les boucles nous permettent de faire répéter une instruction plusieurs fois, sans avoir à réécrire l'instruction à répéter.</p>
+
+<a id="boucle-while" class="anchor"></a>
+<h3>Boucle while</h3>
 
 <p>
-L’instruction <b>while</b> permet de spécifier un bloc d’instructions qui sera répété tant que la condition est vérifiée.
+L’instruction <span class="font-weight-bold">while</span> permet de spécifier un bloc d’instructions qui sera répété tant que la condition est vérifiée.
+</p>
+<p>
+	Avant chaque exécution ou ré-exécution du bloc, la condition est évaluée. Tant qu'elle renvoie "true", le bloc est exécuté.
 </p>
 
-<p>
-<b>Attention, si la condition est toujours vérifiée le bloc d’instructions sera exécuté de façon infinie.</b>
-</p>
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        Attention : si la condition est toujours vérifiée, le bloc d’instructions sera exécuté de façon infinie, ce qui fera planter votre programme.
+    </div>
+</div>
+
+<a id="while-exemple" class="anchor"></a>
+<h4>Exemple</h4>
 
 {% highlight js linenos %}
-// Initialize a counter i to 0
+// Initialise un compteur i à la valeur 0
 let i = 0;
-// Evaluates condition and executes statements
-// if condition is truthy
+
+// Evalue la condition
+// Exécute les instructions si la condition est vraie (truthy)
 while(i < 3) {
-	console.log("This is a loop");
-	i = i + 1;
+  console.log("This is a loop");
+  i = i + 1;
 }
-// When the condition is falsy it executes the next statement
+
+// Lorsque la condition devient fausse (falsy),
+// le fil d'exécution quitte la boucle et continue
 console.log("End of program");
-
-// i value is 0, 0 < 3 is truthy
-// output : This is a loop
-
-// i value is 1, 1 < 3 is truthy
-// output : This is a loop
-
-// i value is 2, 2 < 3 is truthy
-// output : This is a loop
-
-// i value is 3, 3 < 3 is falsy
-// output : End of program
 {% endhighlight %} 
-
-<a id="loop-do-while" class="anchor"></a>
-<h2>Boucle do while</h2>
+<div class="code-caption">while.js</div>
 
 <p>
-L’instruction <b>do while</b> se comporte comme la boucle <b>while</b> à l’exception
-que les instructions de la boucle seront exécutées au moins une fois avant de tester la condition.
+	Dans cet exemple, le bloc du while va s'exécuter 3 fois. Après ces 3 fois, i sera égal à 3 donc la condition devient fausse et le fil d'exécution quitte la boucle.
+</p>
+<p>
+	On verra donc en console :
+</p>
+{% highlight bash linenos %}
+This is a loop
+This is a loop
+This is a loop
+End of program
+{% endhighlight %} 
+<div class="code-caption">Résultat de l'exécution</div>
+
+<a id="boucle-do-while" class="anchor"></a>
+<h3>Boucle do-while</h3>
+
+<p>
+L’instruction <span class="font-weight-bold">do while</span> se comporte comme la boucle <span class="font-weight-bold">while</span>, 
+sauf que la condition est vérifiée APRÈS l'exécution du bloc.
 </p>
 
+<a id="do-while-exemple" class="anchor"></a>
+<h4>Exemple</h4>
+
 {% highlight js linenos %}
-// Initialize a counter i to 0
+// Initialise un compteur i à la valeur 0
 let i = 0;
-// Executes statements
-do{
-	console.log("This is a loop");
-	// Increment i
-	i = i + 1;
+
+// Execute les instructions
+do {
+  console.log("This is a loop");
+  // Increments i
+  i = i + 1;
 }
-while(i < 3); // Evaluates the condition and executes statements
-// If the condition is truthy
+while (i < 3); 
+// Evalue la condition
+// Ré-exécute les instructions si la condition est vraie (truthy)
 
-// When the condition is falsy it executes the next statement
+// Lorsque la condition devient fausse (falsy), 
+// le fil d'exécution quitte la boucle et continue
 console.log("End of program");
-
-// i is not tested the first time
-// output : This is a loop
-
-// i value is 1, 1 < 3 is truthy
-// output : This is a loop
-
-// i value is 2, 2 < 3 is truthy
-// output : This is a loop
-
-// i value is 3, 3 < 3 is falsy
-// output : End of program
 {% endhighlight %} 
+<div class="code-caption">do-while.js</div>
 
-<a id="loop-for" class="anchor"></a>
-<h2>Boucle for</h2>
+<p>Voici le résultat en console :</p>
+
+{% highlight bash linenos %}
+This is a loop
+This is a loop
+This is a loop
+End of program
+{% endhighlight %} 
+<div class="code-caption">Résultat de l'exécution</div>
+
+<p>On remarque que l'output est le même qu'avec le while montré précédemment.</p>
+<p>La différence est qu'ici, "This is a loop" sera affiché au minimum 1 fois, peu importe la valeur initiale de i.</p>
+
+<a id="boucle-for" class="anchor"></a>
+<h3>Boucle for</h3>
 
 <p>
-La boucle <b>for</b> à l'avantage de spécifier sur la même ligne séparée par des <b>;</b> 
+La boucle <span class="font-weight-bold">for</span> est une alternative au while, qui a l'avantage d'être plus concise.</p>
+<p>Elle permet de spécifier sur une même ligne séparée par des <span class="font-weight-bold">";"</span> :</p> 
 </p>
 
 <ul>
-    <li>L'initialisation du compteur</li>
-    <li>La condition à vérifier</li>
+    <li>l'initialisation du compteur</li>
+    <li>la condition d'arrêt (condition "tant que")</li>
     <li>l'incrémentation du compteur</li>
 </ul>
 
+<a id="for-exemple" class="anchor"></a>
+<h4>Exemple</h4>
+
 {% highlight js linenos %}
-// Initialize a counter i to 0
-// Evaluates the condition and executes statements
-// If condition is truthy
+// Initialise un compteur i à la valeur 0
+// Evalue la condition
+// Exécute les instructions si la condition est vraie (truthy)
 for (let i = 0; i < 3; i++) {
-	console.log("This is a loop");
+  console.log("This is a loop");
 }
-	
- // Evaluates the condition and executes statements
-// If the condition is truthy
 
-// When the condition is falsy it executes the next statement
+// Lorsque la condition devient fausse (falsy), 
+// le fil d'exécution quitte la boucle et continue
 console.log("End of program");
-
-// i value is 0, 0 < 3 is truthy
-// output : This is a loop
-
-// i value is 1, 1 < 3 is truthy
-// output : This is a loop
-
-// i value is 2, 2 < 3 is truthy
-// output : This is a loop
-
-// i value is 3, 3 < 3 is falsy
-// output : End of program
 {% endhighlight %} 
+<div class="code-caption">Exemple d'utilisation d'une boucle for</div>
 
 <a id="conclusion" class="anchor"></a>
 <h2>Conclusion</h2>
@@ -242,5 +291,5 @@ Si vous avez des idées d’amélioration pour cet article, laissez-nous un comm
 </p>
 
 <p>
-Et si vous avez réussi à tout suivre, vous pouvez passer au chapitre suivant : “Cat Game”
+Et si vous avez réussi à tout suivre, vous pouvez passer au chapitre suivant : <a href="/javascript-les-tableaux">Les tableaux</a>
 </p>
