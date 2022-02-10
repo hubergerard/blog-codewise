@@ -17,7 +17,7 @@ lang: fr
 <h2>Définition : L’injection de dépendance</h2>
 
 <p>L’injection de dépendance est une notion fondamentale du framework Angular. C’est un design pattern implémenté directement par ce framework.
-    <span class="font-weight-bold">Quand Angular instancie un component, il peut résoudre les dépendances en les injectant via le constructeur du component.</span>
+    <span class="fw-bold">Quand Angular instancie un component, il peut résoudre les dépendances en les injectant via le constructeur du component.</span>
     Les attributs des classes de notre projet (component, service ou autres) seront instanciés sans notre intervention. Si l’injection a été configurée, le framework choisit quelle instance utiliser. Il peut décider de créer une nouvelle instance de l’objet ou bien d'en choisir une déjà existante (principe singleton).
     C’est ce que nous allons voir dans cet article.
     
@@ -27,7 +27,7 @@ lang: fr
 <h2>L’injecteur  d’Angular</h2>
 
 <p>Angular met à disposition plusieurs injecteurs de dépendance. Comme dit précédemment, leur rôle est d'instancier et de fournir les dépendances demandées par les différentes classes de nos applications. 
-    <span class="font-weight-bold">Chaque injecteur dispose d'une portée qui lui est propre.</span> Cette portée peut-être : l’application entière, un module et/ou un composant.
+    <span class="fw-bold">Chaque injecteur dispose d'une portée qui lui est propre.</span> Cette portée peut-être : l’application entière, un module et/ou un composant.
 </p>
 
 <img alt="schéma portée injecteur angular @injectable" class="w-100" src="assets/img/blog/schema_injector_scope.png" class="img-caption" class="img-shadow"/>
@@ -40,7 +40,7 @@ lang: fr
 <h4>Décorateur : définition</h4>
 
 <p>Avant toute chose, qu’est-ce qu’un décorateur ?
-    <span class="font-weight-bold">Un décorateur est une annotation précédée d’un @.</span> Son rôle est de factoriser certaines instructions en surchargeant le comportement de base (principe de POO), d’ajouter  des métadonnées, des propriétés ou des paramètres à nos classes.
+    <span class="fw-bold">Un décorateur est une annotation précédée d’un @.</span> Son rôle est de factoriser certaines instructions en surchargeant le comportement de base (principe de POO), d’ajouter  des métadonnées, des propriétés ou des paramètres à nos classes.
     Angular dispose de plusieurs décorateurs pour différentes fonctions : pour la communication inter-component, la résolution de dépendance et beaucoup d’autres. 
     <br>Vous pouvez même créer vos propres décorateurs !
 </p> 
@@ -49,7 +49,7 @@ lang: fr
 <h4>Le cas du décorateur @Injectable</h4>
 
 <p>Revenons à notre décorateur @Injectable.
-    <span class="font-weight-bold">Il permet de rendre notre classe détectable par l’injecteur</span>, donc si vous injectez une dépendance sans ce décorateur, le framework vous retournera une erreur.
+    <span class="fw-bold">Il permet de rendre notre classe détectable par l’injecteur</span>, donc si vous injectez une dépendance sans ce décorateur, le framework vous retournera une erreur.
 </p>
 
 <a id="different-injector" class="anchor"></a>
@@ -76,7 +76,7 @@ export class AnyService {
 <a id="usecase-injector-root" class="anchor"></a>
 <h5>b) Cas d’utilisation</h5>
 
-<p><span class="font-weight-bold">Utilisez l’injecteur root lorsque vous souhaitez que les dépendances soient accessibles dans toute l’application.</span>
+<p><span class="fw-bold">Utilisez l’injecteur root lorsque vous souhaitez que les dépendances soient accessibles dans toute l’application.</span>
     Si dans votre application vous avez besoin d’un service quelconque utilisé dans plusieurs modules, alors il est préférable d’utiliser cette solution.
 </p>
 
@@ -122,7 +122,7 @@ export class AnyService {
 <a id="usecase-injector-module" class="anchor"></a>
 <h5>b) Cas d'utilisation</h5>
 <p>
-    <span class="font-weight-bold">Utilisez l’injecteur par module si les dépendances ne doivent être accessibles qu’à certains modules.</span>
+    <span class="fw-bold">Utilisez l’injecteur par module si les dépendances ne doivent être accessibles qu’à certains modules.</span>
     Les instances seront disponibles uniquement dans les modules déclarés dans l’annotation @injectable.
     Là aussi, les dépendances seront des singletons (instanciés une seule fois).    
 </p>
@@ -162,7 +162,7 @@ export class AnyComponent { }
 <a id="usecase-injector-component" class="anchor"></a>
 <h5>b) Cas d'utilisation</h5>
 <p>
-    <span class="font-weight-bold">Si vous souhaitez que la dépendance ne soit accessible que dans un seul composant et dans ses composants enfants.</span> 
+    <span class="fw-bold">Si vous souhaitez que la dépendance ne soit accessible que dans un seul composant et dans ses composants enfants.</span> 
 </p>
 <div class="quote-block">
     <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>

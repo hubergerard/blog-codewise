@@ -18,7 +18,7 @@ lang: fr
 
 <p>
     En tant que développeur, on passe la majeure partie du temps à corriger des erreurs dans notre code. 
-    Saviez-vous qu'on estime que <span class="font-weight-bold">70% du temps d'un développeur est utilisé pour débugger du code</span> ?
+    Saviez-vous qu'on estime que <span class="fw-bold">70% du temps d'un développeur est utilisé pour débugger du code</span> ?
 </p>
 <p>
     Pour débugger, la première étape est souvent l'affichage en console.
@@ -34,7 +34,7 @@ lang: fr
 <h2>Que fait le pipe json ?</h2>
 
 <p>
-    <span class="font-weight-bold">Le pipe json permet de convertir un objet en une chaîne de caractères qui représente sa valeur</span>, directement dans le template.
+    <span class="fw-bold">Le pipe json permet de convertir un objet en une chaîne de caractères qui représente sa valeur</span>, directement dans le template.
 </p>
 
 <p>
@@ -50,7 +50,7 @@ lang: fr
 <h2>Comment importer le pipe json ?</h2>
 
 <p>
-    <span class="font-weight-bold">Le pipe json n'a pas besoin d'être importé.</span> 
+    <span class="fw-bold">Le pipe json n'a pas besoin d'être importé.</span> 
 </p>
 <p>
     Les directives natives, comme les pipes natifs d’Angular, viennent du <code>CommonModule</code> qui lui même est réexporté par le <code>BrowserModule</code> 
@@ -67,7 +67,7 @@ lang: fr
 [Object object]
 {% endhighlight %}
 <p>
-    C'est ce qui s'affiche lorsqu'on essaye d'afficher un objet littéral directement dans le DOM. C'est dû au fait qu'en JS, <span class="font-weight-bold">les variables de type "<code>object</code>" contiennent une référence</span> et non pas la valeur de l'objet directement.
+    C'est ce qui s'affiche lorsqu'on essaye d'afficher un objet littéral directement dans le DOM. C'est dû au fait qu'en JS, <span class="fw-bold">les variables de type "<code>object</code>" contiennent une référence</span> et non pas la valeur de l'objet directement.
 </p>
 <p>
     Heureusement, le pipe json va nous aider à faire afficher le contenu de l'objet sans trop d'efforts.
@@ -114,7 +114,7 @@ val: Object = {foo: 'bar', baz: 'qux', nested: {xyz: 3, numbers: [1, 2, 3, 4, 5]
 <h3>La solution</h3>
 
 <p>
-    <span class="font-weight-bold">Pour éviter d'obtenir <code>[Object object]</code> à l'affichage, vous allez devoir placer le pipe json dans votre interpolation.</span>
+    <span class="fw-bold">Pour éviter d'obtenir <code>[Object object]</code> à l'affichage, vous allez devoir placer le pipe json dans votre interpolation.</span>
 </p>
 
 <p>

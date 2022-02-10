@@ -14,7 +14,7 @@ lang: fr
 ---
 
 <p>
-<span class="font-weight-bold">Le routeur Angular permet la navigation d’une vue à l’autre de l’application lorsque l’utilisateur interagit avec le DOM, dans cet article nous allons aborder ce sujet en détails.  
+<span class="fw-bold">Le routeur Angular permet la navigation d’une vue à l’autre de l’application lorsque l’utilisateur interagit avec le DOM, dans cet article nous allons aborder ce sujet en détails.  
 </p>
 
 <a id="qu-est-ce-que-le-routing" class="anchor"></a>
@@ -26,7 +26,7 @@ lang: fr
 <h3>Historique</h3>
 <p>
 Pendant longtemps, pour naviguer sur internet, le visiteur cliquait sur un lien pour recharger intégralement une nouvelle page.
-Ce n'est qu'au milieu des années 2000 (Entre 2002 et 2005) qu'une nouvelle API Javascript fait son apparition dans les navigateurs internet: <span class="font-weight-bold">XMLHttpRequest</span> (souvent appelé Ajax).
+Ce n'est qu'au milieu des années 2000 (Entre 2002 et 2005) qu'une nouvelle API Javascript fait son apparition dans les navigateurs internet: <span class="fw-bold">XMLHttpRequest</span> (souvent appelé Ajax).
 </p>
 
 <p>
@@ -50,7 +50,7 @@ Elle permet le changement de l'adresse courante dans le navigateur et de manipul
 <div class="image-caption">Manipulation d'URL via l'API History</div>
 
 <h3> Définition</h3>
-  <p class="font-weight-bold">
+  <p class="fw-bold">
     Le routing correspond au fait d'associer une action à un certain chemin d'URL</p>
 
     <p> Dans le cas d'Angular, il s’agit en réalité d’une instruction d’affichage, car une route associe une adresse à un component.
@@ -326,7 +326,7 @@ export class SinglePokemonComponent implements OnInit {
 <div class="code-caption">single-pokemon.component.ts</div>
 
 <p>
-  <span class="font-weight-bold">Petite explication :</span> depuis l’objet route (d’activatedRoute) nous avons un objet paramMap qui est de type Observable et qui contient une carte des paramètres dont on va pouvoir récupérer la valeur !
+  <span class="fw-bold">Petite explication :</span> depuis l’objet route (d’activatedRoute) nous avons un objet paramMap qui est de type Observable et qui contient une carte des paramètres dont on va pouvoir récupérer la valeur !
 </p>
 <p>
   Donc nous récupérons la valeur du paramètre 'id' en souscrivant à cet Observable et nous contactons le service avec cet id.
