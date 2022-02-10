@@ -2,7 +2,7 @@
 layout: post
 title: "Javascript - Les tableaux"
 date: 2021-12-28 9:14:00 +0100
-description: "Dans cet article, vous allez apprendre comment utiliser les tableaux en javascript"
+description: "Dans cet article, vous allez apprendre comment utiliser les tableaux en javascript."
 tags: developpement web javascript
 categories: [Développement web]
 author: "lucas"
@@ -19,96 +19,115 @@ lang: fr
 <h2>Définition</h2>
 
 <p>
-En informatique, un tableau (array en anglais) est une structure de données qui consiste en un ensemble d'éléments ordonnés accessibles par leur indice (ou index). 
-C'est une structure de données de base que l'on retrouve dans chaque langage de programmation.
+    En informatique, <span class="fw-bold">un tableau (array en anglais) est une structure de données qui consiste en un ensemble d'éléments ordonnés accessibles par leur indice (ou index).</span> 
+</p>
+<p>
+    C'est une structure de données de base que l'on retrouve dans chaque langage de programmation.
+</p>
+<p>
+    <span class="fw-bold">En JavaScript, les tablaux sont de taille dynamique.</span> C'est à dire que la taille d'un tableau peut changer pendant l'exécution, si on y ajoute ou retire un élément.
 </p>
 
 <a id="declaration" class="anchor"></a>
 <h2>Déclaration</h2>
-
 <p>
-Il existe plusieurs manière de déclarer un tableau en JS :
+Vous pouvez déclarer un tableau en JS de 2 manières :
 </p>
 
-<ul>
-    <li>
-        La méthode la plus rapide et la plus utilisée est d’utiliser les “[ ]”.
-    </li>
-    <li>
-        Il est également possible de déclarer un tableau en utilisant le constructeur “Array”
-    </li>
-</ul>
+<a id="declaration-crochets" class="anchor"></a>
+<h3>Avec des crochets</h3>
 
 <p>
-Attention il y a une différence entre les deux méthodes.
+    C'est la méthode la plus rapide, concise et lisible, et donc la plus utilisée : on utilise les crochets : "<code>[ ]</code>".
 </p>
-
 
 {% highlight js linenos %}
-// Create an empty array
+// Créer un tableau vide
 const articles = [];
+// Créer un tableau contenant la valeur 5
+const notes = [5];
+// Créer un tableau contenant plusieurs valeurs
+const myArray = ['Hello', 'world', 'How are u?'];
+{% endhighlight %}
+<div class="code-caption">Déclaration avec la syntaxe des crochets</div>
 
-// Create an empty array
+<a id="declaration-constructeur-array" class="anchor"></a>
+<h3>Avec la classe Array</h3>
+
+<p>Vous pouvez également déclarer un tableau en utilisant le constructeur de la classe <code>Array</code>.</p>
+
+<p>
+    Attention, il y a une différence entre les deux méthodes : on ne peut pas initialiser le tableau avec des valeurs si on choisit cette méthode.
+</p>
+
+{% highlight js linenos %}
+// Créer un tableau vide
 const shops = new Array();
 
-// Create an array containing the value 5
-const notes = [5];
-console.log(notes);
-
-// Create an array with 5 empty elements
+// Créer un tableau contenant 5 éléments vides (undefined)
 const bulletin = new Array(5);
-console.log(bulletin);
-{% endhighlight %} 
+{% endhighlight %}
+<div class="code-caption">Déclaration via le constructeur de la classe Array</div>
 
 <a id="acceder-element-tableau" class="anchor"></a>
 <h2>Accéder à un élément du tableau</h2>
 
 <p>
-Un tableau peut être déclaré avec plusieurs éléments séparés par des virgules.
+Dans un tableau, vous devez accéder à un élément par son index.
 </p>
 
-<p>
-On accède à un élément par son index.
-</p>
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        <div class="fw-bold">Le 1er élément du tableau est toujours situé à l'index 0.</div> Accéder à l’élément d’index 1 revient donc à récupérer le 2ème élément de notre tableau.
+    </div>
+</div>
 
 <p>
-Le 1er élément du tableau a pour index 0.
-</p>
-
-<p>
-Accéder à l’élément à l’index 1 revient à récupérer le 2ème élément de notre tableau.
-</p>
-
-<p>
-Si on accède à un index supérieur ou égale à la taille du tableau la valeur récupérée sera undefined.
+Si vous accédez à un index supérieur ou égal à la taille du tableau, aucune erreur ne sera générée.
+À la place, vous obtiendrez la valeur <code>undefined</code>.
 </p>
 
 
 {% highlight js linenos %}
 const cities = ["Berlin", "Lisbon", "Madrid", "Paris"];
-console.log(cities[O]); // => Berlin
+console.log(cities[0]); // => Berlin
 console.log(cities[1]); // => Lisbon
 console.log(cities[4]); // => undefined
-{% endhighlight %} 
+{% endhighlight %}
+<div class="code-caption">Accès à un index inexistant</div>
 
-<a id="parcourir-tableau" class="anchor"></a>
-<h2>Parcourir un tableau</h2>
-
-<p>
-On peut connaître la longueur d’un tableau en accédant à la propriété length.
-</p>
+<a id="taille-tableau" class="anchor"></a>
+<h2>Déterminer la taille d'un tableau</h2>
 
 <p>
-On peut utiliser une boucle pour parcourir un tableau.
-</p>
-
-<p>
-A chaque itération dans la boucle on utilise la variable compteur (i) comme valeur d’index pour accéder à l’élément.
+    On peut connaître la taille d’un tableau en accédant à sa propriété <code>length</code>.
 </p>
 
 {% highlight js linenos %}
 const cities = ["Berlin", "Lisbon", "Madrid", "Paris"];
 console.log(cities.length); // => 4
+{% endhighlight %}
+<div class="code-caption">Obtenir la taille d'un tableau</div>
+
+<a id="parcourir-tableau" class="anchor"></a>
+<h2>Parcourir un tableau</h2>
+
+<p>
+Pour parcourir un tableau, vous devez utiliser une boucle.
+</p>
+
+<a id="parcourir-index" class="anchor"></a>
+<h3>Via un index</h3>
+
+<p>
+À chaque itération dans la boucle, vous utiliserez une variable compteur (généralement <code>i</code>) comme valeur d’index pour accéder à l’élément.
+</p>
+
+{% highlight js linenos %}
+const cities = ["Berlin", "Lisbon", "Madrid", "Paris"];
+console.log(cities.length); // => 4
+
 for(let i = 0; i < cities.length; i++;){
     console.log(cities[i]);
 }
@@ -118,22 +137,23 @@ for(let i = 0; i < cities.length; i++;){
 // Lisbon
 // Madrid 
 // Paris
-{% endhighlight %} 
+{% endhighlight %}
+<div class="code-caption">Parcours d'un tableau via son index</div>
+
+<a id="parcourir-index" class="anchor"></a>
+<h3>Via une boucle for .. of</h3>
 
 <p>
-Mais il y a aussi une autre manière de faire :
+Mais vous pouvez aussi parcourir un tableau d'une manière plus concise.
 </p>
 
 <p>
-Le tableau appartient à une famille d’objetqu’on appelle : itérables
+<span class="fw-bold">En effet, le tableau appartient à une famille d’objet qu’on appelle : itérables.</span>
+Et les itérables peuvent être parcourus avec une boucle <code>for .. of </code>
 </p>
 
 <p>
-Les itérables peuvent être parcours avec une boucle for .. of 
-</p>
-
-<p>
-On déclare une variable (ex : city)  qui va prendre tour à tour chaque valeur du tableau 
+Dans ce cas, vous devez déclarer une variable (eg. <code>city</code>) qui va prendre tour à tour chaque valeur du tableau :
 </p>
 
 {% highlight js linenos %}
@@ -142,39 +162,100 @@ const cities = ["Berlin", "Lisbon", "Madrid", "Paris"];
 for(const city of cities){
     console.log(city);
 }
+
+// expected output :
 // Berlin
 // Lisbon
 // Madrid 
 // Paris
 {% endhighlight %} 
+<div class="code-caption">Parcours avec for .. of</div>
 
-<a id="a-savoir" class="anchor"></a>
-<h2>À savoir</h2>
+<a id="tableau multi-type" class="anchor"></a>
+<h2>Les tableaux multi-types</h2>
 
 <p>
-Nous pouvons mélanger plusieurs type de données dans un même tableau :
+Il est important de savoir qu'en JavaScript, vous pouvez mélanger plusieurs type de données dans un même tableau :
 </p>
 
 {% highlight js linenos %}
-const tab = ["Berlin", 12, false, Object];
-{% endhighlight %} 
-
-<p>Les tableaux en javascript sont muables</p>
+const tab = ['Berlin', 12, false, {id: 3, name: 'John'}];
+{% endhighlight %}
+<div class="code-caption">Tableau multi-type</div>
 
 <p>
-    Qu'est-ce que veut dire muable ? c'est une chose qui peut être modifiable :
+    Cependant, ce n'est pas souvent une bonne idée car ce tableau devient beaucoup plus difficile à manipuler. 
 </p>
+<p>
+    En effet, chaque variable à l'intérieur de ce tableau s'utilise d'une manière différente, il est donc difficile à parcourir proprement.
+</p>
+<a id="muabilite" class="anchor"></a>
+<h2>Muabilité</h2>
+
+<p>
+    <span class="fw-bold">Les tableaux JavaScript sont muables.</span>
+</p>
+<p>
+    Savez-vous ce qu'est une variable muable ? Une variable est dîte muable si la valeur enregistrée à l'adresse de cette variable est modifiable.
+</p>
+<p>
+    Par exemple, <span class="fw-bold">une variable de type <code>number</code> est immuable</span> : le seul moyen de modifier un number est de créer un nouveau number et de l'assigner à la variable.
+</p>
+
+{% highlight js linenos %}
+// La variable a est déclarée donc un espace mémoire est créé.
+// On y entre la valeur 1
+let a = 1;
+// La valeur 3 écrase l'ancienne valeur 1
+a = 3;
+// a + 2 est calculé et le résultat écrase l'ancienne valeur.
+a = a + 2;
+{% endhighlight %}
+<div class="code-caption">Exemple de variable muable</div>
+
+<p>Dans cet exemple, vous pouvez observer que la valeur de la variable n'est jamais modifiée à proprement parler. Elle est détruite au moment où elle est remplacée par une nouvelle valeur grâce à l'opérateur <code>=</code>.</p>
+
+<p><span class="fw-bold">Voyons maintenant le cas d'un tableau.</span></p>
 
 {% highlight js linenos %}
 const tab = [81, 12, 283, 29, 7];
-console.log(tab = tab.sort((a, b) => a - b));
+tab.sort((a, b) => a - b));
+console.log(tab);
 // expected output : [7, 12, 29, 81, 283]
 {% endhighlight %} 
+<div class="code-caption">Exemple de variable immuable</div>
 
 <p>
-Dans cet exemple nous avons utilisé une méthode de tableau de mutateurs "sort()", biensûr il en existe d'autres et avec ceux-ci des méthodes de tableau non-mutateur,
-qui elles ne modifie pas le tableau mais en renvoie la représentation selon la méthode.
+    Dans cet exemple, nous avons utilisé la méthode <code>sort()</code> des tableaux. 
 </p>
+<p>
+    Vous pouvez observez que <span class="fw-bold">la valeur du tableau est modifiée sans qu'on n'ait eu besoin de réassigner un nouveau tableau dans la variable.</span>
+</p>
+<p>
+    On dit dans ce cas que la variable a mué.
+</p>
+
+<a id="performances" class="anchor"></a>
+<h2>Performances</h2>
+
+<p><span class="fw-bold">Le tableau est</span>, dans tous les langages, <span class="fw-bold">la structure de donnée la plus légère et donc la plus performante dans la plupart des cas.</span> </p>
+<p>Cependant, du fait de sa taille dynamique, un tableau JavaScript sera moins performant que dans d'autres langages où la taille est fixée à la création, comme en C/C++ ou en Java. </p>
+
+<a id="performances-lecture" class="anchor"></a>
+<h3>En lecture</h3>
+
+<p><span class="fw-bold">L'accès à une donnée par son index est très peu coûteuse</span>, donc un tableau sera très rapide pour un accès à une donnée si l'on connait son index.</p>
+
+<a id="performances-ecriture" class="anchor"></a>
+<h3>En écriture</h3>
+
+<p> <span class="fw-bold">L'écriture d'une donnée se fait aussi via un accès par l'index</span> et n'est donc pas plus coûteuse qu'un accès en lecture.</p>
+
+<a id="performances-parcours-tableau" class="anchor"></a>
+<h3>Dans le cas d'une recherche</h3>
+
+<p>Lorsque vous ne connaissez pas l'index de la variable que vous voulez récupérer, vous devez d'abord la rechercher dans votre tableau. Puisque l'accès en lecture se fait par l'index, <span class="fw-bold">vous n'avez pas d'autre choix que de parcourir les index un par un pour y rechercher la donnée souhaitée.</span></p>
+<p>Si vous devez effectuer de nombreuses recherches dans votre collection, une structure comme un arbre ou une table associative (map) sera probablement plus adaptée qu'un tableau.</p>
 
 <a id="conclusion" class="anchor"></a>
 <h2>Conclusion</h2>
