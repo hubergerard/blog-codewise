@@ -1,0 +1,188 @@
+---
+layout: post
+title: "Angular - Pipe json"
+date: 2022-02-03 10:10:50 +0100
+description: "Dans cet article vous allez découvrir le pipe json d'Angular en détail."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-pipe-json/cover_article_json_pipe.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="json-pipe-debug" class="anchor"></a>
+<h2>Le pipe json pour débugguer</h2>
+
+<p>
+    En tant que développeur, on passe la majeure partie du temps à corriger des erreurs dans notre code. 
+    Saviez-vous qu'on estime que <span class="fw-bold">70% du temps d'un développeur est utilisé pour débugger du code</span> ?
+</p>
+<p>
+    Pour débugger, la première étape est souvent l'affichage en console.
+</p>
+<p>
+    Mais avec Angular on n'a parfois pas accès au <code>console.log()</code> facilement. Du fait qu'on travaille dans le template d'un composant et non pas dans un script.
+</p>
+<p>
+    C'est à ce moment-là qu'intervient le pipe json.
+</p>
+
+<a id="json-pipe" class="anchor"></a>
+<h2>Que fait le pipe json ?</h2>
+
+<p>
+    <span class="fw-bold">Le pipe json permet de convertir un objet en une chaîne de caractères qui représente sa valeur</span>, directement dans le template.
+</p>
+
+<p>
+    Il s'utilise de la manière suivante :
+{% highlight ts linenos %}
+{% raw %}{{ monObjet | json }}{% endraw %}
+{% endhighlight %}
+<div class="code-caption">exemple.component.html</div>
+
+</p>
+
+<a id="json-pipe-import" class="anchor"></a>
+<h2>Comment importer le pipe json ?</h2>
+
+<p>
+    <span class="fw-bold">Le pipe json n'a pas besoin d'être importé.</span> 
+</p>
+<p>
+    Les directives natives, comme les pipes natifs d’Angular, viennent du <code>CommonModule</code> qui lui même est réexporté par le <code>BrowserModule</code> 
+    et est inclus de base dans votre fichier <code>app.module.ts</code>.
+</p>
+
+<a id="quand-utiliser-pipe-json" class="anchor"></a>
+<h2>Dans quel cas utiliser le pipe json ?</h2>
+
+<p>
+    Vous avez déjà vu ça sur votre écran ?
+</p>
+{% highlight ts linenos %}
+[Object object]
+{% endhighlight %}
+<p>
+    C'est ce qui s'affiche lorsqu'on essaye d'afficher un objet littéral directement dans le DOM. C'est dû au fait qu'en JS, <span class="fw-bold">les variables de type "<code>object</code>" contiennent une référence</span> et non pas la valeur de l'objet directement.
+</p>
+<p>
+    Heureusement, le pipe json va nous aider à faire afficher le contenu de l'objet sans trop d'efforts.
+</p>
+
+<a id="how-to-use-json-pipe" class="anchor"></a>
+<h2>Exemple d'utilisation</h2>
+
+<a id="probleme-json-pipe" class="anchor"></a>
+<h3>Le problème</h3>
+
+<p>
+    Disons que vous avez un composant qui contient cet attribut val :
+</p>
+
+{% highlight ts linenos %}
+val: Object = {foo: 'bar', baz: 'qux', nested: {xyz: 3, numbers: [1, 2, 3, 4, 5]}};
+{% endhighlight %}
+<div class="code-caption">exemple.component.ts</div>
+
+<p>
+    Dans le template du composant, vous souhaitez afficher val avec une interpolation :
+</p>
+{% highlight ts linenos %}
+{% raw %}{{ val }}{% endraw %}
+{% endhighlight %}
+<div class="code-caption">exemple.component.html</div>
+
+<p>
+    Sans surprise, voici ce que vous obtenez sur votre page web :
+</p>
+{% highlight ts linenos %}
+[Object object]
+{% endhighlight %}
+
+<p>
+    Ca n'est pas ce qu’on voulait ! Angular affiche le contenu de la variable, donc une référence vers l’objet et non pas son contenu.
+</p>
+<p>
+    Cette référence se convertit automatiquement en <code>[Object object]</code> si on essaye de la caster en string. Ce qui est le cas lors d'un affichage.
+</p>
+
+<a id="solution-json-pipe" class="anchor"></a>
+<h3>La solution</h3>
+
+<p>
+    <span class="fw-bold">Pour éviter d'obtenir <code>[Object object]</code> à l'affichage, vous allez devoir placer le pipe json dans votre interpolation.</span>
+</p>
+
+<p>
+    Utilisez donc le pipe json dans votre template, de la manière suivante : 
+</p>
+
+{% highlight html linenos %}
+<pre>
+{% raw %}{{ val | json}}{% endraw %}
+</pre>
+{% endhighlight %}
+<div class="code-caption">exemple.component.html</div>
+
+<p>
+    Il est préférable d’afficher le résultat dans une balise <code>&lt;pre&gt;</code> pour prendre en compte les sauts de ligne.
+</p>
+
+<p>
+    Sur le template, voici le résultat de la transformation du pipe sur votre objet :
+</p>
+
+{% highlight ts linenos %}
+{
+    "foo": "bar",
+    "baz": "qux",
+    "nested": {
+      "xyz": 3,
+      "numbers": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  }
+{% endhighlight %}
+
+<p>Tadaa !</p>
+<p>
+    Maintenant vous pouvez observer en temps réel la structure de votre objet et ce qu’il contient.
+</p>
+<p>
+    Vous pouvez donc facilement parcourir votre objet et récupérer une donnée comme ceci :
+</p>
+
+{% highlight ts linenos %}
+{% raw %}{{ val.foo }}{% endraw %}
+{% endhighlight %}
+<div class="code-caption">exemple.component.html</div>
+
+<p>
+    Ce qui vous donne :
+</p>
+
+{% highlight html linenos %}
+bar
+{% endhighlight %}
+
+
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    C'est tout pour le pipe json. Il est relativement simple à utiliser si vous avez déjà manipulé des pipes.
+</p>
+
+<p>
+    N’hésitez pas à laisser un commentaire, en espérant que cela vous a plu !
+</p>

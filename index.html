@@ -25,7 +25,7 @@ title: WiseBlog, veille pour développeurs webs
                             <h2 class="blog-title">
                                 <a href="{{post.url}}">{{post.title}}</a>
                             </h2>
-                            <p>{{post.excerpt | strip_html | truncatewords:"30"}}</p>
+                            <p>{{post.description | strip_html | truncatewords:"30"}}</p>
                         </div>
                         <div class="link-box">
                             <a class="btn read-more-button" style="color: white;" href="{{post.url}}">Lire la suite</a>

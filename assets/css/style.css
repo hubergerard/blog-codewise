@@ -49,6 +49,10 @@ body {
     overflow: hidden
 }
 
+a {
+    text-decoration: none;
+}
+
 a, .button {
     -webkit-transition: all 0.3s ease-out 0s;
     -moz-transition: all 0.3s ease-out 0s;
@@ -1616,6 +1620,7 @@ label {
     height: 330px;
     background-size: cover;
     background-position: 100% 100%;
+    z-index: -1;
 }
 
 .footer-logo {
@@ -1864,10 +1869,16 @@ label {
 
 /* 14. Blog */
 
+#tab-crit-framework{
+    width: 100%;
+    margin-bottom: 20px;
+}
+
 .blog-wrapper {
     background: #fff;
     overflow: hidden;
     padding: 20px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
 }
 
 .home-blog-wrapper {
@@ -2674,31 +2685,33 @@ code {
     border-radius: 3px;
 }
 
-.tableOperator{
-    table-layout: fixed;
-    width: 100%;
-    margin-bottom: 50px;
-}
-
-.tableOperator > thead > tr > td {
-    font-weight: bold;
-    text-align: center;
-}
-
-.tableOperator > tbody > tr > td {
-    text-align: center;
-    padding: 4px;
-}
-
-.tableOperator tbody tr:nth-child(odd){
-    background-color: rgb(221, 221, 221);
-}
-
 .article-img{
     max-width: 100%;
     box-shadow: 0 0 60px 0 rgba(0, 0, 0, .07);
 }
 
-#correction {
+.tableOperator{
+    table-layout: fixed;
+    width: 100%;
+    margin-bottom: 40px;
+    border: 1px solid rgb(201, 201, 201)
+}
 
+.tableOperator td {
+    text-align: center;
+    padding: 4px;
+    border: 1px solid rgb(201, 201, 201);
+}
+
+.tableOperator > thead td {
+    font-weight: bold;
+    background-color:rgb(29, 140, 214, 0.5);
+}
+
+.tableOperator > tbody td:first-child {
+    font-weight: bold;
+}
+
+.tableOperator > tbody > tr:nth-child(odd){
+    background-color: rgb(221, 221, 221);
 }
