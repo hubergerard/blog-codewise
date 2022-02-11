@@ -63,6 +63,7 @@ function createTitleNumbers(){
         depth1: 1,
         depth2: 1,
         depth3: 1,
+        depth4: 1,
     }
 }
 
@@ -76,6 +77,8 @@ function incrementTitleNumbers(headerLevel) {
             break;
         case 4: 
             titleNumbers.depth3++;
+        case 5: 
+            titleNumbers.depth4++;
     }
 }
 
@@ -83,9 +86,14 @@ function resetTitleNumbers(headerLevel) {
     if (headerLevel === 2) {
         titleNumbers.depth2 = 1;
         titleNumbers.depth3 = 1;
+        titleNumbers.depth4 = 1;
     }
     if (headerLevel === 3) {
         titleNumbers.depth3 = 1;
+        titleNumbers.depth4 = 1;
+    }
+    if (headerLevel === 4) {
+        titleNumbers.depth4 = 1;
     }
 }
 
@@ -97,5 +105,7 @@ function displayTitleNumbers(headerLevel, headerList, j){
             return `${titleNumbers.depth1}.${titleNumbers.depth2}. ${headerList[j].innerText}`;
         case 4:
             return `${titleNumbers.depth1}.${titleNumbers.depth2}.${titleNumbers.depth3}. ${headerList[j].innerText}`;
+        case 5:
+            return `${headerList[j].innerText}`;
     }
 }
