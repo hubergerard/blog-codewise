@@ -2,7 +2,7 @@
 layout: post
 title: "Javascript - Les fonctions"
 date: 2021-12-28 9:14:00 +0100
-description: "Dans cet article, vous allez apprendre comment utiliser les fonctions en javascript"
+description: "Dans cet article, vous allez apprendre comment utiliser les fonctions en JavaScript."
 tags: developpement web javascript
 categories: [Développement web]
 author: "lucas"
@@ -13,36 +13,199 @@ author: lucas
 lang: fr
 ---
 
-<div id="toc" class="blog-toc"></div>
-
 <a id="definition" class="anchor"></a>
 <h2>Définition</h2>
 
 <p>
-Les fonctions font partie des “briques de base” de la programmation, et particulièrement en JavaScript.
+    <span class="fw-bold">Les fonctions font partie des briques de base de la programmation</span>, tout particulièrement en JavaScript qui est un langage orienté prototype.
 </p>
 
 <p>
-Une fonction permet de regrouper des instructions dans un même bloc, relativement indépendant du reste du programme, afin de réaliser un certain traitement.
+    <span class="fw-bold">Une fonction permet de regrouper des instructions dans un même bloc</span>, relativement indépendant du reste du programme, afin de réaliser un certain traitement.
 </p>
 
 <p>
-Une fonction peut être nommée, ce qui permet notamment sa réutilisabilité.
+    <span class="fw-bold">Une fonction peut être nommée</span>, ce qui permet notamment sa réutilisabilité.
 </p>
+
+<a id="analogie" class="anchor"></a>
+<h2>Analogie</h2>
+
+<p>
+    <span class="fw-bold">Une fonction effectue toujours le même traitement.</span> Elle utilise des données entrantes, et de ce traitement est issue une unique valeur de retour.
+</p>
+
+<figure class="text-center">
+    <img
+    src="/assets/img/blog/javascript-fonctions/blender.png"
+    alt="fonction-analogie-blender" class="article-img"/>
+    <div class="image-caption">Analogie du blender</div>
+</figure>
+
+<p>
+Vous pouvez la voir comme un blender, qui prend en entrée des ingrédients, effectue toujours le même traitement (mixer), et fournit un résultat qui dépend des ingrédients placés en premier lieu.
+</p>
+
+<a id="declarer-appeler-fonction" class="anchor"></a>
+<h2>Déclarer et appeler une fonction</h2>
+
+<p>
+Dans sa forme classique, une fonction :
+</p>
+
+<ul>
+    <li>
+        est précédée du mot-clé <code>function</code>.
+    </li>
+    <li>
+        est nommée, avec les mêmes règles que pour les variables.
+    </li>
+    <li>
+        peut utiliser des paramètres, indiqués dans les parenthèses après le nom.
+    </li>
+    <li>
+        contient un bloc d’instructions entre accolades, placé après les parenthèses.
+    </li>
+    <li>
+        peut renvoyer une valeur, via le mot-clé <code>return</code> ce mot clé interrompt l'exécution de la fonction.
+    </li>
+</ul>
+
+<p>
+    <span class="fw-bold">Une fois écrite, la fonction peut être appelée autant de fois que nécessaire</span>, avec des arguments pouvant varier. 
+</p>
+
+{% highlight js linenos %}
+// Le nom de la fonction est 'add'
+// a et b sont des paramètres
+function add(a, b) {
+  // renvoie la somme de a et b
+  return a + b;
+}
+
+// 4 et 6 sont des arguments
+const result = add(4, 6); // => 10
+{% endhighlight %}
+<div class="code-caption">Déclaration d'une fonction</div>
+
+<a id="fonction-anonyme" class="anchor"></a>
+<h2>Les fonctions anonymes</h2>
+
+<p>
+    <span class="fw-bold">Vous pouvez déclarer une fonction sans lui donner de nom.</span> Cette fonction sera dite anonyme.
+    On utilise souvent les fonctions anonymes quand on doit passer une fonction en paramètre d’une autre fonction.
+</p>
+
+{% highlight js linenos %}
+// setTimeout prend une fonction en 1er paramètre
+// La fonction n'est pas nommée
+setTimeout(function(message){
+    console.log("Hello !");
+}, 1000);
+{% endhighlight %}
+<div class="code-caption">Utilisation d'une fonction anonyme</div>
+
+<a id="variable-fonction" class="anchor"></a>
+<h2>Affecter une fonction à une variable</h2>
+
+<p>
+    <span class="fw-bold">Vous pouvez affecter une fonction anonyme à une variable.</span>
+    Dans ce cas, vous utiliserez le nom de la variable pour appeler la fonction.
+</p>
+
+<p>
+    Il y a une légère différence entre les 2 méthodes :
+</p>
+
+{% highlight js linenos %}
+const result = add(4, 6); // => add is undefined
+const add = function (a, b) {
+  return a + b;
+}
+
+const result = add(4, 6); // => 10
+function add(a, b) {
+  return a + b;
+}
+{% endhighlight %}
+<div class="code-caption">Différence entre une fonction nommée et une fonction stockée</div>
+
+<p>
+    Vous pouvez remarquer que <span class="fw-bold">la fonction nommée est déclarée avant l'exécution du script</span> alors que dans le cas d'une variable, elle reste vide jusqu'à l'assignation.
+</p>
+
+<a id="fonction-flechee" class="anchor"></a>
+<h2>Les fonctions fléchées</h2>
+
+<p>
+    <span class="fw-bold">Une fonction fléchée est une fonction dont la notation est simplifiée pour en faciliter la lecture.</span> Cette notation est apparue dans la version ES2015 (ES6).
+</p>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+      Remarque : Une fonction fléchée est toujours anonyme.
+    </div>
+</div>
+
+<p>
+Fonction anonyme :
+</p>
+
+{% highlight js linenos %}
+const add = function (a, b) {
+  return a + b;
+}
+{% endhighlight %}
+<div class="code-caption">Stored anonymous function</div>
+
+<p>
+Fonction fléchée multiligne :
+</p>
+
+{% highlight js linenos %}
+const add = (a, b) => {
+  return a + b;
+}
+{% endhighlight %}
+<div class="code-caption">Fat arrow function</div>
+
+<p>
+Fonction fléchée simplifiée :
+</p>
+
+{% highlight js linenos %}
+const add = (a, b) => a + b;
+{% endhighlight %}
+<div class="code-caption">Simplified fat arrow function</div>
+
+<p>
+    <span class="fw-bold">Notez qu'on ne peut utiliser la notation simplifiée que dans le cas où notre fonction ne contient qu'une ligne d'instruction.</span>
+    Dans ce cas, le return est sous-entendu.
+</p>
+
+<a id="pourquoi-utiliser-fonctions" class="anchor"></a>
+<h2>Pourquoi utiliser les fonctions ?</h2>
 
 <a id="eviter-duplication" class="anchor"></a>
-<h2>Éviter la duplication de code</h2>
+<h3>Éviter la duplication de code</h3>
 
 <p>
-Un programme est souvent amené à répéter des opérations au cours de son exécution.
+    Vous serez souvent amenés à répéter des opérations au sein de vos programmes. <span class="fw-bold">Une fonction est un moyen de répéter plusieurs fois la même suite d'instructions sans avoir à la réécrire.</span>
 </p>
 
-<p>
-Exemple  : calculer la moyenne de plusieurs notes.
-</p>
+<a id="exemple-calcul-moyenne" class="anchor"></a>
+<h4>Exemple : Calculer une moyenne</h4>
 
 <p>
-On peut observer deux blocs de code très similaires.
+Imaginez que vous devez calculer la moyenne des notes de plusieurs élèves.
+</p>
+
+<a id="exemple-sans-fonction" class="anchor"></a>
+<h5>Sans fonction</h5>
+
+<p>
+Si vous n'utilisez pas de fonction, vous obtenez 2 blocs de code très similaires :
 </p>
 
 {% highlight js linenos %}
@@ -61,13 +224,18 @@ for (let index = 0 ; index < marysRatings.length ; index++) {
 }
 const marysAverage = marysSum /  marysRatings.length;
 {% endhighlight %} 
+<div class="code-caption">Calcul de la moyenne sans fonction</div>
 
 <p>
-On remarque que le même algorithme est utilisé sur des données différentes.
+Vous remarquez que le même algorithme est utilisé sur des données différentes.
+Vos instructions sont dupliquées autant de fois que vous devez effectuer le calcul de la moyenne.
 </p>
 
+<a id="exemple-avec-fonction" class="anchor"></a>
+<h5>Avec fonction</h5>
+
 <p>
-Nous allons factoriser l'algorithme : le déplacer dans une fonction qui nous fera gagner des lignes de codes et en plus de ça sera réutilisable :
+Afin d'éviter la duplication, vous allez déplacer l'algorithme dans une fonction qui sera réutilisable.
 </p>
 
 {% highlight js linenos %}
@@ -84,18 +252,30 @@ const marysRatings = [15, 11, 13.5];
 // On appelle la fonction à deux reprises
 const billsAverage = computeAverage(billsRatings);
 const marysAverage = computeAverage(marysRatings);
-{% endhighlight %} 
+{% endhighlight %}
+<div class="code-caption">Calcul de la moyenne avec fonction</div>
+
+<p>
+    Désormais, calculer une nouvelle moyenne ne vous demande que d'appeller la fonction <code>computeAverage()</code> 1 fois de plus.
+</p>
 
 <a id="limiter-erreurs" class="anchor"></a>
-<h2>Limiter les risques d'erreurs</h2>
+<h3>Limiter les risques d'erreurs</h3>
 
 <p>
-Même un petit bloc de code, comme une formule mathématique, se prête à la factorisation en fonction : répéter plusieurs fois une même formule multiplie le risque d’une erreur d’inattention.
+    <span class="fw-bold">Même un petit bloc de code, comme une formule mathématique, se prête à la factorisation en fonction</span> : répéter plusieurs fois une même formule multiplie le risque d’une erreur d’inattention.
 </p>
 
+<a id="exemple-calcul-moyenne" class="anchor"></a>
+<h4>Exemple : Convertir une température</h4>
+
+<p> Imaginez cette fois-ci que vous devez convertir une température anglaise (°F), en température francaise (°C)</p>
 <p>
-Formule : tempCelsius = (tempFahrenheit - 32) * 5 / 9
+<span class="fw-bold">Formule :</span> <code>tempCelsius = (tempFahrenheit - 32) * 5 / 9</code>
 </p>
+
+<a id="exemple-conversion-sans-fonction" class="anchor"></a>
+<h5 class="mb-4">Sans fonction</h5>
 
 {% highlight js linenos %}
 const temperatureSeattleF = 66;
@@ -107,127 +287,33 @@ const temperatureDenverC = (temperatureDenverF - 32) * 5 / 9;
 // Oops
 const temperatureChicagoC = (temperatureChicagoF - 32) / 5 * 9;
 {% endhighlight %} 
+<div class="code-caption">Conversion de température sans fonction</div>
 
-<a id="analogie" class="anchor"></a>
-<h2>Analogie</h2>
+<p> Vous pouvez remarquer une erreur qui s'est glissée de manière quasiment imperceptible à la ligne 8.</p>
 
-<p>
-Une fonction effectue un traitement bien spécifique, sur des données entrantes, et de ce traitement est issue une valeur de retour.
-</p>
-
-<p>
-Un peu comme un blender, qui prend en entrée des ingrédients, les transforme, et en sortie duquel on obtient… un milkshake par exemple !
-</p>
-
-<a id="declarer-appeler" class="anchor"></a>
-<h2>Déclarer et appeler une fonction</h2>
-
-<p>
-Dans sa forme classique, une fonction :
-</p>
-
-<ul>
-    <li>
-        est précédée du mot-clé function.
-    </li>
-    <li>
-        est nommée, avec les mêmes règles que pour les variables.
-    </li>
-    <li>
-        peut avoir des paramètres, indiqués dans les parenthèses après le nom.
-    </li>
-    <li>
-        contient un bloc d’instructions entre accolades, placé après les parenthèses.
-    </li>
-    <li>
-        peut renvoyer une valeur, via le mot-clé return; ce mot clé interrompt l'exécution de la fonction.
-    </li>
-</ul>
-
-<p>
-Une fois écrite, la fonction peut être appelée, autant de fois que nécessaire, avec des arguments pouvant varier. 
-</p>
+<a id="exemple-avec-fonction" class="anchor"></a>
+<h5 class="mb-4">Avec fonction</h5>
 
 {% highlight js linenos %}
-// The function name is add
-// a and b are the parameters
-function add(a, b) {
- // returns the sum
- return a + b;
+function fahrenheitToCelcius(tempFahrenheit) {
+   return (tempFahrenheit - 32) * 5 / 9; 
 }
 
-// 4 and 6 are the arguments
-const result = add(4, 6); // => 10
+const temperatureSeattleF = 66;
+const temperatureDenverF = 92;
+const temperatureChicagoF = 84;
+
+const temperatureSeattleF = fahrenheitToCelcius(temperatureSeattleF);
+const temperatureDenverF = fahrenheitToCelcius(temperatureDenverF);
+const temperatureChicagoF = fahrenheitToCelcius(temperatureChicagoF);
 {% endhighlight %}
+<div class="code-caption">Conversion de température avec fonction</div>
 
-<a id="anonyme-fonction" class="anchor"></a>
-<h2>Les fonctions anonymes</h2>
-
+<p>En utilisant une fonction, vous n'avez besoin d'écrire la formule qu'une seule fois. Il sera donc beaucoup plus facile de détecter une erreur.</p>
 <p>
-On peut écrire une fonction sans lui donner de nom. Cette fonction sera dite anonyme.
-On utilise souvent  les fonctions anonymes quand on doit passer une fonction en paramètre d’une autre fonction.
+    <span class="fw-bold">Dans le cas où vous codez des tests unitaires, une fonction serait d'autant plus intéressante</span> 
+    car il vous suffit de tester la fonction pour être assuré qu'elle fonctionnera comme prévu à chaque fois que vous l'utiliserez.
 </p>
-
-{% highlight js linenos %}
-// setTimeout expects a function as first argument
-// this function has no name, it is an anonymous function
-setTimeout(function(message){
-    console.log("Hello !");
-}, 1000);
-{% endhighlight %}
-
-<a id="variable-fonction" class="anchor"></a>
-<h2>Affecter une fonction à une variable</h2>
-
-<p>
-On peut affecter une fonction à une variable.
-On  utilise le nom de la variable pour appeler la fonction.
-Cette pratique est recommandée pour éviter des conflits possibles lors de la déclaration de fonctions nommées.
-</p>
-
-{% highlight js linenos %}
-const add = function (a, b) {
-    return a + b;
-   }
-   
-   const result = add(4, 6);
-{% endhighlight %}
-
-<a id="fonction-flechee" class="anchor"></a>
-<h2>La fonction fléchée</h2>
-
-<p>
-En javascript nous disposons de plusieurs syntaxes pour déclarer une fonction, la déclaration basique, la fonction dans la variable et maintenant la fonction fléchée qui reprend un peu de la dernière.
-</p>
-
-<p>
-La fonction "function" :
-</p>
-
-{% highlight js linenos %}
-const add = function (a, b) {
-    return a + b;
-   }
-{% endhighlight %}
-
-<p>
-La fonction intermédiaire :
-</p>
-
-{% highlight js linenos %}
-const add = (a, b) => {
-    return a + b;
-   }
-{% endhighlight %}
-
-<p>
-La fonction "fat arrow" :
-</p>
-
-{% highlight js linenos %}
-const add = (a, b) => a + b;
-{% endhighlight %}
-
 
 <a id="conclusion" class="anchor"></a>
 <h2>Conclusion</h2>
