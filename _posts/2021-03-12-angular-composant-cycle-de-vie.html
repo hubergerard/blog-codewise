@@ -2,7 +2,7 @@
 layout: post
 title: "Angular - Cycle de vie d'un composant"
 date: 2021-03-12 11:40:10 +0100
-description: "Une instance de composant Angular possède un cycle de vie. Votre application peut utiliser des méthodes de hooks pour agir lors des évènements clé du cycle de vie."
+description: "Dans cet article, vous allez découvrir le cycle de vie d'un composant Angular en détails."
 tags: developpement web Angular lifecycle component
 categories: [Développement web]
 author: "huber"
@@ -10,19 +10,15 @@ post_image: "/assets/img/blog/angular-composant/angular_lifecycle.jpg"
 toc-text-mode: false
 ---
 
-<p>Dans cet article, vous allez découvrir le cycle de vie d'un composant Angular en détail.</p>
-
-<div id="toc" class="blog-toc"></div>
-
 <a id="definition" class="anchor"></a>
 <h2>Définition</h2>
 
-<p><span class="font-weight-bold">Le cycle de vie correspond aux différentes étapes de la vie d'une instance.</span> 
+<p><span class="fw-bold">Le cycle de vie correspond aux différentes étapes de la vie d'une instance.</span> 
             Il débute toujours par une instanciation et termine par la destruction de l'instance, 
             donc la désallocation des ressources mémoire qui lui sont affectées.
 </p>
 
-<p><span class="font-weight-bold">Un hook</span> (crochet) <span class="font-weight-bold">est une méthode qui s'exécute lors de certains événements liés au cycle de vie</span>. 
+<p><span class="fw-bold">Un hook</span> (crochet) <span class="fw-bold">est une méthode qui s'exécute lors de certains événements liés au cycle de vie</span>. 
             Cela permet à votre app Angular d'exécuter du code JavaScript lors de ces événements.
 </p>
 
@@ -45,8 +41,8 @@ toc-text-mode: false
 <a id="constructeur" class="anchor"></a>
 <h3>1. Le constructeur</h3>
 
-<p><span class="font-weight-bold">Le cycle commence par l'appel du constructeur</span>, juste après l'instanciation du Component.</p>
-<p>Dans le constructeur,<span class="font-weight-bold"> placez uniquement les initialisations de variable locales</span> avec des valeurs simples.</p>
+<p><span class="fw-bold">Le cycle commence par l'appel du constructeur</span>, juste après l'instanciation du Component.</p>
+<p>Dans le constructeur,<span class="fw-bold"> placez uniquement les initialisations de variable locales</span> avec des valeurs simples.</p>
 
 {% highlight ts linenos %}
 constructor() {
@@ -56,13 +52,13 @@ constructor() {
 {% endhighlight %} 
 <div class="code-caption">any.component.ts</div>
 
-<p>Ainsi, ne placez <span class="font-weight-bold">aucune initialisation complexe dans le constructeur.</span> 
+<p>Ainsi, ne placez <span class="fw-bold">aucune initialisation complexe dans le constructeur.</span> 
     Vous voulez des composant qui se construisent sans consommer beaucoup de ressources et de manière sûre.
 </p>
 
 <a id="OnChanges" class="anchor"></a>
 <h3>2. Détecter les changements d'Input</h3>
-<p><span class="font-weight-bold">Immédiatement après le constructeur, Angular appelle le hook ngOnChanges().</span> 
+<p><span class="fw-bold">Immédiatement après le constructeur, Angular appelle le hook ngOnChanges().</span> 
     Il est également appelé après chaque changement d'une des propriétés passées en Input.
 </p>
 
@@ -87,9 +83,9 @@ private uppercase(input: string) {
 <p>Utilisez la méthode ngOnInit() dans les 2 cas suivants :</p>
 <ul>
     <li>
-        <span class="font-weight-bold">Vous voulez mettre en place une initialisation complexe </span>
+        <span class="fw-bold">Vous voulez mettre en place une initialisation complexe </span>
         (donc hors du constructeur), typiquement appeler une API qui charge les données de votre page.</li>
-        <li><span class="font-weight-bold">Vous devez modifier l'état de votre component après le chargement des attributs passés en @Input</span></li>
+        <li><span class="fw-bold">Vous devez modifier l'état de votre component après le chargement des attributs passés en @Input</span></li>
     </ul>
 
 {% highlight ts linenos %}
@@ -116,17 +112,17 @@ private uppercase(input: string) {
 <p> Dans ce cas vous devrez utiliser la méthode ngDoCheck()</p>
 
 <p>
-    <span class="font-weight-bold">Cette méthode vous permet de réagir à tout changement dans la page qui ne serait pas détecté par le framework.</span>
+    <span class="fw-bold">Cette méthode vous permet de réagir à tout changement dans la page qui ne serait pas détecté par le framework.</span>
 </p>
 <p>
-    <span class="font-weight-bold">Attention</span> ! Ne l'utilisez pas plus que nécessaire : cette méthode coûte énormément de ressources et peut donc diminuer les performances globales de votre application.
+    <span class="fw-bold">Attention</span> ! Ne l'utilisez pas plus que nécessaire : cette méthode coûte énormément de ressources et peut donc diminuer les performances globales de votre application.
 </p>
 <p>De ce fait, vous ne verrez pas beaucoup ce hook !</p>
 
 <a id="AfterContent" class="anchor"></a>
 <h3>5. Détecter les changements de ng-content</h3>
 <p>
-    <span class="font-weight-bold">La méthode ngAfterContentInit() est déclenchée lorsque le contenu de la balise ng-content est reçu pour la première fois.</span>
+    <span class="fw-bold">La méthode ngAfterContentInit() est déclenchée lorsque le contenu de la balise ng-content est reçu pour la première fois.</span>
 </p>
 <h4>Exemple ContentChild</h4>
 
@@ -186,14 +182,14 @@ export class ChildComponent implements AfterContentInit  {
   <div class="code-caption">child.component.ts</div>
 
   <p>
-      <span class="font-weight-bold">Il y a aussi le hook ngAfterContentchecked()</span> 
+      <span class="fw-bold">Il y a aussi le hook ngAfterContentchecked()</span> 
         qui est déclenché à chaque fois que le contenu de cette balise est modifié dynamiquement.
 </p>
 
 <a id="AfterView" class="anchor"></a>
 <h3>6. Accéder au DOM </h3>
 <p>
-    <span class="font-weight-bold">La méthode ngAfterViewInit() est déclenchée lorsque le contenu des variables décorées par @ViewChild 
+    <span class="fw-bold">La méthode ngAfterViewInit() est déclenchée lorsque le contenu des variables décorées par @ViewChild 
         ou @ViewChildren est reçu pour la première fois</span>.
 </p>
 
@@ -236,14 +232,14 @@ export class ChildComponent implements AfterViewInit  {
 {% endhighlight %}
 <div class="code-caption">child.component.ts</div>
 <p>
-    <span class="font-weight-bold">ngAfterViewchecked()</span> est déclenchée à chaque fois que le contenu de ces variables est modifié.
+    <span class="fw-bold">ngAfterViewchecked()</span> est déclenchée à chaque fois que le contenu de ces variables est modifié.
 </p>
 
 <a id="OnDestroy" class="anchor"></a>
 <h3>7. Détruire l'instance proprement</h3>
 
 <p>
-    <span class="font-weight-bold">Enfin le hook ngOnDestroy() vous permet de libérer des ressources avant la destruction de l'instance du composant.</span>
+    <span class="fw-bold">Enfin le hook ngOnDestroy() vous permet de libérer des ressources avant la destruction de l'instance du composant.</span>
 </p>
 
 <ul>
