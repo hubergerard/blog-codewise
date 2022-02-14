@@ -6,24 +6,18 @@ description: "Dans cet article vous allez découvrir les directives d'Angular, c
 tags: developpement web Angular
 categories: [Développement web]
 author: "lucas"
-post_image: "assets/img/blog/article_angular_directive.png"
+post_image: "/assets/img/blog/article_angular_directive.png"
 toc-text-mode: false
 toc-depth: 5
 author: lucas
 lang: fr
 ---
 
-<p><span class="font-weight-bold">Besoin d’ajouter des comportements aux objets de votre DOM ?</span>
-  Dans cet article, vous allez découvrir les directives du framework Angular : comment on les utilise, et dans quels
-  cas.
-</p>
-<div id="toc" class="blog-toc"></div>
-
 <a id="qu'est-ce-qu'une-directive" class="anchor"></a>
 <h2>Qu’est-ce qu’une directive ?</h2>
 
 <p>
-  <span class="font-weight-bold">Pour commencer, une définition : les directives d'Angular sont des classes qui
+  <span class="fw-bold">Pour commencer, une définition : les directives d'Angular sont des classes qui
     ajoutent un comportement supplémentaire aux éléments du DOM.</span>
 </p>
 <p>
@@ -34,18 +28,18 @@ lang: fr
 <a id="directives-types" class="anchor"></a>
 <h2>Les différents types de directives</h2>
 
-<p>On dit qu'une directive est <span class="font-weight-bold">structurelle</span> lorsqu'elle modifie la structure du
+<p>On dit qu'une directive est <span class="fw-bold">structurelle</span> lorsqu'elle modifie la structure du
   DOM, c'est-à-dire lorsqu'on ajoute, supprime ou déplace une balise.</p>
-<p>Lorsqu'on dit par contre qu'une directive est une <span class="font-weight-bold">directive d'attribut</span>, on
+<p>Lorsqu'on dit par contre qu'une directive est une <span class="fw-bold">directive d'attribut</span>, on
   parle d'une directive qui change un attribut de l'élément du DOM, sans modifier la structure du DOM dans son ensemble.
 </p>
-<p>On peut aussi parler de directive <span class="font-weight-bold">native</span> ou <span
-    class="font-weight-bold">intégrée</span> lorsqu'elle est fournie par Angular.</p>
+<p>On peut aussi parler de directive <span class="fw-bold">native</span> ou <span
+    class="fw-bold">intégrée</span> lorsqu'elle est fournie par Angular.</p>
 
 <a id="structural-directives" class="anchor"></a>
 <h2>Structural directives</h2>
 
-<p>Commençons donc par voir les <span class="font-weight-bold">Structural directives</span> qui permettent de travailler
+<p>Commençons donc par voir les <span class="fw-bold">Structural directives</span> qui permettent de travailler
   sur la structure de votre HTML.
   Ces directives sont fournies par Angular et vous permettent d'ajouter, retirer ou déplacer les éléments du DOM.
 </p>
@@ -107,7 +101,7 @@ lang: fr
   <a id="attribute-directives" class="anchor"></a>
   <h2>Attribute directives </h2>
 
-  <p>Voyons maintenant les <span class="font-weight-bold">Attributes directives</span>.
+  <p>Voyons maintenant les <span class="fw-bold">Attributes directives</span>.
     Ce sont des classes TS ayant comme décorateur “@Directive”
     permettant d'agir sur les attributs d’éléments du DOM.
   </p>
@@ -134,7 +128,7 @@ lang: fr
   <a id="NgClass"></a>
   <h4>NgClass</h4>
 
-  <p><span class="font-weight-bold">On peut ajouter ou supprimer plusieurs classes CSS simultanément avec ngClass.</span>
+  <p><span class="fw-bold">On peut ajouter ou supprimer plusieurs classes CSS simultanément avec ngClass.</span>
     Sur un élément que vous souhaitez styliser ajoutez un ngClass [ngClass]
     et si l’expression évaluée renvoie true, alors Angular appliquera la classe.
   </p>
@@ -150,7 +144,7 @@ lang: fr
   <a id="NgStyle"></a>
   <h4>NgStyle</h4>
 
-  <p><span class="font-weight-bold">NgStyle permet de définir plusieurs styles, selon l'état du composant.</span></p>
+  <p><span class="fw-bold">NgStyle permet de définir plusieurs styles, selon l'état du composant.</span></p>
   <p>Dans votre composant :</p>
 
 {% highlight ts linenos %}
@@ -182,9 +176,9 @@ setCurrentStyles() {
     <a id="NgModel"></a>
     <h4>NgModel</h4>
 
-    <p><span class="font-weight-bold">La directive NgModel nous permet d'agir sur l'attribut "value" de nos balises</span></p>
+    <p><span class="fw-bold">La directive NgModel nous permet d'agir sur l'attribut "value" de nos balises</span></p>
     <p>C'est dans l'attribut value qu'on retrouve la valeur saisie par un utilisateur dans une balise input.</p>
-    <p><span class="font-weight-bold">NgModel s'utilise donc sur un input pour réaliser une liaison bidirectionnelle entre votre template et
+    <p><span class="fw-bold">NgModel s'utilise donc sur un input pour réaliser une liaison bidirectionnelle entre votre template et
       votre component.</span>
     </p>
 
@@ -310,14 +304,14 @@ export class AnyDirective {
         <a id="param-selector" class="anchor"></a>
         <h3>Le paramètre selector</h3>
 
-        <p>Le paramètre <span class="font-weight-bold">selector</span> est le plus important car il va indiquer comment on utilisera la
+        <p>Le paramètre <span class="fw-bold">selector</span> est le plus important car il va indiquer comment on utilisera la
           directive.
           En effet, selon la syntaxe qu’on utilisera, la directive sera représentée par un objet du DOM, une classe CSS ou un attribut dans
           une
           balise HTML.
         </p>
 
-        <p>Le <span class="font-weight-bold">selector</span> se paramètre dans le décorateur @Directive() : </p>
+        <p>Le <span class="fw-bold">selector</span> se paramètre dans le décorateur @Directive() : </p>
 
 {% highlight ts linenos %}
 @Directive({
@@ -329,7 +323,7 @@ export class AnyDirective {}
         <a id="directive-balise" class="anchor"></a>
         <h4>Directive utilisée en tant que balise</h4>
 
-        <p><span class="font-weight-bold">selector: 'any-directive'</span></p>
+        <p><span class="fw-bold">selector: 'any-directive'</span></p>
 
         <p>Dans ce cas-ci, la directive doit être utilisée comme élément dans le template :</p>
 
@@ -337,15 +331,15 @@ export class AnyDirective {}
 <any-directive></any-directive>
 {% endhighlight %}
 
-        <p><span class="font-weight-bold">D'ailleurs, saviez-vous que Component est une classe fille de Directive </span>(Component extends Directive) <span class="font-weight-bold">?</span></p>
+        <p><span class="fw-bold">D'ailleurs, saviez-vous que Component est une classe fille de Directive </span>(Component extends Directive) <span class="fw-bold">?</span></p>
         <p>Un Component n'est en fait qu'une directive à laquelle on a associé une vue (template HTML)</p>
 
 
         <a id="directive-attribute" class="anchor"></a>
         <h4>Directive utilisée en tant qu'attribut</h4>
 
-        <p><span class="font-weight-bold">selector: '[any-directive]'</span></p>
-        <p>C'est le cas le plus courant ! En effet <span class="font-weight-bold">le plus souvent, les directives sont utilisées en tant qu'attribut.</span></p>
+        <p><span class="fw-bold">selector: '[any-directive]'</span></p>
+        <p>C'est le cas le plus courant ! En effet <span class="fw-bold">le plus souvent, les directives sont utilisées en tant qu'attribut.</span></p>
 
         <p>Dans ce cas-ci, la directive doit être utilisée comme attribut de la balise :</p>
 
@@ -353,13 +347,13 @@ export class AnyDirective {}
 <div any-directive></div>
 {% endhighlight %}
 
-        <p>Optionnellement, on peut aussi vouloir <span class="font-weight-bold">passer une valeur à cet attribut :</span></p>
+        <p>Optionnellement, on peut aussi vouloir <span class="fw-bold">passer une valeur à cet attribut :</span></p>
 
 {% highlight html linenos %}
 <div [any-directive]="valeur"></div>
 {% endhighlight %}
 
-        <p>Dans ce cas là <span class="font-weight-bold">on récupère la valeur passé grâce à un input </span>(de même nom que le selector) dans la
+        <p>Dans ce cas là <span class="fw-bold">on récupère la valeur passé grâce à un input </span>(de même nom que le selector) dans la
           directive :</p>
 
 {% highlight ts linenos %}
@@ -369,7 +363,7 @@ export class AnyDirective {}
         <a id="directive-class-css" class="anchor"></a>
         <h4>Directive utilisée en tant que classe CSS</h4>
 
-        <p><span class="font-weight-bold">selector: '.any-directive'</span> </p>
+        <p><span class="fw-bold">selector: '.any-directive'</span> </p>
 
         <p>Dans cet exemple on utilise la directive sous forme de classe CSS.</p>
 
