@@ -1,0 +1,295 @@
+---
+layout: post
+title: "Javascript - Manipulation du DOM"
+date: 2021-12-31 9:14:00 +0100
+description: "Dans cet article, vous allez apprendre ce qu'est le DOM et comment le manipuler."
+tags: developpement web javascript DOM Element Node
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/javascript-dom/cover_js_dom.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<div id="toc" class="blog-toc"></div>
+
+<a id="definitions" class="anchor"></a>
+<h2>Définitions</h2>
+
+<a id="DOM" class="anchor"></a>
+<h3>DOM (Document Object Model)</h3>
+
+<p>
+    <span class="fw-bold">Le DOM est une représentation de la page web sous forme d'arborescence d'objets.</span> DOM se traduit par "Modèle objet du document".
+    Il peut être manipulé à l'aide de Javascript, ce qui permet de modifier le HTML via du code. 
+</p>
+<p>
+    C'est d'ailleurs pour ça que JavaScript a été créé en premier lieu.
+</p>
+<p>
+    La représentation du document (HTML ou XML) à travers le DOM permet de le voir comme un groupe structuré de noeuds-objets
+    possédant différentes propriétés et méthodes.
+</p>
+<div class="row">
+    <figure class="text-center col-12 col-lg-8 offset-lg-2">
+        <img class="article-img" src="/assets/img/blog/javascript-dom/dom-model.png" alt="Représentation du DOM">
+        <div class="image-caption">Représentation du DOM</div>
+    </figure>
+</div>
+
+
+<a id="node" class="anchor"></a>
+<h3>Noeud (Node)</h3>
+
+<p>
+    <span class="fw-bold">Un noeud est un objet du DOM.</span> On peut retrouver différents types de noeud, tel que : Element, Text, Attr, Document, Comment, etc...
+</p>
+
+<a id="element" class="anchor"></a>
+<h3>Élément (Element)</h3>
+
+<p>
+    <span class="fw-bold">Un élément est un type de noeud qui représente une balise complète</span>, par exemple : &lt;p&gt;, &lt;div&gt;, etc.
+</p>
+
+<a id="javascript-possibilites" class="anchor"></a>
+<h2>Les possibilités de JavaScript</h2>
+
+<p>
+    <span class="fw-bold">Le JavaScript permet de rendre les pages web plus dynamiques et interactives. </span>
+    Avant JavaScript, l’interaction de l’utilisateur avec la page web se limitait à visiter des liens et à soumettre des formulaires.
+</p>
+
+<p>
+    Désormais le JavaScript rend possible :
+</p>
+
+<ul>
+    <li>
+        La manipulation des éléments d’une page web : que ce soit leur position dans le DOM, leur contenu ou leurs attributs (i.e. les classes, le style, etc.)
+    </li>
+    <li>
+        La prise en compte des actions de l’utilisateur, tel qu’un clic sur un élément, un glisser-déposer d’un élément vers un autre, etc.
+    </li>
+</ul>
+
+<p>
+    <span class="fw-bold">Lorsque vous visitez une page web, le navigateur récupère le code HTML qu’il analyse pour construire le DOM.</span> Si vous modifiez le DOM avec JS, la page HTML change en même temps pour refléter le nouveau DOM.
+</p>
+
+<a id="manipulation-DOM" class="anchor"></a>
+<h2>Manipulation du DOM</h2>
+
+<p><span class="fw-bold">Pour manipuler le DOM, JavaScript nous offre 2 types de fonctionnalités :</span></p>
+<ul>
+    <li>des fonctions et références qui permettent de récupérer des noeuds</li>
+    <li>des fonctions et assignations qui servent à modifier les noeuds récupérés</li>
+</ul>
+
+<p><span class="fw-bold">L'ensemble du DOM est atteignable via la variable <code>document</code></span> qui est accessible de manière globale dans votre script JS.</p>
+
+<p>Voyons ensemble quelques exemples de manipulation du DOM.</p>
+
+<a id="modifier-body" class="anchor"></a>
+<h3>Changer le contenu de l'élément body</h3>
+
+<p><span class="fw-bold">La variable <code>document</code> possède une propriété <code>body</code> qui contient une référence vers la balise <code>&lt;body&gt;</code></span> de notre document HTML.</p>
+
+{% highlight js linenos %}
+// Remplace le contenu de la balise body
+document.body.innerHTML = '<h1>I change the body with this title !</h1>'
+
+// Appliquer des styles au body
+document.body.style.color = 'red';
+document.body.style.fontSize = '60px';
+{% endhighlight %}
+<div class="image-caption">Manipulation de l'élément body</div>
+
+<p> Dans cet exemple, on a remplacé le contenu de la balise <code>&lt;body&gt;</code> par un titre <code>h1</code> grâce à la propritété <code>innerHTML</code>. Si le body contenait d'autres balises, elles ont été supprimées lorsqu'on a remplacé la valeur contenu dans <code>innerHTML</code>.</p>
+<p>
+    Vous remarquez que la variable <code>body</code> contient une propriété <code>style</code>, qui vous permet de modifier l'attribut du même nom. Ici, on modifie la couleur du texte et la taille de police.
+</p>
+
+<a id="recuperer-balise-via-id" class="anchor"></a>
+<h3>Récupérer une balise via son id</h3>
+
+<p>
+    <span class="fw-bold"><code>document.getElementById('idOfElement')</code> permet de récupérer un élément via son id.</span>
+</p>
+
+{% highlight html linenos %}
+<body>
+    <p id="first">Premier paragraphe</p>
+    <p id="second">Second paragraphe</p>
+    <p id="third">Troisième paragraphe</p>
+</body>
+{% endhighlight %}
+<div class="code-caption">exemple.html</div>
+
+
+{% highlight js linenos %}
+// Get the paragraph with id second
+const secondElem = document.getElementbyId('second');
+
+// Alter both its content and style
+secondElem.innerHTML = '<em>Je modifie son contenu</em> et son style';
+secondElem.style.fontWeight = 'bold';
+{% endhighlight %}
+<div class="code-caption">exemple.js</div>
+
+<p>Une fois l'élément récupéré, vous pouvez le modifier de la même manière qu'avec l'élément <code>body</code>. C'est à dire en atteignant son innerHTML, ou un de ses attributs comme le style.</p>
+
+<a id="recuperer-plusieurs-balises" class="anchor"></a>
+<h3>Récupérer plusieurs balises</h3>
+
+<p>
+    <span class="fw-bold">On peut récupérer plusieurs éléments en un seul appel :</span>
+</p>
+
+<ul>
+    <li>
+        Par leur nom de balise avec <code>document.getElementsByTagName()</code>
+    </li>
+    <li>
+        Par leur classe avec <code>document.getElementsByClassName()</code>
+    </li>
+</ul>
+
+<a id="recuperer-via-nom-tag" class="anchor"></a>
+<h4>Via le nom de la balise</h4>
+
+{% highlight html linenos %}
+<button>Premier bouton</button>
+<button class="red">Second bouton</button>
+<p class="red">Paragraphe avec la même classe que le second bouton</p>
+{% endhighlight %}
+<div class="code-caption">exemple.html</div>
+
+{% highlight js linenos %}
+// Get all the button element
+const allButtons = document.getElementsbyTagName('button');
+
+// Alter the button's style with loop beacause the variable is an array
+for(let i = 0; i < allButtons.length ; i++){
+    allButtons[i].style.backgroundColor = 'yellow';
+}
+{% endhighlight %}
+<div class="code-caption">exemple.js</div>
+
+<p>
+    <span class="fw-bold">La fonction <code>getElementsbyTagName()</code> renvoie un objet de type HTMLCollection.</span> Ce n'est pas directement un tableau mais c'est un objet itérable. C'est-à dire que vous pouvez le parcourir avec une boucle <code>for</code>.
+</p>
+<p>
+    <span class="fw-bold">Si un élément du document possède le nom de balise passé en paramètre, il fera partie du résultat.</span>
+</p>
+
+<a id="recuperer-via-nom-classe" class="anchor"></a>
+<h4>Via un nom de classe</h4>
+
+{% highlight html linenos %}
+<button>Premier bouton</button>
+<button class="red">Second bouton</button>
+<p class="red">Paragraphe avec la même classe que le second bouton</p>
+{% endhighlight %}
+<div class="code-caption">exemple.html</div>
+
+{% highlight js linenos %}
+// Get all elements having the class "red"
+const allWithRed = document.getElementsByClassName('red');
+for(let i = 0; i < allWithRed.length; i++){
+    allWithRed[i].style.color = 'red';
+}
+{% endhighlight %}
+<div class="code-caption">exemple.js</div>
+
+<p>
+    De la même manière que <code>getElementsbyTagName()</code>, la fonction <code>getElementsbyClassName()</code> renvoie un objet de type HTMLCollection. Vous pouvez donc le parcourir également avec une boucle <code>for</code>.
+</p>
+<p>
+    <span class="fw-bold">Si un élément possède la classe demandée en paramètre parmi ses classes, il fera partie de la collection retournée.</span>
+</p>
+
+<a id="evenement" class="anchor"></a>
+<h2>Réagir à un évènement</h2>
+
+<p>
+    <span class="fw-bold">La méthode <code>element.addEventListener()</code> permet de réagir à un évènement émis par le DOM</span> (click, mouseover, change etc.), 
+    en appelant une fonction quand il se produit. 
+</p>
+<p>
+    Cette fonction prend 2 paramètres : le type d'évènement, et la fonction à exécuter lorsque l'évènement se produit.
+</p>
+<p>
+    Voici quelques exemples.
+</p>
+
+<a id="evenement-click" class="anchor"></a>
+<h3>Réagir à un clic sur un élément</h3>
+
+{% highlight html linenos %}
+<body>
+    <button id="button1">Change mon texte !</button>
+</body>
+{% endhighlight %}
+<div class="code-caption">click-event.html</div>
+
+
+{% highlight js linenos %}
+// Récupérer le bouton
+const firstButton = document.getElementById('button1');
+// Initialiser un compteur
+let count = 0;
+// Attacher un event listener pour l'évènement click
+firstButton.addEventListener('click', () => {
+    count += 1;
+    const text = "J'ai cliqué " + count + "fois";
+    firstButton.innerHTML = text;
+});
+{% endhighlight %}
+<div class="code-caption">click-event.js</div>
+
+<a id="evenement-click" class="anchor"></a>
+<h3>Réagir à un changement de valeur d'un input</h3>
+
+{% highlight html linenos %}
+<select>
+    <option value="kiwis">Kiwis</option>
+    <option value="bananes">Bananes</option>
+</select>
+
+<select>
+    <option value="carottes">Carottes</option>
+    <option value="tomates">Tomates</option>
+</select>
+
+<div>Je veux manger des <span id="show-choice">?</span>.</div>
+{% endhighlight %}
+<div class="code-caption">change-event.js</div>
+
+{% highlight js linenos %}
+const choiceSpan = document.getElementById('show-shoice');
+const selectors = document.getElementByTagName('select');
+
+for(let i = 0; i < selectors.length; i++;){
+    selectors[i].addEventListener('change', event => {
+        // event.target contient une référence 
+        // vers l'élément qui a déclenché l'event
+        choiceSpan.innerHTML = event.target.value;
+    });
+}
+{% endhighlight %}
+<div class="code-caption">change-event.js</div>
+
+<p>Dans cet exemple on a récupéré tous les inputs (des selects dans notre cas) pour leur attacher un event listener.</p>
+<p>Le handler passé en 2ème paramètre fait que pour change changement de valeur d'un des <code>&lt;select&gt;</code>, on récupère la valeur du <code>&lt;select&gt;</code> et on l'assigne au <code>innerHTML</code> du <code>&lt;span&gt;</code>.</p>
+<p>Ainsi, à chaque fois qu'on change la valeur d'un des <code>&lt;select&gt;</code>, le contenu du <code>&lt;span&gt;</code> est modifié et la phrase se met à jour.</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà, vous avez vu ce qu'est le DOM et sa manipulation.
+    Si vous avez des idées d’amélioration pour cet article, laissez-nous un commentaire !
+</p>
