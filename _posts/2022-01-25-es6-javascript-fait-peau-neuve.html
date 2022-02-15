@@ -2,8 +2,8 @@
 layout: post
 title: "ES6 - Javascript fait peau neuve !"
 date: 2022-01-25 12:10:50 +0100
-description: "Vous cherchez à comprendre comment fonctionne le routing aveC Angular ? vous êtes à la bonne adresse !"
-tags: developpement web Angular
+description: "Vous voulez vous mettre à jour sur les dernières pratiques JS ? Dans cet article, découvrez les principales nouveautés apportées par la version majeure ES6."
+tags: developpement web javascript es6
 categories: [Développement web]
 author: "lucas"
 post_image: "/assets/img/blog/es6/cover_es6.png"
@@ -13,16 +13,14 @@ author: lucas
 lang: fr
 ---
 
-<div id="toc" class="blog-toc"></div>
-
-<a id="new-keyword" class="anchor"></a>
+<a id="new-keywords" class="anchor"></a>
 <h2>Nouveaux mot-clés</h2>
 
 <a id="keyword-let" class="anchor"></a>
 <h3>Let</h3>
 
 <p>
-    Le mot-clé <b>let</b> permet de déclarer une variable limitée à la portée du bloc, donc elle n'existe que dans le bloc ou elle a été déclarée contrairement à une variable déclarée avec le mot-clé var.
+    <span class="fw-bold">Le mot-clé <code>let</code> permet de déclarer une variable limitée à la portée du bloc</span>, donc elle n'existe que dans le bloc ou elle a été déclarée contrairement à une variable déclarée avec le mot-clé var.
 </p>
 
 <p>Exemple</p>
@@ -30,30 +28,31 @@ lang: fr
 {% highlight js linenos %}
 function swop(x, y) {
     if (x != y) {
-        var bef = x;
+        var test = x;
         let temp = x;
         x = y;
         y = temp;
     }
-    console.log(typeof(bef));   // number
-    console.log(typeof(tmp));   // undefined
+    console.log(typeof(test));   // number
+    console.log(typeof(temp));   // undefined
 }
 {% endhighlight %}
+<div class="code-caption">Exemple d'utilisation de let</div>
 
 <p>
-    Le console log est en dehors du bloc de la fonction. On remarque que la variable ‘bef’ déclarée avec var existe en dehors du bloc de la fonction, ce qui n’est pas le cas de ‘temp’.
+    Le <code>console.log()</code> est en dehors du bloc de la fonction. On remarque que la variable <code>test</code> déclarée avec <code>var</code> existe en dehors du bloc de la fonction, ce qui n’est pas le cas de <code>temp</code>.
 </p>
 
 <a id="dont-use-var-keyword" class="anchor"></a>
 <h3>Pourquoi il ne faut plus utiliser le mot-clé var</h3>
 
 <p>
-    Les faits suivants ont été observé avec le mot-clé <b>var</b> :
+    Il y a quelques problèmes avec le mot-clé <code>var</code>. Par exemple :
 </p>
 
 <ul>
     <li>
-        la variable continue d'exister en dehors du bloc (comme nous l’avons vu précédemment).
+        la variable continue d'exister en dehors du bloc.
     </li>
     <li>
         la référence de la variable existe dès l'entrée dans la fonction donc avant la ligne de déclaration ! 
@@ -61,19 +60,24 @@ function swop(x, y) {
 </ul>
 
 <p>
-    Les développeurs sont habitués à des scopes qui s'arrêtent au niveau du bloc d'instruction dans lequel ils sont définis
-    pour éviter de créer des effets de bords dans notre code, il est donc vivement déconseillé d'utiliser var.
+    Les développeurs sont habitués à des scopes qui s'arrêtent au niveau du bloc d'instruction dans lequel ils sont définis.
+</p>
+<p>
+    Afin d'éviter des effets de bords difficiles à déceler dans votre code, il est donc vivement déconseillé d'utiliser <code>var</code>.
 </p>
 
 <a id="const-keyword" class="anchor"></a>
 <h3>Const</h3>
 
 <p>
-    Si vous avez une variable qui ne change pas de valeur, préférez utiliser le mot-clé <b>const</b>.
+    <span class="fw-bold">Si vous utilisez une variable qui n'est jamais réassignée, préférez utiliser le mot-clé <code>const</code>.</span>
 </p>
 
 <p>
-    Une constante ne peut pas être déclarée à nouveau. Si vous n'êtes pas sûr de devoir muter une référence, déclarez-la en constante jusqu'à ce que vous ayez besoin de la modifier.
+    Une constante ne peut pas être réassignée. Déclarer une variable avec <code>const</code> vous permet de limiter les risques d'erreur par réassignation, et améliore vos performances. 
+</p>
+<p>
+    Par défaut, à moins d'avoir besoin spécifiquement d'une variable réassignable (comme un compteur par exemple), vous devriez utiliser <code>const</code> au lieu de <code>let</code>.
 </p>
 
 <p>
@@ -83,46 +87,55 @@ function swop(x, y) {
 {% highlight js linenos %}
 const ENV = "dev";
 {% endhighlight %}
+<div class="code-caption">Exemple d'utilisation de const</div>
 
 <a id="template-literal" class="anchor"></a>
-<h2>Template literal</h2>
+<h2>Template literal (ou template string)</h2>
 
 <a id="interpolation" class="anchor"></a>
 <h3>Interpolation</h3>
 
 <p>
-    Les templates literals à la différence d’une chaîne de caractère classique, utilisent les anti quotes (`) à la place des simples ou double quotes pour être déclarés.
+    Les templates literals à la différence d’une chaîne de caractère classique, utilisent les back-quotes (`) à la place des simples ou double quotes pour être déclarés.
 </p>
 
 <p>
-    La template string va nous permettre d’évaluer des variables à l’intérieur de la chaîne, c’est ce qu’on appelle une interpolation.
+    <span class="fw-bold">Le string literal vous permet d’évaluer du JavaScript à l’intérieur de la chaîne</span> : c’est ce qu’on appelle une interpolation.
 </p>
 
 <p>Exemple</p>
 
 {% highlight js linenos %}
-let name = "Pierre";
-let age = 28;
-let result = `Je m’appelle ${name} et j'ai ${age} ans`;
+const name = 'Pierre';
+const age = 28;
+const result = `Je m’appelle ${name} et j'ai ${age} ans.`;
 {% endhighlight %}
+<div class="code-caption">Exemple d'utilisation de template literal</div>
 
 <p>
-    Pour interpoler la variable elle doit être encapsulée d’une accolade ouvrante et fermante et précédée du symbole dollar.
+    Pour interpoler la variable, vous devez l'entourer d’accolades précédées du symbole dollar.
 </p>
 
 <p>
-    L’espace entre les accolades n’est pas réservé qu’aux variables, il peut contenir du code javascript, des opérations, des appels de fonctions et autres.
+    L’interpolation n’est pas réservé qu’aux variables, elle peut contenir n'importe quel code JavaScript : des opérations, des appels de fonctions et autres.
 </p>
 
-<a id="string-multiline" class="anchor"></a>
+{% highlight js linenos %}
+const name = 'Pierre';
+let age = 28;
+const result = `Je m’appelle ${name.toUpperCase()} et j'aurai ${++age} ans dans un an.`;
+{% endhighlight %}
+<div class="code-caption">Exemple d'interpolation complexe</div>
+
+<a id="string-multiligne" class="anchor"></a>
 <h3>Chaîne de caractères multi-ligne</h3>
 
 <p>
-    Avec les templates literals plus besoin de concaténer des chaînes avec un saut de ligne.
+    <span class="fw-bold">Avec ES6, vous n'avez plus besoin de concaténer des chaînes avec un saut de ligne.</span>
 </p>
 
 <p>
-    Le modèle de libellés ES6 résout le problème avec la prise en charge de chaîne multiligne.
+    Les template literals résolvent le problème avec la prise en charge de chaîne multiligne.
 </p>
 
 <p>
@@ -144,12 +157,13 @@ const modele = `<!doctype html>
 </body>
 </html>`
 {% endhighlight %}
+<div class="code-caption">Template literal multiligne</div>
 
 <a id="default-param" class="anchor"></a>
-<h2>Paramètre par défaut</h2>
+<h2>Paramètres par défaut</h2>
 
 <p>
-    Avec ES6 vous pouvez utiliser des paramètres par défaut dans vos fonctions :
+    <span class="fw-bold">Avec ES6, vous pouvez utiliser des paramètres par défaut dans vos fonctions :</span>
 </p>
 
 {% highlight js linenos %}
@@ -157,16 +171,17 @@ let sum = function (x = 0, y = 0) {
     return x + y;
 };
 {% endhighlight %}
+<div class="code-caption">Paramètres par défaut</div>
 
 <p>
-    Ce qui peut nous éviter de faire planter le programme et/ou de vérifier si les paramètres sont bien utilisés et les tester dans le code.
+    Cela peut vous éviter des erreurs ou d'effectuer des tonnes de gestions d'erreur pour les cas ou vous recevez des paramètres sans valeur. Du genre <code>if (x === undefined) { ... }</code>
 </p>
 
 <a id="for-of" class="anchor"></a>
 <h2>Boucle for-of</h2>
 
 <p>
-    En javascript, il n’y a toujours pas de foreach mais il y a une nouvelle façon d’itérer sur un tableau avec <b>for-of</b>.
+    <span class="fw-bold">Vous pouvez désormais itérer sur un tableau, un objet ou tout autre objet itérable avec la notation simplifiée <code>for .. of</code>.</span>
 </p>
 
 <p>Exemple</p>
@@ -174,17 +189,18 @@ let sum = function (x = 0, y = 0) {
 {% highlight js linenos %}
 let fruits = [ "banana", "apple", "strawberry", "orange" ];
 
-for (let fruit of fruits) {
+for (const fruit of fruits) {
     console.log(fruit);
 }
 {% endhighlight %}
+<div class="code-caption">Boucle for .. of</div>
 
 <a id="evolution-litteral-object" class="anchor"></a>
 <h2>Évolution des objets littéraux</h2>
 
 <p>
-    Il est désormais possible d’avoir une écriture plus légère concernant la déclaration de méthode pour les objets littéraux.
-    Plus besoin d’écrire le mot-clé <b>function</b>.
+    <span class="fw-bold">Depuis ES6, vous pouvez utiliser une écriture plus légère concernant la déclaration de méthode pour les objets littéraux.</span>
+    Plus besoin d’écrire le mot-clé <code>function</code>.
 </p>
 
 <p>Exemple</p>
@@ -199,30 +215,48 @@ let literalObject = {
     }
 };
 {% endhighlight %}
+<div class="code-caption">Méthode dans un objet littéral</div>
 
-<a id="object" class="anchor"></a>
-<h2>Objet</h2>
+<a id="classes-es6" class="anchor"></a>
+<h2>Les classes</h2>
+
+<p>Jusqu'à ES5, le mot-clé <code>class</code> n'existe pas. En réalité, les classes n'existent pas à proprement parler en JavaScript. Une classe JavaScript est simplement une utilisation détournée des fonctions.</p>
 
 <a id="class" class="anchor"></a>
-<h3>Les classes</h3>
+<h3>Notation simplifiée</h3>
 
 <p>
-    Comme pour un objet littéral nous n’avons plus besoin d’écrire le mot-clé <b>function</b> pour déclarer une méthode.
+    Voici un exemple de classe codé en JavaScript version ES5 :
+</p>
+
+<img src="/assets/img/blog/es6/class-es5.png" alt="classe ES5" class="article-img">
+<div class="image-caption">Classe ES5</div>
+
+<p> Pas très lisible, mais c'est ainsi que fonctionne réellement une classe JS.</p>
+<p> Pour contrer le manque de lisibilité, la version ES6 a fait apparaitre le keyword <code>class</code>. Ne vous méprenez pas, il s'agit toujours d'une fonction en arrière-plan ! C'est simplement un confort syntaxique.</p>
+
+<p>Voici un exemple de classe ES6 :</p>
+
+<img src="/assets/img/blog/es6/class-es6.png" alt="classe ES6" class="article-img">
+<div class="image-caption">Classe ES6</div>
+
+<p>
+    <span class="fw-bold">Comme pour un objet littéral vous n'avez plus besoin d’écrire le mot-clé <code>function</code> pour déclarer une méthode.</span>
 </p>
 
 <p>
-    Nous pouvons même omettre le point virgule après la déclaration de la classe.
+    Vous avez également accès au mot clé <code>constructor</code>.
 </p>
 
 <p>
-    Cependant l’encapsulation des données n’est pas effective ce qui a pour effet que vos attributs et méthodes sont accessibles depuis l'extérieur de la classe.
+    Cependant, notez que l’encapsulation des données n’est pas effective ce qui fait que vos attributs et méthodes sont accessibles depuis l'extérieur de la classe.
 </p>
 
 <a id="heritage" class="anchor"></a>
 <h3>Héritage</h3>
 
 <p>
-    Avec ES6 nous pouvons désormais utiliser <b>l’héritage simple</b> avec javascript, en utilisant le mot-clé extends sur la classe qui doit hériter.
+    <span class="fw-bold">Avec ES6 vous pouvez désormais utiliser l’héritage simple</span>, en utilisant le mot-clé <code>extends</code> sur la classe qui doit hériter.
 </p>
 
 <p>Exemple</p>
@@ -233,47 +267,65 @@ class Developer extends Person {
         super(name, age);
         this.skills = skills;
     }
+}
 {% endhighlight %}
+<div class="code-caption">Héritage ES6</div>
 
 <p>
-    On remarque aussi qu’on peut appeler une méthode parente avec le mot-clé <b>super</b>.
+    Remarquez aussi que vous pouvez appeler une méthode parente avec le mot-clé <code>super</code>.
 </p>
 
 <a id="arrow-function" class="anchor"></a>
 <h2>Arrow function</h2>
 
 <p>
-    Les fonctions fléchées ou arrow functions permettent d’avoir une syntaxe plus courte que les expressions de fonctions classique, elles sont souvent anonymes et ne sont pas faites pour être utilisées en tant que méthode.
+    <span class="fw-bold">Les fonctions fléchées ou arrow functions permettent d’avoir une syntaxe plus courte que les fonctions classiques.</span>
+</p>
+<p>
+    Elles sont anonymes et ne sont pas faites pour être utilisées en tant que méthode.
+</p>
+<p>
+    La plupart du temps, vous devriez les utiliser pour passer une fonction en tant que paramètre.
 </p>
 
-<p>Exemple</p>
+<a id="exemple-arrow-function" class="anchor"></a>
+<h3>Exemple</h3>
 
-<p>avant :</p>
+<p>ES5 :</p>
 
 {% highlight js linenos %}
 hello = function() {
-    return "Hello World!";
-  }
+    return 'Hello World!';
+}
 {% endhighlight %}
+<div class="code-caption">Fonction anonyme ES5</div>
 
-<p>maintenant :</p>
+<p>ES6 :</p>
 
 {% highlight js linenos %}
 hello = () => {
-    return "Hello World!";
-  }  
+    return 'Hello World!';
+}  
 {% endhighlight %}
+<div class="code-caption">Fonction fléchée ES6</div>
+
+<p>Si votre fonction ne fait rien de plus qu'une instruction return, vous pouvez utiliser la notation simplifiée :</p>
+
+{% highlight js linenos %}
+hello = () => 'Hello World!';
+{% endhighlight %}
+<div class="code-caption">Fonction fléchée simplifiée</div>
 
 <a id="conclusion" class="anchor"></a>
 <h2>Conclusion</h2>
 
 <p>
-    Nous avons donc vu les nouveautés d’ES6 qui nous permettent de créer des applications web plus facilement.
-    Enfin si vous voulez savoir si un navigateur prend en charge une fonctionnalité d’ES6 consulter cette <a href="http://kangax.github.io/compat-table/es6/">page</a> .
+    Vous venez de découvrir les principales nouveautés d’ES6 qui vous permettront de créer des applications web plus facilement.
+    Si vous voulez savoir si un navigateur prend en charge une fonctionnalité d’ES6 consulter cette <a href="http://kangax.github.io/compat-table/es6/" target="_blank" rel="nofollow">page</a> .
 </p>
 
 <p>
     J'espère que vous avez apprécié cet article. Faites-nous signe dans les commentaires si vous pensez qu'il y a
-    d'autres infos à ajouter !
+    d'autres évolutions importantes à ajouter !
 </p>        
   
