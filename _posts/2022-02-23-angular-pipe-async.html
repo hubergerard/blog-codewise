@@ -1,0 +1,159 @@
+---
+layout: post
+title: "Angular - Pipe async"
+date: 2022-02-23 10:10:50 +0100
+description: "Dans cet article vous allez découvrir le pipe async d'Angular en détails."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-pipe-async/cover_pipe_async.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="utiliser-pipe-async" class="anchor"></a>
+<h2>Pourquoi utiliser le pipe async ?</h2>
+
+<p>
+    Lorsque vous utilisez les promesses et les observables dans vos composants angular vous êtes soumis à vous servir de then et de subscribe pour les exécuter.
+    Mais grâce au pipe async, vous pouvez afficher le résultat sur le template et plus besoin de then et de subscribe !
+</p>
+
+<p>
+    Exemple observable sans pipe async :
+</p>
+
+{% highlight ts linenos %}
+export class ObservableComponent implements OnInit {
+
+    result;
+  
+    constructor() {
+      const monObservable = of('Hello World');
+      monObservable.subscribe(data => this.result = data);
+     }
+  
+    ngOnInit(): void {}
+  }
+{% endhighlight %}
+<div class="code-caption">observable.component.ts</div>
+
+<p>
+    Pour l'exemple on a utilisé la fonction of de rxjs qui permet de créer un observable manuellement, la plupart du temps vous recupérerez un observable.
+</p>
+
+{% highlight ts linenos %}
+{% raw %}{{ result }}{% endraw %}
+{% endhighlight %}
+<div class="code-caption">observable.component.html</div>
+
+<p>
+    Testez ce code , et voyez que Hello World s'affiche bien côté html.
+</p>
+
+<p>
+    Exemple promise sans pipe async :
+</p>
+
+{% highlight ts linenos %}
+export class PromiseComponent implements OnInit {
+
+    data;
+
+    constructor() {
+      const maPromesse = Promise.resolve('Hello World');
+      maPromesse.then(res => this.data = res);
+    }
+  
+    ngOnInit(): void {
+  
+    }
+{% endhighlight %}
+<div class="code-caption">promise.component.ts</div>
+
+{% highlight ts linenos %}
+{% raw %}{{ data }}{% endraw %}
+{% endhighlight %}
+<div class="code-caption">promise.component.html</div>
+
+<p>
+    Maintenant il y a une manière encore plus simple d'afficher un observable et une promesse c'est ce que vous allez voir ci-dessous.
+</p>
+
+
+
+<a id="promesse-vue" class="anchor"></a>
+<h2>Lier un observable à la vue</h2>
+
+<p>
+    Précedemment vous avez vu comment afficher un observable, mais maintenant vous allez voir
+    qu'angular fournit une manière plus propre d'afficher un observable sans subscribe grâce au pipe async !
+</p>
+
+<p>
+    Démonstration :
+</p>
+
+{% highlight ts linenos %}
+export class ObservableComponent implements OnInit {
+
+    monObservable;
+  
+    constructor() {
+      this.monObservable = of('Hello World');
+     }
+  
+    ngOnInit(): void {}
+  }
+{% endhighlight %}
+<div class="code-caption">observable.component.ts</div>
+
+{% highlight ts linenos %}
+{% raw %}{{ monObservable | async }}{% endraw %}
+{% endhighlight %}
+<div class="code-caption">observable.component.html</div>
+
+<p>
+    Tout simplement ! Cela a l'avantage d'être moins verbeux et d'éviter des erreurs.
+</p>
+
+<a id="promesse-vue" class="anchor"></a>
+<h2>Lier une promesse à la vue</h2>
+
+<p>
+    Même principe pour les promesses, plus besoin d'utiliser then, le pipe async le fait à notre place.
+</p>
+
+
+{% highlight ts linenos %}
+export class PromiseComponent implements OnInit {
+
+    maPromesse;
+  
+    constructor() {
+      this.maPromesse = Promise.resolve('Hello World');
+     }
+  
+    ngOnInit(): void {}
+  }
+{% endhighlight %}
+<div class="code-caption">promise.component.ts</div>
+
+{% highlight ts linenos %}
+{% raw %}{{ maPromesse | async }}{% endraw %}
+{% endhighlight %}
+<div class="code-caption">promise.component.html</div>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà c'est tout pour le pipe async, bien entendu comme expliqué plus haut, 
+    la déclaration d'observable et de promesse dans les exemples sont fait de manière manuelle, alors que la plupart du temps vous les récupérerez directement.
+</p>
+
+<p>
+    N’hésitez pas à laisser un commentaire, en espérant que cela vous a plu !
+</p>
