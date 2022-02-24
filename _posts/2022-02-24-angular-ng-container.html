@@ -1,0 +1,119 @@
+---
+layout: post
+title: "Angular - Ng-container"
+date: 2022-02-03 10:10:50 +0100
+description: "Dans cet article vous allez découvrir là quoi sert le ng-container."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="jdefinition-ng-container" class="anchor"></a>
+<h2>Définition ng-container</h2>
+
+<p>
+    Le ng-container permet d'utiliser des directives structurelles (ngIf, ngFor), sans aucun élément suplémentaire (balise HTML).
+    Cela augmente les performances car le navigateur rend moins d'élément, mais rend un DOM propre.
+    Cela évite aussi de casser la sémantique des balises HTML pour que le DOM soit toujours validé par la W3C.
+</p>
+
+<a id="cas-utilisation" class="anchor"></a>
+<h2>Dans quel cas l'utiliser ?</h2>
+
+<a id="combinaison-directives-structurelles" class="anchor"></a>
+<h3>Combinaison de plusieurs directives structurelles</h3>
+
+<p>
+    Vous ne pouvez pas utiliser plusieurs directives structurelles sur le même élément.
+</p>
+
+<p>Exemple :</p>
+
+{% highlight html linenos %}
+<ul>
+    <li *ngFor="let item of items" *ngIf="item.isValid">
+        {% raw %}{{ item.name }}{% endraw %}
+    </li>
+</ul>
+{% endhighlight %}
+<div class="code-caption">exemple.component.html</div>
+
+<p>
+    Et vu que vous ne pouvez pas casser la sémantique en mettant en élément entre la balise ul et li comme ceci :
+</p>
+
+{% highlight html linenos %}
+<ul>
+    <div *ngFor="let item of items">
+        <li  *ngIf="item.isValid">
+            {% raw %}{{ item.name }}{% endraw %}
+        </li>
+    </div>
+</ul>
+{% endhighlight %}
+<div class="code-caption">exemple.component.html</div>
+      
+<p>
+    Eh bien c'est là que le ng-container entre en jeu !
+</p>
+
+<p>
+    Il ne rendra pas d'élément dans le DOM ce qui convient parfaitement à notre cas.
+</p>
+
+
+{% highlight html linenos %}
+<ul>
+    <ng-container *ngFor="let item of items">
+      <li *ngIf="item.isValid">
+        {% raw %}{{ item.name }}{% endraw %}
+      </li>
+    </ng-container>
+  </ul>
+{% endhighlight %}
+<div class="code-caption">ng-container.component.html</div>
+
+<a id="ngTemplateOutlet" class="anchor"></a>
+<h3>Utiliser avec ngTemplateOutlet</h3>
+
+<p>
+    La directive ngTemplateOutlet peut s'appliquer à n'importe quel élément, mais la plupart du temps elle s'utilie avec ng-container.
+</p>
+
+<p>
+    En combinant les deux, vous obtiendrez une structure HTML et DOM  très claire.
+</p>
+
+<p>
+    Par exemple, imaginez une partie du DOM doit être répétée à plusieurs endroits. Vous pouvez définir un ng-template qui contient votre code HTML,
+    le rendre avec ng-container avec un ngTemplateOutlet.
+</p>
+<p>
+    Exemple :
+</p>
+
+{% highlight html linenos %}
+<ng-container *ngTemplateOutlet="tmpl; context: {$implicit: 'Hello'}">
+</ng-container>
+
+<ng-container *ngTemplateOutlet="tmpl; context: {$implicit: 'World'}">
+</ng-container>
+
+<ng-template #tmpl let-text>
+  <h1> {% raw %}{{ text }}{% endraw %}</h1>
+</ng-template>
+{% endhighlight %}
+<div class="code-caption">ngTemplateOutlet.component.html</div>
+
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà c'est tout pour le ng-container, n’hésitez pas à laisser un commentaire, en espérant que cela vous a plu !
+</p>
