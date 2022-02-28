@@ -2,7 +2,7 @@
 layout: post
 title: "Angular - Comment supprimer un composant"
 date: 2022-02-25 10:10:50 +0100
-description: "Dans cet article vous allez voir comment supprimer un composant dans Angular"
+description: "Dans cet article, découvrez comment supprimer un composant de manière safe avec Angular."
 tags: developpement web Angular
 categories: [Développement web]
 author: "lucas"
@@ -14,14 +14,20 @@ lang: fr
 ---
 
 <a id="problematique" class="anchor"></a>
-<h2>Problèmatique</h2>
+<h2>On peut pas juste supprimer le dossier ?</h2>
 
 <p>
-    <b>Vous essayez de retirer un composant de votre application</b> en supprimant les fichiers, mais une erreur apparaît dans le serveur :
+    <span class="fw-bold">Si vous vous contentez de supprimer le dossier d'un composant de votre application</span>, une erreur apparaît dans votre console :
 </p>
 
 <img class="img-article-supprimer-component" src="/assets/img/blog/angular-supprimer-composant/error_find_module.png" alt="angular error cannot find module">
 <div class="code-caption">Erreur Cannot find module</div>
+
+<p>
+    En effet, quand vous avez fait générer votre composant, il a été ajouté aux imports du module principal de votre application.
+</p>
+
+<p>Maintenant qu'on veut supprimer le composant, cette déclaration nous pose problème.</p>
 
 <p>
     Alors comment faire ? 
@@ -31,49 +37,68 @@ lang: fr
 <h2>Supprimer via La CLI ?</h2>
 
 <p>
-    Malheureusement non, <b>il n'y a pas de commande pour supprimer un composant via la CLI</b>  et ce n'est toujours pas prévu pour les versions à venir.
+    Malheureusement, <span class="fw-bold">il n'y a pas de commande pour supprimer un composant via la CLI</span> et cette évolution n'est pas prévue dans les versions à venir pour l'instant.
 </p>
 
 <a id="solution" class="anchor"></a>
 <h2>La solution</h2>
 
+
 <a id="supprimer-dosser" class="anchor"></a>
-<h3>Supprimer le dossier</h3>
+<h3>Etape 1 : Supprimer les appels au composant</h3>
 
 <p>
-    Alors dans un premier temps, <b>il faut supprimer le dossier du composant</b> qui a été générer par la CLI si vous l'utilisez (ce qui est très recommandé).
+    Premièrement, veillez à ce que votre composant ne soit appelé dans aucun template HTML via une balise <code>&lt;app-mon-composant&gt;</code>.
+</p>
+<p> Si votre composant est appelé via sa balise, supprimez l'appel en effaçant la balise.</p>
+
+<a id="supprimer-dosser" class="anchor"></a>
+<h3>Etape 2 : Supprimer le dossier</h3>
+
+<p>
+    Dans un premier temps, <span class="fw-bold">il faut supprimer le dossier du composant</span>.
 </p>
 
-<img class="img-article-supprimer-component" src="/assets/img/blog/angular-supprimer-composant/archi_composant.png" alt="angular architecture composant">
-<div class="code-caption">Architecture du composant</div>
+<img class="img-article-supprimer-component" src="/assets/img/blog/angular-supprimer-composant/archi_composant.png" alt="angular architecture projet">
+<div class="code-caption">Architecture du projet</div>
 <p>
-    Clic droit sur le dossier en question et sélectionner "supprimer".
+    Clic droit sur le dossier en question et sélectionner "Supprimer".
 </p>
 
 <img class="img-article-supprimer-component" src="/assets/img/blog/angular-supprimer-composant/supp_composant.png" alt="angular supprimer dossier composant">
 <div class="code-caption">Supprimer le dossier</div>
 
+<p>
+    Mais si vous relancez la commande <code>ng serve</code> tout de suite, l'erreur citée plus haut se déclenche. 
+</p>
+
+<p>Voyons donc comment la corriger.</p>
+
 <a id="retirer-declaration-module" class="anchor"></a>
-<h3>Retirer la déclaration du module</h3>
+<h3>Etape 3 : Retirer la déclaration du module</h3>
 
 <p>
-    <b>Mais ce n'est pas terminé</b> il vous reste une chose à faire encore si non le serveur vous affiche toujours cette erreur <code>Cannot find module</code> .
+    <span class="fw-bold">Une fois le dossier supprimé,</span> il vous reste une chose à faire encore si non le serveur vous affiche toujours cette erreur <code>Cannot find module</code> .
 </p>
 
 <p>
-    Il va falloir <b>retirer deux lignes dans le fichier app.module.ts</b>, l'import du composant en question et sa déclaration dans le NgModule :
+    Il va falloir <span class="fw-bold">retirer deux lignes dans le fichier app.module.ts</span>, l'import du composant en question et sa déclaration dans les import du <code>@NgModule</code> :
 </p>
 
 <img class="img-article-supprimer-component" src="/assets/img/blog/angular-supprimer-composant/app_module.png" alt="angular app.module.ts">
 <div class="code-caption">app.module.ts</div>
 
+<p>
+    Une fois que le composant n'est plus dans les imports du module, il n'essayera plus de se charger. Donc, vous n'aurez plus l'erreur.
+</p>
+
 <a id="solution" class="anchor"></a>
 <h2>Conclusion</h2>
 
 <p>
-    Si vous avez bien suivi vous n'aurez plus d'erreur dans votre serveur !
+    Vous savez désormais supprimer un composant dans Angular !
 </p>
 
 <p>
-    N’hésitez pas à laisser un commentaire, en espérant que cela vous a plu !
+    N’hésitez pas à laisser un commentaire, en espérant que cela vous a plu.
 </p>
