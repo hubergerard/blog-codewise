@@ -2,7 +2,7 @@
 layout: post
 title: "Angular - Pipe async"
 date: 2022-02-23 10:10:50 +0100
-description: "Dans cet article vous allez découvrir le pipe async d'Angular en détails."
+description: "Dans cet article, vous allez découvrir le pipe async d'Angular en détails."
 tags: developpement web Angular
 categories: [Développement web]
 author: "lucas"
@@ -17,96 +17,86 @@ lang: fr
 <h2>Pourquoi utiliser le pipe async ?</h2>
 
 <p>
-    Lorsque vous utilisez les promesses et les observables dans vos composants angular vous êtes soumis à vous servir de then et de subscribe pour les exécuter.
-    Mais grâce au pipe async, vous pouvez afficher le résultat sur le template et plus besoin de then et de subscribe !
+    <span class="fw-bold">Lorsque vous utilisez les promesses et les observables dans vos composants Angular, vous devez vous souscrire au résultat avec les méthodes <code>then()</code> ou <code>subscribe()</code>.</span>
+    L'appel à ces méthodes permet de lancer l'exécution du traitement asynchrone et d'indiquer comment réagir une fois le traitement terminé.
+</p>
+<p>
+    Or, la plupart du temps, vous souhaitez simplement <span class="fw-bold">récupérer la valeur émise par l'observable ou la promesse, pour l'afficher à l'écran.</span>
+</p>
+<p>
+    <span class="fw-bold">Angular a créé un raccourci pour ce cas de figure précis : le pipe <code>async</code>.</span>
+    Utilisez-le lorsque vous voulez afficher le résultat d'un traitement asynchrone directement sur le template.
 </p>
 
-<p>
-    Exemple observable sans pipe async :
-</p>
+<a id="fonctionnement-pipe-async" class="anchor"></a>
+<h2>Que fait le pipe async ?</h2>
+
+<p><span class="fw-bold">Le pipe async se souscrit à l'objet asynchrone passé en entrée</span> (Observable, Promise, Subject, etc.)</p> 
+<p>A chaque fois que l'objet asynchrone émet une donnée, elle est envoyée en sortie du pipe.</p> 
+<p>Ainsi, la donnée se retrouve directement utilisable dans le template, à chaque émission d'une donnée asynchrone.</p> 
+
+<a id="utiliser-pipe-async" class="anchor"></a>
+<h2>Utiliser le pipe async</h2>
+
+<a id="utiliser-pipe-async-observable" class="anchor"></a>
+<h3>Avec un observable</h3>
+
+<p><span class="fw-bold">Dans cette section, on va comparer les 2 méthodes pour récupérer une donnée d'un Observable</span>, et l'afficher dans le template.</p>
+
+<a id="pipe-async-observable-exemple-sans-async" class="anchor"></a>
+<h4>Afficher la valeur dans le template (sans async)</h4>
+
+<p><span class="fw-bold">Classiquement, vous devez passer une callback au subscribe de l'Observable.</span> Cette callback va récupérer la valeur émise par l'Observable, et la stocker dans un attribut du composant.</p>
 
 {% highlight ts linenos %}
-export class ObservableComponent implements OnInit {
+export class ObservableComponent {
 
-    result;
+    result!: string;
   
     constructor() {
-      const monObservable = of('Hello World');
-      monObservable.subscribe(data => this.result = data);
-     }
-  
-    ngOnInit(): void {}
-  }
+        const monObservable = of('Hello World');
+        monObservable.subscribe(data => this.result = data);
+    }
+}
 {% endhighlight %}
 <div class="code-caption">observable.component.ts</div>
 
-<p>
-    Pour l'exemple on a utilisé la fonction of de rxjs qui permet de créer un observable manuellement, la plupart du temps vous recupérerez un observable.
-</p>
+<p>Il ne vous reste plus qu'à afficher cet attribut dans le template.</p>
 
-{% highlight ts linenos %}
-{% raw %}{{ result }}{% endraw %}
+{% highlight html linenos %}
+{% raw %}<div *ngIf="result">
+    {{ result }}
+</div>{% endraw %}
 {% endhighlight %}
 <div class="code-caption">observable.component.html</div>
 
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        Dans cet exemple, on utilise la fonction <code>of()</code> de rxjs qui permet de créer un observable de manière simplifiée.
+    </div>
+</div>
+
 <p>
-    Testez ce code , et voyez que Hello World s'affiche bien côté html.
+    Testez ce code, et vous remarquerez que <code>'Hello World'</code> s'affiche bien sur votre page.
 </p>
+<a id="pipe-async-observable-exemple-avec-async" class="anchor"></a>
+<h4>Afficher la valeur dans le template (avec async)</h4>
 
 <p>
-    Exemple promise sans pipe async :
-</p>
-
-{% highlight ts linenos %}
-export class PromiseComponent implements OnInit {
-
-    data;
-
-    constructor() {
-      const maPromesse = Promise.resolve('Hello World');
-      maPromesse.then(res => this.data = res);
-    }
-  
-    ngOnInit(): void {
-  
-    }
-{% endhighlight %}
-<div class="code-caption">promise.component.ts</div>
-
-{% highlight ts linenos %}
-{% raw %}{{ data }}{% endraw %}
-{% endhighlight %}
-<div class="code-caption">promise.component.html</div>
-
-<p>
-    Maintenant il y a une manière encore plus simple d'afficher un observable et une promesse c'est ce que vous allez voir ci-dessous.
-</p>
-
-
-
-<a id="promesse-vue" class="anchor"></a>
-<h2>Lier un observable à la vue</h2>
-
-<p>
-    Précedemment vous avez vu comment afficher un observable, mais maintenant vous allez voir
-    qu'angular fournit une manière plus propre d'afficher un observable sans subscribe grâce au pipe async !
-</p>
-
-<p>
-    Démonstration :
+    Affichons maintenant la valeur émise par l'observable grâce au pipe async.
 </p>
 
 {% highlight ts linenos %}
-export class ObservableComponent implements OnInit {
+export class ObservableComponent {
 
-    monObservable;
+    monObservable: Observable<string>;
   
     constructor() {
       this.monObservable = of('Hello World');
-     }
+    }
   
-    ngOnInit(): void {}
-  }
+}
 {% endhighlight %}
 <div class="code-caption">observable.component.ts</div>
 
@@ -116,28 +106,62 @@ export class ObservableComponent implements OnInit {
 <div class="code-caption">observable.component.html</div>
 
 <p>
+    <span class="fw-bold">Vous remarquez que le <code>subscribe()</code> a totalement disparu du code.</span>
+</p>
+<p>
+    <span class="fw-bold">L'attribut qui sert à stocker le résultat a disparu lui aussi.</span> Au lieu de ça, on stocke directement l'Observable dans les attributs du composant.
+</p>
+
+<p>
+    <span class="fw-bold">Dans le template, on affiche simplement l'Observable dans une interpolation,</span> en lui appliquant le pipe async.
+    Le pipe va effectuer la souscription pour vous et envoyer les valeurs émises par l'Observable en sortie du pipe.
+</p>
+<p>
     Tout simplement ! Cela a l'avantage d'être moins verbeux et d'éviter des erreurs.
 </p>
 
-<a id="promesse-vue" class="anchor"></a>
-<h2>Lier une promesse à la vue</h2>
+<a id="utiliser-pipe-async-promesse" class="anchor"></a>
+<h3>Avec une promesse</h3>
 
 <p>
-    Même principe pour les promesses, plus besoin d'utiliser then, le pipe async le fait à notre place.
+    Exemple promise sans pipe async :
 </p>
-
 
 {% highlight ts linenos %}
 export class PromiseComponent implements OnInit {
 
-    maPromesse;
+    data!: string;
+
+    constructor() {
+      const maPromesse = Promise.resolve('Hello World');
+      maPromesse.then(res => this.data = res);
+    }
+  
+    ngOnInit(): void {}
+}
+{% endhighlight %}
+<div class="code-caption">promise.component.ts</div>
+
+{% highlight ts linenos %}
+{% raw %}{{ data }}{% endraw %}
+{% endhighlight %}
+<div class="code-caption">promise.component.html</div>
+
+<p>
+    Maintenant, faisons la même chose avec le pipe async.
+</p>
+
+{% highlight ts linenos %}
+export class PromiseComponent implements OnInit {
+
+    maPromesse: Promise<string>;
   
     constructor() {
       this.maPromesse = Promise.resolve('Hello World');
-     }
+    }
   
     ngOnInit(): void {}
-  }
+}
 {% endhighlight %}
 <div class="code-caption">promise.component.ts</div>
 
@@ -146,12 +170,25 @@ export class PromiseComponent implements OnInit {
 {% endhighlight %}
 <div class="code-caption">promise.component.html</div>
 
+<p>Avec le pype async, plus besoin d'appeler le <code>.then()</code> !</p>
+
+<a id="utiliser-pipe-async-subject" class="anchor"></a>
+<h3>Avec un Subject ou un BehaviourSubject</h3>
+
+<p>Le principe est le même qu'<a href="#utiliser-pipe-async-observable">avec un Observable</a>.</p>
+
+{% highlight ts linenos %}
+{% raw %}{{ mySubject | async }}{% endraw %}
+{% endhighlight %}
+<div class="code-caption">subject.component.html</div>
+
+<p>Appliquez simplement le pipe async sur l'attribut qui contient le subject, et chaque valeur émise par le subject sera affichée dans le template.</p>
+
 <a id="conclusion" class="anchor"></a>
 <h2>Conclusion</h2>
 
 <p>
-    Voilà c'est tout pour le pipe async, bien entendu comme expliqué plus haut, 
-    la déclaration d'observable et de promesse dans les exemples sont fait de manière manuelle, alors que la plupart du temps vous les récupérerez directement.
+    Voilà, c'est tout pour le pipe async ! 
 </p>
 
 <p>
