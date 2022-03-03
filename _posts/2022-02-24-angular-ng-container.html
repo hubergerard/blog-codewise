@@ -2,7 +2,7 @@
 layout: post
 title: "Angular - Ng-container"
 date: 2022-02-03 10:10:50 +0100
-description: "Dans cet article vous allez découvrir là quoi sert le ng-container."
+description: "Dans cet article vous allez découvrir à quoi sert le ng-container."
 tags: developpement web Angular
 categories: [Développement web]
 author: "lucas"
@@ -17,22 +17,30 @@ lang: fr
 <h2>Définition ng-container</h2>
 
 <p>
-    Le ng-container permet d'utiliser des directives structurelles (ngIf, ngFor), sans aucun élément suplémentaire (balise HTML).
-    Cela augmente les performances car le navigateur rend moins d'élément, mais rend un DOM propre.
-    Cela évite aussi de casser la sémantique des balises HTML pour que le DOM soit toujours validé par la W3C.
+    La balise ng-container est une balise qui peut contenir des directives structurelles mais qui n'est pas rendue (rendering) dans le DOM.
+</p>
+<p>
+    C'est à dire que si vous utilisez cette balise dans un template HTML de composant, elle n'apparaitra pas dans le DOM résultant sur le navigateur de votre utilisateur.
+    Mais quel est l'intérêt d'une balise qui n'apparait pas ?
+</p>
+<p> 
+    En HTML pur, cela n'aurait aucun intérêt. Mais si vous utilisez Angular, cela vous permettra d'utiliser des fonctionnalités d'Angular, sans influencer le DOM résultant de votre projet.
+</p>
+<p>
+    Voici 2 cas où la balise ng-container pourra vous être utile.
 </p>
 
 <a id="cas-utilisation" class="anchor"></a>
 <h2>Dans quel cas l'utiliser ?</h2>
 
 <a id="combinaison-directives-structurelles" class="anchor"></a>
-<h3>Combinaison de plusieurs directives structurelles</h3>
+<h3>Combiner plusieurs directives structurelles</h3>
 
 <p>
     Vous ne pouvez pas utiliser plusieurs directives structurelles sur le même élément.
 </p>
 
-<p>Exemple :</p>
+<p>Par exemple, ce code vous renverrait une erreur :</p>
 
 {% highlight html linenos %}
 <ul>
@@ -42,9 +50,13 @@ lang: fr
 </ul>
 {% endhighlight %}
 <div class="code-caption">exemple.component.html</div>
-
 <p>
-    Et vu que vous ne pouvez pas casser la sémantique en mettant en élément entre la balise ul et li comme ceci :
+    Dans ce code, on essaye d'afficher tous les items valides dans une liste.
+    Pour cela, vous devez utiliser une boucle *ngFor, combinée avec un *ngIf pour ne filtrer que les items valides.
+</p>
+<p>Or, ceci est impossible avec Angular. Etant donné le fonctionnement des directives structurelles, les 2 directives ne peuvent pas se partager un même élément du DOM.</p>
+<p>
+    Pour corriger le problème, vous pourriez utiliser une balise qui ne génère pas d'affichage pour encadrer le li et ainsi poser les directives structurelles sur 2 balises différentes :
 </p>
 
 {% highlight html linenos %}
@@ -59,57 +71,102 @@ lang: fr
 <div class="code-caption">exemple.component.html</div>
       
 <p>
-    Eh bien c'est là que le ng-container entre en jeu !
+    Ce code ne vous génèrera pas d'erreur et il rendra le résultat voulu à l'écran.
 </p>
-
 <p>
-    Il ne rendra pas d'élément dans le DOM ce qui convient parfaitement à notre cas.
+    Mais cette solution n'est pas tout à fait satisfaisante. Vous voyez pourquoi ?
 </p>
-
+<p>
+    Premièrement, autour de chaque li vous allez devoir effectuer le rendering d'une div qui ne sert à rien au fonctionnement de votre page.
+    Vous perdez en performances, et le problème s'aggrave si le nombre d'items augmente.
+</p>
+<p>
+    Et deuxièmement, la sémantique HTML est brisée ! Il est interdit de placer une balise div en enfant direct d'une balise ul. 
+    Essayer de passer votre page dans un validateur HTML W3C, vous verrez qu'il juge votre DOM invalide.
+</p>
+<p>
+    Alors comment faire ? Eh bien c'est là que le ng-container entre en jeu.
+</p>
 
 {% highlight html linenos %}
 <ul>
     <ng-container *ngFor="let item of items">
-      <li *ngIf="item.isValid">
-        {% raw %}{{ item.name }}{% endraw %}
-      </li>
+        <li *ngIf="item.isValid">
+            {% raw %}{{ item.name }}{% endraw %}
+        </li>
     </ng-container>
-  </ul>
+</ul>
 {% endhighlight %}
 <div class="code-caption">ng-container.component.html</div>
+
+<p>
+    La balise ng-container ne rendra pas d'élément dans le DOM ce qui convient parfaitement à notre cas.
+    On évite ainsi tout problème de performance du rendering, ainsi que le problème de sémantique HTML.
+</p>
 
 <a id="ngTemplateOutlet" class="anchor"></a>
 <h3>Utiliser avec ngTemplateOutlet</h3>
 
 <p>
-    La directive ngTemplateOutlet peut s'appliquer à n'importe quel élément, mais la plupart du temps elle s'utilie avec ng-container.
+    Quand vous utilisez un ng-template pour générer votre DOM avec Angular, vous devez vous y prendre en 2 étapes :
+</p>
+<ul>
+    <li>Déclarer un ng-template</li>
+    <li>Le faire charger à différents endroits de votre page avec la directive ngTemplateOutlet</li>
+</ul>
+
+<p>
+    La directive ngTemplateOutlet peut s'appliquer à n'importe quel élément, mais Angular vous recommande de l'utiliser avec ng-container.
 </p>
 
 <p>
-    En combinant les deux, vous obtiendrez une structure HTML et DOM  très claire.
+    Ainsi, le contenu du ng-template se retrouve projeté à l'emplacement de la directive sans être nécessairement encadré d'une div ou autre élément HTML.
 </p>
 
 <p>
-    Par exemple, imaginez une partie du DOM doit être répétée à plusieurs endroits. Vous pouvez définir un ng-template qui contient votre code HTML,
-    le rendre avec ng-container avec un ngTemplateOutlet.
+    Par exemple, imaginez une partie du DOM qui doit être répétée à plusieurs endroits de votre template HTML. Vous décidez de définir un ng-template pour éviter la répétition de code.
 </p>
 <p>
-    Exemple :
+    Voici ce que vous pourriez envisager :
 </p>
 
 {% highlight html linenos %}
-<ng-container *ngTemplateOutlet="tmpl; context: {$implicit: 'Hello'}">
+<ng-container *ngTemplateOutlet="tmpl; context: {text: 'Hello'}">
 </ng-container>
 
-<ng-container *ngTemplateOutlet="tmpl; context: {$implicit: 'World'}">
+<ng-container *ngTemplateOutlet="tmpl; context: {text: 'World'}">
 </ng-container>
 
 <ng-template #tmpl let-text>
   <h1> {% raw %}{{ text }}{% endraw %}</h1>
 </ng-template>
 {% endhighlight %}
-<div class="code-caption">ngTemplateOutlet.component.html</div>
+<div class="code-caption">ng-template-outlet.component.html</div>
 
+<p>
+    Le h1 n'a été rédigé qu'une fois, mais il sera chargé 2 fois.
+</p>
+
+<p>
+    Le DOM résultant de ce code est le suivant :
+</p>
+
+{% highlight html linenos %}
+<h1>Hello</h1>
+
+<h1>World</h1>
+{% endhighlight %}
+
+<p>
+    Grâce au ng-container, vous n'avez que le contenu du template qui a été rendu dans le DOM final.
+</p>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        NB : La balise ng-template n'apparait pas dans le DOM final non plus.
+    </div>
+</div>
 
 <a id="conclusion" class="anchor"></a>
 <h2>Conclusion</h2>
