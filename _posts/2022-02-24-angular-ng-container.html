@@ -1,12 +1,12 @@
 ---
 layout: post
 title: "Angular - Ng-container"
-date: 2022-02-03 10:10:50 +0100
+date: 2022-02-25 10:10:50 +0100
 description: "Dans cet article vous allez découvrir là quoi sert le ng-container."
 tags: developpement web Angular
 categories: [Développement web]
 author: "lucas"
-post_image: "/"
+post_image: "/assets/img/blog/angular-ng-container/cover_ng_container.png"
 toc-text-mode: false
 toc-depth: 5
 author: lucas
@@ -17,8 +17,13 @@ lang: fr
 <h2>Définition ng-container</h2>
 
 <p>
-    Le ng-container permet d'utiliser des directives structurelles (ngIf, ngFor), sans aucun élément suplémentaire (balise HTML).
+    <span class="fw-bold"> 
+    Le <code>&lt;ng-container&gt;</code> permet d'utiliser des directives structurelles (ngIf, ngFor), sans aucun élément suplémentaire (balise HTML).
+    </span>
     Cela augmente les performances car le navigateur rend moins d'élément, mais rend un DOM propre.
+</p>
+
+<p>
     Cela évite aussi de casser la sémantique des balises HTML pour que le DOM soit toujours validé par la W3C.
 </p>
 
@@ -29,7 +34,7 @@ lang: fr
 <h3>Combinaison de plusieurs directives structurelles</h3>
 
 <p>
-    Vous ne pouvez pas utiliser plusieurs directives structurelles sur le même élément.
+    <span class="fw-bold">Vous ne pouvez pas utiliser plusieurs directives</span> structurelles sur le même élément.
 </p>
 
 <p>Exemple :</p>
@@ -44,7 +49,11 @@ lang: fr
 <div class="code-caption">exemple.component.html</div>
 
 <p>
-    Et vu que vous ne pouvez pas casser la sémantique en mettant en élément entre la balise ul et li comme ceci :
+    En faisant cela, le compilateur nous renvoie une erreur : <code>Can't have multiple template bindings on one element. Use only one attribute prefixed with *</code>
+</p>
+
+<p>
+    Et vu que <span class="fw-bold">vous ne pouvez pas casser la sémantique</span> en mettant en élément entre la balise ul et li comme ceci :
 </p>
 
 {% highlight html linenos %}
@@ -59,11 +68,11 @@ lang: fr
 <div class="code-caption">exemple.component.html</div>
       
 <p>
-    Eh bien c'est là que le ng-container entre en jeu !
+    Eh bien c'est là que le <code>&lt;ng-container&gt;</code> entre en jeu !
 </p>
 
 <p>
-    Il ne rendra pas d'élément dans le DOM ce qui convient parfaitement à notre cas.
+    <span class="fw-bold">Il ne rendra pas d'élément dans le DOM</span> ce qui convient parfaitement à notre cas.
 </p>
 
 
@@ -82,7 +91,7 @@ lang: fr
 <h3>Utiliser avec ngTemplateOutlet</h3>
 
 <p>
-    La directive ngTemplateOutlet peut s'appliquer à n'importe quel élément, mais la plupart du temps elle s'utilie avec ng-container.
+    <span class="fw-bold">La directive <code>ngTemplateOutlet</code> peut s'appliquer à n'importe quel élément</span>, mais la plupart du temps elle s'utilise avec <code>&lt;ng-container&gt;</code>.
 </p>
 
 <p>
@@ -90,8 +99,8 @@ lang: fr
 </p>
 
 <p>
-    Par exemple, imaginez une partie du DOM doit être répétée à plusieurs endroits. Vous pouvez définir un ng-template qui contient votre code HTML,
-    le rendre avec ng-container avec un ngTemplateOutlet.
+    Par exemple, imaginez <span class="fw-bold">une partie du DOM doit être répétée à plusieurs endroits</span>. Vous pouvez définir un <code>&lt;ng-template&gt;</code> qui contient votre code HTML,
+    le rendre avec <code>&lt;ng-container&gt;</code> avec un <code>ngTemplateOutlet</code>.
 </p>
 <p>
     Exemple :
@@ -110,10 +119,18 @@ lang: fr
 {% endhighlight %}
 <div class="code-caption">ngTemplateOutlet.component.html</div>
 
+<p>
+    Le résultat de cet exemple sera que le premier <code>&lt;ng-container&gt;</code> affichera un <code>&lt;h1&gt;</code>  contenant 'Hello' et un deuxième contenant 'World'.
+</p>
+
+<p>
+    Bien entendu vous pouvez passez des variables de votre composant dans l'objet context.
+</p>
+
 
 <a id="conclusion" class="anchor"></a>
 <h2>Conclusion</h2>
 
 <p>
-    Voilà c'est tout pour le ng-container, n’hésitez pas à laisser un commentaire, en espérant que cela vous a plu !
+    Voilà c'est tout pour le <code>&lt;ng-container&gt;</code>, n’hésitez pas à laisser un commentaire, en espérant que cela vous a plu !
 </p>
