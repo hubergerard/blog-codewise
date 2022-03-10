@@ -1,0 +1,176 @@
+---
+layout: post
+title: "Angular - Ng-container"
+date: 2022-02-25 10:10:50 +0100
+description: "Dans cet article vous allez découvrir à quoi sert le ng-container."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-ng-container/cover_ng_container.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="jdefinition-ng-container" class="anchor"></a>
+<h2>Définition ng-container</h2>
+
+<p>
+    La balise <code>&lt;ng-container&gt;</code> est <span class="fw-bold">une balise qui peut contenir des directives structurelles mais qui n'est pas rendue</span> (rendering) dans le DOM.
+</p>
+<p>
+    C'est à dire que si vous utilisez cette balise dans un template HTML de composant, <span class="fw-bold">elle n'apparaitra pas dans le DOM</span> sur le navigateur de votre utilisateur.
+    Mais quel est l'intérêt d'une balise qui n'apparait pas ?
+</p>
+<p> 
+    En HTML pur, cela n'aurait aucun intérêt. Mais si vous utilisez Angular, <span class="fw-bold">cela vous permettra d'utiliser des fonctionnalités d'Angular, sans influencer le DOM</span> de votre projet.
+</p>
+<p>
+    Voici 2 cas où la balise <code>&lt;ng-container&gt;</code> pourra vous être utile.
+</p>
+
+<a id="cas-utilisation" class="anchor"></a>
+<h2>Dans quel cas l'utiliser ?</h2>
+
+<a id="combinaison-directives-structurelles" class="anchor"></a>
+<h3>Combiner plusieurs directives structurelles</h3>
+
+<p>
+    <span class="fw-bold">Vous ne pouvez pas utiliser plusieurs directives</span> structurelles sur le même élément.
+</p>
+
+<p>Par exemple, ce code vous renverrait une erreur :</p>
+
+{% highlight html linenos %}
+<ul>
+    <li *ngFor="let item of items" *ngIf="item.isValid">
+        {% raw %}{{ item.name }}{% endraw %}
+    </li>
+</ul>
+{% endhighlight %}
+<div class="code-caption">exemple.component.html</div>
+<p>
+    Dans ce code, on essaye d'afficher tous les items valides dans une liste.
+    Pour cela, vous devez utiliser une boucle *ngFor, combinée avec un *ngIf pour ne filtrer que les items valides.
+</p>
+<p>Or, <span class="fw-bold">ceci est impossible avec Angular</span>. Etant donné le fonctionnement des directives structurelles, les 2 directives ne peuvent pas se partager un même élément du DOM.</p>
+<p>
+    Pour corriger le problème, <span class="fw-bold">vous pourriez utiliser une balise qui ne génère pas d'affichage</span> pour encadrer le <code>&lt;li&gt;</code> et ainsi poser les directives structurelles sur 2 balises différentes :
+</p>
+
+{% highlight html linenos %}
+<ul>
+    <div *ngFor="let item of items">
+        <li  *ngIf="item.isValid">
+            {% raw %}{{ item.name }}{% endraw %}
+        </li>
+    </div>
+</ul>
+{% endhighlight %}
+<div class="code-caption">exemple.component.html</div>
+      
+<p>
+    Ce code ne vous génèrera pas d'erreur et il rendra le résultat voulu à l'écran.
+</p>
+<p>
+    Mais cette solution n'est pas tout à fait satisfaisante. Vous voyez pourquoi ?
+</p>
+<p>
+    Premièrement, autour de chaque <code>&lt;li&gt;</code> vous allez devoir effectuer <span class="fw-bold">le rendering d'une <code>&lt;div&gt;</code> qui ne sert à rien</span> au fonctionnement de votre page.
+    Vous perdez en performances, et le problème s'aggrave si le nombre d'items augmente.
+</p>
+<p>
+    Et deuxièmement, <span class="fw-bold">la sémantique HTML est brisée !</span> Il est interdit de placer une balise <code>&lt;div&gt;</code> en enfant direct d'une balise <code>&lt;ul&gt;</code>. 
+    Essayer de passer votre page dans un validateur HTML W3C, vous verrez qu'il juge votre DOM invalide.
+</p>
+<p>
+    Alors comment faire ? Eh bien c'est là que le <code>&lt;ng-container&gt;</code> entre en jeu.
+</p>
+
+{% highlight html linenos %}
+<ul>
+    <ng-container *ngFor="let item of items">
+        <li *ngIf="item.isValid">
+            {% raw %}{{ item.name }}{% endraw %}
+        </li>
+    </ng-container>
+</ul>
+{% endhighlight %}
+<div class="code-caption">ng-container.component.html</div>
+
+<p>
+    La balise <code>&lt;ng-container&gt;</code> ne rendra pas d'élément dans le DOM ce qui convient parfaitement à notre cas.
+    On évite ainsi tout problème de performance du rendering, ainsi que le problème de sémantique HTML.
+</p>
+
+<a id="ngTemplateOutlet" class="anchor"></a>
+<h3>Utiliser avec ngTemplateOutlet</h3>
+
+<p>
+    Quand vous utilisez un <code>&lt;ng-template&gt;</code> pour générer votre DOM avec Angular, vous devez vous y prendre en 2 étapes :
+</p>
+<ul>
+    <li>Déclarer un <code>&lt;ng-template&gt;</code></li>
+    <li>Le faire charger à différents endroits de votre page avec la directive <code>ngTemplateOutlet</code></li>
+</ul>
+
+<p>
+    La directive <code>ngTemplateOutlet</code> peut s'appliquer à n'importe quel élément, mais <span class="fw-bold">Angular vous recommande de l'utiliser avec <code>&lt;ng-container&gt;</code></span>.
+</p>
+
+<p>
+    Ainsi, le contenu du <code>&lt;ng-template&gt;</code> se retrouve projeté à l'emplacement de la directive sans être nécessairement encadré d'une <code>&lt;div&gt;</code> ou autre élément HTML.
+</p>
+
+<p>
+    Par exemple, <span class="fw-bold">imaginez une partie du DOM qui doit être répétée à plusieurs endroits</span> de votre template HTML. Vous décidez de définir un <code>&lt;ng-template&gt;</code> pour éviter la répétition de code.
+</p>
+<p>
+    Voici ce que vous pourriez envisager :
+</p>
+
+{% highlight html linenos %}
+<ng-container *ngTemplateOutlet="tmpl; context: {text: 'Hello'}">
+</ng-container>
+
+<ng-container *ngTemplateOutlet="tmpl; context: {text: 'World'}">
+</ng-container>
+
+<ng-template #tmpl let-text>
+  <h1> {% raw %}{{ text }}{% endraw %}</h1>
+</ng-template>
+{% endhighlight %}
+<div class="code-caption">ng-template-outlet.component.html</div>
+
+<p>
+    Le <code>&lt;h1&gt;</code> n'a été rédigé qu'une fois, mais il sera chargé 2 fois.
+</p>
+
+<p>
+    Le DOM résultant de ce code est le suivant :
+</p>
+
+{% highlight html linenos %}
+<h1>Hello</h1>
+
+<h1>World</h1>
+{% endhighlight %}
+
+<p>
+    Grâce au <code>&lt;ng-container&gt;</code>, vous n'avez que le contenu du template qui a été rendu dans le DOM final.
+</p>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        NB : La balise <code>&lt;ng-template&gt;</code> n'apparait pas dans le DOM final non plus.
+    </div>
+</div>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà c'est tout pour le <code>&lt;ng-container&gt;</code>, n’hésitez pas à laisser un commentaire, en espérant que cela vous a plu !
+</p>
