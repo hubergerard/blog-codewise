@@ -2,7 +2,7 @@
 layout: post
 title: "Angular - Ng-container"
 date: 2022-02-25 10:10:50 +0100
-description: "Dans cet article vous allez découvrir là quoi sert le ng-container."
+description: "Dans cet article vous allez découvrir à quoi sert le ng-container."
 tags: developpement web Angular
 categories: [Développement web]
 author: "lucas"
@@ -20,11 +20,11 @@ lang: fr
     La balise <code>&lt;ng-container&gt;</code> est <span class="fw-bold">une balise qui peut contenir des directives structurelles mais qui n'est pas rendue</span> (rendering) dans le DOM.
 </p>
 <p>
-    C'est à dire que si vous utilisez cette balise dans un template HTML de composant, <span class="fw-bold">elle n'apparaitra pas dans le DOM</span> résultant sur le navigateur de votre utilisateur.
+    C'est à dire que si vous utilisez cette balise dans un template HTML de composant, <span class="fw-bold">elle n'apparaitra pas dans le DOM</span> sur le navigateur de votre utilisateur.
     Mais quel est l'intérêt d'une balise qui n'apparait pas ?
 </p>
 <p> 
-    En HTML pur, cela n'aurait aucun intérêt. Mais si vous utilisez Angular, <span class="fw-bold">cela vous permettra d'utiliser des fonctionnalités d'Angular, sans influencer le DOM</span> résultant de votre projet.
+    En HTML pur, cela n'aurait aucun intérêt. Mais si vous utilisez Angular, <span class="fw-bold">cela vous permettra d'utiliser des fonctionnalités d'Angular, sans influencer le DOM</span> de votre projet.
 </p>
 <p>
     Voici 2 cas où la balise <code>&lt;ng-container&gt;</code> pourra vous être utile.
@@ -81,7 +81,7 @@ lang: fr
     Vous perdez en performances, et le problème s'aggrave si le nombre d'items augmente.
 </p>
 <p>
-    Et deuxièmement, <span class="fw-bold">la sémantique HTML est brisée !</span> Il est interdit de placer une balise div en enfant direct d'une balise ul. 
+    Et deuxièmement, <span class="fw-bold">la sémantique HTML est brisée !</span> Il est interdit de placer une balise <code>&lt;div&gt;</code> en enfant direct d'une balise <code>&lt;ul&gt;</code>. 
     Essayer de passer votre page dans un validateur HTML W3C, vous verrez qu'il juge votre DOM invalide.
 </p>
 <p>
@@ -124,7 +124,7 @@ lang: fr
 </p>
 
 <p>
-    Par exemple, imaginez <span class="fw-bold">une partie du DOM qui doit être répétée à plusieurs endroits</span> de votre template HTML. Vous décidez de définir un <code>&lt;ng-template&gt;</code> pour éviter la répétition de code.
+    Par exemple, <span class="fw-bold">imaginez une partie du DOM qui doit être répétée à plusieurs endroits</span> de votre template HTML. Vous décidez de définir un <code>&lt;ng-template&gt;</code> pour éviter la répétition de code.
 </p>
 <p>
     Voici ce que vous pourriez envisager :
