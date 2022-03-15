@@ -1,0 +1,378 @@
+---
+layout: post
+title: "Angular - RxJS"
+date: 2022-03-14 13:50:50 +0100
+description: "Dans cet article, nous allons découvrir les observables avec RxJS."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-rxjs/cover_rxjs.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="definition-rxjs" class="anchor"></a>
+<h2>RxJS</h2>
+
+<p>
+    RxJs (Reactive extensions for JavaScript) est une bibliothèque de programmation réactive qui <span class="fw-bold">permet aux développeurs de composer facilement des flux de données asynchrones</span>.
+</p>
+
+<p>
+    Il fournit une interface pour combiner, transformer des données provenant d'observables.
+</p>
+
+<p>
+    Le système se base sur le design pattern Observer. 
+    Un observable envoie l’information, tandis que des Observers écoutent et réagissent à ces informations.
+</p>
+
+<a id="definitions" class="anchor"></a>
+<h2>Définitions</h2>
+
+<a id="observable" class="anchor"></a>
+<h3>Observable</h3>
+
+<p>
+    Les observables sont des objets qui vous aident à faire circuler des messages à travers les différentes parties de votre application. 
+    Ils sont fréquemment utilisés dans Angular en tant que technique pour gérer les événements, la programmation asynchrone ou des flux de données.
+</p>
+
+<a id="observer" class="anchor"></a>
+<h3>Observer</h3>
+
+<p>
+    Un observer est un objet contenant 3 callbacks :
+</p>
+
+<ul>
+    <li>next : callback en cas de succès</li>
+    <li>error : callback en cas d’erreur</li>
+    <li>complete : callback quand l’observable se termine</li>
+</ul>
+
+<p>
+    <span class="fw-bold">La souscription d'un observer déclenche l'exécution de l'observable.</span>
+    Les callbacks contenues dans l'observer peuvent être utilisées par l'observable pour gérer les différents cas (réussite, erreur et complétion).
+</p>
+
+<p>
+    Quand un observer se souscrit à un observable, cela veut dire <span class="fw-bold">qu'il écoute les données émises par cet observable pour pouvoir y réagir.</span> 
+    On peut le désinscrire si besoin pour stopper l'écoute.
+</p>
+
+<p>
+    Les cas 'error' et 'complete' sont facultatifs. Une callback par défaut leur est assignée si vous n'en fournissez pas.
+</p>
+
+<a id="stream" class="anchor"></a>
+<h3>Stream</h3>
+
+<p>
+    Un stream (ou flux en français) représente une suite infinie d'éléments, comme un courant d’eau par exemple.
+</p>
+
+<p>
+    En informatique un stream est une source de donnée qui sera traitée de façon séquentielle plutôt que globale parce que les données sont potentiellement illimitées.
+</p>
+
+<p>
+    Et avec RxJs un stream part d'un observable qui représente la source d'émission des données, 
+    et termine sur un observer (mono-stream) ou plusieurs observers (multi-stream) qui va récupérer les données émises.
+</p>
+
+<a id="souscrire-observable" class="anchor"></a>
+<h2>Souscrire à un Observable</h2>
+
+<p>
+    Pour écouter, et réagir aux données émises par un observable comme dit précédemment il va falloir s’y souscrire.
+</p>
+
+<p>
+    Pour ce faire, appliquez la méthode <code>subscribe()</code> à votre objet de type Observable :
+</p>
+
+{% highlight ts linenos %}
+import { Component, OnInit } from '@angular/core';
+import {  Observable } from 'rxjs';
+ 
+@Component({
+ selector: 'app-subscribe',
+ templateUrl: './subscribe.component.html',
+ styleUrls: ['./subscribe.component.css']
+})
+export class SubscribeComponent implements OnInit {
+ 
+ myObservable$: Observable<any>;
+ 
+ constructor() {
+   this.myObservable$ = new Observable(obv => {
+     let count = 0;
+     setInterval(() => obv.next(++count), 1000);
+   })
+ }
+ 
+ ngOnInit(): void {
+   this.myObservable$.subscribe(
+     data => console.log(data)
+   )
+ }
+{% endhighlight %}
+<div class="code-caption">subscribe.component.ts</div>
+
+<p>
+    L'observer que vous avez passé en paramètre de la méthode <code>subscribe()</code> sera utilisé par l'observable lors de son exécution. 
+</p>
+
+<p>
+    Dans cet exemple, on passe une seule fonction au lieu de tout un observer. Elle sera considérée comme la fonction next de l'observer.
+</p>
+
+<p>
+    Chaque seconde l’observable incrémentera la variable count et l’observer lui l’affichera dans la console.
+</p>
+
+<a id="types-observables" class="anchor"></a>
+<h2>Types d’observables</h2>
+
+<a id="plain-observable" class="anchor"></a>
+<h3>Plain observable</h3>
+
+<p>
+    Les observables simples (plain observable) sont mono-streams, c'est-à-dire que <span class="fw-bold">chaque observer souscrit possède une exécution indépendante de l’Observable</span>.
+</p>
+
+<p>
+    De plus, un plain observable est lazy, c'est à dire qu'il s'exécute qu’au moment où un observer s'y souscrit.
+</p>
+
+<p>
+    Par exemple :
+</p>
+
+{% highlight ts linenos %}
+import { Component, OnInit } from '@angular/core';
+import {  Observable } from 'rxjs';
+ 
+@Component({
+ selector: 'app-subscribe',
+ templateUrl: './subscribe.component.html',
+ styleUrls: ['./subscribe.component.css']
+})
+export class SubscribeComponent implements OnInit {
+ 
+ myObservable$: Observable<any>;
+ 
+ constructor() {
+   this.myObservable$ = new Observable(obv => {
+     let count = 0;
+     setInterval(() => obv.next(++count), 1000);
+   })
+   this.myObservable$.subscribe(
+     data => console.log(data)
+   )
+ }
+ 
+ ngOnInit(): void {
+   this.myObservable$.subscribe(
+     data => console.log(data)
+   )
+ }
+{% endhighlight %}
+<div class="code-caption">subscribe.component.ts</div>
+
+<p>
+    Vous remarquerez qu’on souscrit une fois dans le constructeur et une deuxième dans le <code>OnInit()</code> .
+</p>
+
+<p>
+    Dans ce cas-ci chaque <code>observer</code> recevra le <code>count</code> à 0, s'incrémentera et affichera la valeur dans la console.
+</p>
+
+<a id="subject" class="anchor"></a>
+<h3>Subject</h3>
+
+<p>
+    Un subject est un type spécial <code>d’observable</code>, qui permet de diffuser à plusieurs <code>observers</code> les données du même stream.
+</p>
+
+<p>
+    Les <code>observers</code>  se souscrivent au subject pour recevoir le stream, et le subject qui est un observer se souscrit à <code>l’observable</code>.
+</p>
+
+<img class="img" src="/assets/img/blog/angular-rxjs/schema_subject.png" alt="schéma subject">
+
+<p>
+    Exemple :
+</p>
+
+{% highlight ts linenos %}
+import { Component, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+ 
+@Component({
+ selector: 'app-subscribe',
+ templateUrl: './subscribe.component.html',
+ styleUrls: ['./subscribe.component.css']
+})
+export class SubscribeComponent implements OnInit {
+ 
+ onNext$: Observable<any>;
+ onSubject$: Subject<any>;
+ 
+ constructor() {
+   this.onNext$ = new Observable(obv => {
+     let count = 0;
+     setInterval(() => obv.next(++count), 1000);
+   })
+   this.onSubject$ = new Subject();
+   this.onNext$.subscribe(this.onSubject$);
+ }
+ 
+ ngOnInit(): void {
+ 
+ }
+ 
+ addObserverOnSubject(){
+   this.onSubject$.subscribe(
+     d => console.log(d)
+   )
+   this.onSubject$.subscribe(
+     d => console.log(d)
+   )
+ }
+{% endhighlight %}
+<div class="code-caption">subscribe.component.ts</div>
+
+{% highlight html linenos %}
+<button (click)="addObserverOnSubject()">Clic subject</button>
+{% endhighlight %}
+<div class="code-caption">subscribe.component.html</div>
+
+<p>
+    Dans ce deuxième extrait de code, les observers se souscrivent au <code>subject</code> au clic du bouton, ils reçoivent le même stream transmis de <code>l’observable</code>  au <code>subject</code> !
+</p>
+
+<a id="behaviorsubject" class="anchor"></a>
+<h3>BehaviorSubject</h3>
+
+<p>
+    C’est une variante du subject, ce qui le différencie c’est qu’il a la notion de 'valeur actuelle', 
+    c’est-à-dire qu’il stock la dernière valeur émise par le stream et renvoie cette dernière valeur à chaque nouveau souscripteur.
+</p>
+
+<p>
+    Exemple :
+</p>
+
+
+{% highlight ts linenos %}
+import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+ 
+@Component({
+ selector: 'app-subscribe',
+ templateUrl: './subscribe.component.html',
+ styleUrls: ['./subscribe.component.css']
+})
+export class SubscribeComponent implements OnInit {
+ 
+ onNext$: Observable<any>;
+ onBehavior$: BehaviorSubject<any>;
+ 
+ constructor() {
+   this.onNext$ = new Observable(obv => {
+     let count = 0;
+     setInterval(() => obv.next(++count), 1000);
+   })
+   this.onBehavior$ = new BehaviorSubject(0);
+   this.onNext$.subscribe(this.onBehavior$);
+ }
+ 
+ ngOnInit(): void {
+ }
+ 
+ addObserverOnBehavior(){
+   this.onBehavior$.subscribe(
+     d => console.log(d)
+   )
+ }
+}
+{% endhighlight %}
+<div class="code-caption">subscribe.component.ts</div>
+
+{% highlight html linenos %}
+<button (click)="addObserverOnBehavior()">Clic BehaviorSubject</button>
+{% endhighlight %}
+<div class="code-caption">subscribe.component.html</div>
+
+<p>
+    Comme expliqué plus haut, dans ce cas à chaque clic sur le bouton un observer se souscrit au <code>BehaviorSubject</code>, qui lui transmet la dernière donnée reçue.
+</p>
+
+<a id="operators" class="anchor"></a>
+<h3>Les opérateurs</h3>
+
+<p>
+    Les opérateurs sont des fonctions, il en existe deux types : 
+</p>
+
+<p>
+    Les pipes qui sont des opérateurs qui prend en entrée un observable et renvoient en sorti un nouvel observable.
+</p>
+
+<p>
+    Le deuxième type sont les opérateurs de créations qui peuvent être appelés pour créer un nouvel observable.
+</p>
+
+{% highlight ts linenos %}
+import { Component, OnInit } from '@angular/core';
+import { interval, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+ 
+@Component({
+ selector: 'app-subscribe',
+ templateUrl: './subscribe.component.html',
+ styleUrls: ['./subscribe.component.css']
+})
+export class SubscribeComponent implements OnInit {
+ 
+ observable$: Observable<any>;
+ 
+ constructor() {
+   this.observable$ = interval(1000);
+   this.observable$
+   .pipe(map((x) => x * 2))
+   .subscribe(data => console.log(data))
+ }
+ 
+ ngOnInit(): void {
+ }
+}
+{% endhighlight %}
+<div class="code-caption">subscribe.component.ts</div>
+
+<p>
+    Dans cet exemple, l’observable enverra toutes les secondes une donnée, 
+    pour cela vous pouvez utiliser interval qui est un opérateur de création et qui prend en paramètre une valeur en milliseconde.
+</p>
+
+<p>
+    Dans un deuxième temps vous pouvez voir l'utilisation de la fonction <code>pipe()</code> suivi de l’opérateur <code>map()</code>. 
+    On transforme les données de l’observable et on le renvoie.
+</p>
+
+<p>
+    Pour finir on souscrit à l’observable renvoyer par la fonction <code>pipe()</code>.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    <p>
+        Voilà pour RxJS, cet article est assez complexe n’hésitez pas à laisser un commentaire, en espérant que cela vous a plu !
+    </p>
+</p>
