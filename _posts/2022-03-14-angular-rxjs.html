@@ -236,14 +236,14 @@ export class SubscribeComponent implements OnInit {
 </p>
 
 <p>
-    Das ce cas, chaque souscription d'un <code>Observer</code> déclenche une exécution de l'Observable. Et l'Observer qui a déclenché le traitement est le seul à recevoir les évènements envoyés par cette exécution (mono-stream).
+    Das ce cas, chaque souscription d'un Observer déclenche une exécution de l'Observable. Et l'Observer qui a déclenché le traitement est le seul à recevoir les évènements envoyés par cette exécution (mono-stream).
 </p>
 
 <a id="subject" class="anchor"></a>
 <h3>Subject</h3>
 
 <p>
-  <span class="fw-bold">Un Subject est un type complexe <code>d’Observable</code>, qui permet de diffuser à plusieurs <code>Observers</code> les données d'une même source (multi-stream).</span>
+  <span class="fw-bold">Un Subject est un type complexe d’Observable, qui permet de diffuser à plusieurs Observers les données d'une même source (multi-stream).</span>
 </p>
 
 <p>
@@ -309,7 +309,7 @@ subject.next(2);
 
 
 <p>
-  1 - Les <code>Observers</code> se souscrivent au Subject, ce qui ne déclenche pas de traitement.
+  1 - Les Observers se souscrivent au Subject, ce qui ne déclenche pas de traitement.
 </p>
 
 <p>2 - Ensuite le Subject se souscrit à un Observable. L'Observable lance alors son traitement et émet des évènements au Subject.</p>
