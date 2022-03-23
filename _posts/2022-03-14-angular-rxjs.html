@@ -2,7 +2,7 @@
 layout: post
 title: "Angular - RxJS"
 date: 2022-03-14 13:50:50 +0100
-description: "Dans cet article, nous allons découvrir les observables avec RxJS."
+description: "Dans cet article, nous allons découvrir les Observables avec RxJS."
 tags: developpement web Angular
 categories: [Développement web]
 author: "lucas"
@@ -44,7 +44,7 @@ lang: fr
 <h3>Observable</h3>
 
 <p>
-  <span class="fw-bold">Les observables sont des objets qui émettent des messages à travers les différentes parties de votre application. </span>
+  <span class="fw-bold">Les Observables sont des objets qui émettent des messages à travers les différentes parties de votre application. </span>
     Ils sont fréquemment utilisés dans Angular en tant que technique pour gérer les événements, la programmation asynchrone ou des flux de données.
 </p>
 
@@ -52,27 +52,29 @@ lang: fr
 <h3>Observer</h3>
 
 <p>
-  <span class="fw-bold">Un observer est un objet contenant 3 callbacks :</span>
+  <span class="fw-bold">Un Observer est un objet contenant 3 callbacks :</span>
 </p>
 
 <ul>
-    <li>next : callback en cas de succès</li>
-    <li>error : callback en cas d’erreur</li>
-    <li>complete : callback quand l’observable se termine</li>
+    <li><code>next</code> : callback en cas de succès</li>
+    <li><code>error</code> : callback en cas d’erreur</li>
+    <li><code>complete</code> : callback quand l’Observable se termine</li>
 </ul>
 
 <p>
-    <span class="fw-bold">La souscription d'un observer déclenche l'exécution de l'observable (par défaut).</span> On dit alors que l'observable est lazy car il attend une souscription pour déclencher le traitement.
-    <span class="fw-bold">Les callbacks contenues dans l'observer peuvent être utilisées par l'observable pour gérer les différents cas (réussite, erreur et complétion).</span>
+    <span class="fw-bold">La souscription d'un Observer déclenche l'exécution de l'Observable (par défaut).</span> On dit alors que l'Observable est lazy car il attend une souscription pour déclencher le traitement.
+</p>
+<p>
+    <span class="fw-bold">Les callbacks contenues dans l'Observer peuvent être utilisées par l'Observable pour gérer les différents cas</span> (réussite, erreur et complétion).
 </p>
 
 <p>
-    Quand un observer se souscrit à un observable, cela veut dire <span class="fw-bold">qu'il écoute les données émises par cet observable pour pouvoir y réagir.</span> 
+    Quand un Observer se souscrit à un Observable, cela veut dire <span class="fw-bold">qu'il écoute les données émises par cet Observable pour pouvoir y réagir.</span> 
     On peut le désinscrire si besoin pour stopper l'écoute.
 </p>
 
 <p>
-    Les cas 'error' et 'complete' sont facultatifs. Une callback par défaut leur est assignée si vous n'en fournissez pas.
+    Les cas <code>error</code> et <code>complete</code> sont facultatifs. Une callback par défaut leur est assignée si vous n'en fournissez pas.
 </p>
 
 <a id="stream" class="anchor"></a>
@@ -87,8 +89,8 @@ lang: fr
 </p>
 
 <p>
-    Dans le cas d'RxJS, un stream part d'un observable qui représente la source d'émission des données, 
-    et termine sur un observer (mono-stream) ou plusieurs observers (multi-stream) qui vont récupérer les données émises.
+    Dans le cas d'RxJS, un stream part d'un Observable qui représente la source d'émission des données, 
+    et termine sur un Observer (mono-stream) ou plusieurs Observers (multi-stream) qui vont récupérer les données émises.
 </p>
 
 <p> Voyons maintenant comment on se sert d'RxJS dans nos applications.</p>
@@ -97,7 +99,7 @@ lang: fr
 <h2>Souscrire à un Observable</h2>
 
 <p>
-  <span class="fw-bold">Il y a 2 manières de souscrire à un Observable : la mannière raccourcie et la manière complète.</span>
+  <span class="fw-bold">Il y a 2 manières de souscrire à un Observable</span> : la manière raccourcie et la manière complète.
 </p>
 
 <a id="souscrire-observable-raccourcie" class="anchor"></a>
@@ -110,9 +112,10 @@ lang: fr
 {% highlight ts linenos %}
 this.observable$.subscribe(data => console.log(data))
 {% endhighlight %}
+<div class="code-caption">Souscription raccourcie</div>
 
 <p>
-  Un Observer sera généré pour vous et cette fonction sera considérée comme la fonction next() de l'observer. Une fonction par défaut sera utilisée pour error et complete. 
+  Un Observer sera généré pour vous et cette fonction sera considérée comme la fonction <code>next</code> de l'Observer. Une fonction par défaut sera utilisée pour <code>error</code> et <code>complete</code>. 
 </p>
 
 <a id="souscrire-observable-complete" class="anchor"></a>
@@ -127,6 +130,7 @@ this.observable$.subscribe({
   complete: () => console.log('Execution completed')
 });
 {% endhighlight %}
+<div class="code-caption">Souscription complète</div>
 
 <p>Utilisez cette méthode si vous devez gérer les erreurs ou surcharger la complétion.</p>
 
@@ -136,7 +140,7 @@ this.observable$.subscribe({
 <p> <span class="fw-bold">Un Observable se construit à partir d'une fonction pure qui décrit son traitement.</span></p>
 
 <p>
-  Cette fonction prend en paramètre un Observer. Elle se sert des callbacks contenues dans l'observer faire réagir les observers pendant son traitement.
+  Cette fonction prend en paramètre un Observer. Elle se sert des callbacks contenues dans l'Observer faire réagir les Observers pendant son traitement.
 </p>
 
 <p>
@@ -154,8 +158,9 @@ this.observable$ = new Observable(observer: Observer => {
   observer.complete();
 })
 {% endhighlight %}
+<div class="code-caption">Création d'un Observable</div>
 
-<p>Les observers qui se souscrivent à cet Observable seront utilisés comme décrit dans la fonction de traitement.</p>
+<p>Les Observers qui se souscrivent à cet Observable seront utilisés comme décrit dans la fonction de traitement.</p>
 
 <a id="creer-observable-timer" class="anchor"></a>
 <h3>Exemple : créer un Observable timer</h3>
@@ -171,29 +176,29 @@ this.timer$ = new Observable(obv: Observer => {
 <div class="code-caption">timer.component.ts</div>
 
 <p>
-  Chaque seconde, l’Observable fait appel à la fonction next() de l'Observer, en lui passant la valeur du compteur. Un Observer qui se souscrit à cet Observable sera donc déclenché toutes les secondes.
+  Chaque seconde, l’Observable fait appel à la fonction <code>next</code> de l'Observer, en lui passant la valeur du compteur. Un Observer qui se souscrit à cet Observable sera donc déclenché toutes les secondes.
 </p>
 
 <p>
-  Remarquez que cet Observable ne fait appel qu'à la fonction next() de l'Observer. Il ne fait pas directement appel à la fonction error(). Il ne pourra donc échouer que si une exception est levée pendant l'exécution.
+  Remarquez que cet Observable ne fait appel qu'à la fonction <code>next</code> de l'Observer. Il ne fait pas directement appel à la fonction <code>error</code>. Il ne pourra donc échouer que si une exception est levée pendant l'exécution.
 </p>
 
 <p>
-  Il ne fait pas non plus appel à la fonction complete(). Cet Observable ne se termine donc jamais.
+  Il ne fait pas non plus appel à la fonction <code>complete</code>. Cet Observable ne se termine donc jamais.
 </p>
 
 <a id="types-observables" class="anchor"></a>
-<h2>Types d’observables RxJS</h2>
+<h2>Types d’Observables RxJS</h2>
 
 <a id="plain-observable" class="anchor"></a>
-<h3>Plain observable</h3>
+<h3>Plain Observable</h3>
 
 <p>
-    Les observables simples (plain observable) sont mono-streams, c'est-à-dire que <span class="fw-bold">chaque observer souscrit possède une exécution indépendante de l’Observable</span>.
+    Les Observables simples (plain Observable) sont mono-streams, c'est-à-dire que <span class="fw-bold">chaque Observer souscrit possède une exécution indépendante de l’Observable</span>.
 </p>
 
 <p>
-    De plus, un plain observable est lazy, c'est à dire qu'il ne s'exécute qu’au moment où un observer s'y souscrit.
+    De plus, un plain Observable est lazy, c'est à dire qu'il ne s'exécute qu’au moment où un Observer s'y souscrit.
 </p>
 
 <a id="plain-observable-exemple" class="anchor"></a>
@@ -227,18 +232,18 @@ export class SubscribeComponent implements OnInit {
 <div class="code-caption">subscribe.component.ts</div>
 
 <p>
-    A chaque appel de addObserver(), un nouvel observer se souscrit à l'observable.
+    A chaque appel de addObserver(), un nouvel Observer se souscrit à l'Observable.
 </p>
 
 <p>
-    Das ce cas, chaque souscription d'un <code>Observer</code> déclenche une exécution de l'observable. Et l'observer qui a déclenché le traitement est le seul à recevoir les évènements envoyés par cette exécution (mono-stream).
+    Das ce cas, chaque souscription d'un <code>Observer</code> déclenche une exécution de l'Observable. Et l'Observer qui a déclenché le traitement est le seul à recevoir les évènements envoyés par cette exécution (mono-stream).
 </p>
 
 <a id="subject" class="anchor"></a>
 <h3>Subject</h3>
 
 <p>
-  <span class="fw-bold">Un Subject est un type complexe <code>d’Observable</code>, qui permet de diffuser à plusieurs <code>observers</code> les données d'une même source (multi-stream).</span>
+  <span class="fw-bold">Un Subject est un type complexe <code>d’Observable</code>, qui permet de diffuser à plusieurs <code>Observers</code> les données d'une même source (multi-stream).</span>
 </p>
 
 <p>
@@ -254,8 +259,8 @@ export class SubscribeComponent implements OnInit {
 </p>
 
 <p>
-  <span class="fw-bold">Le Subject est un Observer :</span> c'est un objet qui contient les méthodes next(v), error(e) et complete().
-  Pour que votre Subject émette une valeur, appelez simplement la méthode next(theValue), et elle sera multicastée aux Observers qui ont souscrit au Subject.
+  <span class="fw-bold">Le Subject est un Observer :</span> c'est un objet qui contient les méthodes <code>next(v)</code>, <code>error(e)</code> et <code>complete()</code>.
+  Pour que votre Subject émette une valeur, appelez simplement la méthode <code>next(theValue)</code>, et elle sera multicastée aux Observers qui ont souscrit au Subject.
 </p>
 
 <p>Vous pouvez utiliser un Subject de 2 manières différentes.</p>
@@ -297,8 +302,11 @@ subject.next(2);
 <p>
   On pourrait prendre l'analogie d'une multi-prise qui permet de rediriger le courant d'une source unique vers plusieurs appareils.
 </p>
+<figure class="text-center">
+  <img class="img" src="/assets/img/blog/angular-rxjs/schema_subject.png" alt="schéma subject">
+  <div class="image-caption">Multicaster un Observable avec un Subject</div>
+</figure>
 
-<img class="img" src="/assets/img/blog/angular-rxjs/schema_subject.png" alt="schéma subject">
 
 <p>
   1 - Les <code>Observers</code> se souscrivent au Subject, ce qui ne déclenche pas de traitement.
@@ -308,7 +316,7 @@ subject.next(2);
 <p>3 - Le Subject redirige alors les informations qu'il recoit à tous ses Observers.</p>
 
 <p>
-  Utiliser un Subject permet de faire en sorte que tous les observers recoivent la même information. Ce qui n'est pas possible avec un plain Observable seul car il est mono-stream et déclenche un nouveau traitement à chaque souscription.
+  Utiliser un Subject permet de faire en sorte que tous les Observers recoivent la même information. Ce qui n'est pas possible avec un plain Observable seul car il est mono-stream et déclenche un nouveau traitement à chaque souscription.
 </p>
 
 <p>
@@ -384,7 +392,7 @@ subject.next(789);
 
 // output: 123, 123, 456, 456, 456, 789, 789, 789
 {% endhighlight %}
-<div class="code-caption">subscribe.component.ts</div>
+<div class="code-caption">Utilisation d'un BehaviorSubject</div>
 
 <p>Remarquez qu'il faut nécessairement fournir une valeur de départ au BehaviorSubject.</p>
 
@@ -400,11 +408,11 @@ subject.next(789);
 </p>
 
 <p>
-  <span class="fw-bold">Les opérateurs pipeables</span>, qui sont des opérateurs qui prennent en entrée un observable et renvoient en sortie un nouvel observable modifié.
+  <span class="fw-bold">Les opérateurs pipeables</span>, qui sont des opérateurs qui prennent en entrée un Observable et renvoient en sortie un nouvel Observable modifié.
 </p>
 
 <p>
-  <span class="fw-bold">Et les opérateurs de création</span> qui peuvent être appelés pour créer un observable.
+  <span class="fw-bold">Et les opérateurs de création</span> qui peuvent être appelés pour créer un Observable.
 </p>
 
 {% highlight ts linenos %}
@@ -435,18 +443,18 @@ export class SubscribeComponent implements OnInit {
 <div class="code-caption">subscribe.component.ts</div>
 
 <p>
-    Dans cet exemple, l’observable enverra toutes les secondes la valeur d'un compteur qui s'incrémente. Exactement comme le timer que nous avions créé manuellement dans les exemples précédents. 
+    Dans cet exemple, l’Observable enverra toutes les secondes la valeur d'un compteur qui s'incrémente. Exactement comme le timer que nous avions créé manuellement dans les exemples précédents. 
 </p>
 <p>
-  <span class="fw-bold">Pour créer l'observable, on a utilisé l'opérateur de création "interval".</span>
+  <span class="fw-bold">Pour créer l'Observable, on a utilisé l'opérateur de création "interval".</span>
 </p>
 <p>
     Vous pouvez remarquer aussi l'utilisation de <span class="fw-bold">la fonction <code>pipe()</code> qui contient l’opérateur <code>map()</code>.</span> 
-    Cet opérateur transforme les données de l’observable avant de les émettre vers l'Observer.
+    Cet opérateur transforme les données de l’Observable avant de les émettre vers l'Observer.
 </p>
 
 <p>
-    Pipe() est en fait la méthode qui permet d'ajouter des opérateurs pipeables entre l'Observable et les Observers. Cette méthode prend autant d'opérateurs que l'on souhaite en paramètre.
+    <code>Pipe()</code> est en fait la méthode qui permet d'ajouter des opérateurs pipeables entre l'Observable et les Observers. Cette méthode prend autant d'opérateurs que l'on souhaite en paramètre.
 </p>
 
 <a id="conclusion" class="anchor"></a>
