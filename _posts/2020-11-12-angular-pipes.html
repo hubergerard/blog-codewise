@@ -44,14 +44,14 @@ toc-depth: 4
 <p>
     Prenons pour exemple le pipe <code> date</code> natif dans Angular : 
 </p>
-<p>On commence par déclarer une variable <code>birthday</code> dans le fichier TypeScript de notre composant.</p>
+<p>On commence par déclarer une variable <code>birthday</code> dans le fichier TypeScript de votre composant.</p>
 
 {% highlight ts linenos %}
 public birthday: Date = new Date(1988, 3, 15);
 {% endhighlight %} 
 <div class="code-caption">any.component.ts</div>
 
-<p>Ensuite, dans notre HTML on souhaite l'afficher dans un format user-friendly et lisible.</p>
+<p>Ensuite, dans votre HTML on souhaite l'afficher dans un format user-friendly et lisible.</p>
 
 {% highlight html linenos %}
 {% raw %}
@@ -269,7 +269,7 @@ export class ExponentialPipe implements PipeTransform {
     une valeur, <code>value</code>, et un tableau de paramètres <code>...args</code>.
 </p>
 <p>
-    Cette méthode vient de l'interface <code>PipeTransform</code> qui est implémentée par notre pipe. À nous alors d'implémenter cette méthode !
+    Cette méthode vient de l'interface <code>PipeTransform</code> qui est implémentée par votre pipe. À vous alors d'implémenter cette méthode !
 </p>
 <p>
     Dans nôtre cas, on ne s'attend à recevoir qu'un paramètre : l'exposant. 
@@ -293,7 +293,7 @@ export class ExponentialPipe implements PipeTransform {
 <div class="code-caption">exponential.pipe.ts</div>
 
 <a id="utilisation-pipe" class="anchor"></a>
-<h4>Utiliser notre nouveau pipe</h4>
+<h4>Utiliser votre nouveau pipe</h4>
 
 <p>
     Pour appeler votre nouveau pipe, placez-vous dans votre fichier HTML, à l'intérieur d'une interpolation (les doubles accolades<code>{% raw %} {{}}{% endraw %}</code>) et inscrivez-y :
@@ -306,7 +306,7 @@ export class ExponentialPipe implements PipeTransform {
     <li>La valeur de l'exposant à calculer</li>
 </ul>
 
-<p>Ce qui nous donne :</p>
+<p>Ce qui vous donne :</p>
 
 {% highlight html linenos %}
 {% raw %}
