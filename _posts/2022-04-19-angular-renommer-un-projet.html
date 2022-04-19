@@ -1,0 +1,61 @@
+---
+layout: post
+title: "Angular - Renommer un projet"
+date: 2022-04-19 09:10:50 +0100
+description: "Dans cet article, vous allez découvrir comment renommer un projet Angular"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-renommer-projet/cover_angular_rename_project.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="occurences" class="anchor"></a>
+<h2>Rechercher toutes les occurences</h2>
+
+<p>
+    Pour renommer un projet Angular il va falloir trouver toutes les occurences dans les fichiers de l'ancien nom de projet pour pouvoir les remplacer.
+</p>
+
+<p>
+    Pour cela vous pouvez utilisez l'outil de recherche de Visual Studio Code :
+</p>
+
+<img class="img" src="/assets/img/blog/angular-renommer-projet/vscode_search.png" alt="SearchTool VS Code">
+<div class="code-caption">Outil de recherche Visual Studio Code</div>
+
+<p>
+    Vous pouvez voir qu'il y a deux champs, le premier champ sert à rechercher l'expression, le second à remplacer l'expression chercher.
+</p>
+
+<p>
+    Remplacer donc toutes les occurences par le nouveau nom de projet que vous souhaitez grâce à cet outil.
+</p>
+
+<a id="rename-project-folder" class="anchor"></a>
+<h2>Renommer le dossier du projet</h2>
+
+<p>
+    Maintenant il vous faudra renommer le dossier du projet et c'est terminé vous pouvez lancez votre serveur !
+</p>
+
+<a id="error" class="anchor"></a>
+<h2>Une erreur se produit ?</h2>
+
+<p>
+    Vous lancez votre serveur et une erreur se produit ?
+</p>
+
+<p>
+    Supprimez le dossier <span class="fw-bold">node_modules</span> , et lancez un <code>npm install</code>  dans le terminal à la racine du dossier du projet et relancez le serveur.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà pour ce petit tutoriel , j'espère qu'il vous aidera et n'hésitez pas à laisser un commentaire !
+</p>
