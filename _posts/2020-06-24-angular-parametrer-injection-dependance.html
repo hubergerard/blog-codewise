@@ -2,13 +2,13 @@
 layout: post
 title: "Angular - Paramétrer l'injection de dépendance avec @Injectable"
 date: 2021-06-24 9:40:50 +0100
-description: "Dans cet article, nous allons découvrir les notions d'injections de dépendances et comment se servir du décorateur @Injectable d'Angular."
+description: "Dans cet article, vous allez découvrir les notions d'injections de dépendances et comment se servir du décorateur @Injectable d'Angular."
 tags: developpement web Angular
 categories: [Développement web]
 author: "lucas"
 post_image: "/assets/img/blog/cover_article_injectable.png"
 toc-text-mode: false
-toc-depth: 5
+toc-depth: 4
 author: lucas
 lang: fr
 ---
@@ -16,22 +16,39 @@ lang: fr
 <a id="definition-injection" class="anchor"></a>
 <h2>Définition : L’injection de dépendance</h2>
 
-<p>L’injection de dépendance est une notion fondamentale du framework Angular. C’est un design pattern implémenté directement par ce framework.
+<p>
+    L’injection de dépendance est une notion fondamentale du framework Angular. C’est un design pattern implémenté directement par ce framework.
+</p>
+
+<p>
     <span class="fw-bold">Quand Angular instancie un component, il peut résoudre les dépendances en les injectant via le constructeur du component.</span>
-    Les attributs des classes de notre projet (component, service ou autres) seront instanciés sans notre intervention. Si l’injection a été configurée, le framework choisit quelle instance utiliser. Il peut décider de créer une nouvelle instance de l’objet ou bien d'en choisir une déjà existante (principe singleton).
-    C’est ce que nous allons voir dans cet article.
-    
+</p>
+
+<p>
+    Les attributs des classes de votre projet (component, service ou autres) seront instanciés sans votre intervention. Si l’injection a été configurée, le framework choisit quelle instance utiliser. 
+</p>
+
+<p>
+    Il peut décider de créer une nouvelle instance de l’objet ou bien d'en choisir une déjà existante (principe singleton).
+</p>
+
+<p>
+    C’est ce que vous allez voir dans cet article.
 </p>
 
 <a id="injector-angular" class="anchor"></a>
 <h2>L’injecteur  d’Angular</h2>
 
-<p>Angular met à disposition plusieurs injecteurs de dépendance. Comme dit précédemment, leur rôle est d'instancier et de fournir les dépendances demandées par les différentes classes de nos applications. 
+<p>
+    Angular met à disposition plusieurs injecteurs de dépendance. Comme dit précédemment, leur rôle est d'instancier et de fournir les dépendances demandées par les différentes classes de nos applications. 
+</p>
+
+<p>
     <span class="fw-bold">Chaque injecteur dispose d'une portée qui lui est propre.</span> Cette portée peut-être : l’application entière, un module et/ou un composant.
 </p>
 
 <img alt="schéma portée injecteur angular @injectable" class="w-100" src="assets/img/blog/schema_injector_scope.png" class="img-caption" class="img-shadow"/>
-<div class="image-caption"></div>
+<div class="image-caption">Portée des injecteurs Angular</div>
 
 <a id="decorator-injectable" class="anchor"></a>
 <h2>Le décorateur @Injectable</h2>
@@ -39,17 +56,28 @@ lang: fr
 <a id="decorator-definition" class="anchor"></a>
 <h4>Décorateur : définition</h4>
 
-<p>Avant toute chose, qu’est-ce qu’un décorateur ?
-    <span class="fw-bold">Un décorateur est une annotation précédée d’un @.</span> Son rôle est de factoriser certaines instructions en surchargeant le comportement de base (principe de POO), d’ajouter  des métadonnées, des propriétés ou des paramètres à nos classes.
+<p>
+    Avant toute chose, qu’est-ce qu’un décorateur ?
+</p>
+
+<p>
+    <span class="fw-bold">Un décorateur est une annotation précédée d’un @.</span> 
+</p>
+
+<p>
+    Son rôle est de factoriser certaines instructions en surchargeant le comportement de base (principe de POO), d’ajouter  des métadonnées, des propriétés ou des paramètres à nos classes.
+</p>
+
+<p>
     Angular dispose de plusieurs décorateurs pour différentes fonctions : pour la communication inter-component, la résolution de dépendance et beaucoup d’autres. 
     <br>Vous pouvez même créer vos propres décorateurs !
-</p> 
+</p>
 
 <a id="decorator-injectable" class="anchor"></a>
 <h4>Le cas du décorateur @Injectable</h4>
 
-<p>Revenons à notre décorateur @Injectable.
-    <span class="fw-bold">Il permet de rendre notre classe détectable par l’injecteur</span>, donc si vous injectez une dépendance sans ce décorateur, le framework vous retournera une erreur.
+<p>Revenons à votre décorateur @Injectable.
+    <span class="fw-bold">Il permet de rendre votre classe détectable par l’injecteur</span>, donc si vous injectez une dépendance sans ce décorateur, le framework vous retournera une erreur.
 </p>
 
 <a id="different-injector" class="anchor"></a>
@@ -71,7 +99,8 @@ import { Injectable } from '@angular/core';
 export class AnyService {
  constructor() { }
 }
-{% endhighlight %} 
+{% endhighlight %}
+<div class="code-caption">file.component.ts</div>
 
 <a id="usecase-injector-root" class="anchor"></a>
 <h5>b) Cas d’utilisation</h5>
@@ -110,14 +139,15 @@ import { AnyModule } from './any.module';
 import { ANY } from './mock-any';
  
 @Injectable({
- // nous déclarons que ce service doit être créé
+ // vous déclarez que ce service doit être créé
  // par n'importe quel injecteur qui inclut AnyModule.
  providedIn: AnyModule,
 })
 export class AnyService {
  getAny() { return ANY; }
 }
-{% endhighlight %} 
+{% endhighlight %}
+<div class="code-caption">file.component.ts</div>
 
 <a id="usecase-injector-module" class="anchor"></a>
 <h5>b) Cas d'utilisation</h5>
@@ -130,9 +160,16 @@ export class AnyService {
 <a id="exemple-injector-module" class="anchor"></a>
 <h5>c) Exemple</h5>
 <p>
-    Prenons l’exemple d’une application utilisant un système d’authentification. On trouve dans cette application un module appelé AuthenticationModule. Dédié à la gestion d’authentification. 
-    Ce module dispose de plusieurs composants qui ont besoin d’un service d’authentification. Dans ce cas-là, on veut que l’AuthenticationService ne soit accessible que dans ce module afin de restreindre son utilisation aux components dédiés.
-    On décide alors d’injecter le service via l’injecteur du module AuthenticationModule.    
+    Prenons l’exemple d’une application utilisant un système d’authentification. On trouve dans cette application un module appelé AuthenticationModule. 
+</p>
+
+<p>
+    Dédié à la gestion d’authentification, 
+    ce module dispose de plusieurs composants qui ont besoin d’un service d’authentification. Dans ce cas-là, on veut que l’AuthenticationService ne soit accessible que dans ce module afin de restreindre son utilisation aux components dédiés.
+</p>
+
+<p>
+    On décide alors d’injecter le service via l’injecteur du module AuthenticationModule.
 </p>
 
 <a id="injector-component" class="anchor"></a>
@@ -157,7 +194,8 @@ import { AnyService } from './any.service';
  `
 })
 export class AnyComponent { }
-{% endhighlight %} 
+{% endhighlight %}
+<div class="code-caption">file.component.ts</div>
 
 <a id="usecase-injector-component" class="anchor"></a>
 <h5>b) Cas d'utilisation</h5>
