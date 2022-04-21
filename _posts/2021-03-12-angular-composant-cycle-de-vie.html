@@ -57,7 +57,7 @@ constructor() {
 </p>
 
 <a id="OnChanges" class="anchor"></a>
-<h3>2. Détecter les changements d'Input</h3>
+<h3>NgOnChanges - Détecter les changements d'Input</h3>
 <p><span class="fw-bold">Immédiatement après le constructeur, Angular appelle le hook ngOnChanges().</span> 
     Il est également appelé après chaque changement d'une des propriétés passées en Input.
 </p>
@@ -78,7 +78,11 @@ private uppercase(input: string) {
 <div class="code-caption">OnChanges.component.ts</div>
 
 <a id="OnInit" class="anchor"></a>
-<h3>3. Initialiser le composant</h3>
+<h3>NgOnInit - Initialiser le composant</h3>
+
+<p>
+    Le hook NgOnInit est déclenché dès que le DOM du composant a fini de charger.
+</p>
 
 <p>Utilisez la méthode ngOnInit() dans les 2 cas suivants :</p>
 <ul>
@@ -106,7 +110,7 @@ private uppercase(input: string) {
 <div class="code-caption">OnInit.component.ts</div>
 
 <a id="DoCheck" class="anchor"></a>
-<h3>4. Réagir à tous les changements du DOM</h3>
+<h3>NgDoCheck - Réagir à tous les changements du DOM</h3>
 
 <p>Vous souhaitez réagir à un changement du DOM qui est indétectable par vos autres hooks ?</p>
 <p> Dans ce cas vous devrez utiliser la méthode ngDoCheck()</p>
@@ -120,7 +124,7 @@ private uppercase(input: string) {
 <p>De ce fait, vous ne verrez pas beaucoup ce hook !</p>
 
 <a id="AfterContent" class="anchor"></a>
-<h3>5. Détecter les changements de ng-content</h3>
+<h3>NgAfterContent - Détecter les changements de ng-content</h3>
 <p>
     <span class="fw-bold">La méthode ngAfterContentInit() est déclenchée lorsque le contenu de la balise ng-content est reçu pour la première fois.</span>
 </p>
@@ -187,7 +191,7 @@ export class ChildComponent implements AfterContentInit  {
 </p>
 
 <a id="AfterView" class="anchor"></a>
-<h3>6. Accéder au DOM </h3>
+<h3> NgAfterView - Accéder au DOM</h3>
 <p>
     <span class="fw-bold">La méthode ngAfterViewInit() est déclenchée lorsque le contenu des variables décorées par @ViewChild 
         ou @ViewChildren est reçu pour la première fois</span>.
@@ -236,7 +240,7 @@ export class ChildComponent implements AfterViewInit  {
 </p>
 
 <a id="OnDestroy" class="anchor"></a>
-<h3>7. Détruire l'instance proprement</h3>
+<h3>NgOnDestroy - Détruire l'instance proprement</h3>
 
 <p>
     <span class="fw-bold">Enfin le hook ngOnDestroy() vous permet de libérer des ressources avant la destruction de l'instance du composant.</span>
