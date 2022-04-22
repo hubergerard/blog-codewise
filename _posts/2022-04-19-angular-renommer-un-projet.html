@@ -1,0 +1,77 @@
+---
+layout: post
+title: "Angular - Comment renommer un projet ?"
+date: 2022-04-19 09:10:50 +0100
+description: "Dans cet article, vous allez découvrir comment renommer un projet Angular."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-renommer-projet/cover_angular_rename_project.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<p>Renommer un projet Angular est moins simple qu'il n'y parait : pas de commande pour renommer via la CLI, et des références au dossier dans divers fichiers.</p>
+<p> Voici donc 3 étapes pour vous aider à renommer votre projet.</p>
+
+<a id="occurences" class="anchor"></a>
+<h2>Rechercher toutes les occurences du nom à changer</h2>
+
+<p>
+    Pour renommer un projet Angular, commencez par trouver toutes les occurences de l'ancien nom dans les fichiers du projet, pour pouvoir les remplacer.
+</p>
+
+<p>
+    Pour cela, vous pouvez utiliser l'outil "Search and replace" de Visual Studio Code (Ctrl + Shift + h) :
+</p>
+
+<img class="img" src="/assets/img/blog/angular-renommer-projet/vscode_search.png" alt="SearchTool VS Code">
+<div class="image-caption">Outil de recherche Visual Studio Code</div>
+
+<p>
+    Vous pouvez voir qu'il y a deux champs, le premier champ sert à rechercher l'expression, le second à remplacer l'expression cherchée.
+</p>
+
+<p>
+    Remplacez donc toutes les occurences par le nouveau nom de projet que vous souhaitez grâce à cet outil.
+</p>
+
+<a id="rename-project-folder" class="anchor"></a>
+<h2>Renommer le dossier du projet</h2>
+
+<p>
+    Ensuite, renommez simplement le dossier du projet.
+</p>
+
+<a id="reinstaller-dependances" class="anchor"></a>
+<h2>Réinstaller les dépendances</h2>
+
+<p>
+    Certaines dépendances de votre projet Angular contiennent des références vers le dossier de votre projet.
+    Il faut donc les réinstaller maintenant que tout a été renommé.
+</p>
+
+<p>
+    <ul>
+        <li>
+            Supprimez le dossier <span class="fw-bold">node_modules</span>
+        </li>
+        <li>
+            Lancez un <code>npm install</code>  dans le terminal à la racine du dossier de projet.
+        </li>
+    </ul>
+</p>
+
+<p>
+    C'est terminé, votre projet Angular est renommé ! 
+    Vous pouvez dès à présent relancer votre serveur pour vérifier que tout s'est bien passé.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà pour ce petit tutoriel, j'espère qu'il vous aidera et n'hésitez pas à laisser un commentaire !
+</p>
