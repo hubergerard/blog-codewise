@@ -1,0 +1,161 @@
+---
+layout: post
+title: "Angular - Pipe slice"
+date: 2022-04-05 10:10:50 +0100
+description: "Vous souhaitez formatter vos strings et vos tableaux drirectement dans le template ? Dans cet article, découvrez comment utiliser le pipe slice d'Angular. "
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-pipe-slice/cover_pipe_slice.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="fonctionnement-pipe-async" class="anchor"></a>
+<h2>Que fait le pipe slice ?</h2>
+
+<p>
+    <span class="fw-bold">Le pipe slice est fourni par Angular et appartient au <code>CommonModule</code></span>.
+</p>
+
+<p>
+    Pour fonctionner, le pipe slice utilise les fonctions JavaScript <code>Array.prototype.slice()</code> et <code>String.prototype.slice()</code>.
+</p>
+
+<p>
+    <span class="fw-bold">Concrètement, le pipe slice va vous permettre de récupérer une portion d'un tableau ou d'une string, sans modifier la variable de départ. </span>
+</p>
+
+<p>
+    Pour être précis, voici des extraits de la documentation de l'API JavaScript.
+</p>
+<ul>
+    <li><span class="fw-bold">Pour un tableau :</span> "La méthode slice() renvoie un tableau qui contient une copie d'une portion du tableau d'origine."</li>
+    <li><span class="fw-bold">Dans le cas d'une string :</span> "La méthode slice() extrait la portion explicitée et la renvoie sans pour autant modifier la chaîne originale."</li>
+</ul>
+</p>
+
+<a id="utiliser-pipe-async" class="anchor"></a>
+<h2>Dans quel cas utiliser le pipe slice ?</h2>
+
+<p>
+    <span class="fw-bold">Vous souhaitez afficher un aperçu d'article sur la page d'accueil de votre blog ?</span> 
+    Ou bien vous souhaitez afficher les 5 premiers éléments d'un tableau d'articles sur votre site e-commerce ?
+</p>
+
+<p>
+    Pour ce genre de cas (et bien d'autres), utilisez le pipe slice ! 
+</p>
+<p>
+    Il vous évitera de créer des attributs calculés dans vos composants, ou encore des fonctions de formattage.
+</p>
+
+<a id="utilisation" class="anchor"></a>
+<h2>Comment utiliser le pipe slice ?</h2>
+
+<p>
+    Pour commencer, voici la syntaxe du pipe slice :
+</p>
+
+{% highlight ts linenos %}
+{% raw %}{{ stringOrArray | slice: 1 : 4 }}{% endraw %}
+{% endhighlight %}
+
+<p>
+    On utilise le pipe slice sur une string ou un tableau suivi du paramètre start (obligatoire) et du paramètre end (optionnel).
+</p>
+
+<p>
+    <span class="fw-bold">1er paramètre :</span> start (index de départ)
+</p>
+
+<ul>
+    <li><span class="fw-bold">start < taille de l'input ?</span> Le pipe renvoie les éléments à partir de l'index start</li>
+    <li><span class="fw-bold">start &ge; taille de l'input ?</span> Le pipe renvoie [] ou ""</li>
+</ul>
+
+<p>
+    <span class="fw-bold">2ème paramètre :</span> end (index de fin)
+</p>
+
+<ul>
+    <li><span class="fw-bold">Si end n'a pas été fourni</span>, le pipe renvoie le tableau ou la chaîne depuis start jusqu'à la fin.</li>
+    <li><span class="fw-bold">end > start ?</span> Le pipe renvoie la portion allant de start à end.</li>
+    <li><span class="fw-bold">end < start ?</span> Le pipe renvoie [] ou "".</li>
+</ul>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        <span class="fw-bold">À noter :</span> On peut utiliser des index négatifs ! Dans ce cas, ils sont comptés à partir de la fin de la chaine (index < 0 ? index = taille + index)
+    </div>
+</div>
+
+<a id="exemples" class="anchor"></a>
+<h2>Exemples</h2>
+
+{% highlight ts linenos %}
+myString:string = "abcdef";
+{% endhighlight %}
+<div class="code-caption">slice.component.ts</div>
+
+<p>
+    Avec start > 0 :
+</p>
+
+{% highlight ts linenos %}
+{% raw %}{{ myString | slice : 1 }}{% endraw %}
+// Output : bcdef
+{% endhighlight %}
+<div class="code-caption">slice.component.html</div>
+
+<p>
+    Avec start < 0 :
+</p>
+{% highlight ts linenos %}
+{% raw %}{{ myString | slice : -2 }}{% endraw %}
+// Output : ef
+{% endhighlight %}
+<div class="code-caption">slice.component.html</div>
+
+<p>
+    Avec start > 0 et end > 0 :
+</p>
+
+{% highlight ts linenos %}
+{% raw %}{{ myString | slice: 1 : 4 }}{% endraw %}
+// Output : bcd
+{% endhighlight %}
+<div class="code-caption">slice.component.html</div>
+
+<p>
+    Avec start > 0 et end < 0 :
+</p>
+
+{% highlight ts linenos %}
+{% raw %}{{ myString | slice: 3 : -1 }}{% endraw %}
+// Output : de
+{% endhighlight %}
+<div class="code-caption">slice.component.html</div>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà tout pour le pipe slice ! j'espère que cela vous aura plu et simplifiée sa compréhension.
+</p>
+
+<p>
+    N'hésitez pas à laisser un commentaire !
+</p>
+
+<a id="sources" class="anchor"></a>
+<h2>Sources</h2>
+
+<ul>
+    <li>Angular - <a rel="external nofollow" target="_blank" href="https://angular.io/api/common/SlicePipe"> Pipe Slice </a></li>
+    <li>MDN - Array - <a rel="external nofollow" target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice">Array.prototype.slice</a></li>
+    <li>MDN - String - <a rel="external nofollow" target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/slice">String.prototype.slice</a></li>
+</ul>
