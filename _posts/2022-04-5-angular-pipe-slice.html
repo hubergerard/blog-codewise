@@ -2,7 +2,7 @@
 layout: post
 title: "Angular - Pipe slice"
 date: 2022-04-05 10:10:50 +0100
-description: "Dans cet article, découvrez comment utiliser le pipe slice d'Angular."
+description: "Vous souhaitez formatter vos strings et vos tableaux drirectement dans le template ? Dans cet article, découvrez comment utiliser le pipe slice d'Angular. "
 tags: developpement web Angular
 categories: [Développement web]
 author: "lucas"
@@ -13,126 +13,132 @@ author: lucas
 lang: fr
 ---
 
-<a id="utiliser-pipe-async" class="anchor"></a>
-<h2>Pourquoi utiliser le pipe slice ?</h2>
-
-<p>
-    Imaginons que vous ayez un aperçu d'article et que vous vouliez afficher une brève description sans pour autant surcharger la card de texte, 
-    ou alors que vous ayez un tableau d'objet et que vous souhaitez restreindre le nombre d'objet à l'affichage.
-</p>
-
-<p>
-    C'est à cela que sert le pipe slice et vous allez voir par la suite de cette article comment l'utiliser !
-</p>
-
 <a id="fonctionnement-pipe-async" class="anchor"></a>
 <h2>Que fait le pipe slice ?</h2>
 
 <p>
-    Le pipe slice fait partie de l'API Angular qui appartient au <code>CommonModule</code>.
+    <span class="fw-bold">Le pipe slice est fourni par Angular et appartient au <code>CommonModule</code></span>.
 </p>
 
 <p>
-    Dans son fonctionnement <span class="fw-bold">le pipe slice utilise l'API javascript</span> <code>Array.prototype.slice()</code> et <code>String.prototype.slice()</code> pour réaliser son traitement.
+    Pour fonctionner, le pipe slice utilise les fonctions JavaScript <code>Array.prototype.slice()</code> et <code>String.prototype.slice()</code>.
 </p>
 
 <p>
-    Dans la documentation de l'API javascript il nous est dit que <span class="fw-bold">la méthode slice renvoi un tableau qui contient une copie d'une portion du tableau d'origine 
-    ou dans le cas d'une string il extrait la portion explicitée et la renvoi sans pour autant modifiée la chaîne originale</span>.
+    <span class="fw-bold">Concrètement, le pipe slice va vous permettre de récupérer une portion d'un tableau ou d'une string, sans modifier la variable de départ. </span>
 </p>
 
 <p>
-    Eh bien le pipe slice est un raccourci de ces méthodes javascript que vous pouvez implémenter dans vos templates !
+    Pour être précis, voici des extraits de la documentation de l'API JavaScript.
+</p>
+<ul>
+    <li><span class="fw-bold">Pour un tableau :</span> "La méthode slice() renvoie un tableau qui contient une copie d'une portion du tableau d'origine."</li>
+    <li><span class="fw-bold">Dans le cas d'une string :</span> "La méthode slice() extrait la portion explicitée et la renvoie sans pour autant modifier la chaîne originale."</li>
+</ul>
+</p>
+
+<a id="utiliser-pipe-async" class="anchor"></a>
+<h2>Dans quel cas utiliser le pipe slice ?</h2>
+
+<p>
+    <span class="fw-bold">Vous souhaitez afficher un aperçu d'article sur la page d'accueil de votre blog ?</span> 
+    Ou bien vous souhaitez afficher les 5 premiers éléments d'un tableau d'articles sur votre site e-commerce ?
+</p>
+
+<p>
+    Pour ce genre de cas (et bien d'autres), utilisez le pipe slice ! 
+</p>
+<p>
+    Il vous évitera de créer des attributs calculés dans vos composants, ou encore des fonctions de formattage.
 </p>
 
 <a id="utilisation" class="anchor"></a>
-<h2>Comment utiliser le pipe slice</h2>
+<h2>Comment utiliser le pipe slice ?</h2>
 
 <p>
-    Pour commencer voyons la syntaxe du pipe :
+    Pour commencer, voici la syntaxe du pipe slice :
 </p>
 
 {% highlight ts linenos %}
-{% raw %}{{ myString | slice: 1 : 4 }}{% endraw %}
+{% raw %}{{ stringOrArray | slice: 1 : 4 }}{% endraw %}
 {% endhighlight %}
 
 <p>
-    On interpole la chaîne de caractère ou le tableau suivi d'une barre verticale et 
-    on mentionne le pipe slice suivi de deux points avec son paramètre start (obligatoire) et son paramètre end (optionnel).
+    On utilise le pipe slice sur une string ou un tableau suivi du paramètre start (obligatoire) et du paramètre end (optionnel).
 </p>
 
 <p>
-    Donc maintenant voyons <span class="fw-bold">comment l'utiliser selon les cas</span>, pour cela il va falloir comprendre comment fonctionne ses paramètres.
-</p>
-
-<p>
-    Paramètre start : index de départ pour trancher le tableau ou la chaîne.
+    <span class="fw-bold">1er paramètre :</span> start (index de départ)
 </p>
 
 <ul>
-    <li>Si l'index de <span class="fw-bold">départ est positif</span> le pipe renverra les éléments du tableau ou la chaîne à partir de l'index et à partir du début du tableau ou de la chaîne.</li>
-    <li>Si l'index de <span class="fw-bold">départ est négatif</span> le pipe renverra les éléments ou la chaîne à partir de l'index et de la fin du tableau et de la chaîne. </li>
-    <li>Si l'index est <span class="fw-bold">positif et supérieur</span> a la taille de la chaîne ou du tableau le pipe renverra vide !</li>
-    <li>Si l'index est  <span class="fw-bold">négatif et supérieur</span> à la taille de la chaîne ou du tableau alors le pipe renverra la chaîne ou le tableau complet.</li>
+    <li><span class="fw-bold">start < taille de l'input ?</span> Le pipe renvoie les éléments à partir de l'index start</li>
+    <li><span class="fw-bold">start &ge; taille de l'input ?</span> Le pipe renvoie [] ou ""</li>
 </ul>
 
 <p>
-    Paramètre end : index de fin pour trancher la chaîne.
+    <span class="fw-bold">2ème paramètre :</span> end (index de fin)
 </p>
 
 <ul>
-    <li>Si l'index de fin <span class="fw-bold">n'a pas été fourni</span> alors le pipe renverra le tableau ou la chaîne jusqu'à la fin.</li>
-    <li>Si l'index de fin est <span class="fw-bold">positif</span>, le pipe renverra tout avant l'index de fin et depuis le début.</li>
-    <li>Si l'index est <span class="fw-bold">négatif</span> le pipe renverra les éléments avant l'index de fin et à partir de la fin du tableau ou de la chaîne.</li>
+    <li><span class="fw-bold">Si end n'a pas été fourni</span>, le pipe renvoie le tableau ou la chaîne depuis start jusqu'à la fin.</li>
+    <li><span class="fw-bold">end > start ?</span> Le pipe renvoie la portion allant de start à end.</li>
+    <li><span class="fw-bold">end < start ?</span> Le pipe renvoie [] ou "".</li>
 </ul>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        <span class="fw-bold">À noter :</span> On peut utiliser des index négatifs ! Dans ce cas, ils sont comptés à partir de la fin de la chaine (index < 0 ? index = taille + index)
+    </div>
+</div>
 
 <a id="exemples" class="anchor"></a>
 <h2>Exemples</h2>
 
-<p>
-    Avec un index de début et de fin positif :
-</p>
-
 {% highlight ts linenos %}
-myString:string = "abcdefghij";
+myString:string = "abcdef";
 {% endhighlight %}
 <div class="code-caption">slice.component.ts</div>
 
+<p>
+    Avec start > 0 :
+</p>
+
+{% highlight ts linenos %}
+{% raw %}{{ myString | slice : 1 }}{% endraw %}
+// Output : bcdef
+{% endhighlight %}
+<div class="code-caption">slice.component.html</div>
+
+<p>
+    Avec start < 0 :
+</p>
+{% highlight ts linenos %}
+{% raw %}{{ myString | slice : -2 }}{% endraw %}
+// Output : ef
+{% endhighlight %}
+<div class="code-caption">slice.component.html</div>
+
+<p>
+    Avec start > 0 et end > 0 :
+</p>
+
 {% highlight ts linenos %}
 {% raw %}{{ myString | slice: 1 : 4 }}{% endraw %}
-// Output : bcde
+// Output : bcd
 {% endhighlight %}
 <div class="code-caption">slice.component.html</div>
 
 <p>
-    Avec un index de début et de fin négatif :
+    Avec start > 0 et end < 0 :
 </p>
 
 {% highlight ts linenos %}
-{% raw %}{{ myString | slice: 3 : -2 }}{% endraw %}
-// Output : defgh
+{% raw %}{{ myString | slice: 3 : -1 }}{% endraw %}
+// Output : de
 {% endhighlight %}
 <div class="code-caption">slice.component.html</div>
-
-<p>
-    Avec un index de début positif uniquement :
-</p>
-
-{% highlight ts linenos %}
-{% raw %}{{ myString | slice : 6 }}{% endraw %}
-// Output : fghij
-{% endhighlight %}
-<div class="code-caption">slice.component.html</div>
-
-<p>
-    Avec un index de départ négatif uniquement :
-</p>
-{% highlight ts linenos %}
-{% raw %}{{ myString | slice : -6 }}{% endraw %}
-// Output : efghij
-{% endhighlight %}
-<div class="code-caption">slice.component.html</div>
-
 
 <a id="conclusion" class="anchor"></a>
 <h2>Conclusion</h2>
