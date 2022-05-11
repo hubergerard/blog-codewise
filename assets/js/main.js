@@ -7,6 +7,16 @@
     meanScreenWidth: "991"
   });
 
+  // Form Modal Starter Kit
+/*   linkModalHead = document.getElementById('linkModalHeadband');
+  linkModalHead.addEventListener("click", openModal);
+  linkModalSection = document.getElementById('linkModalSection');
+  linkModalSection.addEventListener("click", openModal);
+  
+  function openModal() {
+          $('#formModal').modal('toggle');
+          console.log('modal');
+  } */
 
   // sticky
   var wind = $(window);

@@ -1106,6 +1106,20 @@ label {
     font-weight: 500;
 }
 
+#list-starter li{
+    list-style: none;
+}
+
+#list-starter li::before{
+    content: "\00BB";
+    width: 10px;
+    margin-right: 10px;
+    color: blue;
+}
+
+#img-starter{
+    width: 50%;
+}
 /* services-active */
 
 .services-active .slick-arrow {
