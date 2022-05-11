@@ -1120,6 +1120,10 @@ label {
 #img-starter{
     width: 50%;
 }
+
+#starter-p{
+    margin: 0 !important;
+}
 /* services-active */
 
 .services-active .slick-arrow {
