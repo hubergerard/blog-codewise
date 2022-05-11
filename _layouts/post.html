@@ -57,6 +57,7 @@ layout: default
     </div>
 </section>
 <!-- blog-details-area -->
+
 <div class="basic-blog-area gray-bg pt-100 pb-40">
     <div class="container">
         <div class="row">
@@ -66,6 +67,9 @@ layout: default
                         <img src="{{page.post_image}}" alt="{{page.title}}"/>
                     </div>
                     <div class="blog-content">
+                        {% if page.linked-ressource contains "starter-kit-angular" %}
+                            {% include bandeau-starter-kit-angular.html %}
+                        {% endif %}
                         <p>{{ page.description }} </p>
                         <nav>
                             <div id="toc" class="blog-toc"></div>

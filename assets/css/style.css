@@ -1094,6 +1094,18 @@ label {
     font-size: 1rem;
 }
 
+.border-dashed{
+    border: 1px dashed #1da1f2;
+}
+
+.no-marge{
+    margin: 0 !important;
+}
+
+.fw-custom{
+    font-weight: 500;
+}
+
 /* services-active */
 
 .services-active .slick-arrow {
