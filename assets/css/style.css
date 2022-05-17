@@ -1094,6 +1094,11 @@ label {
     font-size: 1rem;
 }
 
+.iframe-size {
+    width:540;
+    height:700;
+}
+
 .border-dashed{
     border: 1px dashed #1da1f2;
 }
@@ -1102,7 +1107,7 @@ label {
     margin: 0 !important;
 }
 
-.fw-custom{
+.semi-bold{
     font-weight: 500;
 }
 
