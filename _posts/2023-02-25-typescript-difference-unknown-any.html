@@ -1,0 +1,136 @@
+---
+layout: post
+title: "Typescript - La différence entre unknown et any"
+date: 2023-02-25 10:10:50 +0100
+description: "Dans cet article, vous allez découvrir la différence entre le type unknown et any en TypeScript."
+tags: developpement web Typescript
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/typescript-unknown-any/cover_unknown_any.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    En TypeScript, une variable de type <code>any</code> peut être affectée avec n'importe quelle type de donnée :
+</p>
+
+{% highlight ts linenos %}
+let myVar: any = 10;
+myVar = 'Hello';
+myVar = true;
+{% endhighlight %}
+
+<p>
+    <span class="fw-bold">Il n'est pas recommandé d'utiliser <code>any</code></span> car il supprime la restriction de type, alors que c'est la raison première d'utiliser TypeScript.
+    Généralement <code>any</code> est utilisé pour aller plus vite ou contourner une erreur. Très mauvaise idée !
+</p>
+
+<p>
+    Depuis la version 3 de Typescript, le type <code>unknown</code> est utilisable. Il est assez similaire à <code>any</code> car vous pouvez affecter n'importe quelle type de valeur à une variable <code>unknown</code>.
+</p>
+
+{% highlight ts linenos %}
+let myVar: unknown = 0;
+myVar = 'World';
+myVar = false;
+{% endhighlight %}
+
+<p>
+    Mais dans ce cas, quelle est la différence entre <code>unknown</code> et <code>any</code> ?
+</p>
+
+<a id="unknown-vs-any" class="anchor"></a>
+<h2>Unknown vs Any</h2>
+
+<p>
+    Pour comprendre la différence entre <code>unknown</code> et <code>any</code>, regardez ce code :
+</p>
+
+{% highlight ts linenos %}
+function myFunction(callback: any) {
+  callback();
+}
+myFunction(10);
+{% endhighlight %}
+
+<p>
+    Imaginez que vous passiez l'entier <code>10</code> à cette fonction. <span class="fw-bold">Étant donné que le paramètre de la fonction est de type <code>any</code>, cela ne déclenchera pas d'erreur de compilation.</span>
+    C'est un problème puisque le script déclenchera alors une erreur pendant l'exécution : <code>TypeError: callback is not a function</code>.
+</p>
+
+<p>
+    C'est là que <code>unknown</code> entre en jeu.
+</p>
+
+<p>
+    Il accepte n'importe quelle valeur de type avec cependant une différence par rapport à <code>any</code> : <span class="fw-bold">Typescript applique la vérification du type.</span>
+</p>
+<p>
+    Dans notre exemple, si vous changez le type <code>any</code> en <code>unknown</code>, voyez ce qu'il se passe :
+</p>
+
+{% highlight ts linenos %}
+function myFunction(callback: unknown) {
+    callback();
+    // Error: Object is of type 'unknown'.
+  }
+  myFunction(10);
+{% endhighlight %}
+
+<p>
+    Vous constatez que le paramètre <code>callback</code> est de type <code>unknown</code> et l'instruction <code>callback()</code> produit une erreur de compilation.
+    <span class="fw-bold">Contrairement au type <code>any</code>, Typescript vous empêche de compiler tant que vous n'avez pas effectué une vérification solide.</span>
+</p>
+
+<p>
+    Pour mettre en place une telle vérification, il faut appliquer la condition suivante :
+</p>
+
+{% highlight ts linenos %}
+function myFunction(callback: unknown) {
+    if (typeof callback === 'function') {
+      callback();
+    } else {
+        return callback;
+    }
+  }
+  myFunction(10);
+{% endhighlight %}
+
+<p>
+    <span class="fw-bold">Désormais le type <code>unknown</code> a été réduit au type <code>function</code></span> dans le <code>if</code>, et dans ce cas là TypeScript vous laisse compiler.
+</p>
+
+<a id="regle" class="anchor"></a>
+<h2>La règle</h2>
+
+<p>
+    Voici une petite règle pour comprendre la différence entre <code>any</code> et <code>unknown</code> :
+</p>
+
+<ul>
+    <li>
+        Vous pouvez affectez n'importe quel type à <code>unknown</code> mais il vous faut effectuer une vérification de type pour opérer dessus.
+    </li>
+    <li>
+        Vous pouvez assignez n'importe quel type à <code>any</code> et effectuer n'importe quelle opération.
+    </li>
+</ul>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    <span class="fw-bold">Pour conclure ce sont deux types spéciaux qui peuvent contenir n'importe quelle valeur</span>, 
+    <code>unknown</code> est préférable à <code>any</code> car il est plus strict dans son fonctionnement.
+</p>
+
+<p>
+    N'hésitez pas à laisser un commentaire, en espérant que cet article vous a appris quelque chose !
+</p>
