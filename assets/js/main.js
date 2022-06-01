@@ -7,8 +7,6 @@
     meanScreenWidth: "991"
   });
 
-
-  // sticky
   var wind = $(window);
   var sticky = $('#sticky-header');
   wind.on('scroll', function () {
