@@ -1094,6 +1094,46 @@ label {
     font-size: 1rem;
 }
 
+.iframe-size {
+    width:100%;
+    height:677px;
+}
+
+.border-dashed{
+    border: 1px dashed #1da1f2;
+}
+
+.no-marge{
+    margin: 0 !important;
+}
+
+.semi-bold{
+    font-weight: 500;
+}
+
+#list-starter li{
+    list-style: none;
+}
+
+#list-starter li::before{
+    content: "\00BB";
+    width: 10px;
+    margin-right: 10px;
+    color: blue;
+}
+
+#img-starter{
+    width: 50%;
+}
+
+#starter-p{
+    margin: 0 !important;
+}
+
+#dialog-modal{
+    max-width: 600px !important;
+}
+
 /* services-active */
 
 .services-active .slick-arrow {

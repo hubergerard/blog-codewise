@@ -57,6 +57,7 @@ layout: default
     </div>
 </section>
 <!-- blog-details-area -->
+
 <div class="basic-blog-area gray-bg pt-100 pb-40">
     <div class="container">
         <div class="row">
@@ -66,6 +67,10 @@ layout: default
                         <img src="{{page.post_image}}" alt="{{page.title}}"/>
                     </div>
                     <div class="blog-content">
+                        {% if page.linked-ressource contains "starter-kit-angular" %}
+                            {% include bandeau_starter_kit_angular.html %}
+                            {% include form_modal_kit.html %}
+                        {% endif %}
                         <p>{{ page.description }} </p>
                         <nav>
                             <div id="toc" class="blog-toc"></div>
@@ -73,6 +78,9 @@ layout: default
                         <div id="post-content">
                             {{content}}
                         </div>
+                        {% if page.linked-ressource contains "starter-kit-angular" %}
+                            {% include starter_kit_post.html %}
+                        {% endif %}
                         <h4>Auteur</h4>
                         <div id="author-content">
                             
@@ -167,3 +175,13 @@ layout: default
 </div>
 </main>
 <script src="/assets/js/tools/toc-generator.js" text-mode="{{page.toc-text-mode}}" max-depth="{{page.toc-depth}}" defer></script>
+<script>
+  linkModalHead = document.getElementById('link-modal-headband');
+  linkModalHead.addEventListener('click', openModal);
+  linkModalSection = document.getElementById('link-modal-section');
+  linkModalSection.addEventListener('click', openModal);
+  
+  function openModal() {
+    $('#formModal').modal('toggle');
+  }
+</script>
