@@ -1134,6 +1134,10 @@ label {
     max-width: 600px !important;
 }
 
+#side-magnet-angular{
+    position: sticky !important;
+    top: 11.5em;
+}
 /* services-active */
 
 .services-active .slick-arrow {
@@ -1925,6 +1929,15 @@ label {
     background: #fff;
     overflow: hidden;
     padding: 20px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
+}
+.blog-wrapper-angular {
+    background: #fff;
+    overflow: hidden;
+    padding: 20px;
+}
+
+.shadow-side-magnet{
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
 }
 
