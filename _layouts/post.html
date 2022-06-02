@@ -62,7 +62,11 @@ layout: default
     <div class="container">
         <div class="row">
             <div class="col-lg-8 blog-post-items">
+                {% if page.linked-ressource contains "starter-kit-angular" %}
+                <div class="blog-wrapper-angular mb-60">
+                {% else %}
                 <div class="blog-wrapper mb-60">
+                {% endif %}
                     <div class="blog-thumb mb-30">
                         <img src="{{page.post_image}}" alt="{{page.title}}"/>
                     </div>
