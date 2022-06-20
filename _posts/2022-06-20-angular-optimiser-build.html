@@ -1,0 +1,141 @@
+---
+layout: post
+title: "Angular - Optimiser le build"
+date: 2022-06-20 10:10:50 +0100
+description: "Comment optimiser le build d'une application Angular pour améliorer les coûts et performances ?"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-build/cover_build_opti.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+linked-ressource: "starter-kit-angular"
+---
+
+<p>Un des reproches faits à Angular est souvent la lourdeur du projet et la consommation en ressources une fois déployé. Dans cet article, découvrez comment Angular a adressé ces problèmes en vous permettant de générer un build de quelques ko, ultra performant.</p>
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    Pour build votre application Angular, <span class="fw-bold">utilisez la commande <code>ng build</code></span> de la CLI à partir du répertoire du projet.
+</p>
+
+<p>
+    La commande <code>ng build</code> construit l'exécutable de votre projet Angular et le place dans le dossier <code>dist</code>.
+</p>
+
+<p>
+    <code>Ng build</code> prend plusieurs options, vous verrez les plus importantes dans cet article.
+</p>
+
+<a id="production-build" class="anchor"></a>
+<h2>Build de production</h2>
+
+<p>
+    <span class="fw-bold">Par défault <code>ng build</code> utilise la configuration de production</span> qui applique certaines optimisations telles que :
+</p>
+
+<ul>
+    <li>Grouper les fichiers en bundles JS</li>
+    <li>Minimiser les espaces blancs excédentaires</li>
+    <li>Supprimer les commentaires et le code mort</li>
+    <li>Réécrire le code pour utiliser des noms courts et mutilés (minification)</li>
+</ul>
+
+<p>
+    C'est déjà une grosse partie du travail d'optimisation faite pour vous !
+</p>
+
+<p>
+    Pour sélectionner une autre configuration transmettez son nom à l'option <code>--configuration</code> comme ceci :
+</p>
+
+<p>
+    <code>ng build --configuration=dev</code>
+</p>
+
+<p>Votre application sera configurée pour pointer vers la configuration de développement, qui est définie dans le fichier angular.json.</p>
+
+<a id="aot" class="anchor"></a>
+<h2>Compilation anticipée (AOT)</h2>
+
+<p>
+    Par défaut la compilation se fait Ahead-of-time (AOT). C'est le mode de compilation par défaut depuis la version 9 d'Angular.
+</p>
+
+<P>
+    Les avantages de l'AOT :
+</P>
+
+<ul>
+    <li>Rendu plus rapide du code car la compilation est effectuée au moment de la construction et non dans le navigateur au moment de l'exécution</li>
+    <li>Taille d'application Angular plus petite car le compilateur Angular n'est pas livré avec le code</li>
+    <li>Meilleure qualité de code car les erreurs d'analyse de modèle sont détectées tôt lors de la construction</li>
+    <li>Sécurisé et robuste puisque les modèles ne sont pas évalués dynamiquement dans le navigateur</li>
+</ul>
+
+<p>Le seul inconvénient est que votre pipeline CI/CD peut prendre un peu plus de temps.</p>
+
+<p>
+    Si défini à false <code>ng build --aot=false</code> alors le mode de compilation passera à JIT (Just In Time).
+</p>
+
+<p> Mais sachez que la compilation JIT, bien que plus souple, peut vous coûter très cher en rapidité d'exécution.</p>
+
+<a id="build-optimizer" class="anchor"></a>
+<h3>BuildOptimizer</h3>
+
+<p>
+    Vous pouvez d'avantage optimiser votre application pour la production avec l'option <code>--buildOptimizer</code>.
+</p>
+
+<p>
+    Cela supprime les décorateurs Angular, les paramètres de constructeur et de facilite le travail du minifieur de code.
+</p>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        Ne fonctionne que pour le mode de compilation AOT.
+    </a> 
+    </div>
+</div>
+
+<a id="analyse-build" class="anchor"></a>
+<h2>Analyse des sorties de builds</h2>
+
+<p>Voici la comparaison d'un build optimisé et non optimisé : </p>
+
+<!-- <h4>1. build non optimisé</h4> -->
+
+<img class="img mb-5" src="/assets/img/blog/angular-build/sans_opti.png" alt="Build sans optimisation">
+<div class="code-caption">ng build non optimisé</div>
+
+<!-- <h4 class="mt-4">2. build avec optimisation</h4> -->
+
+<img class="img mb-5" src="/assets/img/blog/angular-build/avec_opti.png" alt="Build avec optimisation">
+<div class="code-caption">ng build optimisé</div>
+
+<p>
+    Comme vous pouvez le voir, les polyfills encadreé en rouge sans optimisation affichent 797Ko alors qu'avec l'optimisation de build seulement 165Ko.
+</p>
+
+<p>
+    Identique pour les feuilles de style encadré en orange, sans optimisation de build on atteint 2.5Mo tandis qu'avec l'optimisation seulement 171Ko !
+</p>
+
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    L'optimisation de votre application est importante pour l'expérience utilisateur mais aussi pour la sécurité et la haute qualité de l'application. 
+    Il faut aussi souligné que les builds optimisés prennent plus de temps à construire.
+</p>
+
+<p>
+    J'espère que cet article vous sera utile, n'hésitez pas à laisser un commentaire !
+</p>
