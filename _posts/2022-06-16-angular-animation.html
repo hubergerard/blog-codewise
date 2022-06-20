@@ -1,0 +1,266 @@
+---
+layout: post
+title: "Angular - Les animations"
+date: 2022-06-16 10:10:50 +0100
+description: "Dans cet article, découvrez comment créer des animations avec Angular."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-animation/cover_angular_animation.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+linked-ressource: "starter-kit-angular"
+---
+
+<a id="animation-module" class="anchor"></a>
+<h2>Module d'animation</h2>
+
+<p>
+    Il y a <span class="fw-bold">deux modules d'animation</span> au sein d'Angular :
+</p>
+
+<ul>
+    <li><code>@angular/animations</code></li>
+    <li><code>@angular/platform-browser</code></li>
+</ul>
+
+<p>
+    Lorsque vous créez un projet avec la CLI, <span class="fw-bold">ces dépendances sont importer de base à votre projet</span>.
+</p>
+
+<p>
+    Si non importez <code>BrowserAnimationsModule</code> :
+</p>
+
+
+{% highlight ts linenos %}
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule
+  ],
+  declarations: [ ],
+  bootstrap: [ ]
+})
+export class AppModule { }
+{% endhighlight %}
+<div class="code-caption">app.module.ts</div>
+
+<a id="animation-function" class="anchor"></a>
+<h2>Fonctions d'animation</h2>
+
+<p><span class="fw-bold">Pour utiliser des fonctions d'animations dans vos composants importez les</span> depuis <code>@angular/animations</code> : </p>
+
+{% highlight ts linenos %}
+import { Component, HostBinding } from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+  // ...
+} from '@angular/animations';
+{% endhighlight %}
+<div class="code-caption">your.component.ts</div>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        Voir un résumé des <a href="https://angular.io/guide/animations#animation-api-summary" target="_blank">fonctions d'animation</a> disponibles.
+    </a> 
+    </div>
+</div>
+
+
+<a id="animation-metadata" class="anchor"></a>
+<h2>Métadonnées d'animation</h2>
+
+<p>Dans votre composants, <span class="fw-bold">ajoutez la propriétés <code>animations: []</code> dans le décorateur <code>@Component()</code> </span>: </p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-your',
+    templateUrl: 'app.your.html',
+    styleUrls: ['app.your.css'],
+    animations: [
+      // animation triggers go here
+    ]
+  })
+{% endhighlight %}
+<div class="code-caption">your.component.ts</div>
+
+<p>C'est ici que se trouvera tous le code de votre animation.</p>
+
+
+<a id="transition" class="anchor"></a>
+<h2>Transition</h2>
+
+<p><span class="fw-bold">Vous pouvez animer un élément HTML</span> avec des transitions simples qui utiliserons des attributs CSS.</p>
+
+<p>Utilisez la fonction <code>state()</code> pour qu'à la fin de chaque transition un nouvel état soit appelé. Cette fonction prend deux arguments : </p>
+
+<ul>
+    <li>Un nom d'état</li>
+    <li>Une fonction style</li>
+</ul>
+
+<p><span class="fw-bold">Utilisez la notation camelCase</span> pour les attributs de style qui contiennent des tirets au sein de la fonction <code>style()</code> </p>
+
+<p>La fonction <code>state()</code> avec la fonction <code>style()</code> : </p>
+
+{% highlight ts linenos %}
+// ...
+state('open', style({
+  height: '200px',
+  opacity: 1,
+  backgroundColor: 'yellow'
+})),
+{% endhighlight %}
+<div class="code-caption">style état 'open'</div>
+
+{% highlight ts linenos %}
+state('closed', style({
+    height: '100px',
+    opacity: 0.8,
+    backgroundColor: 'blue'
+  })),
+{% endhighlight %}
+<div class="code-caption">style état 'close'</div>
+
+<p>Selon l'état 'open' ou 'close' l'élément HTML aura une <code>height</code>, <code>opacity</code> et <code>backgroundColor</code> différente.</p>
+
+<a id="timing-transition" class="anchor"></a>
+<h3>Le Timing de transition</h3>
+
+<p><span class="fw-bold">Pour que l'animation soit moin brute vous devez implémentez une transition d'animation</span> pour spécifier ce qui se produit entre les deux états.</p>
+
+<p>La fonction <code>transition()</code> prend  deux paramètres : </p>
+
+<ul>
+    <li>Une instruction du sens qui défini la direction entre deux états de transition</li>
+    <li>Une fonction <code>anilmate()</code></li>
+</ul>
+
+<a id="function-animate" class="anchor"></a>
+<h4>La fonction animate</h4>
+
+<p>La fonction <code>animate()</code> accepte des paramètres <code>timings</code> et <code>styles</code>.</p>
+
+<p><code>Timings</code> peut être soit un nombre, soit une string en trois parties.</p>
+
+{% highlight ts linenos %}
+animate (5)
+{% endhighlight %}
+<div class="code-caption">fonction animate avec nombre</div>
+
+{% highlight ts linenos %}
+animate ('duration delay easing')
+{% endhighlight %}
+<div class="code-caption">fonction animate avec chaîne</div>
+
+<p><code>Duration</code> est obligatoire et peut être exprimée comme suit : </p>
+
+<ul>
+    <li>En tant que nombre, en millisecondes : 100</li>
+    <li>En chaîne, en millisecondes : '100ms'</li>
+    <li>En chaîne, en secondes : '0.1s'</li>
+</ul>
+
+<p><code>Delay</code>, le deuxième argument a la même syntaxe que <code>duration</code>.</p>
+
+<p>
+    Le troisième argument <code>easing</code>, contrôle l'accélération et la décélèration de l'animation exprimée en chaîne :
+</p>
+
+<ul>
+    <li><code>ease-in</code> pour commencer lentement et terminer à pleine vitesse</li>
+    <li><code>ease-in-out</code> pour démarrer lentement, accélérer au milieu, puis décélérer lentement à la fin</li>
+    <li><code>ease-out</code> pour démarrer rapidement et décélérer lentement jusqu'à un point de repos</li>
+</ul>
+
+{% highlight ts linenos %}
+transition('open => closed', [
+  animate('1s 100ms ease-out')
+]),
+{% endhighlight %}
+<div class="code-caption">Exemple de transition de 'open' à 'close'</div>
+
+<p>Dans cet exemple, on remarque l'opérateur <code> =></code> qui indique une transition unidirectionnelle. vous pouvez aussi utilisez l'opérateur bidirectionelle <code> <=> </code></p>.
+
+<a id="trigger-animate" class="anchor"></a>
+<h2>Déclencher l'animation</h2>
+
+<p>
+    <span class="fw-bold">Une animation nécéssite d'être déclenchée pour commencer</span>. la fonction <code>trigger()</code> collecte les états et transition, donne un nom à l'animation afin de l'attacher à un élément HTML déclencheur.
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-open-close',
+    animations: [
+      trigger('openClose', [
+
+        state('open', style({
+          height: '200px',
+          opacity: 1,
+          backgroundColor: 'yellow'
+        })),
+        state('closed', style({
+          height: '100px',
+          opacity: 0.8,
+          backgroundColor: 'blue'
+        })),
+        transition('open => closed', [
+          animate('1s')
+        ]),
+        transition('closed => open', [
+          animate('0.5s')
+        ]),
+      ]),
+    ],
+    templateUrl: 'open-close.component.html',
+    styleUrls: ['open-close.component.css']
+  })
+  export class OpenCloseComponent {
+    isOpen = true;
+  
+    toggle() {
+      this.isOpen = !this.isOpen;
+    }
+  
+  }
+{% endhighlight %}
+<div class="code-caption">your.component.ts</div>
+
+{% highlight html linenos %}
+<nav>
+    <button type="button" (click)="toggle()">Toggle Open/Close</button>
+</nav>
+
+<div [@openClose]="isOpen ? 'open' : 'closed'" class="open-close-container">
+    <p>The box is now {{ isOpen ? 'Open' : 'Closed' }}!</p>
+</div>
+{% endhighlight %}
+<div class="code-caption">your.component.html</div>
+
+<p>
+    Dans cet exemple, lorsque <code>isOpen</code> est évaluée à 'open' ou 'closed' cela active le déclencheur <code>openClose</code>.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Dans cet article, vous avez appris à créer une animation de transition entre deux états. Cependant il y a des fonctionnalités plus avancées pour créer des animations Angular que vous verrez dans un prochain article.
+</p>
+
+<p>
+   j'espère que cela vous aidera, n'hésitez pas à laisser un commentaire !
+</p>
