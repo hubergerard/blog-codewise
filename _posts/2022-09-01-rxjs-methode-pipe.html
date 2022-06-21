@@ -1,0 +1,144 @@
+---
+layout: post
+title: "RxJs - la méthode pipe()"
+date: 2022-09-01 10:10:50 +0100
+description: "À quoi sert la méthode pipe() d'RxJs ? Dans cet article, découvrez à quoi sert cette méthode et comment l'utiliser dans vos projets Angular."
+tags: developpement web Angular RxJs
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/rxjs-pipe/cover_rxjs_pipe.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="methode-pipe" class="anchor"></a>
+<h2>La méthode pipe()</h2>
+
+<p><span class="fw-bold">La méthode <code>pipe()</code> est une méthode des observables d'RxJs.</span> On la retrouve dans tous les projets Angular.</p>
+
+<p>
+  <span class="fw-bold">Elle sert à attacher un ou plusieurs opérateurs pipeables à l'Observable.</span>
+</p>
+
+<p>
+  Imaginez un Observable qui émet des objets de type <code>T</code>. Vous souhaitez attachez 2 opérateurs à cet Observable.
+</p>
+
+{% highlight ts linenos %}
+Observable<T>.pipe(fn1: UnaryFunction<T, A>, fn2: UnaryFunction<A, B>): Observable<B>
+{% endhighlight  %}
+
+<p>
+    La première <code>UnaryFunction</code> (1er opérateur) reçoit l'objet de type <code>T</code>, le transforme en un objet de type <code>A</code>, 
+    puis passe le résultat à la <code>UnaryFunction</code> suivante qui émet à son tour un objet de type B, et ainsi de suite.
+</p>
+
+<a id="pipe-operators" class="anchor"></a>
+<h2>Les opérateurs pipeables</h2>
+
+<p>
+  <span class="fw-bold">Ces opérateurs ne modifient pas l'instance de l'Observable existante lorsqu'ils sont appelés</span>. 
+  Au lieu de cela, ils renvoient un nouvel Observable.
+</p>
+
+<p>
+  <span class="fw-bold">L'opérateur que vous ajouterez via la méthode <code>pipe()</code> va s'abonner à l'Observable</span> (ou à l'opérateur précédent) et modifiera toutes 
+  les valeurs qui lui sont émises avant d'émettre le nouveau résultat au souscripteur (ou au prochain opérateur). 
+</p>
+
+<a id="exemples-pipe-operateurs" class="anchor"></a>
+<h2>Exemples</h2>
+
+<a id="exemples-pipe-operateur-simple" class="anchor"></a>
+<h3>Exemple avec 1 opérateur</h3>
+
+{% highlight ts linenos %}
+import { of, distinctUntilChanged } from 'rxjs';
+
+of(1, 1, 1, 2, 2, 2, 1, 1, 3, 3)
+  .pipe(distinctUntilChanged())
+  .subscribe(console.log);
+// Logs: 1, 2, 1, 3
+{% endhighlight %}
+<div class="code-caption">exemple.component.ts</div>
+
+<p>
+  <span class="fw-bold">L'opérateur <code>of</code> </span>(qui est un opérateur de création, pas un opérateur pipeable)
+  <span class="fw-bold">, va émettre une à une les valeurs qui lui sont passées en paramètres.</span>
+</p>
+<p>
+  Dans cet exemple, l'opérateur <code>distinctUntilChanged</code> va s'abonner aux émissions de l'Observable renvoyé par <code>of()</code>. 
+  Il ne transforme pas la valeur reçue mais plutôt, la réémet à l'identique, uniquement si la valeur qu'il a 
+  reçue juste avant est différente. 
+</p>
+<p>
+  Si l'Observable émet 3 fois de suite la valeur 1, l'opérateur n'émettra lui qu'une seule fois la valeur 1.
+</p>
+<p>
+  <span class="fw-bold">L'Observer final lui, ne s'abonne pas directement à l'Observable source, mais à l'Observable renvoyé par l'opérateur <code>distinctUntilChanged</code>.</span> 
+  On aura donc 4 appels à <code>console.log()</code> avec les valeurs 1, 2, 1 et 3.
+</p>
+<p>
+  Remarquez que même si vous n'utilisez qu'un seul opérateur, <span class="fw-bold"><code>pipe()</code> est obligatoire</span>.
+</p>
+
+<a id="exemples-pipe-operateurs-chaines" class="anchor"></a>
+<h3>Exemple avec des opérateurs chainés</h3>
+
+{% highlight ts linenos %}
+import { filter, map, reduce } from 'rxjs/operators';
+import { Observable, range } from 'rxjs';
+
+const source$: Observable<number> = range(0, 10);
+
+  source$.pipe(
+    filter(x => x % 2 === 0),
+    map<number,number>(value => value * 3),
+    reduce((acc, next) => acc + next, 0))
+    .subscribe(console.log);
+{% endhighlight %}
+<div class="code-caption">exemple.component.ts</div>
+
+<p>
+  Dans cet exemple, <code>source$</code> est notre Observable. Notez le <code>$</code> à la fin. 
+  Il s'agit simplement d'une convention pour indiquer que la variable contient un Observable.
+  <code>source$</code> va émettre tous les nombres de 1 à 10.
+</p>
+
+<p>
+  <span class="fw-bold">La fonction <code>pipe()</code> va chaîner tous les opérateurs</span> dans l'ordre.
+  Lorsqu'un nombre est émis, il est d'abord reçu par l'opérateur <code>filter</code>, qui va vérifier s'il est pair.
+  S'il est pair, l'opérateur <code>filter</code> va réemettre la valeur sans la modifier. Sinon, <code>filter</code> n'émet rien, et l'opérateur suivant ne recevra rien.
+</p>
+<p>
+  L'opérateur <code>map</code> va ensuite recevoir ce que <code>filter</code> lui émet (2, 4, 6, 8 et 10), et émettra à son tour le nombre multiplié par 3.
+</p>
+<p>
+   <code>reduce</code> reçoit ce que lui envoie le <code>map</code> (6, 12, 18, 24, 30) et calcule la somme de tout ce qui lui a été émis. 
+   Lorsque l'Observable renvoyé par le <code>map</code> est complété, <code>reduce</code> émettra alors à son tour le résultat de son calcul.
+</p>
+<p>
+  <span class="fw-bold">L'observer final ne recevra au final qu'une seul valeur,</span> le résultat du <code>reduce</code> (6 + 12 + 18 + 24 + 30 = 90).
+</p>
+<p>
+  La console affichera donc 90.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+  <span class="fw-bold">
+    En résumé, les opérateurs pipeables servent à modifier ce que l'Observable source émet avant que l'observer ne reçoive la valeur.
+  </span>
+  Ils ne peuvent être utilisés qu'au sein de la méthode <code>pipe()</code>. 
+</p>
+<p>
+  Un opérateur pipepable prend un Observable en entrée et génère un autre Observable en sortie.
+</p>
+
+<p>
+  J'espère que cet article vous sera utile, n'hésitez pas à laisser un commentaire !
+</p>
