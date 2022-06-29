@@ -75,6 +75,11 @@ layout: default
                             {% include bandeau_starter_kit_angular.html %}
                             {% include form_modal_kit.html %}
                         {% endif %}
+                        {% assign estimatedTime = page.content | number_of_words | divided_by: 180 %}
+                        {% if estimatedTime == 0 %}
+                            {% assign estimatedTime = 1 %}
+                        {% endif %}
+                        <p class="fw-bold"><i class="far fa-clock"></i> Temps de lecture : {{ estimatedTime }}min</p>
                         <p>{{ page.description }} </p>
                         <nav>
                             <div id="toc" class="blog-toc"></div>
