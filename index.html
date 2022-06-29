@@ -12,6 +12,13 @@ title: WiseBlog, veille pour développeurs webs
                 <div class="mb-40 card shadow">
                     <div class="blog-thumb">
                         <a href="{{post.url}}">
+
+                            {% assign estimatedTime = post.content | number_of_words | divided_by: 180 %}
+                            {% if estimatedTime == 0 %}
+                                {% assign estimatedTime = 1 %}
+                            {% endif %}
+                            <span id="time-read" class="badge text-bg-dark"> <i class="far fa-clock"></i> {{estimatedTime}}min </span>
+                            
                             <img class="img-fluid" src="{{post.post_image}}" alt="{{post.title}}"/>
                         </a>
                     </div>
