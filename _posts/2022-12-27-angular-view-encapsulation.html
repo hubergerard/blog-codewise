@@ -1,0 +1,211 @@
+---
+layout: post
+title: "Angular - View Encapsulation"
+date: 2022-12-27 10:10:50 +0100
+description: "Comprenez la view encapsulation dans Angular et comment l'utiliser."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/angular-view-encapsulation/cover_view_encapsulation.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+linked-ressource: "starter-kit-angular"
+---
+
+<a id="definition-view-encapsulation" class="anchor"></a>
+<h2>Qu'est-ce que la view encapsulation ?</h2>
+
+<p>
+    <span class="fw-bold">La view encapsulation définit les parties de l'application pouvant être impactées par le CSS d'un composant.</span>
+</p>
+
+<p>
+   Par défaut Angular restreint le style défini dans un composant pour qu'il ne puisse pas affecter d'autres composants.
+</p>
+
+<p>
+    Mais <span class="fw-bold">vous pouvez configurer ce paramètre et définir l'encapsulation qu'il vous faut</span>. Pour cela, Angular fournit 3 stratégies d'encapsulation.
+</p>
+
+<a id="configurer-encapsulation-mode" class="anchor"></a>
+<h2>Comment configurer le mode d'encapsulation ?</h2>
+
+<p>
+    Pour configurer un mode d'encapsulation, repérez le décorateur <code>@Component</code> d'un de vos composants puis ajoutez le paramètre <code>encapsulation</code> avec une des 3 valeurs suivantes :
+</p>
+
+<ul>
+    <li>ViewEncapsulation.Emulated</li>
+    <li>ViewEncapsulation.Native</li>
+    <li>ViewEncapsulation.None</li>
+</ul>
+
+<p>Comme ceci : </p>
+
+{% highlight ts linenos %}
+import {ViewEncapsulation} from '@angular/core';
+
+@Component({
+  selector: 'my-component',
+  templateUrl: 'my-component.component.html',
+  encapsulation: ViewEncapsulation.None
+})
+class MyComponentComponent {}
+{% endhighlight %}
+<div class="code-caption">Exemple de personnalisation de la view encapsulation</div>
+
+<a id="3-methodes-encapsulation" class="anchor"></a>
+<h2>Les 3 méthodes d'encapsulation</h2>
+
+<p>Voyons maintenant comment fonctionnent les 3 différentes méthodes d'encapsulation fournies par Angular.</p>
+
+<a id="emulated-encapsulation-mode" class="anchor"></a>
+<h3>Emulated (par défaut)</h3>
+
+<p>
+    <span class="fw-bold">Le mode par défaut d'Angular est : Emulated.</span> Tous les navigateurs ne supportent pas le shadow DOM, donc les équipes d'Angular ont implémenté une encapsulation "manuelle" qui ne repose pas sur le shadow DOM.
+</p>
+
+<p>
+    Pour encapsuler "manuellement", <span class="fw-bold">Angular va ajouter un attribut unique sur tous les éléments du composant, puis modifier les sélecteurs CSS du composant afin qu'ils ne soient appliqués qu'à cet attribut.</span>
+</p>
+
+<p>
+    Exemple : 
+</p>
+
+{% highlight html linenos %}
+<hero-details _nghost-pmm-5>
+  <h2 _ngcontent-pmm-5>Mister Fantastic</h2>
+  <hero-team _ngcontent-pmm-5 _nghost-pmm-6>
+    <h3 _ngcontent-pmm-6>Team</h3>
+  </hero-team>
+</hero-details>
+{% endhighlight %}
+
+<p>
+    Dans cette image, vous pouvez voir les attributs ajoutés par Angular.
+</p>
+
+<p>
+  <span class="fw-bold">Tous les élements ayant un lien avec le composant hero-details sont marqués avec l'attribut</span> <code>_ngcontent-pmm-5</code> ou <code>_nghost-pmm-6</code>. 
+  Tandis que tous les éléments ayant un lien avec hero-team sont marqués <code>_ngcontent-pmm-6</code> ou <code>_nghost-pmm-6</code>.
+</p>
+<p>
+  Remarquez que hero-team est marqué à la fois comme host <code>pmm-6</code> et content <code>pmm-5</code>. Il pourra donc être atteint par du CSS venant de hero-details en tant qu'élément contenu, ou alors par du CSS venant de hero-team qui ciblerait l'élément hôte.
+</p>
+
+<p>
+  <span class="fw-bold">En parallèle d'avoir ajouté ces attributs, Angular a modifié vos sélecteurs CSS</span> dans les 2 composants pour cibler les attributs voulus.
+    Tous les sélecteurs de hero-details ciblent un attribut terminant par <code>pmm-5</code>, il est donc impossible que le CSS d'hero details atteigne un autre endroit du code.
+</p>
+
+<p>
+    Cela n'empêche pas notre composant d'être ciblé par du CSS global, non encapsulé.
+</p>
+
+<a id="shadow-dom-encapsulation-mode" class="anchor"></a>
+<h3>ShadowDom (natif)</h3>
+
+<p class="fw-bold">
+  L'API Shadow DOM est un standard, malheureusement pas très stable entre les différents navigateurs, qui sert justement à encapsuler des sections de DOM.
+</p>
+<p>
+    Le shadow DOM est un sous-DOM (un morceau de DOM) qui fonctionne en autonomie, sans être directement relié au DOM. On peut décider de "fermer" un shadow DOM pour l'isoler complêtement et qu'aucun style extérieur ne puisse l'atteindre (et vice-versa). 
+    <span class="fw-bold">La méthode Shadow DOM demande à Angular d'utiliser des shadow DOMs pour encapsuler le style de vos composants.</span>
+</p>
+
+<p>
+    Notez cependant qu'à l'inverse du mode <code>Emulated</code>, les styles globaux n'affecteront pas un tel composant, le composant étant complètement isolé du reste du DOM. 
+</p>
+
+<p>
+    À la compilation, Angular va référencer votre composant en tant que Web component natif 
+    et le HTML généré utilisera le standard Shadow DOM.
+</p>
+
+<p>
+    Exemple : 
+</p>
+
+{% highlight html linenos %}
+<my-component>
+  #shadow-root
+  <style>
+  .random {
+    height: 80px;
+  }
+  </style>
+  <div class="random">
+  </div>
+</my-component>
+{% endhighlight %}
+
+<p>
+  L'annotation <code>#shadow-root</code> est ajoutée par le navigateur pour signaler que l'élément placé juste en dessous (ici la balise style) est l'élément racine d'un Shadow DOM.
+</p>
+
+<p>
+    <span class="fw-bold">Les règles CSS ne pourront donc pas être connues du reste de la page car elle n'en a pas connaissance.</span>
+</p>
+
+<a id="mode-view-encapsulation-none" class="anchor"></a>
+<h3>None</h3>
+
+<p>
+    <span class="fw-bold">Le mode <code>None</code> va faire en sorte qu'Angular désactive complètement la fonctionnalité d'encapsulation.</span>
+    Donc une règle CSS venant du composant réglé sur none, pourra impacter tout le reste de l'application (sauf potentiellement un composant ShadowDOM car il restera isolé).
+</p>
+
+<p>
+    Le style sera visible depuis la balise <code>&lt;head&gt;</code> de la page HTML au sein d'une balise <code>&lt;style&gt;</code> globale.
+</p>
+
+<p> <span class="fw-bold">Il est fortement déconseillé d'utiliser cette méthode </span>car à cause de la portée du style, elle rend le style difficile à maintenir et peut créer des effets de bord indésirables.
+  Prenez bien le temps de mesurer les impacts si vous choisissez cette méthode.
+</p>
+
+
+<a id="pourquoi-utiliser-view-encapsulation" class="anchor"></a>
+<h2>Pourquoi configurer la view encapsulation ?</h2>
+
+<p>
+    <span class="fw-bold">La plupart du temps, vous ne devriez pas toucher à cette configuration.</span> Car l'encapsulation du style par composant est la méthode la plus sûre et la plus maintenable.
+</p>
+
+<p> Mais dans certains cas, il est pertinent voire nécessaire de changer ce comportement.</p>
+<p> Imaginez par exemple que vous devez customiser un composant venant d'une librairie, à un endroit précis du code. L'encapsulation par défaut vous empêcherait d'atteindre cet élément car il est déclaré en dehors de votre composant.</p>
+
+
+<a id="selecteur-ng-deep" class="anchor"></a>
+<h2>Utiliser le sélecteur ::ng-deep</h2>
+
+<p>
+    <span class="fw-bold">La pseudo-classe <code>::ng-deep</code> désactive complètement l'encapsulation de la vue pour la règle mentionnée</span>. Tout style appliqué dans une règle marquée ::ng-deep devient global.
+</p>
+
+<p>Lorsque vous devez contourner les règles d'encapsulation, préférez utiliser <code>::ng-deep</code> au mode <code>ViewEncapsulation.None</code>, car <code>::ng-deep</code> n'impactera qu'une règle CSS au lieu de tout le fichier.</p>
+
+<p>
+    Si vous devez utiliser <code>::ng-deep</code>, vous voudrez généralement le combiner avec <code>:host</code>. Ainsi, vous pourrez impacter les éléments enfants de votre composant, mais pas le reste de l'application.
+</p>
+
+{% highlight css linenos %}
+:host ::ng-deep h3 {
+  font-style: italic;
+}
+{% endhighlight %}
+
+<p>
+    Cet exemple cible tous les éléments <code>h3</code> contenus dans ce composant ou dans un de ses composants enfant.
+</p>
+<p> La documentation Angular marque <code>::ng-deep</code> comme étant déprécié, mais aucune alternative viable n'existe à ce jour. Il est juste conseillé de s'en servir le moins possible.</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    J'espère que cela vous aidera a voir plus clair sur la view encapsulation. N'hésitez pas à suggérer une amélioration en commentaire !
+</p>
