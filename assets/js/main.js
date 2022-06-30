@@ -1,5 +1,8 @@
 (function($) {
   "use strict";
+  const PLACEHOLDER_DIV = 'placeholder-div';
+  const STICKY_HEADER_ID = 'sticky-header';
+  const STICKY_CLASS = 'sticky';
 
   // mobile menu
   $("#mobile-menu").meanmenu({
@@ -8,13 +11,24 @@
   });
 
   var wind = $(window);
-  var sticky = $('#sticky-header');
+  var sticky = $(`#${STICKY_HEADER_ID}`);
   wind.on('scroll', function () {
     var scroll = wind.scrollTop();
+    const placeholderDiv = document.getElementById(PLACEHOLDER_DIV);
     if (scroll < 180) {
-      sticky.removeClass('sticky');
+      sticky.removeClass(STICKY_CLASS);
+      if(placeholderDiv){
+        placeholderDiv.remove();
+      }
     } else {
-      sticky.addClass('sticky');
+      if(!placeholderDiv){
+        const div = document.createElement('div');
+        div.id = PLACEHOLDER_DIV;
+        document.querySelector('header').appendChild(div);
+        const navbar = document.getElementById(STICKY_HEADER_ID);
+        div.style.minHeight = getComputedStyle(navbar).height;
+      }
+      sticky.addClass(STICKY_CLASS);
     }
   });
 
