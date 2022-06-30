@@ -2438,6 +2438,14 @@ label {
 
 /* blog column */
 
+#time-read{
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  right: 10px;
+  background-color: #20c997;
+}
+
 .blog-column .blog-title {
   font-size: 18px;
   line-height: 1.5;
