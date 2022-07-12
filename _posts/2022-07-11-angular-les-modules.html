@@ -1,0 +1,377 @@
+---
+layout: post
+title: "Angular - Les modules"
+date: 2022-07-11 10:10:50 +0100
+description: "Qu'est-ce que les modules dans Angular ? Dans cet article vous allez découvrir l'arichitecture modulaire et comment l'utiliser"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-modules/cover_angular_modules.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="definition" class="anchor"></a>
+<h2>Définition</h2>
+
+<p>
+    Le framework  <span class="fw-bold">Angular implémente une architecture modulaire</span> pour concevoir les applications. Cela permet de mieux structurer le code et facilité la réutilisation et le partage.
+</p>
+
+<p>
+    Un module permet : 
+</p>
+
+<ul>
+    <li>Regrouper des composants, des services, des directives, des pipes etc...</li>
+    <li>Définir les dépendances à ce module et tout ce qu'il comporte.</li>
+    <li>Définir leur visibilité.</li>
+</ul>
+
+<p>
+    <span class="fw-bold">C'est un moyen d'organiser une application</span> et de l'étendre avec des fonctionnalités de bibliothèques externes.
+</p>
+
+<a id="ngmodule" class="anchor"></a>
+<h2>NgModule</h2>
+
+<p>
+    <span class="fw-bold">Un module est une classe marquée par le décorateur <code>@NgModule</code></span>.
+</p>
+
+<p>
+    Il permet de configurer l’injecteur et le compilateur et aide à l’organisation de votre application.
+</p>
+
+
+{% highlight ts linenos %}
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+{% endhighlight %}
+<div class="code-caption">app.module.ts</div>
+
+<a id="module-racine" class="anchor"></a>
+<h2>Module racine</h2>
+
+<p>
+    Lorsque que vous créez un projet angular, <span class="fw-bold">la CLI génère le AppModule</span> (module racine).
+</p>
+
+<p>
+    Le fichier AppModule commence par des imports, ensuite il est configuré avec les tableaux suivant :
+</p>
+
+<ul>
+    <li>declarations</li>
+    <li>imports</li>
+    <li>providers</li>
+    <li>bootstrap</li>
+</ul>
+
+<p>
+    Declarations : C’est dans cette metadata qu’on mentionne les composants, directives et pipes qui appartiendront au module.
+</p>
+
+<p>
+    Imports : On mentionne d’autres module à importer, afin de pouvoir utiliser leurs déclarables (pipes, directives, composants).
+</p>
+
+<p>
+    Providers : Cette metadata contient les fournisseurs de services que les composants du module peuvent utiliser.
+</p>
+
+<p>
+    Bootstrap : Il contient le composant de démarrage de l’application qui sera inséré dans le index.html. Il apparaît aussi dans le tableau déclarations.
+</p>
+
+<a id="module-fonctionnalité" class="anchor"></a>
+<h2>Module de fonctionnalités</h2>
+
+<p>
+    <span class="fw-bold">Un module de fonctionnalités est un concept organisationnelle de votre code</span>, par opposition au concept du module de base (racine).
+</p>
+
+<p>
+    Bien que nous puissions tous faire dans le module racine, <span class="fw-bold">les modules de fonctionnalités vous aide à bien découper votre application</span>. 
+</p>
+
+<p>
+    Ils collaborent avec le module racine via les services, composants, directives et pipes qu’ils partagent.
+</p>
+
+<p>
+    Cela concerne tous les modules que vous créez et ceux implémenté de base par Angular comme : <code>FormsModule</code>, <code>HttpClientModule</code>, <code>AppRoutingModule</code> etc.
+</p>
+
+<a id="generer-module" class="anchor"></a>
+<h3>Génerer un module</h3>
+
+<p>
+    En entrant  la commande suivante dans le répertoire racine du projet, vous allez créez un module de fonctionnalité :
+</p>
+
+
+{% highlight sh linenos %}
+ng generate module user
+{% endhighlight %}
+<div class="code-caption">commande CLI de génération de module</div>
+
+<p>
+    Cette commande amène la CLI à créer un dossier User avec un fichier user.module.ts et ce code à l’intérieur : 
+</p>
+
+{% highlight ts linenos %}
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@NgModule({
+  imports: [
+    CommonModule
+  ],
+  declarations: []
+})
+export class UserModule { }
+{% endhighlight %}
+<div class="code-caption">user.module.ts</div>
+
+<p>
+    <span class="fw-bold">La structure d’un module est toujours la même, que ce soit un module racine ou de fonctionnalités</span>.
+</p>
+
+<a id="importer-module" class="anchor"></a>
+<h3>Importer un module</h3>
+
+<p>
+    Pour  <span class="fw-bold">intégrer le module de fonctionnalités dans votre application, il est nécessaire d’informer le module racine</span> : app.module.ts.
+</p>
+
+<p>
+    Pour l’importer, ajoutez le UserModule dans le tableau imports du fichier app.module.ts. comme ceci : 
+</p>
+
+{% highlight ts linenos %}
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { UserModule } from './user/user.module';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    UserModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+{% endhighlight %}
+<div class="code-caption">app.module.ts</div>
+
+<p>
+    Maintenant le AppModule (module racine) connaît notre module de fonctionnalités (UserModule).
+</p>
+
+<p>
+    Les fournisseurs de services du module de fonctionnalités seront connus pour le AppModule. Cependant les NgModules n’exposent pas leurs composants par défaut.
+</p>
+
+
+<a id="exporter-module" class="anchor"></a>
+<h3>Exporter un module</h3>
+
+<p>
+    Lorsque que vous avez créé un component pour votre module de fonctionnalités, cela inclut un fichier user.component.html.
+</p>
+
+<p>
+    <span class="fw-bold">Pour rendre ce component disponible de votre application, vous devez d’abord exporter le component dans le module de fonctionnalités</span>.
+</p>
+
+<p>
+    Dans le user.module.ts en dessous du tableau declarations des metadatas, ajoutez : exports, contenant le UserComponent.
+</p>
+
+{% highlight ts linenos %}
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@NgModule({
+  declarations: [],
+  imports: [
+    CommonModule
+  ],
+  exports:[UserComponent]
+})
+export class UserModule { }
+{% endhighlight %}
+<div class="code-caption">user.module.ts</div>
+
+<p>
+    Maintenant si vous voulez afficher votre composant à la vue de votre application, il vous faudra appeler le sélecteur de votre component dans le fichier <code>app.component.html</code>.
+</p>
+
+{% highlight html linenos %}
+<h1>{{title}}</h1>
+  
+<app-user></app-user>  
+{% endhighlight %}
+<div class="code-caption">app.component.html</div>
+
+<p>
+    Désormais le composant de votre module de fonctionnalités est rendu à la vue dans votre application !
+</p>
+
+<a id="founir-dependances" class="anchor"></a>
+<h3>Founir les dépendances</h3>
+
+<p>
+    Un fournisseur (provider) est une instruction au système d’injection de dépendance. 
+</p>
+
+<p>
+    <span class="fw-bold">La plupart du temps, ces dépendances sont des services que vous créez et fournissez</span>.
+</p>
+
+<p>
+    Vous pouvez créer un service à l’aide de la CLI via cette commande :
+</p>
+
+{% highlight sh linenos %}
+ng generate service user
+{% endhighlight %}
+<div class="code-caption">Commande CLI génération de service</div>
+
+<p>
+    Cette commande crée le UserService :
+</p>
+
+{% highlight ts linenos %}
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserService {
+}
+{% endhighlight %}
+<div class="code-caption">user.service.ts</div>
+
+<p>
+    Vous pouvez maintenant injecter le UserService n’importe où dans votre application. 
+    Mais il est conseillé de réduire le scope au module concerné sois en le déclarant dans le tableau <code>providers</code> du module sois en modifiant <code>providedIn</code> du service à : 'NomDuModule' comme ceci :
+</p>
+
+{% highlight ts linenos %}
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'UserService',
+})
+export class UserService {
+}
+{% endhighlight %}
+<div class="code-caption">user.service.ts</div>
+
+<p>
+    S'il n'est pas possible de spécifier dans le service quel module doit le fournir, vous pouvez également déclarer un fournisseur pour le service dans le module :
+</p>
+
+{% highlight ts linenos %}
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { UserService } from '../user.service';
+
+@NgModule({
+  declarations: [],
+  imports: [
+    CommonModule
+  ], 
+  providers:[UserService],
+})
+export class UserModule { }
+{% endhighlight %}
+<div class="code-caption">user.module.ts</div>
+
+<a id="module-partage" class="anchor"></a>
+<h2>Module de partage</h2>
+
+<p>
+    La création de modules partagés vous permet d'organiser votre code. 
+    Vous pouvez placer des directives, des pipes et des composants, 
+    puis importer ce module là où vous en avez besoin dans d'autres parties de votre application.
+</p>
+
+{% highlight ts linenos %}
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { CustomerComponent } from './customer.component';
+import { NewItemDirective } from './new-item.directive';
+import { OrdersPipe } from './orders.pipe';
+
+@NgModule({
+ imports:      [ CommonModule ],
+ declarations: [ CustomerComponent, NewItemDirective, OrdersPipe ],
+ exports:      [ CustomerComponent, NewItemDirective, OrdersPipe,
+                 CommonModule, FormsModule ]
+})
+export class SharedModule { }
+{% endhighlight %}
+<div class="code-caption">shared.module.ts</div>
+
+<ul>
+    <li>Il importe CommonModule car le composant du module a besoin de directives communes.</li>
+    <li>Il déclare et exporte le pipe utilitaire, la directive et les classes de composants.</li>
+    <li>Il réexporte les CommonModule et FormsModule.</li>
+</ul>
+
+<p>
+    Ce qui aura pour finalité en exportant CommonModule et FormsModule, c'est que tout autre module qui importe le module de partage (SharedModule), 
+    obtient l'accès à des directives telles que <code>NgIf</code> et <code>NgFor</code> depuis le CommonModule et à la directive <code>ngModel</code> provenant de FormsModule.
+</p>
+
+<a id="bonnes-pratiques" class="anchor"></a>
+<h2>Bonnes pratiques</h2>
+
+<p>
+    La convention est de regrouper tous les composants en rapport dans le même module.
+</p>
+
+<p>
+    Évitez aussi les modules dans les modules !
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà un peu près tout ce qu'il faut savoir sur les modules, l'architecture de votre application reste une importance capitale pour son évolution.
+</p>
+
+<p>
+    N'hésitez pas a laisser un commentaire !
+</p>
