@@ -2933,3 +2933,7 @@ code {
 .tableOperator > tbody > tr:nth-child(odd) {
   background-color: rgb(221, 221, 221);
 }
+
+#display-category{
+  margin-left: 4px;
+}
