@@ -1,0 +1,258 @@
+---
+layout: post
+title: "Angular - 3 choses à savoir sur le pipe async"
+date: 2022-04-20 14:10:50 +0100
+description: "Il s'avère que le pipe async nous cache bien des choses ! vous allez le découvrir dans cet article"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-3-choses-pipe-async/cover_3_choses_pipe_async.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<p>
+    Vous avez certainement entendu parler du <code>pipe async</code> d'Angular, si ce n'est pas le cas je vous recommande d'aller voir cet <a href="https://blog.codewise.fr/angular-pipe-async">article</a>  qui explique ses notions de bases.
+</p>
+
+<a id="long-term-subscription" class="anchor"></a>
+<h2>Abonnement longue durée</h2>
+
+<p>
+    Aux premiers abords quand nous utilisons l'async pipe basiquement, nous pensons directement aux valeurs récupérées à partir d'un appel <code>http</code>.
+</p>
+
+<p>
+    Vous émettez une requête http, obtenez un observable en réponse de votre requête, vous appliquez quelques transformations : <code>map, filter</code> etc. 
+    Et enfin vous avez un <code>Observable</code> correspondant au modèle que votre composant attend.
+</p>
+
+<p>
+    Dans ce scénario, on dit que cet Observableest de courte durée. Il émet une valeur et se termine juste après.
+</p>
+
+<p>
+    Cependant il est tout à fait possible <span class="fw-bold">d'avoir des Observables émettant plusieurs valeurs</span> (pensez aux websockets !). Par exemple si votre Observable vous renvoie un tableau, il se peut qu'il s'accumule avec le temps.
+</p>
+
+<p>
+    Regardez cet exemple où un Observable émet un tableau de nombre mais au lieu d'émettre un tableau une fois, il émettra un tableau toutes les 100ms avec des valeurs croissantes.
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-async',
+    template: `
+      <ul>
+        <li *ngFor="let item of items | async">{{item}}</li>
+      </ul>`
+  })
+  export class AppComponent {
+    items = Observable.interval(100).pipe(
+        map(val => [val, val + 1, val + 2])
+      );
+  }
+{% endhighlight %}
+<div class="code-caption">async.component.ts</div>
+
+<p>
+    Le pipe async présent sur le <code>ngFor</code> génère la liste qui est donc synchronisé selon l'émission de l'Observable.
+</p>
+
+<a id="references-followed" class="anchor"></a>
+<h2>Suivi de références</h2>
+
+<p>
+    Vous avez sûrement entendu ou lire qu'avec le pipe async <span class="fw-bold">le désabonnement à l'Observable se fait dès que le composant se détruit 
+    mais il faut savoir aussi qu'il se désabonne dès que l'expression change</span> !
+</p>
+
+<p>
+    Regardez cet exemple : 
+</p>
+
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'my-app',
+    template: `
+      <button (click)="newSeq()">Nouvelle séquence</button>
+      <ul>
+        <li [style.color]="item.color"
+            *ngFor="let item of items | async">{{item.num}}</li>
+      </ul>`
+  })
+  export class AppComponent {
+    items: Observable<any>;
+  
+    constructor () {
+      this.newSeq();
+    }
+  
+    newSeq() {
+  
+      // générer une couleur
+      let color = '#' + Math.random().toString(16).slice(-6);
+  
+      this.items = Observable.interval(1000)
+                             .scan((acc, num)=>[{num, color }, ...acc].slice(0, 5), []);
+    }
+  }
+{% endhighlight %}
+<div class="code-caption">async.component.ts</div>
+
+<p>
+    Dès qu'un nouvel Observable est attribuer au tableau <code>items</code>,  <span class="fw-bold">le pipe async se désabonnera de l'Observable précédent automatiquement</span>.
+</p>
+
+<p>
+    Cela protège des fuites de mémoires et garde votre code lisible.
+</p>
+
+<a id="mark-for-verification" class="anchor"></a>
+<h2>Marquer pour vérification</h2>
+
+<p>
+    Pour la dernière fonctionnalité admettons que vous ayez un composant parent et enfant. Le composant parent gérera les données et les transmettra à l'enfant via un <code>@Input()</code>.
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-child',
+    template: `
+      <ul>
+        <li [style.color]="item.color" 
+            *ngFor="let item of items">{{item.num}}</li>
+      </ul>`
+  })
+  export class SeqComponent {
+    @Input()
+    items: Array<any>;
+  }
+{% endhighlight %}
+<div class="code-caption">child.component.ts</div>
+
+<p>
+    Le composant parent transmettra un tableau d'Observable de longue durée par le ngFor et la liaison d'entré.
+</p>
+
+<p>
+    Notez l'utilisation du pipe async dans l'expression de liaison de propriété <code>[items]="seq | async"</code> pour transmettre le tableau au lieu de l'Observable car c'est ce qu'attend le composant enfant.
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-parent',
+    template: `
+      <button (click)="newSeq()">Nouvelle séquence</button>
+      <ul>
+        <app-child *ngFor="let seq of seqs" [items]="seq | async"></app-child>
+      </ul>`
+  })
+  export class AppComponent {
+    seqs = [];
+    
+    constructor () {
+      this.newSeq();
+    }
+    
+    newSeq() {
+      
+      // générer couleur
+      let color = '#' + Math.random().toString(16).slice(-6);
+      
+      this.seqs.push(Observable.interval(1000)
+                             .scan((acc, num)=>[{num, color }, ...acc].slice(0, 5), []));
+    }
+  }
+{% endhighlight %}
+<div class="code-caption">parent.component.ts</div>
+
+<p>
+    Cependant c'est un gaspillage de ressource car cela signifie que tous les composants sont vérifiés en termes de détection de changement lorsque chaque fois qu'un Observable se déclenche.
+</p>
+
+<p>
+    L'astuce ici est de définir la détection de changement pour le composant enfant à : <code>OnPush</code>. Cela signifie qu'il ne vérifiera que ses liaisons d'entrées changent (le tableau pour ce cas).
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-child',
+    ...
+  })
+{% endhighlight %}
+<div class="code-caption">child.component.ts</div>
+
+<p>
+    Mais nouveau problème ! cela ne fonctionne que parce que l'Observable crée un "nouveau" tableau à chaque fois qu'il émet une nouvelle valeur.
+</p>
+
+<p>
+    Si nous avons une implémentation qui modifie le tableau existant au lieu d'en recréer il va falloir que notre composant enfant prenne un Observable en entré au lieu d'un tableau.
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-child',
+    template: `
+      <ul>
+        <li [style.color]="item.color" 
+            *ngFor="let item of items | async">{{item.num}}</li>
+      </ul>`
+  })
+  export class SeqComponent {
+    @Input()
+    items: Observable<Array<any>>;
+  }
+{% endhighlight %}
+<div class="code-caption">child.component.ts</div>
+
+<p>
+    Le pipe async s'applique désormais au modèle car ce n'est plus un tableau simple.
+</p>
+
+<p>
+    Vous devez maintenant enlever le pipe async du modèle parent.
+</p>
+
+{% highlight ts linenos %}
+<ul>
+    <my-seq *ngFor="let seq of seqs" [items]="seq"></my-seq>
+</ul>
+{% endhighlight %}
+<div class="code-caption">parent.component.ts</div>
+
+<p>
+    En effet, <span class="fw-bold">l'instance du tableau et de l'Observable ne change pas</span>. mais regardez le code source du pipe async :
+</p>
+
+{% highlight ts linenos %}
+private _updateLatestValue(async: any, value: Object): void {
+    if (async === this._obj) {
+      this._latestValue = value;
+      this._ref.markForCheck();
+    }
+  }
+{% endhighlight %}
+<div class="code-caption">code source pipe async</div>
+
+<p>
+    Vous voyez que  <span class="fw-bold">le pipe async marque le <code>ChangeDetectorRef</code> à vérifier</span> en indiquant qu'il peut y avoir un changement dans ce composant.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà tout pour le pipe async, ceci sont des notions avancées. 
+    En esperant vous éclairez au mieux sur cet outil qui permet en outre d'éviter les fuites de mémoires et gagner en lisibilité !
+</p>
+
+<p>
+    N'hésitez pas à laisser un commentaire.
+</p>
