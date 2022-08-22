@@ -1,0 +1,110 @@
+---
+layout: post
+title: "Angular - Renommer un composant"
+date: 2022-08-22 07:30:50 +0100
+description: "Voici comment renommer un composant sous Angular."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-rename-component/cover_rename_component.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    Comme vous avez pu le constatez il n'y a pas de commande pour pouvoir renommer un composant alors vous avez deux options :
+</p>
+
+<ul>
+    <li>Renommer manuellement le composant dont tous ses fichiers.</li>
+    <li>Ou l'utilisation d'un plugin (sous VS CODE)</li>
+</ul>
+
+<a id="introduction" class="anchor"></a>
+<h2>Renommer un composant manuellement</h2>
+
+<p>
+   La façon manuelle est assez rébarbative car il faut renommer tous les fichiers et les noms des classes qui les composent.
+</p>
+
+<p>
+    Prenez cet exemple :
+</p>
+
+<img src="/assets/img/blog/angular-rename-component/folder-component.png" alt="dossier map-filter composant">
+<div class="code-caption mt-2">Dossier du composant map-filter</div>
+
+<p>
+    Vous devez renommer le composant map-filter en map. Pour cela renommer le dossier et les fichiers css, html, ts et spec.ts.
+</p>
+
+<p>
+    Ce qui devrait vous donner ça :
+</p>
+
+<img src="/assets/img/blog/angular-rename-component/folder-renamed.png" alt="Composant renommé">
+<div class="code-caption mt-2">Dossier du composant renommé</div>
+
+<p>
+    Comme vous pouvez le voir l'IDE nous prévient de certaines erreur en rouge dû au renommage de nos fichiers.
+</p>
+
+<img src="/assets/img/blog/angular-rename-component/error-file-ts.png" alt="erreur fichier ts">
+<div class="code-caption mt-2">Erreur des chemins fichier ts</div>
+
+<p>
+    Il va falloir donc mettre à jour les chemins qui correspondent aux fichier css et html.
+</p>
+
+<p>
+    Bien sûr vous pouvez modifier le nom des classes pour qu'elles correspondent aux noms des fichiers ainsi que le sélecteur.
+</p>
+
+<img src="assets/img/blog/angular-rename-component/fix-error-file-ts.png" alt="Renommer les chemins et classes">
+<div class="code-caption mt-2">Renommer les chemins et classes</div>
+
+<p>
+    Ensuite il vous faudra donc mettre à jour l'import du fichier ts dans le fichier spec.ts en renseignant le nouveau nom donné à la classe.
+</p>
+
+<p>
+    Idem pour le fichier app-routing.module.ts si votre composant est reliée a une route et surtout n'oubliez pas le app.module.ts qui lui se charge d'injecter votre composant !
+</p>
+
+<a id="introduction" class="anchor"></a>
+<h2>Renommer un composant avec un plugin</h2>
+
+<p>
+    Récemment j'ai découvert un petite extension VS Code qui permet de faire tout ce travail rapidement !
+</p>
+
+<img class="img" src="/assets/img/blog/angular-rename-component/plugin-rename-component.png" alt="Extension VS Code pour renommer un composant Angular">
+<div class="code-caption mt-2">Extension VS Code pour renommer un composant Angular</div>
+
+<p>
+    Cherchez la avec la barre de recherche dans l'onglet extension de VS Code et installez la.
+</p>
+
+<p>
+    Sur la page de l'extension il y a une petite vidéo qui explique comment s'en servir, c'est très simple, cliquez droit sur l'un des fichiers concernant le composant à renommer alors une fenêtre s'ouvrira pour écrire le nouveau nom et appuyez sur entrer.
+</p>
+
+<p>
+    Il modifiera automatiquement tous les fichiers et même les noms des classes, toutefois attention vérifiez vos fichier app-routing et app.module !
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    C'est tout pour cet article en esperant qu'il vous aidera, malheureusement Angular n'a pas encore développé cette fonctionnalité avec sa CLI que beaucoup de personnes attendent.
+</p>
+
+<p>
+    N'hésitez pas a laisser un commentaire !
+</p>
