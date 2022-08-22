@@ -1,0 +1,95 @@
+---
+layout: post
+title: "Angular - Renommer une directive"
+date: 2022-09-01 07:30:50 +0100
+description: "Voici comment renommer une directive sous Angular."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-renommer-directive/cover_rename_directive.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+linked-ressource: "starter-kit-angular"
+---
+
+<p>
+    Comme pour le renommage d'un composant, <span class="fw-bold">il n'y a pas de commande CLI qui permette de renommer une directive</span>.
+</p>
+
+<p>
+    Vous êtes donc contraints d'utiliser une des 2 méthodes suivantes : le renommage manuel, ou le renommage via un plugin.</span>.
+</p>
+
+<a id="renommer-directive-manuellement" class="anchor"></a>
+<h2>Renommer une directive manuellement</h2>
+
+<p>
+    Renommer une directive manuellement est assez simple et rapide, car il n'y a que le fichier de la directive et le fichier de test à renommer.
+    Egalement un chemin d'import a gérer : celui du fichier de test.
+</p>
+
+<a id="renommer-fichier" class="anchor"></a>
+<h3>Etape 1 : Renommer les fichiers</h3>
+
+<p>
+    <span class="fw-bold">Modifiez le nom de votre directive.ts et de votre directive.spec.ts</span>.
+</p>
+
+<img src="/assets/img/blog/angular-renommer-directive/directive.png" alt="La directive à renommer">
+<div class="code-caption mt-2">La directive à renommer</div>
+
+<img src="/assets/img/blog/angular-renommer-directive/directive-renamed.png" alt="Directive renommée">
+<div class="code-caption mt-2">Directive renommée</div>
+
+<a id="renommer-imports" class="anchor"></a>
+<h3>Etape 2 : Renommer les imports dans le fichier de test et le module</h3>
+
+<p>
+    <span class="fw-bold">Modifiez les imports dans les fichiers de tests et le module de déclaration de la directive (par défaut app.module.ts).</span>
+</p>
+
+<p>
+    Votre éditeur de code vous proposera probablement de renommer ces imports automatiquement.
+</p>
+
+
+<img src="/assets/img/blog/angular-renommer-directive/spec-ts.png" alt="spec.ts">
+<div class="code-caption mt-2">spec.ts</div>
+
+<img src="/assets/img/blog/angular-renommer-directive/spec-ts-renamed.png" alt="spec.ts modifié">
+<div class="code-caption mt-2">spec.ts modifié</div>
+
+<a id="renommer-classe-selector" class="anchor"></a>
+<h3>Etape 3 : Renommer le nom de classe et le selecteur</h3>
+
+<p>
+    <span class="fw-bold">Il ne vous reste plus qu'à modifier le nom de la classe et le sélecteur de votre directive.</span>
+</p>
+<p>
+    Pour modifier le nom de la classe, utilisez la fonctionner de renommage de votre éditeur de code (généralement F2).
+    Pour le sélecteur, vous devrez surement utiliser un Search and Replace (ctrl + h), pour modifier toutes les utilisations de la directive.
+</p>
+<p>
+    Notez que modifier le sélecteur et ses utilisations est une étape facultative.
+</p>
+
+<img src="/assets/img/blog/angular-renommer-directive/directive-ts.png" alt="directive.ts">
+<div class="code-caption mt-2">directive.ts</div>
+
+<img src="/assets/img/blog/angular-renommer-directive/directive-ts-renamed.png" alt="directive.ts modifié">
+<div class="code-caption mt-2">directive.ts modifié</div>
+
+
+<a id="renommer-directive-plugin" class="anchor"></a>
+<h2>Renommer une directive via un plugin</h2>
+
+<p> Il existe un plugin VSCode permettant de renommer n'importe quel schéma Angular (composant, directive, service etc.). Plus d'infos dans <a href="/angular-renommer-composant#renommer-via-plugin" target="blank_">cet article.</a></p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Vous pouvez désormais renommer vos directives. Si vous avez des questions, n'hésitez pas à nous contacter !
+</p>
