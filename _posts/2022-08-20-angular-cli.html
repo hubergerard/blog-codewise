@@ -1,0 +1,252 @@
+---
+layout: post
+title: "Angular - Comment bien utiliser la CLI ?"
+date: 2022-08-20 10:10:50 +0100
+description: "Dans cet article, vous allez découvrir les possibilités offertes par la CLI Angular et comment l'utiliser au mieux."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-cli/cover_cli.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="definition-cli" class="anchor"></a>
+<h2>Définition</h2>
+
+<p>
+    <span class="fw-bold">La CLI Angular est une interface en ligne de commande</span> qui vous sert à initialiser, développer, 
+    "échafauder" (scaffolding) et maintenir des applications Angular directement à partir d'un terminal.
+</p>
+
+<p>Sans Angular CLI, la création et la construction d'une application Angular nécessiterait beaucoup de rédaction de code, de configuration et la maîtrise de nombreux outils : webpack, karma, protractor, etc.</p>
+
+<p>
+    <span class="fw-bold">Pour installer Angular sur votre PC, vous n'avez qu'à installer la CLI.</span>
+</p>
+
+<a id="installation-cli" class="anchor"></a>
+<h2>Installation de la CLI</h2>
+
+<p>
+    <span class="fw-bold">Avant d'installer la CLI Angular, il vous que vous ayez installé npm.</span>
+    Pour se faire, rendez-vous sur la <a href="https://nodejs.org/fr/">page d'accueil Node Js</a>
+    et téléchargez la version LTS.
+</p>
+
+<p>
+    Si vous devez utiliser plusieurs versions de npm, il est recommandé d'installer <a target="_blank" rel="external nofollow" href="https://github.com/coreybutler/nvm-windows">nvm</a> : un manager de versions de npm.
+</p>
+
+<p>
+    <span class="fw-bold">Maintenant que vous avez npm, vous pouvez installer la CLI Angular en lançant cette commande</span> dans votre terminal :
+</p>
+
+{% highlight linenos %}
+npm install -g @angular/cli
+{% endhighlight %}
+
+<a id="syntaxe-CLI" class="anchor"></a>
+<h2>Syntaxe de la CLI</h2>
+
+<a id="syntaxe-generale-CLI" class="anchor"></a>
+<h3>Syntaxe d'une commande</h3>
+
+<p>
+    <span class="fw-bold"> Dans la CLI Angular, une commande se rédige comme suit : </span>
+</p>
+
+{% highlight linenos %}
+ng commandNameOrAlias requiredArg [optionalArgs] [options]
+{% endhighlight %}
+
+<p><span class="fw-bold">Notez que :</span></p>
+<ul>
+    <li>La plupart des commandes et options ont des alias (voir <a rel="external nofollow" target="_blank" href="https://angular.io/cli#command-overview">CLI Command Overview</a>)</li>
+    <li>Les noms d'option sont précédés d'un double tiret (--). Les alias d'option sont précédés d'un seul tiret (-).</li>
+</ul>
+
+<a id="help-commande" class="anchor"></a>
+<h3>Accéder à la documentation (ng help)</h3>
+
+<p>
+    Pour afficher toutes les commandes de la CLI, entrez cette commande :
+</p>
+
+{% highlight linenos %}
+ng help
+{% endhighlight %}
+
+<p>
+    Pour en savoir plus sur une commande :
+</p>
+
+{% highlight linenos %}
+ng [commandName] --help
+ng generate --help // Documentation de la commande generate
+{% endhighlight %}
+
+<a id="angular-generer-code-cli" class="anchor"></a>
+<h2>Générer du code via la CLI</h2>
+
+<a id="initialiser-projet" class="anchor"></a>
+<h3>Initialiser un projet (ng new)</h3>
+
+<p>
+    Une fois que vous avez installé la CLI Angular, <span class="fw-bold">vous pouvez créer un projet avec la commande suivante.</span>
+</p>
+
+{% highlight linenos %}
+ng new
+{% endhighlight %}
+
+<p>
+    Il vous sera demandé de :
+</p>
+<ul>
+    <li><span class="fw-bold">Renseigner le nom de votre projet</span></li>
+    <li><span class="fw-bold">Ajouter ou non du routing</span> à votre projet (voir <a href="/angular-routing">Angular - Le routing</a>)</li>
+    <li><span class="fw-bold">Choisir un format pour vos stylesheet</span> (CSS, SCSS, SASS, etc..)</li>
+</ul>
+
+<p>
+    Après ces 3 étapes, la CLI génèrera toute la structure de votre projet.
+</p>
+
+<a id="angular-scaffolding" class="anchor"></a>
+<h3>Scaffolding de code (ng generate)</h3>
+
+<p>
+    <span class="fw-bold">La commande <code>ng generate</code> alias <code>ng g</code>, permet de générer différents schémas Angular</span> dans votre application (components, services, directives etc.).
+</p>
+
+<p>
+    <span class="fw-bold">Par exemple :</span>
+</p>
+
+{% highlight linenos %}
+ng generate component [name]
+ng g c [name]
+{% endhighlight %}
+
+<p>
+    Génère un composant où <span class="fst-italic">name</span> est le nom de votre composant.
+</p>
+
+<p>
+    Cela créée un dossier dans app, ayant le nom du composant et contenant les différents fichiers nécessaires au fonctionnement de votre composant (un fichier ts, html, css et de test).
+</p>
+
+<p>
+    <span class="fw-bold">Vous pouvez générer des services, des pipes, des directives, des classes, des interfaces et plus encore.</span>
+</p>
+
+{% highlight linenos %}
+ng generate pipe [name]
+ng generate service [name]
+ng generate directive [name]
+ng generate interceptor [name]
+ng generate class [name]
+ng generate interface [name]
+ng generate enum [name]
+{% endhighlight %}
+
+<p>
+    Consultez la documentation pour en savoir plus au sujet des schémas disponible à générer : <a rel="nofollow external" target="_blank" href="https://angular.io/cli/generate#ng-generate">ng generate</a>
+</p>
+<p>
+    Ou bien consultez la documentation CLI :
+</p>
+
+{% highlight linenos %}
+ng generate --help
+{% endhighlight %}
+
+<a id="ajout-dependance" class="anchor"></a>
+<h2>Ajouter une dépendance</h2>
+
+<p><span class="fw-bold">Depuis Angular 6, vous pouvez utiliser la commande <code>ng add</code></span> pour installer une dépendance.</p>
+<p>Mais pourquoi faire ? Ne suffit-il pas d'utiliser <code>npm install</code> ?</p>
+
+<a id="dependance-npm-install" class="anchor"></a>
+<h3>Via npm (npm install)</h3>
+
+<p>
+    <code>npm install</code> est utilisable dans tous vos projets JavaScript utilisant npm.
+</p>
+<p><span class="fw-bold">Cette commande vous permet d'ajouter une dépendance à votre projet</span>, rien de plus. Il vous reste ensuite à configurer votre dépendance, pour l'adapter à votre framework et à votre projet.</p>
+
+<a id="dependance-ng-add" class="anchor"></a>
+<h3>Via la CLI Angular (ng add)</h3>
+
+<p><span class="fw-bold">La commande <code>ng add</code> va plus loin que <code>npm install</code> :</span> elle ajoute la dépendance à votre projet (en utilisant npm) et exécute également un script de configuration, capable de modifier les fichiers de votre projet.</p>
+
+<p>
+    Elle peut ainsi modifier votre fichier <span class="fst-italic">angular.json</span> pour y ajouter des configurations, ajouter des imports dans vos modules ou même générer un bout de code !
+</p>
+
+<p>
+    <span class="fw-bold">Lorsque vous utilisez Angular, préférez toujours la commande <code>ng add</code></span> si la librairie que vous souhaitez installer le propose. Ainsi, votre dépendance sera déjà configurée pour Angular, et il ne vous restera plus qu'à l'adapter à votre projet.
+</p>
+
+<a id="executer-projet" class="anchor"></a>
+<h2>Exécuter un projet</h2>
+
+<p>Vous devez utiliser la CLI pour faire exécuter votre projet localement ou pour compiler une version de production.</p>
+
+<a id="executer-projet-local" class="anchor"></a>
+<h3>Exécuter localement un projet (ng serve)</h3>
+
+<p>
+    <span class="fw-bold">La commande <code>ng serve</code> permet d'exécuter votre projet localement</span>, pour le tester sur votre navigateur.
+</p>
+<p>
+    Cette commande commence en réalité par exécuter <code>ng build --configuration development</code>, puis démarre un serveur local pour distribuer votre projet.
+</p>
+
+<p>
+    <span class="fw-bold">Vous pouvez passer l'option <code>--open</code></span> pour demander à la CLI d'ouvrir un navigateur automatiquement, à la bonne URL.
+</p>
+
+{% highlight linenos %}
+ng serve --open
+{% endhighlight %}
+
+<a id="ng-build" class="anchor"></a>
+<h3>Build un projet (ng build)</h3>
+
+<p><span class="fw-bold">La commande <code>ng build</code> vous permet de transformer les sources de votre projet en exécutable.</span></p>
+<p>Après avoir fait tourner cette commande, vous trouverez dans un dossier "dist", les exécutables à fournir à votre navigateur pour éxecution.</p>
+
+<p><span class="fw-bold">Vous pouvez appliquer différentes configurations à la commande <code>ng build</code></span>, selon l'environnement sur lequel vous voulez déployer vos exécutables :</p>
+
+{% highlight linenos %}
+ng build --configuration production
+ng build --configuration development
+{% endhighlight %}
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà un bref aperçu de la CLI, vous savez désormais comment l'installer et l'utiliser. 
+</p>
+
+<p>
+   Plus bas, vous trouverez un lien vers la documentation de la CLI. N'hésitez pas à y faire un tour pour voir toutes les possibilités qui s'offrent à vous.
+</p>
+
+<p>
+    J'espère que cet article vous aidera à comprendre les bases d'utilisation de la CLI, n'hésitez pas à laisser un commentaire !
+</p>
+
+<a id="more-information" class="anchor"></a>
+<h2>Sources</h2>
+
+<ul>
+    <li>
+        Documentation CLI angular : <a rel="nofollow external" target="_blank" href="https://angular.io/cli">CLI Overview and Command Reference</a>
+    </li>
+</ul>
