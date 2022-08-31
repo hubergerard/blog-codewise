@@ -1,0 +1,93 @@
+---
+layout: post
+title: "Angular - Comment renommer un composant"
+date: 2022-08-31 10:10:50 +0100
+description: "Vous souhaitez renommer un composant Angular ? Dans cet article, retrouvez les étapes du renommage."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-rename-component/cover_rename_component.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+linked-ressource: "starter-kit-angular"
+---
+
+<a id="renommer-composant" class="anchor"></a>
+<h2>Renommer un composant via la CLI</h2>
+
+<p>
+    <span class="fw-bold">Il n'existe malheureusement pas de commande permettant de modifier le nom d'un composant.</span> Les fichiers doivent être renommés manuellement.
+</p>
+
+<p>
+    Il existe également des plugins VSCode pour ne pas avoir à le faire manuellement, plus de détails à la fin de cet article !
+</p>
+
+<a id="renommage-manuel" class="anchor"></a>
+<h2>Renommer manuellement</h2>
+
+<a id="renommer-dossier-composant" class="anchor"></a>
+<h3>Étape 1 : Renommer le dossier du composant et ses fichiers</h3>
+
+<p>
+    C'est assez rébarbatif mais 1 par 1, <span class="fw-bold">renommez vos fichiers avec le même nom</span> : <span class="fst-italic">.html</span>, <span class="fst-italic">.ts</span> <span class="fst-italic">.css</span> ou <span class="fst-italic">.scss</span>, <span class="fst-italic">.spec.ts</span>.
+    Veillez bien à ne pas faire de fautes. </p>
+
+<p>Sans oublier le dossier. Veillez à ce que le dossier porte le même nom que les fichiers</p>
+
+<a id="renommer-import-declaration" class="anchor"></a>
+<h3>Étape 2 : Renommer l'import et la déclaration dans le module</h3>
+
+<p>
+    <span class="fw-bold">Maintenant, rendez-vous dans le fichier du module ou votre composant est déclaré (par défaut <span class="fst-italic">app.module.ts</span>), 
+    et renommez l'import du component.</span> 
+    Votre éditeur de code ou IDE devrait le souligner en rouge, puisque que vous avez déjà renommer le dossier et les fichiers du composant.
+</p>
+
+
+<a id="fichier-ts-spec" class="anchor"></a>
+<h3>Étape 3 : Fichier typescript et spec</h3>
+
+<p>
+    <span class="fw-bold">De manière facultative (mais recommandée), modifiez le selecteur dans le fichier <span class="fst-italic">.ts</span>.</span> 
+    De plus, il vous faudra <span class="fw-bold">mettre à jour toutes les occurences</span> aux endroits où le composant est utilisé côté HTML.
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-rename-component', // ICI
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
+})
+{% endhighlight %}
+
+<p>
+    <span class="fw-bold">Il vous faudra aussi modifier toutes les occurences du nom de la classe du composant dans les fichiers <span class="fst-italic">.spec.ts</span>. et modules</span>
+
+    Pour cela, je vous recommande d'utiliser la fonction de renommage de votre IDE (généralement F2), qui devrait remplacer automatiquement toutes les occurences du nom de la classe.
+    Si ça ne fonctionne pas, utilisez Search and Replace (ctrl + h).
+</p>
+
+<a id="renommer-via-plugin" class="anchor"></a>
+<h2>Renommer via un plugin</h2>
+
+<p>
+    <span class="fw-bold">Comme promis, pour celles et ceux qui utilisent VSCode : vous pouvez ajouter un plugin</span> (Rename Angular Component) qui permet de réaliser toutes les étapes pour vous : renommer tous les fichiers du composant, mettre à jour le fichier <span class="fst-italic">app.module.ts</span>, la classe et le selecteur côté TS et HTML.
+</p>
+
+<p>
+    Il vous suffit de faire un clic-droit sur n'importe quel fichier du composant et de sélectionner "Rename Angular Component".
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Vous savez désormais renommer un composant Angular, malhreusement pour l'instant la CLI n'implémente pas cette fonctionnalité mais gardons bon espoir !
+</p>
+
+<p>
+    N'hésitez pas à laisser un commentaire, en espérant que cela vous a aidé.
+</p>
