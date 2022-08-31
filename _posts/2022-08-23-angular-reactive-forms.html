@@ -1,0 +1,409 @@
+---
+layout: post
+title: "Angular - Reactive forms"
+date: 2022-08-22 09:30:50 +0100
+description: "Dans cet article vous allez voir qu'est-ce que les reactives forms pourquoi et comment les utiliser."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-reactive-form/cover_angular_reactive_form.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+linked-ressource: "starter-kit-angular"
+---
+
+<a id="what-is-reactive-form" class="anchor"></a>
+<h2>Qu'est-ce qu'un reactive form ?</h2>
+
+<p>
+    <span class="fw-bold">Angular propose deux type de formulaires</span> à intégrer, nous avons déjà parler d'un qui est le template driven form <!-- TODO: lien vers article template driven form --> <a href="">ici</a>, dans cet article vous allez en découvrir un autre qui est les reactive forms.
+</p>
+
+<p>
+    Contrairement aux templates driven forms qui sont définis dans le template, <span class="fw-bold">les reactives forms sont construit du côté typescript du component</span> et permet donc de manipuler directement les instances de <code>FormControl</code>. L'objet du formulaire créée côté typescript sera ensuite relié aux inputs du template.
+</p>
+
+<a id="when-use-reactive-forms" class="anchor"></a>
+<h2>Quand utiliser les reactive forms ?</h2>
+
+<p>
+    Mais alors se pose la question quand est-ce qu'il est judicieux d'utiliser les reactive forms ?
+</p>
+
+<p>
+    <span class="fw-bold">Il est conseillé pour tous formulaires d'utiliser les reactives forms</span>, pour tout autre inputs, boutons, switch sans formulaire et qui ne demande pas de validation vous pouvez utilisez les template driven forms.
+</p>
+
+<p>
+    Les reactives forms offrent plus de possibilités que les templates driven forms :
+ </p>
+ 
+ <ul>
+     <li>L'utilisation des Observables pour avoir en temps réel les valeurs entrées par l'utilisateur</li>
+     <li>Un système de validation des données précise</li>
+     <li>Générer des formulaires dynamique</li>
+ </ul>
+ 
+ <a id="import-module" class="anchor"></a>
+<h2>Importer le module</h2>
+
+<p>
+    Pour commencer a créer un formulaire réactif, <span class="fw-bold">importez le ReactiveFormsModule dans votre fichier app.module.ts</span> :
+</p>
+
+{% highlight ts linenos %}
+import { ReactiveFormsModule } from '@angular/forms';
+
+@NgModule({
+ imports: [
+   // other imports ...
+   ReactiveFormsModule
+ ],
+})
+export class AppModule { }
+{% endhighlight %}
+<div class="code-caption">Import du ReactiveFormsModule dans app.module.ts</div>
+
+<a id="import-module" class="anchor"></a>
+<h2>Les différents type de control</h2>
+
+<p>
+    Dans cette section vous allez découvrir les différentes classes qui permettent de construire un reactive form. 
+</p>
+
+<p>
+    Toutes ces classes étentend la classe <code>AbstractControl</code> qui implémente la plupart des fonctionnalités de base comme accéder à la valeur, l'état de validation, les interractions utilisateurs et les événements.
+</p>
+
+<a id="formcontrol" class="anchor"></a>
+<h3>FormControl</h3>
+
+<p>
+    <span class="fw-bold">Un FormControl correspond à un champ de votre formulaire</span> qui permet de contrôler et d'accéder à l'état de l'input. Cet élément prend un seul argument pour décrire le type de sa valeur, dans la plupart des cas cet argument sera déduit.
+</p>
+
+{% highlight ts linenos %}
+let fc = new FormControl<string|null>('');
+{% endhighlight %}
+<div class="code-caption">exemple-form.component.ts</div>
+
+<p>
+    Maintenant vous allez instanciez un FormCrontrol pour le relier à l'input souhaité comme ceci : 
+</p>
+
+{% highlight ts linenos %}
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+
+@Component({
+ selector: 'app-name-editor',
+ templateUrl: './name-editor.component.html',
+ styleUrls: ['./name-editor.component.css']
+})
+export class NameEditorComponent {
+ name = new FormControl('');
+}
+{% endhighlight %}
+<div class="code-caption">exemple-form.component.ts</div>
+
+{% highlight html linenos %}
+<label>
+    Name:
+    <input type="text" [formControl]="name"/>
+</label>
+{% endhighlight %}
+<div class="code-caption">exemple-form.component.html</div>
+
+<p>
+    <span class="fw-bold">L'attribut <code>name</code> sera donc relié à l'input</span> qui a pour directive <code>[formControl]="name"</code>
+</p>
+
+<p>
+    <span class="fw-bold">Vous pouvez accéder à la valeur de l'input</span> comme ceci grâce à la propriété value :
+</p>
+
+{% highlight html linenos %}
+<p>
+    {%raw%} Value: {{ name.value }} {%endraw%}
+</p>
+{% endhighlight %}
+<div class="code-caption">exemple-form.component.html</div>
+
+<p>
+    <span class="fw-bold">Vous pouvez aussi modifié sa valeur du côté typescript</span> :
+</p>
+
+{% highlight ts linenos %}
+updateName() {
+    this.name.setValue('Nancy');
+   }
+{% endhighlight %}
+<div class="code-caption">exemple-form.component.ts</div>
+
+<a id="formgroup" class="anchor"></a>
+<h3>FormGroup</h3>
+
+<p>
+    <span class="fw-bold">Le <code>FormGroup</code> comme son nom l'indique réuni les valeurs de chaque enfant</span> (FormControl) dans un objet où chaque nom de control sera une clé.
+</p>
+
+<p>
+    Le statut du FormGroup est calculé selon les valeurs de statuts des enfants, si l'un des control d'un groupe est invalide, alors le groupe entier est invalide.
+</p>
+
+<p>
+    <span class="fw-bold">Le FormGroup est destiné aux cas d'utilisation où les clés sont connues à l'avance</span>.
+</p>
+
+<p>
+   Les FormControl peuvent être groupé ensemble dans un FormGroup :
+</p>
+
+{% highlight ts linenos %}
+import { Component } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
+
+@Component({
+ selector: 'app-profile-editor',
+ templateUrl: './profile-editor.component.html',
+ styleUrls: ['./profile-editor.component.css']
+})
+export class ProfileEditorComponent {
+ profileForm = new FormGroup({
+   firstName: new FormControl(''),
+   lastName: new FormControl(''),
+ });
+}
+{% endhighlight %}
+<div class="code-caption">exemple-form.component.ts</div>
+
+{% highlight html linenos %}
+<form [formGroup]="profileForm">
+    <label>
+      First Name:
+      <input
+        type="text"
+        formControlName="firstName"
+      >
+    </label>
+    <label>
+      Last Name:
+      <input
+        type="text"
+        formControlName="lastName"
+      >
+    </label>
+</form>
+{% endhighlight %}
+<div class="code-caption">exemple-form.component.ts</div>
+
+<p>
+    <span class="fw-bold">L'instance du FormGroup est relié grâce à la directive <code>[formGroup]="profileForm"</code></span>.
+</p>
+
+<p>
+    <span class="fw-bold">Tandis que chaque input est relié à un FormControl par la directive <code>formControlName</code></span> en ajoutant le nom du FormControl explicité dans le FormGroup côté typescript.
+</p>
+
+<p>
+    Si on essaye d'accéder à la valeur du groupe avec <code>profileForm.value</code>, ce formulaire générera ceci :
+</p>
+
+{% highlight html linenos %}
+{
+	firstName: 'value',
+	lastName: 'value'
+}
+{% endhighlight %}
+<div class="code-caption">profileForm.value</div>
+
+<a id="formarray" class="anchor"></a>
+<h3>FormArray</h3>
+
+<p>
+    Il y a aussi un autre élément de formulaire qui est le <code>FormArray</code>, 
+    il est pratique lorsque vous souhaitez faire une validation qui prend en compte la valeur de plusieurs FormControl :
+</p>
+
+{% highlight ts linenos %}
+const arr = new FormArray([
+  new FormControl('Nancy'),
+  new FormControl('Drew')
+], {validators: myValidator, asyncValidators: myAsyncValidator});
+{% endhighlight %}
+<div class="code-caption">exemple-form.component.ts</div>
+
+<p>
+    Les deux types de validateurs sont transmis séparément en tant qu'argument ou ensemble en tant qu'objet.
+</p>
+
+<p>
+    <span class="fw-bold">Vous pouvez gérer des FormControl au sein du FormArray avec les méthode <code>push</code>, <code>insert</code>, <code>removeAt</code>, <code>clear</code></span>.
+</p>
+
+<a id="create-form" class="anchor"></a>
+<h2>Créer un formulaire</h2>
+
+<a id="manually" class="anchor"></a>
+<h3>Manuellement</h3>
+
+<p>
+    Après avoir vu les différents types de control, vous allez voir comment construire un formulaire.
+</p>
+
+<p>Créez les FormControl côté fichier typescript qui seront liés à vos input côté fichier HTML : </p>
+
+{% highlight ts linenos %}
+const form = new FormGroup({
+  firstname: new FormControl('',Validators.min(2)),
+  lastname: new FormControl('', Validators.min(3)),
+  email: new FormControl('', Validators.email),
+  age: new FormControl('')
+}, {validators: required});
+
+submit(){
+    console.log(form);
+}
+{% endhighlight %}
+<div class="code-caption">exemple-form.component.ts</div>
+
+{% highlight html linenos %}
+<form [formGroup]="form" (ngSubmit)="submit()">
+    <input type="text" formControlName="firstname">
+    <input type="text" formControlName="lastname">
+    <input type="text" formControlName="email">
+    <input type="text" formControlName="age">
+    <button type="submit">Envoyer</button>
+</form>
+{% endhighlight %}
+<div class="code-caption">exemple-form.component.html</div>
+
+<p>
+    Il est conseillé de les mettre dans un FormGroup ou FormArray pour faciliter la manipulation de l'état complet du formulaire.
+</p>
+
+<p>
+    Vous pouvez voir qu'un objet d'option est placé en dernier argument du FormGroup qui permet d'appliquer un validateur sur tout les controls du FormGroup
+</p>
+
+<a id="use-formbuilder" class="anchor"></a>
+<h3>Avec le FormBuilder</h3>
+
+<p>
+    Maintenant vous allez voir une autre manière de constuire un formulaire !
+</p>
+
+<p>
+    Le <code>FormBuilder</code> est un service et doit donc être injecter dans le constructeur de la classe du component.
+</p>
+
+<p>
+    <span class="fw-bold">Le FormBuilder offre du sucre syntaxique et permet de simplifier la construction d'un reactive form</span> en omettant explicitement l'instanciation de FormControl.
+</p>
+
+{% highlight ts linenos %}
+import { Component } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
+
+@Component({
+ selector: 'app-profile-editor',
+ templateUrl: './profile-editor.component.html',
+ styleUrls: ['./profile-editor.component.css']
+})
+export class ProfileEditorComponent {
+
+constructor(private fb: FormBuilder) { }
+
+ profileForm = this.fb.group({
+   firstName: [''],
+   lastName: ['']
+ });
+}
+{% endhighlight %}
+<div class="code-caption">exemple-form.component.ts</div>
+
+<a id="submit-form" class="anchor"></a>
+<h2>Soumettre le formulaire</h2>
+
+<p>
+    De la même manière que les template driven forms, <span class="fw-bold">utilisez l'event <code>(ngSubmit)</code> qui appelera la méthode de soumissions du component</span>.
+</p>
+
+{% highlight html linenos %}
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+{% endhighlight %}
+<div class="code-caption">exemple-form.component.html</div>
+
+{% highlight ts linenos %}
+onSubmit() {
+    console.warn(this.profileForm.value);
+   }
+{% endhighlight %}
+<div class="code-caption">exemple-form.component.ts</div>
+
+<a id="error-management" class="anchor"></a>
+<h2>La gestion d'erreur</h2>
+
+<p>
+    Pour la gestion des erreurs de formulaire, Angular dispose plusieurs validateurs par défauts :
+</p>
+
+<ul>
+    <li>min</li>
+    <li>max</li>
+    <li>required</li>
+    <li>email</li>
+</ul>
+
+<p>
+    Ceci n'est pas une liste exhaustive, veuillez vous référez à la documentation d'<a href="https://angular.io/api/forms/Validators">Angular</a>
+</p>
+
+<p>
+    Vous pouvez aussi en créer des personnalisés.
+</p>
+
+<p>
+    <span class="fw-bold">Les validateurs se définissent en second paramètre ou sous forme d'array</span>.
+</p>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+     Pour utiliser les validateurs il faut avoir importé <code>Validators</code>
+    </a> 
+    </div>
+</div>
+
+{% highlight ts linenos %}
+profileForm = this.fb.group({
+    firstName: ['', [Validators.required, Validators.min(3)],
+    lastName: ['', Validators.min(10)],
+   });   
+{% endhighlight %}
+<div class="code-caption">exemple-form.component.ts</div>
+
+<p>
+    Remarquez la différence syntaxique entre les deux lignes, l'un utilise les crochets car il a deux validateurs, et l'autre n'a aucun crochet car il n'utilise qu'un validateur.
+</p>
+
+<p>
+    Si l'utilisateur n'entre pas de valeur dans <code>firstname</code> alors la validation du formulaire n'est pas bonne et il passera le formulaire en état invalide.
+</p>
+
+<p>
+    Vous verrez plus en détails sur la gestion d'erreur des reactive forms dans cet <!-- TODO: liens vers article gestion d'erreur reactive form --> <a href="">article</a>.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    J'espère que cet article vous aidera à comprendre les reactive forms, il y a encore beaucoup d'informations à couvrir sur les formulaires d'angular que vous verrez dans d'autres articles.
+</p>
+
+<p>
+    N'hésitez pas à laisser un commentaire !
+</p>

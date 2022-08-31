@@ -1,0 +1,234 @@
+---
+layout: post
+title: "Angular - Gestion d'erreurs des reactives forms"
+date: 2022-08-25 12:30:50 +0100
+description: "Dans cet article vous allez voir comment faire la gestion d'erreur de formulaire."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-gestion-erreur/cover_angular_gestion_erreur.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+linked-ressource: "starter-kit-angular"
+---
+
+<a id="what-do-validators" class="anchor"></a>
+<h2>Qu'est-ce que les validateurs ?</h2>
+
+<p>
+    Dans les articles des reactives forms et des templates driven forms vous avez vu sommairement la gestion d'erreur avec les <code>Validators</code>.     Ici vous allez apprendre comment s'en servir en détails.
+</p>
+
+<p>
+    Tout d'abord les constructeurs de controls (<code>FormGroup</code>, <code>FormArray</code> et <code>FormControl</code>) acceptent un second paramètre qui est une liste de fonctions de validations dit Validators.
+</p>
+
+<p>
+    Ce sont les validateurs natifs d'Angular et sont regroupés en méthodes statiques dans la classe Validators.
+</p>
+
+<p>
+    Ils servent à valider la donnée de l'utilisateur conformément à celle attendue.
+</p>
+
+<a id="validators" class="anchor"></a>
+<h2>Validators</h2>
+
+<p>
+    <span class="fw-bold">Un validateur est une fonction</span> qui traite un control ou une collection de control et renvoie une "carte" d'erreur ou null, null signifie que la validation a réussie.
+</p>
+
+<p>
+    Voici comment utiliser un validateur sur un control :
+</p>
+
+{% highlight ts linenos %}
+name = new FormControl('', Validators.minLength(2);
+{% endhighlight %}
+<div class="code-caption">form-exemple.component.ts</div>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        Ceci est valable autant pour les FormGroup et les FormArray.
+    </a> 
+    </div>
+</div>
+<p>
+    Vous pouvez voir que  <span class="fw-bold">le validateur viens en deuxième paramètre du constructeur du FormControl</span>.
+</p>
+
+<p>
+    <span class="fw-bold">Il est aussi possible de chaîner les validateurs</span> en les mettant dans un tableau : 
+</p>
+
+{% highlight ts linenos %}
+name = new FormControl('', [Validators.minLength(2), Validators.required]);
+{% endhighlight %}
+<div class="code-caption">form-exemple.component.ts</div>
+
+<p>
+    Les controls disposent de propriétés et de méthodes permettant de connaître leur état :
+</p>
+
+<ul>
+    <li>
+        valid : Booléen indiquant si le control est valide. Dans le cas d'un FormGroup ou FormArray, le control est valide si les controls qui le composent sont tous valides. 
+    </li>
+    <li>
+        errors : Objet combinant les erreurs de tous les validateurs.  Vaut null si le control est valide. 
+    </li>
+    <li>
+        touched : Booléen à true dès le déclenchement de l'événement blur (quand l'utilisateur change de focus). 
+    </li>
+    <li>
+        pristine : Booléenne indiquant si le control a été modifié.
+    </li>
+    <li>
+        invalid : Booléen indiquant si le statut du control est invalide.
+    </li>
+</ul>
+
+<a id="validator-personal" class="anchor"></a>
+<h3>Validateur custom</h3>
+
+<p>
+    Pour des formulaires un peu plus complexe vous aurez besoin d'implémenter vos propres validations.
+</p>
+
+<p>
+    Par exemple si vous avez un formulaire qui contient deux champs de mot de passe il vous faudra vérifier le contenu des deux controls et si ils sont identique alors la validation a réussie.
+</p>
+
+<p>
+    Créez un fichier password.validator.ts dans le dossier de votre module et examiner le code ci-dessous :
+</p>
+
+{% highlight ts linenos %}
+import { ReactiveFormsModule } from '@angular/forms';
+
+@NgModule({
+    import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+
+    export function passwordMatchValidator(password: string, confirm: string): ValidatorFn {
+        return (control: AbstractControl): null | ValidationErrors => {
+            if (!control.get(password) || !control.get(confirm)) {
+                return {
+                    confirmEqual: 'Invalid controls'
+                };
+            }
+            const passwordValue = control.get(password)?.value;
+            const confirmValue = control.get(confirm)?.value;
+            
+            return passwordValue === confirmValue ? null : {
+                confirmEqual: {
+                    password: passwordValue,
+                    confirm: confirmValue
+                }
+            };
+        };
+    }
+{% endhighlight %}
+<div class="code-caption">password.validator.ts</div>
+
+<p>
+    Le paramètre <code>control</code> fait référence au FormGroup ou FormControl où le validateur effectue sa fonction mais dans ce cas-ci il sera placé dans un FormGroup pour comparer deux valeurs de controls.
+</p>
+
+<p>
+    <span class="fw-bold">La fonction get permet de récupérer le control</span> en mentionnant son nom ce qui permet alors d'utiliser la propriété value pour connaître la valeur du control.
+</p>
+
+<p>
+    Appliquez maintenant le validateur : 
+</p>
+
+{% highlight ts linenos %}
+form = new FormGroup({
+    password: new FormControl(''),
+    confirm: new FormControl(''),
+  }, passwordMatchValidator('password', 'confirm')
+  );
+{% endhighlight %}
+<div class="code-caption">form-exemple.component.ts</div>
+
+<a id="haserror-geterror" class="anchor"></a>
+<h2>hasError et getError</h2>
+
+<p>
+    Pour accéder facilement aux informations d'erreur d'un control et les afficher, Angular a mis a disposition deux méthodes <code>hasError</code> et <code>getError</code>.
+</p>
+
+{% highlight html linenos %}
+<input type="text" formControlName="name">
+<span 
+class="text-danger" 
+*ngIf="name.touched && name.hasError('required')"
+>{%raw%}{{name.getError()}}{%endraw%}*</span>
+{% endhighlight %}
+<div class="code-caption">form-exemple.component.html</div>
+
+<p>
+    <span class="fw-bold">La méthode hasError s'applique sur un control et retourne un booléen</span> si il contient une erreur de validation si non null. Il faut appliquer le nom du validateur en paramètre tout en minuscule.
+</p>
+
+<p>
+    <span class="fw-bold">La méthode getError elle retourne les données de l'erreur</span> ou renvoie null si il n'y a pas d'erreur.
+</p>
+
+<a id="display-state-form" class="anchor"></a>
+<h2>Afficher les messages d'erreur</h2>
+
+<p>
+    <span class="fw-bold">Rappelez vous que tous les controls sont des AbstractControl étendu</span>. Et pour observer les changements d'état de validation, il existe une propriété <code>statusChanges</code> qui est un Observable.
+</p>
+
+{% highlight html linenos %}
+<small class="error-text" *ngIf="showPasswordError$ | async">Les deux mots de passe ne correspondent pas</small>
+{% endhighlight %}
+<div class="code-caption">form-exemple.component.html</div>
+
+{% highlight ts linenos %}
+formLogin = new FormGroup({
+    username: new FormControl(''),
+    password: new FormControl(''),
+    confirm: new FormControl(''),
+  }, {
+      validators: [passwordMatchValidator('password', 'confirm'), Validators.required],
+      updateOn:'blur'
+    },
+  );
+
+  showPasswordError$: Observable<Boolean> = this.formLogin.get('password').statusChanges.pipe(
+    map(status => status === 'INVALID' &&
+      this.formLogin.get('password').value &&
+      this.formLogin.get('confirm').value &&
+      this.formLogin.hasError('confirmEqual')
+      )
+  );{% endhighlight %}
+<div class="code-caption">form-exemple.component.ts</div>
+
+<p>
+    Remarquez l'attribut <code>showPasswordError$</code> du form-exemple.component, c'est un observable de type booléen qui permettra d'afficher selon son état le message d'erreur côté HTML.
+</p>
+
+<p>
+    Si son statut est invalide, que les controls sont falses et que le formLogin contient une erreur confirmEqual renvoyer par notre validateur alors le booléen sera true et le message d'erreur s'affichera.
+</p>
+
+<p>
+    Vous pouvez aussi voir une clé <code>updateOn</code> dans l'objet d'option du formGroup, cela permet de vérifier la validation qu'aà partir de l'évènement <code>blur</code> et pas avant (cela évite d'afficher le message d'erreur alors que l'utilisateur n'a pas encore renseigné les deux champs).
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    J'espère que cet article vous aidera à mieux appréhender la gestion d'erreur des réactives forms. N'hésitez pas à parcourir la documentation Angular pour la liste des validateurs natif.
+</p>
+
+<p>
+    Pour toutes questions laissez nous un commentaire !
+</p>
