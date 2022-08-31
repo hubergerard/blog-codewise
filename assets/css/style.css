@@ -2933,3 +2933,8 @@ code {
 .tableOperator > tbody > tr:nth-child(odd) {
   background-color: rgb(221, 221, 221);
 }
+
+#image_author_post{
+  width: 10%;
+  height: 10%;
+}

@@ -1,0 +1,11 @@
+#infos_post{
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+#name_infos_post{
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+}
