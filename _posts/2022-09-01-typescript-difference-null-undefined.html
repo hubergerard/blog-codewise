@@ -1,0 +1,283 @@
+---
+layout: post
+title: "Typescript - Différences entre null et undefined"
+date: 2022-09-01 10:10:50 +0100
+description: "Dans cet article, découvrez les différences entre null et undefined en Typescript."
+tags: developpement web Typescript
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/typescript-undefined-null/cover_undefined_null.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<p>
+    <span class="fw-bold">Typescript (et JavaScript) a deux valeurs spéciales pour exprimer la nullité</span> : <code>null</code> et <code>undefined</code>. 
+    Les deux représentent l'absence de toute valeur.
+</p>
+
+<p>
+    Mais pourquoi avoir 2 valeurs différentes pour exprimer l'absence de valeur ?
+</p>
+
+<p> C'est ce que nous allons explorer dans cet article.</p>
+
+<a id="difference-undefined-null" class="anchor"></a>
+<h2>La différence entre <code>undefined</code> et <code>null</code></h2>
+
+<p>
+    <span class="fw-bold">La valeur <code>undefined</code> signifie que la valeur n'est pas affectée.</span> 
+    Cela signifie qu'une variable a été déclarée mais n'a pas encore reçu de valeur.
+    <code>undefined</code> est donc nécessairement une valeur acceptée pour des variables de n'importe quel type.
+</p>
+<p>
+    <span class="fw-bold">La valeur <code>null</code> indique que vous savez que le champ n'a pas de valeur, c'est une absence intentionnelle de valeur. </span>
+    On affecte <code>null</code> à une variable.
+    <code>null</code> n'est généralement pas une valeur autorisée pour les variables typées.
+</p>
+
+<a id="undefined" class="anchor"></a>
+<h2>Dans quel cas une variable est <code>undefined</code> ou <code>null</code> ?</h2>
+
+<a id="undefined" class="anchor"></a>
+<h3>undefined</h3>
+
+<p>
+    <span class="fw-bold">Chaque fois que vous déclarez une variable sans l'initialiser avec une valeur, JavaScript l'initialise à la valeur <code>undefined</code>.
+</p>
+
+<p>
+    L'exemple suivant déclare la variable <code>myVar</code>. Nous ne lui avons donné aucune valeur initiale. 
+    Par défaut, elle prend donc la valeur <code>undefined</code>. 
+    Mais pour <code>null</code>, nous devons explicitement lui attribuer la valeur.
+</p>
+
+{% highlight ts linenos %}
+let myVar: any;              
+console.log(myVar);         // undefined
+ 
+myVar = null;               // Affectation de la valeur null 
+console.log(myVar);         // Affiche 'null'
+{% endhighlight %}
+<div class="code-caption">Affectation de valeur nulle</div>
+
+<p>
+    Voici quelques-uns des cas où une variable obtient automatiquement la valeur <code>undefined</code> :
+</p>
+
+<ul>
+    <li>Variable non initialisée</li>
+    <li>Argument de fonction facultatif qui n'a pas été fourni</li>
+    <li>Propriétée d'objet inexistante</li>
+    <li>Éléments de tableau inexistants</li>
+</ul>
+
+<a id="null" class="anchor"></a>
+<h3>null</h3>
+
+<p class="fw-bold">
+    JavaScript n'attribuera jamais automatiquement <code>null</code> à aucune variable.
+</p>
+
+<p> <code>null</code> doit être utilisé dans tous les cas où l'affectation est réalisée par le développeur. Ainsi, <code>undefined</code> ne représente que les cas où la variable n'a jamais eu de valeur.</p>
+
+<p>Par exemple :</p>
+
+{% highlight ts linenos %}
+function findBob(names: string[]): string | null {
+    const bob = names.find('Bob');
+    if (bob) {
+        return bob;
+    }
+    return null;
+}
+{% endhighlight %}
+<div class="code-caption">Exemple d'utilisation de null</div>
+
+<p>
+    Dans cet exemple, on renvoie la valeur <code>null</code> et non <code>undefined</code>. Car la valeur est intentionnellement nulle. 
+    On ne renvoie pas une variable non initialisée mais bien <code>null</code> pour signifier que Bob n'est pas dans la liste.
+</p>
+
+<p>
+    L'avantage est que le code qui utilisera un appel à cette fonction sera incité à prévoir le cas où <code>null</code> sera renvoyé.
+</p>
+
+<p> <span class="fw-bold">On utilise <code>null</code> également pour supprimer une valeur</span>, au lieu d'affecter <code>undefined</code>.</p>
+
+<a id="data-type" class="anchor"></a>
+<h2>Les types <code>undefined</code> et <code>null</code></h2>
+
+<p>
+    <span class="fw-bold">Les valeurs <code>undefined</code> & <code>null</code> ont des types de donnée correspondants, nommés avec le même nom que la valeur </span>. 
+    Le type de données de <code>undefined</code> est <code>undefined</code> et celui de <code>null</code> est <code>null</code>.
+</p>
+
+{% highlight ts linenos %}
+let a: undefined;         // a est une variable de type undefined
+let b: null = null;       // b est une variable de type null
+ 
+console.log(typeof(a));   // undefined
+console.log(typeof(b));   // object
+{% endhighlight %}
+<div class="code-caption">Typage de valeurs nulles</div>
+
+<p>
+    Vous pouvez vous demander pourquoi l'opérateur <code>typeof</code> renvoie 'object' pour une valeur nulle. 
+    Il s'agit en fait d'une erreur dans l'implémentation JavaScript d'origine, qui a ensuite été gardée pour éviter les régressions.
+    Logiquement le type de <code>null</code> devrait être <code>null</code>.
+</p>
+
+<p>
+    Aujourd'hui, il est rationalisé que <code>null</code> est considéré comme un espace réservé pour un objet, même si, techniquement, il s'agit d'une valeur primitive.
+</p>
+
+<a id="affectation-valeur" class="anchor"></a>
+<h2>Affectations de valeures nulles</h2>
+
+<a id="variable-typee" class="anchor"></a>
+<h3>À une variable typée</h3>
+
+<p>
+    Si vous typez une variable comme étant un number (par exemple), vous ne pourrez pas lui affecter la valeur <code>null</code>.
+    Mais elle pourra prendre la valeur <code>undefined</code>.
+</p>
+
+{% highlight ts linenos %}
+let myVar: number;             
+console.log(myVar);         // La valeur est : undefined
+ 
+myVar = null;               // TypeError: Type 'null' is not assignable to type 'number'.
+{% endhighlight %}
+<div class="code-caption">null ne peut pas être assigné à une variable typé</div>
+
+<p>
+    Si l'on voulait autoriser <code>myVar</code> à prendre la valeur <code>null</code>, il faudrait la typer ainsi :
+</p>
+
+{% highlight ts linenos %}
+let myVar: number | null;             
+console.log(myVar);         // La valeur est : undefined
+ 
+myVar = null;
+console.log(myVar);         // Affiche 'null'
+{% endhighlight %}
+<div class="code-caption">Union avec le type null</div>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        Si vous désactivez l'option StrictNullCheck dans votre tsconfig, vous pourez affecter <code>null</code> à n'importe quel type de variable.
+    </div>
+</div>
+
+<a id="variable-undefined" class="anchor"></a>
+<h3>À une variable typée <code>undefined</code></h3>
+
+<p>
+    La seule valeur que vous pouvez affecter à une variable <code>undefined</code> est <code>undefined</code>. Vous pouvez attribuer <code>null</code> uniquement si l'option <code>StrictNullCheck</code> est désactivée dans votre configuration TypeScript.
+</p>
+<p>
+    Toutes les autres valeurs telles que chaîne, objet, nombres, etc. ne sont pas autorisées.
+</p>
+
+{% highlight ts linenos %}
+let uVar: undefined;
+ 
+// Autorisé
+uVar = undefined;     // Ok
+ 
+// Autorisé seulement si StrictNullCheck est désactivé
+uVar = null;          // TypeError: Type 'null' is not assignable to type 'undefined'
+ 
+// Non autorisé
+uVar = 10;            // 10 is not assignable to type 'undefined'
+uVar = {};            // {} is not assignable to type 'undefined'
+{% endhighlight %}
+<div class="code-caption">TypeError : assignation de valeur à une variable <code>undefined</code></div>
+
+<a id="variable-typee" class="anchor"></a>
+<h3>À une variable typée <code>null</code></h3>
+
+<p>
+    Dans le cas d'une variable typée null, la seule valeur que vous pouvez lui attribuer est <code>null</code>. Vous pouvez également attribuer <code>undefined</code> si <code>StrictNullCheck</code> est désactivée.
+</p>
+
+{% highlight ts linenos %}
+let nVar: null;
+ 
+// Autorisé
+nVar = null;        // Ok
+ 
+// Autorisé seulement si StrictNullCheck est désactivé
+nVar = undefined;   // Type 'null' is not assignable to type 'null'.
+ 
+// Non autorisé
+nVar = 10;          // Type '10' is not assignable to type 'null'
+nVar = {};           // Type '{}' is not assignable to type 'null'
+{% endhighlight %}
+<div class="code-caption">TypeError : assignation de valeur à une variable <code>null</code></div>
+
+<a id="value-false" class="anchor"></a>
+<h2>Valeur fausse (falsy value)</h2>
+
+<p>
+    <span class="fw-bold"><code>null</code> & <code>undefined</code> sont des valeurs fausses (falsy value) en JavaScript</span>. C'est-à-dire que lorsque vous les utilisez dans une expression booléenne, ils sont équivalents à <code>false</code>.
+</p>
+
+{% highlight ts linenos %}
+let a = undefined;
+let b = null;
+
+if (!a) console.log('false');        // Affiche 'false'
+if (!b) console.log('false');        // Affiche 'false'
+{% endhighlight %}
+<div class="code-caption"><code>undefined</code> et <code>null</code> sont des falsy values</div>
+
+
+<a id="compare" class="anchor"></a>
+<h2>Opérateurs de comparaison entre <code>null</code> et <code>undefined</code></h2>
+
+<p>
+    La comparaison de <code>null</code> avec des résultats indéfinis donne des résultats différents selon que vous utilisez un vérificateur d'égalité <code> == </code> ou un vérificateur d'égalité strict <code>===</code>.
+</p>
+
+<p>
+   <code>null</code> et <code>undefined</code> ne représentent aucune valeur, donc le vérificateur d'égalité <code>==</code> renvoie <code>true</code>. C'est parce que le vérificateur d'égalité ne vérifie pas le type de données.
+</p>
+
+{% highlight ts linenos %}
+console.log(null == undefined);      // true
+console.log(null === undefined);     // false
+{% endhighlight %}
+<div class="code-caption">Vérification d'égalité</div>
+
+<p> Tous les autres opérateurs de comparaisons renverront <code>false</code>.</p>
+
+{% highlight ts linenos %}
+console.log(null > undefined);      // false
+console.log(undefined > null);      // false
+console.log(null >= undefined);     // false
+etc.
+{% endhighlight %}
+<div class="code-caption">Vérification d'inégalité</div>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    J'espère que cet article vous a aidé à bien comprendre les différences subtiles entre <code>null</code> et <code>undefined</code>.
+</p>
+
+<p>
+    N'hésitez pas à laisser un commentaire si vous avez une question ou une remarque !
+</p>
+
+<a id="sources" class="anchor"></a>
+<h2>Sources</h2>
+<ul>
+    <li> Documentation TypeScript : <a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-0.html" rel ="external nofollow" target="_blank">TypeScript null et undefined</a></li>
+    <li> TekTutorialsHub : <a href="https://www.tektutorialshub.com/typescript/null-undefined-in-typescript/" rel ="external nofollow" target="_blank">Null Vs Undefined in TypeScript</a></li>
+</ul>
