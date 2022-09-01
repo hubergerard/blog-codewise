@@ -1,0 +1,298 @@
+---
+layout: post
+title: "Angular - Les guards"
+date: 2022-07-25 14:10:50 +0100
+description: "Dans cet article vous apprendez ce qu'est les guards dans le framework angular et comment les utiliser"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-guards/cover_angular_guards.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+linked-ressource: "starter kit angular"
+---
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    <span class="fw-bold">Dans les applications traditionnelles, 
+    on vérifierait côté serveur l'autorisation d'accès aux pages</span>
+    et on renverrait une <code>erreur 403</code> si l'utilisateur ne possèderait pas l'autorisation d'accès.
+</p>
+
+<p>
+    <span class="fw-bold">Nous pouvons avoir la même chose du côté front</span> car Angular implémente cette fonctionnalité : Le Router Guards
+</p>
+
+<p>
+    Avec le Router Guards <span class="fw-bold">vous pouvez empêcher les utilisateurs d'accéder à des zones si ils n'ont pas l'autorisation requise, ou vous pouvez leur demander une confirmation lorsqu'il quitte une certaine zone.</span>
+</p>
+
+<a id="type-guards" class="anchor"></a>
+<h2>Type de guards</h2>
+
+<p>
+    Voici la liste exhaustive des <code>guards</code> d'Angular que vous allez voir en détails dans les sections suivantes :
+</p>
+
+<ul>
+    <li>CanActivate : vérifie si un utilisateur peut accéder à une route</li>
+    <li>CanActivateChild : vérifie si un utilisateur peut accéder a une route enfant</li>
+    <li>CanDeactivate : vérifie si un utilisateur peut quitter une route</li>
+    <li>Resolve : Récupère les données d'une route avant l'activation d'une route</li>
+    <li>CanLoad : vérifie si un utilisateur peut accéder à un module lazy-loading</li>
+</ul>
+
+<p>
+    Vous allez voir les trois premiers guards car les deux derniers sont des cas d'utilisation avancés et nécésitte de connaître les concepts de <code>lazy loading</code>.
+</p>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        Pour une route vous pouvez implémentez aucune ou n'importe quel nombre de guards.
+    </div>
+</div>
+
+<p>
+    <span class="fw-bold">La CLI peut vous aidez à générer un guard</span> et vous propose de sélectionner quel type vous souhaitez avec la commande : 
+</p>
+
+{% highlight shell %}
+ng generate guard nameOfGuard
+{% endhighlight %}
+
+<a id="can-activate" class="anchor"></a>
+<h3>CanActivate</h3>
+
+<p>
+    <span class="fw-bold">Les guards sont implémentés en tant que services</span> qui doivent être injecter donc ils disposent du décorateur <code>@Injectable</code>.
+</p>
+
+<p>
+    <span class="fw-bold">Les guards retournent soit <code>true</code> si la vérification de l'accès de l'utilisateur est bonne, soit <code>false</code> dans le cas contraire.</span>
+</p>
+
+<p>
+    Vous pouvez également renvoyer un <code>Observable</code> ou une <code>Promise</code> en booléen si par exemple vous devez contactez une API.
+</p>
+
+<p>
+    Voici le code du fichier que la CLI a générer :
+</p>
+
+{% highlight ts %}
+import { Injectable } from '@angular/core';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TestGuard implements CanActivate {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return true;
+  }
+}
+{% endhighlight %}
+<div class="code-caption">your.guard.ts</div>
+
+<p>
+    La fonction <code>canActivate</code> renvoie true tous le temps, donc le guard autorise en tout temps la route qui l'implémenterait.
+</p>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        Il ne faudra pas oublier de founir le guard dans le provider de votre module !
+    </div>
+</div>
+
+<p>
+    Ensuite, ajoutez le guard à une ou plusieurs routes comme ceci :
+</p>
+
+{% highlight ts %}
+const routes: Routes = [
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: 'find', redirectTo: 'search'},
+  {path: 'home', component: HomeComponent},
+  {path: 'search', component: SearchComponent},
+  {
+    path: 'pokemon/:pokemonId',
+    component: PokemonComponent,
+    canActivate: [TestGuard], // <-- ajout du guard
+    children: [
+      {path: '', redirectTo: 'Bio'},
+      {path: 'attack', component: AttackComponent},
+      {path: 'Bio', component: BiographieComponent},
+    ]
+  },
+  {path: '**', component: HomeComponent}
+];
+{% endhighlight %}
+<div class="code-caption">app-routing.module.ts</div>
+
+<p>
+    Dans la route, vous devez implémentez le paramètre canActivate et mentionner le nom de votre guard dans un tableau, car oui vous pouvez avoir plusieurs guards pour une seule route !
+</p>
+
+<p>
+    Pour l'instant le guard n'effectue aucune vérification et laisse donc l'utilisateur accéder à la route. Voyons le cas le plus typique pour le canActivate, comment refuser un utilisateur non authentifier.
+</p>
+
+<p>
+    Admettons que vous avez un <code>userService</code> qui implémente une fonction <code>isLogged()</code> qui vérifie si l'utilisateur est connecté en renvoyant true si oui et false si non.
+</p>
+
+{% highlight ts %}
+canActivate() {
+    console.log("OnlyLoggedInUsers");
+    if (this.userService.isLoggedIn()) {
+      return true;
+    } else {
+        window.alert("Vous n'avez pas la permission pour voir cette page");
+      return false;
+    }
+  }
+{% endhighlight %}
+<div class="code-caption">your.guard.ts</div>
+
+<p>
+    Le guard autorisera l'accès à l'utilisateur si il est connecté si non il n'autorisera pas l'accès en affichant une fenêtre d'alerte.
+</p>
+
+<p>
+    Si vous voulez rediriger votre utilisateur vers une page de connexion, vous pouvez injecter <code>Router</code> dans le constructeur et utiliser la fonction <code>navigate</code>.
+</p>
+
+<a id="can-activate-child" class="anchor"></a>
+<h3>CanActivateChild</h3>
+
+<p>
+    C'est exactement le même principe pour le guard <code>canActivateChild</code>, vous devez implémenter la classe avec l'interface canActivateChild et appelé sa fonction :
+</p>
+
+{% highlight ts %}
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanActivateChild } from '@angular/router';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TestChildGuard implements CanActivateChild {
+  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+    return true
+  }
+}
+{% endhighlight %}
+<div class="code-caption">yourChild.guard.ts</div>
+
+<p>
+    N'oubliez pas de fournir le guard dans les providers du module !
+</p>
+
+<p>
+    Ensuite ajoutez le guard dans une route qui possède des routes enfants :
+</p>
+
+{% highlight ts %}
+const routes: Routes = [
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: 'find', redirectTo: 'search'},
+  {path: 'home', component: HomeComponent},
+  {path: 'search', component: SearchComponent},
+  {
+    path: 'pokemon/:pokemonId',
+    component: PokemonComponent,
+    canActivate: [TestGuard],
+    canActivateChild:[TestChildGuard], // <-- Ajout du ChildGuard
+    children: [
+      {path: '', redirectTo: 'Bio'},
+      {path: 'attack', component: AttackComponent},
+      {path: 'Bio', component: BiographieComponent},
+    ]
+  },
+  {path: '**', component: HomeComponent}
+];
+{% endhighlight %}
+<div class="code-caption">yourChild.guard.ts</div>
+
+<p>
+    Par la suite implémentez une logique comme le cas du canActivate précedemment.
+</p>
+
+<p>
+    Cela permettra de protéger ou de donner l'accès aux routes enfants selon vos vérifications.
+</p>
+
+<a id="can-deactivate" class="anchor"></a>
+<h3>CanDeactivate</h3>
+
+<p>
+    Comme pour les autres guards, il faut l'implémenter dans la classe mais c'est une interface générique et a besoin d'un typage de component où ce dernier doit contenir une logique pour savoir si il a des modifications non enregistré par l'utilisateur.
+</p>
+
+{% highlight ts %}
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, CanDeactivate } from '@angular/router';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class TestGuard implements CanDeactivate<SearchComponent> {
+  canDeactivate(
+    component: SearchComponent,
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    return component.canDeactivate() ||  window.confirm("Êtes vous sûr de vouloir quitter la page ?") true;
+  }
+}
+{% endhighlight %}
+<div class="code-caption">yourDeactivate.guard.ts</div>
+
+<p>
+    Maintenant si l'utilisateur navigue sur la page de recherche et n'effectue aucune recherche et qu'il essaye de naviguer sur une autre page alors il obtiendra une fenêtre d'alerte pour confirmer sa navigation.
+</p>
+
+<p>
+    Bien sûr c'est un exemple non exhaustif vous pouvez faire une tout autre logique !
+</p>
+
+<a id="parameters" class="anchor"></a>
+<h2>Les paramètres</h2>
+
+<p>
+    Vous pouvez voir aussi des paramètres à la fonction du guard implémenter par Angular :
+</p>
+
+<ul>
+    <li>route: ActivatedRouteSnapshot</li>
+    <li>state: RouterStateSnapshot</li>
+</ul>
+
+<p>
+    Le paramètre route représente la route où sera dirigé l'utilisateur si le guard renvoi true. Vous pouvez l'utiliser pour extraire les paramètres de cette route pour la logique de votre guard.
+</p>
+
+<p>
+    Le paramètre state est l'objet qui contient toutes les variables du routeur dans l'état actuel. Idem vous pouvez l'utiliser pour extraires ces variables pour la logique de votre guard.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà l'article touche à sa fin, vous avez vu les concepts de base des guards en espérant que cela vous sera utile.
+</p>
+
+<p>
+    N'hésitez pas à laisser un commentaire !
+</p>
