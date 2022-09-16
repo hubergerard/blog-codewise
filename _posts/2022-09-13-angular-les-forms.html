@@ -1,0 +1,339 @@
+---
+layout: post
+title: "Angular - Les forms"
+date: 2022-09-02 10:10:50 +0100
+description: "Dans cet article, vous allez comprendre les différents types de formulaire au sein d'Angular."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-forms/cover_article_forms.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+linked-ressource: "starter-kit-angular"
+lang: fr
+---
+
+<a id="angular-forms" class="anchor"></a>
+<h2>Les formulaires d'Angular</h2>
+
+<p>
+    Angular propose deux types de formulaires pour gérer les entrées utilsateurs :
+</p>
+
+<ul>
+    <li>Les reactive form</li>
+    <li>Les template driven form</li>
+</ul>
+
+<p>
+    Les deux types de formulaires capturent l'évènement de l'entrée utilisateur à partir de la vue, valident l'entrée, créée un modèle de données et fournissent un moyen de suivre les modifications.
+</p>
+
+<p>
+    Cet article vous aidera à comprendre et a choisir quel type de formulaire vous convient selon votre cas d'utilisation.
+</p>
+
+<a id="which-to-choose" class="anchor"></a>
+<h2>Lequel choisir ?</h2>
+
+<p>
+    Les reactives forms et les template driven form traitent et gère les données differemment et chaque approche offre des avantages différents.
+</p>
+
+<p>
+    Les reactives forms fournissent un accès direct et explicite au modèle d'objet du formulaire. 
+    Par rapport aux template driven form cela se traduit par une meilleur robustesse, evolutivité, réutilisabilité et testabilité. Si les formulaires sont un élément phare de votre application utilisez les reactive form.
+</p>
+
+<p>
+    Les template driven form s'appuie sur les directives pour créer et manipuler le modèle d'objet du formulaire. 
+    Cette façon est recommandé pour des formulaires simples, si vous avez des exigences et une logique de formulaire très basique qui peuvent être gérer uniquement dans la vue alors cela pourrait être un bon choix.
+</p>
+
+<a id="main differences" class="anchor"></a>
+<h3>Principales différences</h3>
+
+<p>
+    Voici les principales différences entre les deux types de formulaires
+</p>
+
+<table class="table-article-forms mb-5">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Reactive form</th>
+            <th>Template driven form</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>Configuration du modèle de formulaire</code></td>
+            <td>Explicite, créé dans la classe du composant</td>
+            <td>Implicite, créé par des directives</td>
+        </tr>
+        <tr>
+            <td><code>Modèle de données</code></td>
+            <td>Structuré et immuable</td>
+            <td>Non structuré et modifiable</td>
+        </tr>
+        <tr>
+            <td><code>Flux de données</code></td>
+            <td>Synchrone</td>
+            <td>Asynchrone</td>
+        </tr>
+        <tr>
+            <td><code>Validation du formulaire</code></td>
+            <td>Les fonctions</td>
+            <td>Directives</td>
+        </tr>
+    </tbody>
+</table>
+
+<a id="scalability" class="anchor"></a>
+<h3>Évolutivité</h3>
+
+<p>
+    Si les formulaires sont un élément centrale de votre application alors le principe d'évolutivité est important à prendre en compte, comme pouvoir réutilisé les modèles de formulaire dans d'autres composants.
+</p>
+
+<p>
+    Les reactive form sont plus évolutifs que les template driven form, l'accès à l'API de formulaire est direct en plus de nécessiter moins de configuration pour les tests et de compréhension approfondie.
+</p>
+
+<p>
+    Les template driven form sont optimales pour des scénarios simple et ne sont donc pas aussi réutilisable. Ils font abstraction de l'API de formulaire et cela affecte également les tests et donc nécessite plus de configurations.
+</p>
+
+<a id="config-model-forms" class="anchor"></a>
+<h2>Configuration du modèle de formulaire</h2>
+
+<p>
+    Les formulaires suivent les changements de valeur entre les éléments d'entrée de formulaire (input, boutons, textarea, etc...) et les données de formulaires dans le modèle du composant.
+</p>
+
+<p>
+    Les deux approches diffèrent dans la façon dont vous créez et gérez les instances de contrôle de formulaire.
+</p>
+
+<a id="basic-classes" class="anchor"></a>
+<h3>Classes de base</h3>
+
+<table class="table-article-forms mb-5">
+    <thead>
+        <tr>
+            <th>Classes</th>
+            <th>Détails</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>FormControl</code></td>
+            <td>Suit la valeur et l'état de validation d'un contrôle de formulaire individuel.</td>
+        </tr>
+        <tr>
+            <td><code>FormGroup</code></td>
+            <td>Suit les mêmes valeurs et statuts pour une collection de contrôles de formulaire.</td>
+        </tr>
+        <tr>
+            <td><code>FormArray</code></td>
+            <td>Suit les mêmes valeurs et statuts pour un tableau de contrôles de formulaire.</td>
+        </tr>
+        <tr>
+            <td><code>ControlValueAccessor</code></td>
+            <td>Crée un pont entre <code>FormControl</code> les instances angulaires et les éléments DOM intégrés.</td>
+        </tr>
+    </tbody>
+</table>
+
+<a id="reactive-form-establishment" class="anchor"></a>
+<h3>Mise en place reactive form</h3>
+
+<p>
+    Avec les reactive form vous définissez le modèle de formulaire directement dans le composant. La directive <code>[formcontrol] est lié explicitement</code> au <code>formControl</code> à l'aide d'un accesseur de valeur interne.
+</p>
+
+{% highlight ts linenos %}
+import { Component } from '@angular/core';
+import { FormControl } from '@angular/forms';
+
+@Component({
+  selector: 'app-reactive-favorite-color',
+  template: `
+    Favorite Color: <input type="text" [formControl]="favoriteColorControl">
+  `
+})
+export class FavoriteColorComponent {
+  favoriteColorControl = new FormControl('');
+}
+{% endhighlight %}
+<div class="code-caption">Modèle de formulaire des reactive form</div>
+
+<p>
+    Le composant ci-dessus implémente un input. Dans cet exemple le modèle de formulaire est l'instance de formControl.
+</p>
+
+<p>
+    Le formcontrol fournit la valeur et l'état de l'élément de formulaire, via la directive sur l'input. L'accès à l'instance du formControl est direct après le lien créé par la formControlDirective.
+</p>
+
+<a id="template-driven-form-config" class="anchor"></a>
+<h3>Configuration des template driven form</h3>
+
+<p>
+    Dans les template driven form le modèle de formulaire est implicite, la directive <code>NgModel</code> crée et gère pour vous un formControl pour un élément de formulaire.
+</p>
+
+{% highlight ts linenos %}
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-template-favorite-color',
+  template: `
+    Favorite Color: <input type="text" [(ngModel)]="favoriteColor">
+  `
+})
+export class FavoriteColorComponent {
+  favoriteColor = '';
+}
+{% endhighlight %}
+<div class="code-caption">Modèle de formulaire des template driven form</div>
+
+<p>
+    Vous n'avez pas d'accès a l'instance du formControl.
+</p>
+
+<a id="config-model-forms" class="anchor"></a>
+<h2>Flux de données dans les formulaires</h2>
+
+<p>
+    Lorsque votre application contient un formulaire, elle doit maintenir la vue synchronisée avec les propriétés de votre composant et inversement les propriétés doivent être doivent être synchronisée à la vue.
+</p>
+
+<p>
+    À chaque modification de valeurs ou sélection d'élements de formulaire dans la vue les nouvelles valeurs doivent être répercuté dans le composant, de même si la logique du programme modifie les valeurs, elles doivent se refléter à la vue.
+</p>
+
+<p>
+    Les template driven form et reactive form n'ont pas la même manière de traiter les données.
+</p>
+
+<a id="flux-reactive-form" class="anchor"></a>
+<h3>Reactive form</h3>
+
+<p>
+    Dans les reactive form chaque élément de formulaire de la vue est lié directement a une instance formControl. La liaison de la vue vers le modèle et inversement est synchrone.
+</p>
+
+<p>
+    voici les étapes du cheminement des données de la vue au composant lorsque une valeur d'un champ est modifiée à partir de la vue :
+</p>
+
+<ul>
+    <li>1. L'utilisateur saisie une valeur dans le champ de formulaire.</li>
+    <li>2. Le champ de formulaire émet un évènement 'input' avec la dernière valeur transmise par l'utilisateur.</li>
+    <li>3. L'accesseur de valeur de contrôle écoute l'évènement sur le champ du formulaire et transmet la nouvelle valeur à l'instance formControl.</li>
+    <li>4. L'instance formControl émet la nouvelle valeur à l'observable <code>valueChanges</code>.</li>
+    <li>5. Tous les abonnés à valueChanges reçoient la nouvelle valeur.</li>
+</ul>
+
+<p>
+    Maintenant voyez l'inverse, du composant à la vue :
+</p>
+
+<ul>
+    <li>1. la méthode <code>setValue()</code> est appelé et met à jour le formControl.</li>
+    <li>2. le formControl émet la nouvelle valeur à l'observable valueChanges</li>
+    <li>3. Tous les abonnés à valueChanges reçoivent la nouvelle valeur.</li>
+    <li>4. L'accesseur de valeur de contrôle met à jour la nouvelle valeur sur le champ du formulaire</li>
+</ul>
+
+<a id="flux-template-driven-form" class="anchor"></a>
+<h3>Template driven form</h3>
+
+<p>
+    Pour les template driven form vous avez vu précédemment que chaque champ de formulaire est liée par la directive ngModel qui gère en interne le formControl.
+</p>
+
+<p>
+    Voici le cheminement des données de la vue au modèle lorsqu'elles sont modifiées à partir de la vue :
+</p>
+
+<ul>
+    <li>1. L'utilisateur saisie une donnée dans le champ de formulauire.</li>
+    <li>2. L'élément émet un événement input avec la valeur.</li>
+    <li>3. L'accesseur de valeur de contrôle lié au champ déclenche <code>setValue()</code> sur l'instance formControl.</li>
+    <li>4. Le formControl émet la nouvelle valeur à l'observable valueChanges.</li>
+    <li>5. Tous les abonnés à l'observable reçoivent la nouvelle valeur.</li>
+    <li>6. L'accesseur de valeur de contrôle apelle aussi la méthode <code>viewToModelUpdate()</code> de NgMoDel qui émet un événement <code>ngmodelChange</code>.</li>
+    <li>7. La propriété du composant est mise à jour avec la valeur émise par ngModelChange.</li>
+</ul>
+
+<p>
+    Inversement du modèle à la vue :
+</p>
+
+<ul>
+    <li>1. La propriété est mise à jour dans le compoosant.</li>
+    <li>2. Commencement de la détection des modifications.</li>
+    <li>3. Le <code>ngOnChanges</code> est appelé sur le ngModel car la valeur d'un de ses champ à changé.</li>
+    <li>4. La méthode ngOnChanges met en file d'attente une tâche asynchrone qui attribura la valeur de l'instance de formControl</li>
+    <li>5. La détection des modifications est terminée.</li>
+    <li>6. La tâche asynchrone est lancé pour définir la valeur de l'instance du formControl.</li>
+    <li>7. Le formControl émet la dernière valeur via l'observable valueChanges.</li>
+    <li>8. Tous les abonnés à valueChanges reçoivent la nouvelle valeur.</li>
+    <li>9. L'accesseur de valeur de contrôle met à jour le champ de formulaire dans la vue avec la dernière valeur.</li>
+</ul>
+
+<a id="Mutability-data-model" class="anchor"></a>
+<h3>Muabilité du modèle de données des reactive form</h3>
+
+<p>
+    Dans votre application, le suivi de modification joue un rôle dans son efficacité.
+</p>
+
+<p>
+    Avec les reactive form chaque fois qu'une modification est déclenchée sur le modèle de données du formulaire, le formControl renvoie un nouveau modèle au lieu de mettre à jour le modèle de données existant. 
+    La detection des modifications est donc plus efficace car elle ne met à jour que les modifications. 
+</p>
+
+<p>
+    Le modèle de données est donc immuable.
+</p>
+
+<p>
+    le formControl renvoie toujours une nouvelle valeur lorsque la valeur du contrôle est mis à jour.
+</p>
+
+<a id="Mutability-data-model" class="anchor"></a>
+<h3>Muabilité du modèle de données des template driven form</h3>
+
+<p>
+    Étant donné qu'il n'y a pas de modifications uniques à suivre sur le modèle de données, la détection est moins efficace pour déterminer quand la mise à jour est nécessaire.
+</p>
+
+<p>
+    Le modèle de donnée est donc muable.
+</p>
+
+<p>
+    Avec les template driven form la propriété est toujours modifiée à sa nouvelle valeur.
+</p>
+
+<a id="form-validation" class="anchor"></a>
+<h2>Validation du formulaire</h2>
+
+<p>
+    Les reactive form incluent la définition de validateurs personnalisés contrairement aux template driven form où les validateurs sont liés au ngModel et doit fournir des directives de validateur personnalisées.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà pour les différences entre les reactive form et les template driven form, j'espère que cela vous aidera à prendre une décision si vous hésitiez entre l'un et l'autre.
+</p>
+
+<p>
+    N'hésitez pas à laisser un commentaire ! 
+</p>
