@@ -2938,3 +2938,56 @@ code {
   width: 10%;
   height: 10%;
 }
+
+/* Articles */
+
+/* table article forms */
+
+.table-article-forms{
+  background-color: #303030;
+  border-radius: 6px;
+}
+
+.table-article-forms thead{
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+.table-article-forms thead>tr{
+  vertical-align: inherit;
+  border-color: inherit;
+}
+
+.table-article-forms thead>tr>th{
+  background: #333333;
+  border-bottom: 1px solid #444444;
+  color: #fff;
+  font-size: 10px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 8px 24px;
+  text-align: left;
+  text-transform: uppercase;
+  line-height: 28px;
+  line-height: 2.8rem;
+}
+
+.table-article-forms tbody{
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+.table-article-forms tbody>tr>th{
+  border-bottom: 1px solid #6b6b6b;
+  letter-spacing: .03rem;
+}
+
+.table-article-forms tbody>tr>td{
+  padding: 16px;
+  text-align: left;
+  line-height: 24px;
+  line-height: 2.4rem;
+  vertical-align: top;
+  color: #fff;
+}
