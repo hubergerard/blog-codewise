@@ -1,0 +1,153 @@
+---
+layout: post
+title: "Angular - Réagir aux évènements du DOM"
+date: 2022-09-23 10:10:50 +0100
+description: "Dans cet article, vous allez découvrir comment réagir aux évènement du DOM avec ce qu'Angular met à votre disposition."
+tags: developpement web Typescript
+categories: [Développement web]
+author: "lucas"
+post_image: ""
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+linked-ressource: "starter-kit-angular"
+lang: fr
+---
+
+<a id="why-react-dom-events" class="anchor"></a>
+<h2>Pourquoi réagir aux évènements du DOM ?</h2>
+
+<p>
+    <span class="fw-bold">Il est important pour qu'une application soit dynamique, de répondre aux actions de l'utilisateur</span>, un clique, une saisie de texte etc... On appel ces actions des événements.
+</p>
+
+<p>
+    <span class="fw-bold">Le moyen d'écouter ces événements est d'être à l'écoute et pour cela Angular met à disposition plusieurs méthodes pour s'abonner aux différentes interactions de l'utilisateur.</span>
+</p>
+
+<a id="3-methods" class="anchor"></a>
+<h2>Les 3 méthodes de réaction aux évènements</h2>
+
+<a id="method-eventbinding" class="anchor"></a>
+<h3> Ecouter un event dans le DOM (event binding)</h3>
+
+<p>
+    <span class="fw-bold">La première méthode est l'event binding</span>. Pour lier un événement, utilisez la syntaxe d'événement d'Angular : Cette syntaxe est composé d'un nom d'événement entre parenthèse et d'une instruction de modèle.
+</p>
+
+<p>Exemple : </p>
+
+{% highlight ts linenos %}
+<button (click)="onSave()">Save</button>
+{% endhighlight %}
+<div class="code-caption">Syntaxe de liaison d'événement</div>
+
+<p>
+    À chaque clique sur le bouton la liaison d'événement appelle la méthode <code>onSave()</code> du composant.
+</p>
+
+<a id="method-hostlistener" class="anchor"></a>
+<h3>Ecouter un event dans le composant/directive (HostListener)</h3>
+
+<p>
+    <span class="fw-bold">La seconde méthode, <code>l'HostListener</code> s'utilise dans une directive (custom) ou un composant</span>.
+</p>
+
+<p>
+    <span class="fw-bold">HostListener appel la méthode fournie au sein du décorateur lorsque l'élément émet l'évènement et met à jour l'élément lié.</span>
+</p>
+
+<p>
+    Exemple : 
+</p>
+
+{% highlight ts linenos %}
+@Directive({selector: 'button[counting]'})
+class CountClicks {
+  numberOfClicks = 0;
+
+  @HostListener('click', ['$event.target'])
+  onClick(btn) {
+    console.log('button', btn, 'number of clicks:', this.numberOfClicks++);
+  }
+}
+
+@Component({
+  selector: 'app',
+  template: '<button counting>Increment</button>',
+})
+class App {}
+{% endhighlight %}
+<div class="code-caption">Syntaxe hostListener</div>
+
+<p>
+    Là vous remarquerez qu'une directive est déclarée et au sein de celle-ci on déclare une méthode décorée par HostListener.
+</p>
+
+<p>
+    La vue hôte (template) est sur le composant "app". Le bouton contient la directive déclarée plus haut, et à chaque clique la méthode onClick est appelée et incrémente la propriétée numberOfClick et l'affiche en console.
+</p>
+
+<p>
+    La méthode HostListener et directive est utile car elle vous évite de réécrire la méthode si par exemple vous souhaitez avoir le même comportement pour plusieurs éléments. Vous n'avez qu'à simplement ajouter cette directive à l'élément.
+</p>
+
+<a id="method-fromevent" class="anchor"></a>
+<h3>Ecouter un event avec RxJs (fromEvent)</h3>
+
+<p>
+    <span class="fw-bold">La dernière méthode <code>fromEvent</code> est une fonction d'RxJs</span>. C'est une fonction de création d'événement.
+</p>
+
+<p>
+    Voyez cet exemple :
+</p>
+
+{% highlight ts linenos %}
+import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { fromEvent } from 'rxjs';
+@Component({
+  templateUrl: './product-list.component.html'})
+export class ProductListComponent implements AfterViewInit {
+   @ViewChild('filterInput') filterElementRef: ElementRef;
+
+   ngAfterViewInit(): void {
+    fromEvent(this.filterElementRef.nativeElement, 'change').pipe(debounceTime(500)).subscribe(
+      (x: Event) => console.log(`value: ${x.target.value}`)
+    );
+  }
+}
+{% endhighlight %}
+<div class="code-caption">Méthode fromEvent</div>
+
+<p>
+    Remarquez l'utilisation de <code>@ViewChild</code> qui permet de cibler l'élément via une variable de template, le dit élément est un input.
+</p>
+
+<p>
+    Cet élément est transmis à la fonction fromEvent qui écoute l'événement change. Chaque fois que l'utilisateur appuie sur une touche après 500 milliseconde, la valeur de l'input est envoyé dans la console. 
+</p>
+
+<a id="choisir-méthode" class="anchor"></a>
+<h2>Comment choisir la bonne méthode ?</h2>
+
+<p>
+    Pour choisir la bonne méthode à utiliser référez vous à ce schéma :
+</p>
+<figure class="text-center">
+    <img class="img" src="/assets/img/blog/angular-DOM-event/arbre_decision_DOM_event.png" alt="Schéma décisionnel DOM Events Angular">
+    <figcaption class="image-caption">Schéma décisionnel DOM Events Angular</figcaption>
+  </figure>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+
+<a id="sources" class="anchor"></a>
+<h2>Sources</h2>
+
+<ul>
+    <li> <a href="https://angular.io/guide/event-binding">Event binding</a> </li>
+    <li> <a href="https://angular.io/api/core/HostListener#usage-notes">HostListener</a> </li>
+    <li> <a href="https://rxjs.dev/api/index/function/fromEvent">FromEvent</a> </li>
+</ul>
