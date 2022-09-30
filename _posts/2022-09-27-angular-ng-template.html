@@ -1,0 +1,235 @@
+---
+layout: post
+title: "Angular - Ng-template"
+date: 2022-09-28 10:10:50 +0100
+description: "Dans cet article, découvrez ng-template et toutes les possibilités qui vous attendent !"
+tags: developpement web Typescript
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-ng-template/cover_angular_ng-template.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+linked-ressource: "starter-kit-angular"
+lang: fr
+---
+
+<a id="a-quoi-sert-ng-template" class="anchor"></a>
+<h2>À quoi sert ng-template ?</h2>
+
+<p>
+    <span class="fw-bold">Ng-template est un élément Angular qui contient un extrait HTML</span>.
+</p>
+
+<p>
+    <span class="fw-bold"><code>Ng-template</code> peut servir à définir un contenu de template qui n'est rendu par Angular que lorsque vous le souhaitez</span>, cela vous permet d'avoir un contrôle sur la manière et le moment pour afficher le contenu.
+</p>
+
+<p>
+    Il y a deux façon d'afficher ng-template :
+</p>
+
+<ul>
+    <li>L'utilisation de la directive <code>ngTemplateOutlet</code></li>
+    <li>Utiliser <code>TemplateRef</code> et <code>ViewContainerRef</code></li>
+</ul>
+
+<p>
+    Ces cas d'utilisations sont des cas avancés d'Angular.
+</p>
+
+<a id="ng-template-directives-structurelles" class="anchor"></a>
+<h2>Ng-template et les directives structurelles</h2>
+
+<p>
+    <span class="fw-bold">La principale utilisation du ng-template est de garder le contenu du template qui sera utilisé par les directives structurelles</span>.
+</p>
+
+<p>
+    <span class="fw-bold">En arrière plan quand vous utilisez <code>*ngIf</code> par exemple, Angular crée un ng-template</span> et charge le contenu à l'intérieur de ce dernier et l'affiche selon la valeur de l'expression.
+</p>
+
+<p>Exemple : </p>
+
+{% highlight html linenos %}
+<div *ngIf="hero" class="name">{{hero.name}}</div>
+{% endhighlight  %}
+<div class="code-caption">Syntaxe raccourcis ngIf</div>
+
+<p>
+    Est en réalité ceci : 
+</p>
+
+{% highlight html linenos %}
+<ng-template [ngIf]="hero">
+    <div class="name">{{hero.name}}</div>
+</ng-template>
+{% endhighlight  %}
+<div class="code-caption">Syntaxe originale ngIf</div>
+
+<p><span class="fw-bold">Le *ngIf est une syntaxe raccourci et utilise ng-template</span>. Le reste (élément, attribut, contenu) est déplacé à l'intérieur du ng-template.</p>
+
+<a id="ngTemplateOutlet" class="anchor"></a>
+<h3>ngTemplateOutlet</h3>
+
+<p>
+    <span class="fw-bold">ngTemplateOutlet est une directive structurelle qui permet d'afficher le ng-template</span>.
+</p>
+
+<p>
+    <span class="fw-bold">Pour l'utiliser il faut d'abord créer le ng-template et lui affecter une variable de référence de template</span> :
+</p>
+
+{% highlight html linenos %}
+<ng-template #varRefTemplate>
+    <p>Bonjour</p>
+  </ng-template>
+{% endhighlight  %}
+<div class="code-caption">Affectation d'une variable de template</div>
+
+<p>Ensuite, utilisez ngTemplateOutlet sur un ng-container où vous voulez dans votre DOM.</p>
+
+{% highlight html linenos %}
+<ng-container *ngTemplateOutlet="varRefTemplate">
+    Ce texte ne s'affiche pas
+  </ng-container> 
+{% endhighlight  %}
+<div class="code-caption">Affectation du template à afficher au ng-container</div>
+
+<p>Le contenu du <code>ng-container</code> est remplacé par le contenu de <code>#varRefTemplate</code>.</p>
+
+<a id="ng-template-templateref" class="anchor"></a>
+<h2>Ng-template et le TemplateRef</h2>
+
+<p>
+    <span class="fw-bold">Ng-template est une instance de la classe <code>TemplateRef</code></span>. 
+    <span class="fw-bold">TemplateRef est un moyen de référencer le ng-template dans le composant ou une directive</span>. Cela permet de manipuler le template depuis le composant.
+</p>
+
+<p>
+    Comme précedemment, vous devez d'abord attribuer une variable de référence de template sur le ng-template.
+</p>
+
+{% highlight html linenos %}
+<ng-template #newVarRefTemplate>
+    <p>Bonjour</p>
+  </ng-template>
+{% endhighlight  %}
+<div class="code-caption">Affectation d'une variable de template</div>
+
+<p>
+    Maintenant, utilisez <code>ViewChild</code> pour injecter la variable de référence dans votre composant en tant qu'instance de classe TemplateRef.
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-root',
+    template: `      
+        <ng-template #newVarRefTemplate>
+            <p>Bonjour</p>
+        </ng-template>
+  `})
+  export class AppComponent implements OnInit {
+
+      @ViewChild('newVarRefTemplate')
+      newVarRefTemplate: TemplateRef<any>;
+  }
+{% endhighlight  %}
+<div class="code-caption">Injection de la variable de template dans le composant</div>
+
+<p>
+    Maintenant vous devez dire à Angular où l'afficher, pour cela utilisez ViewContainerRef.
+</p>
+
+<p>
+    ViewContainerRef s'injecte dans un composant ou une directive :
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-root',
+    template: `     
+        <h1>Bonjour</h1>  
+        <ng-template #newVarRefTemplate>
+            <p>Aurevoir</p>
+        </ng-template>
+  `})
+  export class AppComponent implements OnInit {
+
+    constructor(private vref:ViewContainerRef) {}
+
+      @ViewChild('newVarRefTemplate')
+      newVarRefTemplate: TemplateRef<any>;
+  }
+{% endhighlight  %}
+<div class="code-caption">Injection de ViewContainerRef</div>
+
+<p>
+    Une fois que vous l'avez injecter dans votre composant ou directive, utilisez sa méthode <code>createEmbeddedView</code> pour ajouter le template au composant.
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-root',
+    template: `   
+        <h1>Bonjour</h1>   
+        <ng-template #newVarRefTemplate>
+            <p>Aurevoir</p>
+        </ng-template>
+  `})
+  export class AppComponent implements OnInit, AfterViewInit {
+
+    constructor(private vref:ViewContainerRef) {}
+
+    @ViewChild('newVarRefTemplate')
+    newVarRefTemplate: TemplateRef<any>;
+
+    ngAfterViewInit() {
+        this.vref.createEmbeddedView(this.newVarRefTemplate);
+        }
+
+  }
+{% endhighlight  %}
+<div class="code-caption">Ajouter le template au composant pour l'afficher</div>
+
+<p>
+    Et désormais, le contenu du ng-template s'affichera.
+</p>
+
+<a id="objet-contexte" class="anchor"></a>
+<h2>Objet de contexte</h2>
+
+<p>
+    <span class="fw-bold">À l'intérieur du ng-template, vous pouvez référencer du contenu depuis l'extérieur du template grâce à l'objet de contexte</span>. Cet objet est accessible via les déclarations <code>let</code> et <code>as</code>.
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-root',
+    template: `      
+  <ng-template #estimateTemplate let-bookCounter="estimate">
+      <div> Approximativement {{bookCounter}} livres.</div>
+  </ng-template>
+  <ng-container 
+     *ngTemplateOutlet="estimateTemplate;context:objCtx">
+  </ng-container>
+  `})
+  export class AppComponent {
+  
+      estimateTotal = 23;
+      objCtx = {estimate: this.estimateTotal};
+    
+  }
+{% endhighlight  %}
+<div class="code-caption">Affiche le template avec des données contextuelles.</div>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    J'espère que cet article vous sera utile pour comprendre ce qu'est les ng-template, comment les utiliser et pourquoi.
+</p>
+
+<p>
+    Si vous avez des questions ou recommandations n'hésitez pas à laisser un commentaire !
+</p>
