@@ -1,0 +1,195 @@
+---
+layout: post
+title: "Angular - Les resolvers"
+date: 2022-10-03 10:10:50 +0100
+description: "Dans cet article, découvrez ce que sont les resolvers, à quoi ils servent et comment les utiliser."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-resolver/cover_angular_resolver.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+linked-ressource: "starter-kit-angular"
+lang: fr
+---
+
+<a id="resolver-cest-quoi" class="anchor"></a>
+<h2>C'est quoi un resolver ?</h2>
+
+<p>
+    <span class="fw-bold"><code>resolver</code> est un service d'Angular qui permet de récupérer les données avant d'activer la route et de charger le composant</span>.
+</p>
+
+<p>
+    Eh bien oui, avec Angular vous récupérez de manière asynchrone vos données avec les Observables, ce qui pourrait être problématique si vous voulez affichez des items car vous aurez des erreurs : <code>cannot read property of 'undefined'</code>.
+</p>
+
+<p>
+    Et donc vous avez deux options pour pallier a ce désagrément pour vos utilisateurs : 
+</p>
+
+<ul>
+    <li>Mettre un placeholder ou un marqueur de chargement à la place des données en attente.</li>
+    <li>La méthode resolver : faire patienter l'utilisateur avant le chargement de la page et d'afficher le contenu au complet.</li>
+</ul>
+
+<a id="mettre-en-place-resolver" class="anchor"></a>
+<h2>Mettre en place un resolver</h2>
+
+<p>
+    <span class="fw-bold">Le resolver permet d'attendre le retour de l'observable avant d'initialiser le composant après la mise à jour de l'URL</span>.
+</p>
+
+<p>
+    <span class="fw-bold">Le resolver est une classe que vous devez associez à une route</span> et comme vous l'aurez compris son utilisation classique est pour la recupération de données.
+</p>
+
+<p>
+    Voici un exemple d'implémentation : 
+</p>
+
+{% highlight ts linenos %}
+@Injectable()
+export class ProductsResolver implements Resolve<Product[]> {
+  constructor(private products: ProductsService) {}
+  resolve(): Observable<Product[]> {
+    return this.products.getProducts();
+  }
+}
+{% endhighlight %}
+<div class="code-caption">products.resolver.ts</div>
+
+<p>
+    Associez la route au composant :
+</p>
+
+{% highlight ts linenos %}
+{ path: 'products', 
+  component: ProductsComponent, 
+  resolve: {
+    products: ProductsResolver 
+  },
+},
+{% endhighlight %}
+<div class="code-caption">app-routing.module.ts</div>
+
+<p>
+    Et le composant : 
+</p>
+
+{% highlight ts linenos %}
+@Component([...])
+class ProductsComponent implements ngOnInit {
+    
+    constructor(private route: ActivatedRoute) {}
+    
+    ngOnInit() {
+        this.route.data.subscribe((data: { products: Products }) => this.products = data.products);
+    }
+}
+{% endhighlight %}
+<div class="code-caption">products.component.ts</div>
+
+<a id="resolver-cest-quoi" class="anchor"></a>
+<h3>Réutilliser les resolver d'une route parente</h3>
+
+<p>
+    <span class="fw-bold">Vous pouvez récupérez les données d'une route parente grâce au resolver</span>, cela permet de réutilisé le code néanmoins vous couplez vos composants.
+</p>
+
+{% highlight ts linenos %}
+{ path: 'admin/:userId', 
+  component: AdminUserComponent,
+  resolve: {
+    user: AdminUserResolver
+  },
+children: [
+  {
+    path: '/products',
+    component: ProductsComponent,
+    resolve: {
+      products: ProductssResolver
+    },
+  },
+  ]
+}
+{% endhighlight %}
+<div class="code-caption">app-routing.module.ts</div>
+
+{% highlight ts linenos %}
+@Component([...])
+class ProductsComponent implements ngOnInit {
+    
+    constructor(private route: ActivatedRoute) {}
+    
+    ngOnInit() {
+        this.user = route.parent.data.map((data: { user: User } => data.user);
+        this.route.data.subscribe((data: { products: Products }) => this.products = data.products);
+    }
+}
+{% endhighlight %}
+<div class="code-caption">products.component.ts</div>
+
+<a id="resolver-cest-quoi" class="anchor"></a>
+<h2>Gestion d'erreur dans les resolver</h2>
+
+<p>
+    Si vous souhaitez gérez les erreurs de récupérations de données lorsque l'API renvoie une erreur, les resolver permettront de faire cela avant le rendu du composant.
+</p>
+
+<p>
+    <span class="fw-bold">Le resolver est le meilleur moment du cycle pour gérer les erreurs</span>.
+</p>
+
+{% highlight ts linenos %}
+@Injectable()
+export class ProductsResolver implements Resolve<Product[]> {
+
+  constructor(private products: ProductsService) {}
+
+  resolve(route: ActivatedRouteSnapshot): Observable<Product[]> {
+    return this.products.getProducts()
+      .catch(errorResponse => this.handleError(route, errorResponse);
+  }
+
+  handleError(route: ActivatedRouteSnapshot, errorResponse: HTTPErrorResponse) {
+    switch (errorResponse.status) {
+      case 404: {
+        this.router.navigate(['/not-found']);
+        return Observable.of(null);
+      }
+      case 401: {
+        const returnURL: string = '/' + route.url.map(segment => segment.path).join('/');
+        this.router.navigate(['/login'], { queryParams: { returnURL: returnURL }});
+        return Observable.of(null);
+      }
+      case 403: {
+        this.router.navigate(['/unauthorized']);
+        return Observable.of(null);
+      }
+      case default: {
+        console.error(error);
+        this.router.navigate(['/error']);
+        return Observable.of(null);
+      }
+    }
+  }
+}
+{% endhighlight %}
+<div class="code-caption">products.resolver.ts</div>
+
+<p>
+    Voici une idée de gestion d'erreurs mais bien entendu elle n'est pas exhaustive !
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà, maintenant vous savez ce qu'est les resolver. Il existe d'autres implémentation pour des cas plus poussé, mais vous pouvez même couplez cela avec des <code>Guards</code> pour optimiser les restrictions et améliorez l'expérience utilisateur.
+</p>
+
+<p>
+    Si vous avez une question ou recommandation, n'hésitez pas à laisser un commentaire !
+</p>
