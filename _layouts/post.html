@@ -62,11 +62,7 @@ layout: default
     <div class="container">
         <div class="row">
             <div class="col-lg-8 blog-post-items">
-                {% if page.linked-ressource contains "starter-kit-angular" %}
-                <div class="blog-wrapper-angular mb-60">
-                {% else %}
                 <div class="blog-wrapper mb-60">
-                {% endif %}
                 {% assign estimatedTime = page.content | number_of_words | divided_by: 180 %}
                 {% if estimatedTime == 0 %}
                     {% assign estimatedTime = 1 %}
