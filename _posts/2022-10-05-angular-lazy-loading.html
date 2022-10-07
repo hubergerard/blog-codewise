@@ -1,0 +1,159 @@
+---
+layout: post
+title: "Angular - Lazy loading"
+date: 2022-10-05 10:10:50 +0100
+description: "Dans cet article, découvrez qu'est-ce que le lazy loading d'Angular !"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-lazy-loading/cover_angular_lazy-loading.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+linked-ressource: "starter-kit-angular"
+lang: fr
+---
+
+<a id="resolver-cest-quoi" class="anchor"></a>
+<h2>Qu’est-ce que le lazy loading ?</h2>
+
+<p>
+  <span class="fw-bold">Par défaut dans Angular, les modules sont tous chargés</span>. même si ils ne sont pas tous directement nécessaire au démarrage de l'application. Cela peut être un problème quand votre application commence à grossir.
+</p>
+
+<p>
+  <span class="fw-bold">Pour cela Angular nous permet d'adopter le <code>Lazy loading</code> ce qui permet de charger les modules à la demande</span>, uniquement quand ils sont nécessaire et ainsi gagner en performance. Tout cela afin de ne pas encombrer le chargement de l'application.
+</p>
+
+<a id="resolver-cest-quoi" class="anchor"></a>
+<h2>Configuration du lazy loading</h2>
+
+<p>
+  <span class="fw-bold">Pour configurer le lazy loading dans votre routing module principal, il vous faudra renseigner <code>loaddChildren</code></span> au lieu de component sur la route comme ceci :
+</p>
+
+{% highlight ts linenos %}
+const routes: Routes = [
+  {
+    path: 'items',
+    loadChildren: () => import('./items/items.module').then(m => m.ItemsModule)
+  }
+];
+{% endhighlight %}
+<div class="code-caption">app-routing.module.ts</div>
+
+<div class="quote-block">
+  <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+  <div class="quote">
+    Depuis Angular 8, la syntaxe <code>import</code> est préféré à la syntaxe de chaîne car dépréciée.</div>
+
+<p>
+  Désormais, <span class="fw-bold">ajoutez dans le routing module de votre module de fonctionnalité la route associer au composant</span> :
+</p>
+
+{% highlight ts linenos %}
+const routes: Routes = [
+  {
+    path: '',
+    component: ItemsComponent
+  }
+];
+{% endhighlight %}
+<div class="code-caption">customer-routing.module.ts</div>
+
+<p>
+  <span class="fw-bold">N'oubliez pas de vérifier l'import de votre customer-routing module dans le module de fonctionnalité !</span>
+</p>
+
+{% highlight ts linenos %}
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { CustomersRoutingModule } from './customers-routing.module';
+import { CustomersComponent } from './customers.component';
+
+@NgModule({
+  imports: [
+    CommonModule,
+    CustomersRoutingModule
+  ],
+  declarations: [CustomersComponent]
+})
+export class CustomersModule { }
+{% endhighlight %}
+<div class="code-caption">customer.module.ts</div>
+
+<a id="verifier-lazy-loading" class="anchor"></a>
+<h3>Vérifier le lazy loading</h3>
+
+<p>
+  Maintenant, <span class="fw-bold">vous pouvez vérifier si votre lazy loading fonctionne, pour cela utiliser les outils de développement de votre navigateur</span>.
+</p>
+
+<p>
+  Dans le navigateur Chrome, ouvrez les outils de développement en appuyant Cmd+Option+i sur sur un Mac ou Ctrl+Shift+j sur un PC et accédez à l'onglet Réseau.
+</p>
+
+<p>
+  Si vous avez préalablement établi des boutons reliés aux routes configurées, cliquez sur un des boutons et si vous voyez apparaître un bloc dans votre outil réseau concernant un module lazy il ne doit apparaître qu'une seule fois.
+</p>
+
+<a id="resolver-cest-quoi" class="anchor"></a>
+<h2>Stratégie de preloading</h2>
+
+<p>
+  <span class="fw-bold">Le preloading charge les parties de votre application en arrière plan</span>, cela améliore l'expérience utilisateur. Vous pouvez précharger des modules ou des données de composants (voir les resolver).
+</p>
+
+<p>
+  Pour ce faire, importez le <code>PreloadAllModules</code> dans votre routing module et spécifiez votre stratégie de preloading : 
+</p>
+
+{% highlight ts linenos %}
+import { PreloadAllModules } from '@angular/router';
+{% endhighlight %}
+<div class="code-caption">Import du PreloadAllModules</div>
+
+{% highlight ts linenos %}
+RouterModule.forRoot(
+  appRoutes,
+  {
+    preloadingStrategy: PreloadAllModules
+  }
+)
+{% endhighlight %}
+<div class="code-caption">app-routing.module.ts</div>
+
+<a id="depannage-lazy-loading" class="anchor"></a>
+<h2>Dépannage du lazy loading</h2>
+
+<p>
+  Lorsque les modules lazy importent des modules communs à plusieurs endroits dans l'application cela peut provoquer une erreur dans le chargement des modules lazy.
+</p>
+
+<p>
+  Pour tester cela, générer un module avec la CLI avec le paramètre <code>--route example-route</code> où example-route est le nom de votre module. Ensuite créez le module sans paramètre avec la CLI.
+</p>
+
+<p>
+  Si la commande avec le paramètre renvoie une erreur, et que la seconde fonctionne correctement alors c'est que votre module a été importé à plusieurs endroits.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+  J'espère que cet article vous aidera à comprendre et a utiliser le lazy loading, pour le chargement de données de composants vous pouvez allez voir l'article dédié sur les resolver.
+</p>
+
+<p>
+  Si vous avez des questions ou recommandations n'hésitez pas à laisser un commentaire !
+</p>
+
+<a id="sources" class="anchor"></a>
+<h2>Sources</h2>
+
+<ul>
+  <li><a href="https://angular.io/guide/lazy-loading-ngmodules">Angular documentation lazy loading</a></li>
+  <li><a href="https://guide-angular.wishtack.io/angular/routing/lazy-loading">Guide angular lazy loading</a></li>
+  <li><a href="https://www.javatpoint.com/angular-lazy-loading">Java T Point - Angular lazy loading</a></li>
+</ul>
