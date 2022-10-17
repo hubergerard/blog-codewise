@@ -2902,6 +2902,14 @@ code {
   box-shadow: 0 0 60px 0 rgba(0, 0, 0, 0.07);
 }
 
+.table .primary-bg{
+  background-color: #5254eb;
+}
+
+.table .secondary-bg{
+  background-color: #9a9eff;
+}
+
 .tableOperator {
   table-layout: fixed;
   width: 100%;
