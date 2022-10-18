@@ -26,7 +26,7 @@ plugins:
   - jekyll-feed
   - jekyll-paginate-v2
   - jekyll-archives
-  - jekyll/tagging
+  #- jekyll/tagging
 
 cover_image: "/assets/img/bg/page-title.png"
 
@@ -98,9 +98,9 @@ pagination:
   # Without file extension
   indexpage: 'index'
 
-tag_page_layout: tag_page
-tag_page_dir: tag
-tag_permalink_style: pretty
+#tag_page_layout: tag_page
+#tag_page_dir: tag
+#tag_permalink_style: pretty
 
 jekyll-archives:
   enabled: all

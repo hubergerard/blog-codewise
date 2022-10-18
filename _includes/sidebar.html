@@ -40,12 +40,16 @@
     </div>
 </div>
 <div class="widget">
-    <h4 class="widget-title">Tags populaires</h4>
-    <div class="widget-tags">
-        <div class="sidebar-tad">
-            {{site | tag_cloud}}
-        </div>
+    <h1 class="widget-title">Tags</h1>
+    {% assign tags = site.tags | sort %}
+     <div class="sidebar-tags">
+        {% for tag in tags %}
+        <a href="/tag/{{ tag | first | slugify }}/" class="tag-label">
+                {{ tag[0] | replace:'-', ' ' | upcase }}
+        </a>
+        {% endfor %}
     </div>
+
 </div>
 
 {% if page.linked-ressource contains "starter-kit-angular" %}
