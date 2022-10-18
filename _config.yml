@@ -25,7 +25,7 @@ theme: minima
 plugins:
   - jekyll-feed
   - jekyll-paginate-v2
-  - jekyll-archives
+  #- jekyll-archives
   - jekyll/tagging
 
 cover_image: "/assets/img/bg/page-title.png"
@@ -103,7 +103,8 @@ tag_page_dir: tag
 tag_permalink_style: pretty
 
 jekyll-archives:
-  enabled: all
+  enabled: 
+    - categories
   layout: category
   permalinks:
     category: '/category/:name/'

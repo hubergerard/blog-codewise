@@ -10,6 +10,7 @@ pagination:
         {% for post in page.posts %}
           <div class="col-md-6 mb-50 ">
               <div class="services-box">
+                <a href="{{post.url}}">
                   {% if post.post_image %}
                   <div class="services-img">
                       <img src="{{post.post_image}}" class="img-fluid" alt="{{post.title}}">
@@ -24,6 +25,7 @@ pagination:
                       </div>
                       <a href="{{post.url}}" class="btn">Lire plus</a>
                   </div>
+                </a>
               </div>
           </div>
         {% endfor %}
