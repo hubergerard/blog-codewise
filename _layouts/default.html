@@ -72,6 +72,11 @@
 </head>
 
 <body>
+
+    <button onclick="topFunction()" id="btnScrollTop" title="Haut de page" disabled>
+        <span class="fas fa-arrow-up"></span>
+    </button>
+
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     {{content}} {% include footer.html %}
 
@@ -90,6 +95,7 @@
     <script src="{{site.baseurl}}/assets/js/scrollup.min.js"></script>
     <script src="{{site.baseurl}}/assets/js/simple-jekyll-search.min.js"></script>
     <script src="{{site.baseurl}}/assets/js/main.js"></script>
+    <script src="{{site.baseurl}}/assets/js/scroll-top-button.js"></script>
 </body>
 
 </html>
