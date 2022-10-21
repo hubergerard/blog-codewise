@@ -1,4 +1,4 @@
-<nav id="mobile-menu">
+<nav class="main-menu text-end" id="mobile-menu">
 <ul>
     
     {% for link in site.data.navigation %}
@@ -29,5 +29,24 @@
         {% endif %}
     </li>
     {% endfor %}
+    <li>
+        <button class="icon-button" data-bs-toggle="modal" data-bs-target="#search-modal"> 
+            <i class="fas fa-search"></i> 
+        </button>
+    </li>
 </ul>
 </nav>
+
+<!-- Modal Search -->
+<div class="modal fade" id="search-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <form>
+                <input type="text" id="search-input" placeholder="Rechercher un article..">
+                <button><i class="fa fa-search"></i></button>
+            </form>
+            <ul id="results-container"></ul>
+        </div>
+    </div>
+</div>
+
