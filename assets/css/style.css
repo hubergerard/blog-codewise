@@ -426,6 +426,7 @@ label {
   display: block;
   font-weight: 600;
   position: relative;
+  margin-bottom: 20px;
 }
 
 .main-menu.second-menu ul li a {
@@ -516,9 +517,10 @@ label {
   left: 10px;
 }
 
-.main-menu ul li:hover > a {
+.main-menu ul li:hover > a, .main-menu ul li:hover > button {
   color: #4a43d9;
 }
+
 
 .main-menu ul li:hover a::before,
 .main-menu ul li:hover a::after {
@@ -592,6 +594,13 @@ label {
 
 .transparent-bg.sticky {
   background: #111;
+}
+
+button.icon-button{
+  background-color: transparent;
+  border:none;
+  color: #020d26;
+  padding: 0;
 }
 
 /* search modal */
@@ -2694,15 +2703,20 @@ blockquote {
 
 #results-container li {
   margin-bottom: 10px;
-  border-bottom: 1px solid #fff;
+  border-bottom: 1px solid #4a43d9;
+  padding: 10px;
 }
 
 #results-container li a {
-  color: #4a43d9;
+  color: #fff;
   font-size: 18px;
   text-transform: capitalize;
   font-weight: 600;
 }
+
+#results-container li a:hover {
+  color: #625cde;
+} 
 
 .features-icon {
   margin-bottom: 15px;
