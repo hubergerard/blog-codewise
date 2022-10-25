@@ -1,0 +1,282 @@
+---
+layout: post
+title: "Angular - Responsive design"
+date: 2022-10-24 10:30:50 +0100
+description: "Avec Angular il y a un moyen pratique de rendre votre application responsive sans écrire de media query, c'est ce que vous allez voir dansa cet article."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-responsive/cover_angular_responsive.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+linked-ressource: "starter-kit-angular"
+lang: fr
+---
+
+<a id="pourquoi-utiliser-breakpoint-observer" class="anchor"></a>
+<h2>Responsive design</h2>
+
+<p>
+    Pour une question de maintenance et d'organisation il est préférable d'éviter ou de minimiser les requêtes media query. 
+    Pour cela Angular a mis à disposition des développeurs un outil nommé <code>BreakpointObserver</code>.
+</p>
+
+
+<a id="service-breakpoint-observer" class="anchor"></a>
+<h2>Le service breakpointObserver</h2>
+
+<p>
+    Le service breakpointObserver fournit une API d'observable qui informe ses abonnés des dimensions actuelles de l'écran et d'une modification de l'orientation de l'écran (paysage/portrait).
+</p>
+
+<p>
+    Ce service fait partie du kit de développement de composant Angular et non d'Angular Material. Vous pouvez l'utilisez avec Material mais aussi sans.
+</p>
+
+<p>
+    Le <code>BreakpointObserver</code> est livré avec des point d'arrêt CSS prédéfini dont différents types d'écran et de formes :
+</p>
+
+<ul>
+    <li>XSmall</li>
+    <li>Small</li>
+    <li>Medium</li>
+    <li>Large</li>
+    <li>XLarge</li>
+    <li>Handset</li>
+    <li>Tablet</li>
+    <li>Web</li>
+    <li>HandsetPortrait</li>
+    <li>TabletPortrait</li>
+    <li>WebPortrait</li>
+    <li>HandsetLandscape</li>
+    <li>TabletLandscape</li>
+    <li>WebLandscape</li>
+</ul>
+
+<p>
+    Chacun de ces points d'arrêt correspond à une requête multimédia CSS.
+</p>
+
+<p>
+    Le BreakpointObserver nous permet d'être averti chaque fois que l'un de ces points d'arrêt correspond à l'appareil.
+</p>
+
+<p>
+    Dans cet exemple voyez comment vous abonner au service pour être averti lorsque l'écran correspond à un point d'arrêt :
+</p>
+
+{% highlight ts linenos %}
+@Component()
+export class ResponsiveComponent implements OnInit {
+
+  constructor(private responsive: BreakpointObserver) {
+  
+  }
+  
+  ngOnInit() {
+  
+    this.responsive.observe(Breakpoints.HandsetLandscape)
+      .subscribe(result => {
+
+        if (result.matches) {
+          console.log("L'écran est un appareil mobile");
+        }
+
+  });
+    
+  }
+  
+}
+{% endhighlight %}
+<div class="code-caption">Exemple match point d'arrêt</div>
+
+<p>
+    Si vous démarrez l'application sur un écran de taille normale (bureau) vous ne verrez rien en console.
+</p>
+
+<p>
+    Si vous mettez votre navigateur en mode conception adaptative et sélectionner une taille d'écran mobile vous verrez alors dans la console "l'écran est un appareil mobile".
+</p>
+
+<p>
+    Vous pouvez également utiliser le BreakpointObserverpour vous abonner à plusieurs points d'arrêt en même temps :
+</p>
+
+{% highlight ts linenos %}
+@Component()
+export class ResponsiveComponent implements OnInit {
+
+  constructor(private responsive: BreakpointObserver) {
+  
+  }
+  
+  ngOnInit() {
+  
+    this.responsive.observe([
+    Breakpoints.TabletPortrait,
+    Breakpoints.HandsetLandscape])
+    .subscribe(result => {
+  
+      const breakpoints = result.breakpoints;
+  
+      if (breakpoints[Breakpoints.TabletPortrait]) {
+        console.log("L'écran est une tablette");
+      }
+      else if (breakpoints[Breakpoints.HandsetLandscape]) {
+        console.log("L'écran est un appareil mobile");
+      }
+  
+    });
+    
+  }
+  
+}
+{% endhighlight %}
+<div class="code-caption">Exemple match plusieurs points d'arrêt</div>
+
+<p>
+    Comme vous pouvez le voir, ce service fournit les éléments pour rendre un composant Angular responsive.
+</p>
+
+<p>
+    Maintenant vous allez voir comment l'utiliser concrètement.
+</p>
+
+<a id="variable-flag" class="anchor"></a>
+<h2>Définir des variables flag</h2>
+
+<p>
+    Une chose simple que vous pouvez faire est d'avoir des variables dans votre composants qui s'adapte selon les points d'arrêt correspondant.
+</p>
+
+<p>
+    Par exemple, si vous avez un composant qui est un menu et qu'il doit être masqué si l'appareil est un téléphone ou une tablette, vous devez définir une variable booléenne pour adapter l'interface utilisateur selon le point d'arrêt actuel.
+</p>
+
+{% highlight ts linenos %}
+@Component()
+export class ResponsiveComponent implements OnInit {
+
+  hideSideMenu = false;
+
+  constructor(private responsive: BreakpointObserver) {
+
+  }
+  
+  ngOnInit() {
+  
+    this.responsive.observe([
+      Breakpoints.HandsetLandscape,      
+      Breakpoints.TabletPortrait,
+      ])
+      .subscribe(result => {
+
+        this.hideSideMenu = false; 
+
+        if (result.matches) {
+          this.hideSideMenu = true;
+        }
+
+  });
+    
+  }
+}
+{% endhighlight %}
+<div class="code-caption">responsive.component.ts</div>
+
+<p>
+    Remarquez que vous devez réinitialisez la valeur de <code>hideSideMenu</code>, vous devez remettre sa valeur par défaut au cas où le device ne correspondt à aucun point d'arrêt.
+</p>
+
+<p>
+    À présent vous pouvez utilisez hideSideMenu pour afficher ou masquer le menu dans le template : 
+</p>
+
+{% highlight html linenos %}
+<side-menu *ngIf="!hideSideMenu"></side-menu>
+{% endhighlight %}
+<div class="code-caption">responsive.component.html</div>
+
+<a id="classes-css-responsive" class="anchor"></a>
+<h2>Définir des classes CSS responsives</h2>
+
+<p>
+    Maintenant si vous voulez adaptez le style de votre composant en fonction de l'appareil vous pouvez le faire sanas utilisez les media query. En créant quelques variables booléenne spécifique à la mise en page dans votre composant.
+</p>
+
+<p>
+    Par exemple si vous voulez que votre composant applique certains styles CSS uniquement si l'écran est en mode portrait téléphone : 
+</p>
+
+{% highlight ts linenos %}
+@Component()
+export class ResponsiveComponent implements OnInit {
+
+  isPhonePortrait = false;
+
+  constructor(private responsive: BreakpointObserver) {
+
+  }
+  
+  ngOnInit() {
+  
+    this.responsive.observe(Breakpoints.HandsetPortrait)
+      .subscribe(result => {
+
+        this.isPhonePortrait = false; 
+
+        if (result.matches) {
+          this.isPhonePortrait = true;
+        }
+
+  });
+    
+  }
+}
+{% endhighlight %}
+<div class="code-caption">responsive.component.ts</div>
+
+<p>
+    Ensuite vous pouvez utilisez le booléen pour appliquer une ngClass au conteneur qui enveloppe le contenu de votre composant :
+</p>
+
+{% highlight html linenos %}
+<div class="container" [ngClass]="{'is-phone-portrait': isPhonePortrait}"> 
+    ...
+</div>
+{% endhighlight %}
+<div class="code-caption">responsive.component.html</div>
+
+<p>
+    Avec cette classe CSS spéciale, il est désormais simple d'ajouter des styles CSS responsive au composant : 
+</p>
+
+{% highlight css linenos %}
+container.is-phone-portrait {
+    margin: 0;
+    padding:0;
+ }
+{% endhighlight %}
+<div class="code-caption">responsive.component.css</div>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Comme vous avez pu voir, le service breakpointObserver du kit de développement de composant Angular permet de rendre les composants responsive sans avoir à recourrir aux média queries de CSS3.
+</p>
+
+<p>
+    Il n'y a rien de mal à utiliser les media queries mais cette approche est plus facile à lire et à maintenir sur le long terme.
+</p>
+
+<p>
+    Par exemple si vous recherchez un style spécifique qui cible un téléphone en mode portrait vous pouvez simplement rechercher is-phone-portrait, 
+    contrairement à la recherche avec des media queries où vous pouvez facilement manquer certains style en raison du formatage, de l'espace et de l'indentation.
+</p>
+
+<p>
+    N'hésitez pas à laisser un commentaire !
+</p>
