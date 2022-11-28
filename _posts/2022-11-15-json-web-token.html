@@ -1,0 +1,171 @@
+---
+layout: post
+title: "Angular - JSON Web Token"
+date: 2022-11-14 10:10:50 +0100
+description: "Dans cet article découvrez en détail le fonctionnement des JWT, comment ils peuvent être utilisé pour l'authentification et la gestion des sessions."
+tags: developpement web Typescript
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/jwt/cover_jwt.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="pourquoi-jwt" class="anchor"></a>
+<h2>Pourquoi les JWT ?</h2>
+
+<p>
+    L'un des plus grand avantage d'utiliser les JSON Web Token est qu'ils permettent de déléguer la logique d'authentification à un serveur tier :
+</p>
+
+<ul>
+    <li>Un serveur d'authentification interne</li>
+    <li>Un LDAP capable d'emettre des JWT</li>
+    <li>Ou un fournisseur d'authentification externe comme Auth0</li>
+</ul>
+
+<p>
+    Le serveur d'authentification externe peut être séparé du serveur d'application et n'a donc pas a partager de clé secrète avec d'autres éléments du réseau.
+</p>
+
+<p>
+    En plus de cela, il n'est pas nécéssaire d'avoir un lien direct entre le serveur d'authentification et d'application pour que l'authentification fonctionne.
+</p>
+
+<p>
+    Même pour une application interne à l'entreprise les JWT sont une bonne solution dans un scénario de "pré-authentification".
+</p>
+
+<p>
+    De plus le serveur d'application peut être "sans état" dit stateless, car il n'est pas nécéssaire de conserver les jetons en mémoire. Le serveur d'authentification peut émettre un jeton, le renvoyer et le supprimer immédiatement.
+</p>
+
+<a id="pourquoi-jwt" class="anchor"></a>
+<h3>Format d'un token Web JSON</h3>
+
+<p>
+    Un jeton (ou token) Web JSON dit JWT est une charge utile "payload" JSON contenant une demande particulière. La propriété clé des JWT est qu'il suffit de regarder le jeton pour confirmer s'il est valide.
+</p>
+
+<p>
+    Il n'y a pas besoin de contacter un service tiers ou de conserver les JWT en mémoire pour confirmer que la demande du JWT qu'il porte est valide. Les JWT portent un code d'authentification de message.
+</p>
+
+<p>
+    Un JWT se compose de 3 parties : l'en-tête, le payload et la signature.
+</p>
+
+<a id="payload-jwt" class="anchor"></a>
+<h4>Payload JWT</h4>
+
+<p>
+    Le payload d'un JWT n'est qu'un simple objet javascript :
+</p>
+
+{% highlight ts linenos %}
+{
+    "name": "Yohann dart",
+    "email": "yohann.dart@exemple.com",
+    "admin": false
+  }
+{% endhighlight %}
+<div class="code-caption">Payload JWT</div>
+
+<p>
+    Dans cet exemple la charge utile (payload) contient des informations d'identification mais en général la charge utile pourrait être n'importe quoi. Il n'y a aucune restriction sur le contenu du payload mais il faut savoir qu'un JWT n'est pas chiffré.
+</p>
+
+<p>
+    Ainsi, toutes informations contenu dans le token est toujours lisible par quiconque. Par conséquent il est important que le jeton ne contienne pas d'informations qu'un attaquant pourrait exploiter.
+</p>
+
+<a id="en-tete-jwt" class="anchor"></a>
+<h4>En-tête JWT</h4>
+
+<p>
+    Le contenu du payload doit être ensuite validé par le récepteur du token en inspectant la signature. Mais il existe plusieurs types de signatures et le destinataire doit donc savoir quel type de signature rechercher.
+</p>
+
+<p>
+    Ce type de métadonnées techniques est placé dans un objet javascript séparé et envoyé en même temps avec le payload. Cet objet séparé est l'en-tête JWT : 
+</p>
+
+{% highlight ts linenos %}
+{
+    "alg": "RS256",
+    "typ": "JWT"
+  }
+{% endhighlight %}
+<div class="code-caption">En-tête JWT</div>
+
+<p>
+    Vous pouvez voir que le type de signature est "RS256", mais intéressons nous de ce que permet la présence de signature pour l'authentification.
+</p>
+
+<a id="signature-jwt" class="anchor"></a>
+<h4>Signature JWT</h4>
+
+<p>
+    La dernière partie d'un JWT est sa signature, qui est un code d'authentification. La signature ne peut être produite qu'en ayant possession de l'en-tête et de la charge utile et d'une clé secrète.
+</p>
+
+<p>
+    Pour assurer l'authentification la signature est utilisé comme ceci : 
+</p>
+
+<ul>
+    <li>1. L'utilisateur soumet ses identifiants à un serveur d'authentification, il s'agit généralement d'un serveur distinct de l'application.</li>
+    <li>2. Si le serveur d'authentification valide les identifiants, il créée un jeton JWT avec un payload contenant l'identifiant de l'utilisateur et un horodatage d'expiration.</li>
+    <li>3. Le serveur d'authentification prend une clé secrète et l'utilise pour signer l'en-tête et la charge utile et le renvoie au navigateur.</li>
+    <li>4. Le navigateur prend le JWT signé  et l'envoi avec chaque requête HTTP au serveur d'application.</li>
+    <li>5. Le JWT signé agit comme un identifiant utilisateur temporaire, remplaçant l'identifiant permanent qui est la combinaison du nom d'utilisateur et mot de passe.</li>
+</ul>
+
+<p>
+    Voici, maintenant ce que fait le serveur d'application avec le JWT : 
+</p>
+
+<ul>
+    <li>1. Le serveur d'application vérifie la signature JWT et confirme que quelqu'un en possession de la clé secrète a signé le payload.</li>
+    <li>2. Le payload identifie un utilisateur via un identifiant technique.</li>
+    <li>3. Seul le serveur d'authentification est en possession de la clé secrète, et il ne donne des jetons qu'aux utilisateurs qui soumettent des identifiants correct.</li>
+    <li>4. Par conséquent, le serveur d'application peut être sûr que ce jeton a bien été donné par le serveur d'authentification</li>
+    <li>5. Le serveur procède au traitement de la requête HTTP en supposant qu'elle appartient bien à l'utilisateur</li>
+</ul>
+
+<p>
+    Comme vous l'aurez remarqué, la signature est la partie clé du JWT.
+</p>
+
+<a id="signature-token" class="anchor"></a>
+<h3>À quoi ressemble un jeton web JSON ?</h3>
+
+<p>
+    Voici à quoi ressemble un JWT : 
+</p>
+{% highlight ts linenos %}
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+{% endhighlight %}
+<div class="code-caption">Exemple JWT</div>
+
+<p>
+    Vous pouvez remarquez 3 parties séparées par des points. La première partie avant le premier point est l'en-tête du JWT, la seconde le payload et la dernière la signature.
+</p>
+
+<p>
+    Rassurez-vous, l'en-tête, la charge utile et la signature sont toujours là sous forme lisible. Juste que nous voulons nous assurer que lorsqu'un JWT est envoyé sur le réseau de ne rencontrer aucun problème d'encodage.
+</p>
+
+<p>
+    Ceci est de l'encodage Base64Url, à quelques différences près c'est du Base64 classique mais qui permet d'envoyer facilement un JWT en paramètre d'URL.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà j'espère que cette article vous aidera à comprendre les éléments essentiels de JWT qui vous permettra de mettre en oeuvre une solution d'authentification basée sur JWT, la conceptualisation d'authentification interne et de choisir et configurer un service d'authentification tiers.
+</p>
+
