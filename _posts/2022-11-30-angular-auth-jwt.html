@@ -1,0 +1,370 @@
+---
+layout: post
+title: "Angular - Authentification JWT"
+date: 2022-11-14 10:10:50 +0100
+description: ""
+tags: developpement web Typescript
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-jwt/cover_auth_jwt.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="authentification-jwt" class="anchor"></a>
+<h2>Authentification basé sur JWT en bref</h2>
+
+<p>
+    Piqure de rappel, un JWT est une charge utile JSON signée numériquement, encodée dans un format de chaîne compatible avec les URLs.
+</p>
+
+<p>
+Si des JWT sont utilisés pour l'authentification alors ils contiendront forcément un ID utilisateur et un horodatage d'expiration. Un JWT peut contenir n'importe qu'elle charge utile (payload) mais le cas d'utilisation le plus courant consiste à définir une session utilisateur.
+
+</p>
+
+<p>
+    Pour confirmer si le JWT est valide, il suffit d'inspecter le jeton et de valider sa signature, et tout ça sans avoir besoin de contacter un serveur ni à conserver le jeton en mémoire ou dans la base de donnée.
+</p>
+
+<p>
+    Vous pouvez allez voir cet article si vous manquez de connaissances sur les JWT <!-- Lien ici -->
+</p>
+
+<a id="connexion-utilisateur" class="anchor"></a>
+<h3>Connexion utilisateur dans l’application</h3>
+
+<p>
+    Tout démarre par une page de connexion, c'est le point d'entré de l'authentification. Cette page de connexion peut être hébergée dans votre domaine ou dans un domaine tiers.
+</p>
+
+<p>
+    Dans une entreprise la page de connexion est souvent hébergée sur un serveur distinct mais elle peut également être hébergé par un fournisseur d'authentification tel que Auth0 ou disponible directement dans l'application.
+</p>
+
+<p>
+    Une page de connexion hébergée séparément est mieux d'un point de vue sécuritaire car le mot de passe n'est jamais directement géré par le code de l'application.
+</p>
+
+<p>
+    Mais la connexion d'un utilisateur via un écran de connexion intra-application est également viable.
+</p>
+
+<a id="page-connexion-application" class="anchor"></a>
+<h3>Page de connexion directement sur l'application</h3>
+
+<p>
+    Voici à quoi ressemblerait une page de connexion (Bien entendu vous pouvez séparer le template dans votre fichier html) :
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-login',
+    template: `
+  <form [formGroup]="form">
+      <fieldset>
+          <h1>Login</h1>
+          <div class="form-field">
+              <label>Email</label>
+              <input name="email" formControlName="email">
+          </div>
+          <div class="form-field">
+              <label>Mot de passe</label>
+              <input name="password" formControlName="password" 
+                     type="password">
+          </div>
+      </fieldset>
+      <div class="form-buttons">
+          <button class="button button-primary" 
+                  (click)="login()">Se connecter</button>
+      </div>
+  </form>`})
+  export class LoginComponent {
+      form:FormGroup;
+  
+      constructor(private fb:FormBuilder, 
+                   private authService: AuthService, 
+                   private router: Router) {
+  
+          this.form = this.fb.group({
+              email: ['',Validators.required],
+              password: ['',Validators.required]
+          });
+      }
+  
+      login() {
+          const val = this.form.value;
+  
+          if (val.email && val.password) {
+              this.authService.login(val.email, val.password)
+                  .subscribe(
+                      () => {
+                          console.log("L'utilisateur est connecté");
+                          this.router.navigateByUrl('/');
+                      }
+                  );
+          }
+      }
+  }
+{% endhighlight %}
+<div class="code-caption">login.component.ts</div>
+
+<p>
+    Lorsque l'utilisateur clique sur le bouton de connexion, l'email et le mot de passe sont envoyé à un service d'authentification côté client via la méthode <code>login()</code>.
+</p>
+
+{% highlight ts linenos %}
+
+@Injectable()
+export class AuthService {
+     
+    constructor(private http: HttpClient) {
+    }
+      
+    login(email:string, password:string ) {
+        return this.http.post<User>('/api/login', {email, password})
+            .shareReplay();
+    }
+
+{% endhighlight %}
+<div class="code-caption">auth.service.ts</div>
+
+<a id="session-utilisateur-jwt" class="anchor"></a>
+<h2>Création d’une session utilisateur basé sur JWT</h2>
+
+<a id="jeton-session-jwt" class="anchor"></a>
+<h3>Jeton de session JWT</h3>
+
+<p>
+    Après l'authentification validé, la session de l'utilisateur peut être initié. Le serveur émet un jeton indiquant l'ID et la date d'expiration du jeton.
+</p>
+
+<p>
+    Le jeton doit être ensuite signé et renvoyer au navigateur de l'utilisateur. La signature du JWT est l'élément clé, c'est la seule chose qui empêche un potentiel attaquant de falsifier le jeton de session.
+</p>
+
+<p>
+    Cliquez sur ce lien pour savoir comment signer un JWT dans un serveur : 
+</p>
+
+<a id="renvoi-jwt-client" class="anchor"></a>
+<h2>Renvoi d’un JWT au client</h2>
+
+<p>
+    Après créer le jeton côté serveur vous avez désormais plusieurs façons de renvoyer le jeton à l'utilisateur : 
+</p>
+<ul>
+    <li>Dans un cookie</li>
+    <li>Dans le corps de la requête</li>
+    <li>Dans une en-tête HTTP</li>
+</ul>
+
+<a id="jwt-cookie" class="anchor"></a>
+<h3>JWT et Cookie</h3>
+
+<p>
+    Du côté des cookies il y a un aspect phare c'est que vous n'aurez pas besoin d'une logique côté client pour renvoyer le cookie au serveur à chaque requête, en supposant biensûr que la page de connexion et l'application partagent le même domaine. 
+</p>
+
+<p>
+    Un autre aspect à prendre en considération est qu'ils ont des propriétées liées à la sécurité. Un cookie peut être marqué comme sécurisé et donc le navigateur n'ajoutera le cookie que si la demande est effectuée par protocole HTTPS.
+</p>
+
+<p>
+    Un cookie peut être aussi marqué comme <code>Http Only</code> ce qui veut dire qu'il est inaccessible par du code javascript.
+</p>
+
+<p>
+    En utilisant ces deux flags sur les cookies on atteint une sécurité maximale ce qui pourrait vous faire penser que c'est la solution idéale pour une application mais vous allez voir qu'ils existent quelques inconvéniant et pas des moindres.
+</p>
+
+<p>
+    Les applications qui utilisent les cookies pour stocker leS JWT souffrent de la vulnérabilité XSRF ou CSRF, cela signifie qu'un attaquant pourrait  inciter un utilisateur a effectuer certaines actions en son nom simplemant avec un mail ou un lien.
+</p>
+
+<a id="jwt-corps-requete" class="anchor"></a>
+<h3>JWT dans le corps de la réponse HTTP</h3>
+
+<p>
+    Alors il y a d'autres solutions comme celle-ci : renvoyer le jeton au client dans le corps de la requête.
+</p>
+
+<p>
+    Ne pas utiliser les cookies offre l'avantage de ne plus être vulnérable à la faille XSRF mais cela signifie également qu'il faut ajouter du code côté client pour gérer le JWT car le navigateur ne transmettra plus au serveur d'application le jeton à chaque requête.
+</p>
+
+<p>
+    Cela signifie également que le jeton est désormais lisible en cas d'attaque par injection de script.
+</p>
+
+<p>
+   Il y a donc un compromis à faire mais continuons avec le JWT renvoyé dans le corps de la requête.
+</p>
+
+<a id="stockage-jwt-navigateur" class="anchor"></a>
+<h2>Stockage et utilisation du JWT côté client</h2>
+
+<p>
+    Puisqu'il faut renvoyer le JWT au client par l'intermédiaire du corps de la requête il faudra donc le lire et le gérer.
+</p>
+
+<p>
+    Si vous ne stockez pas quelque part le JWT, il sera perdu si vous actualisez le navigateur et vous allez devoir vous reconnecter.
+</p>
+
+<p>
+    Vous pouvez le stocker à de nombreux endroits comme dans les cookies comme précédemment dit mais il y a un autre emplacement pratique, le stockage local (local storage) qui permet de garder en mémoire des petites quantitées de données sous forme clé/valeur.
+</p>
+
+<p>
+    Implémentation d'une connexion avec le local storage : 
+</p>
+
+
+{% highlight ts linenos %}
+import * as moment from "moment";
+
+@Injectable()
+export class AuthService {
+
+    constructor(private http: HttpClient) {
+
+    }
+
+    login(email:string, password:string ) {
+        return this.http.post<User>('/api/login', {email, password})
+            .do(res => this.setSession) 
+            .shareReplay();
+    }
+          
+    private setSession(authResult) {
+        const expiresAt = moment().add(authResult.expiresIn,'second');
+
+        localStorage.setItem('id_token', authResult.idToken);
+        localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()) );
+    }          
+
+    logout() {
+        localStorage.removeItem("id_token");
+        localStorage.removeItem("expires_at");
+    }
+
+    public isLoggedIn() {
+        return moment().isBefore(this.getExpiration());
+    }
+
+    isLoggedOut() {
+        return !this.isLoggedIn();
+    }
+
+    getExpiration() {
+        const expiration = localStorage.getItem("expires_at");
+        const expiresAt = JSON.parse(expiration);
+        return moment(expiresAt);
+    }    
+}
+{% endhighlight %}
+<div class="code-caption">auth.service.ts</div>
+
+<p>
+    Dans ce code, on retourne directement le résultat de l'appel http contenant le JWT et la propriété <code>expiresIn</code> pour y transmettre à la méthode <code>setSession()</code>.
+</p>
+
+<p>
+    Dans setSession le JWT est stocké dans le local storage dans l'item <code>id_token</code>.
+</p>
+
+<p>
+    L'horodatage est calculé avec la propriété expiresIn et en prenant l'instant actuel de l'heure.
+</p>
+
+<p>
+    Et enfin l'horodatage d'expiration est enregistré en valeur numérique dans l'item <code>expires_at</code> du local storage.
+</p>
+
+<a id="verification-expiration" class="anchor"></a>
+<h3>Vérification de l'expiration de l'utilisateur</h3>
+
+<p>
+    Maintenant vous avez toutes les informations de la session côté client et pouvez les utiliser dans le reste de l'application.
+</p>
+
+<p>
+    Par exemple, si votre application a besoin de savoir si des éléments de l'interface doivent être affichés selon l'état de connexion de votre utilisateur alors vous pouvez recourrir aux méthodes : <code>isLoggedIn()</code>, <code>isLoggedOut()</code> et <code>getExpiration()</code>.
+</p>
+
+<a id="jwt-requete-serveur" class="anchor"></a>
+<h2>Renvoi du JWT au serveur à chaque requête</h2>
+
+<p>
+    Maintenant, voyez comment dire au serveur d'application qu'une requête HTTP appartient à un utilisateur donné.
+</p>
+
+<p>
+    En réalité, il faut ajouter à chaque requête HTTP le JWT.
+</p>
+
+<p>
+    En inspectant le JWT le serveur d'application va lier la requête à un utilisateur en lisant la signature du jeton et l'identifiant de l'utilisateur via la charge utile.
+</p>
+
+<p>
+    Mais pour s'assurer que chaque requête inclut un JWT il faut que vous utilisez un intercepteur HTTP. 
+</p>
+
+<a id="intercepteur-http" class="anchor"></a>
+<h3>Intercepteur HTTP d’authentification</h3>
+
+<p>
+    Voici un intercepteur http angular qui permet d'inclure un JWT à chaque requête : 
+</p>
+
+{% highlight ts linenos %}
+@Injectable()
+export class AuthInterceptor implements HttpInterceptor {
+
+    intercept(req: HttpRequest<any>,
+              next: HttpHandler): Observable<HttpEvent<any>> {
+
+        const idToken = localStorage.getItem("id_token");
+
+        if (idToken) {
+            const cloned = req.clone({
+                headers: req.headers.set("Authorization",
+                    "Bearer " + idToken)
+            });
+
+            return next.handle(cloned);
+        }
+        else {
+            return next.handle(req);
+        }
+    }
+}
+{% endhighlight %}
+<div class="code-caption">auth.interceptor.ts</div>
+
+<p>
+    Le JWT est récupérer à partir du local storage, ensuite il faut vérifier si le JWT est présent.
+</p>
+
+<p>
+    Si le JWT n'est pas présent la requête est quand même transmise au serveur sans modification.
+</p>
+
+<p>
+    Si il est présent alors les en-têtes HTTP sont cloné et une en-tête <code>Authorization</code> est ajouté qui contiendra le JWT.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà pour cet article en espérant vous avoir éclairé sur le sujet. Bien entendu vous devrez prendre vous-même de nombreuses décisions de conception, pour la sécurité, les library, les configurations telles que les signatures JWT etc...
+</p>
+
+<p>
+    Bien sûr n'hésitez pas à laisser un commentaire ! 
+</p>
