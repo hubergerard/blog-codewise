@@ -1,0 +1,247 @@
+---
+layout: post
+title: "Angular - Les modales"
+date: 2023-01-09 10:10:50 +0100
+description: "Dans cet article, découvrez comment intégrer des modales dans votre application Angular."
+tags: developpement web Typescript
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-modale/cover_article_modale.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction-modal-angular-material" class="anchor"></a>
+<h2>Introduction aux modales Angular Material</h2>
+
+<p>
+    Les fenêtres ou modale appelé dialog dans Angular material, sont des composants utilisés pour afficher des informations importantes ou demander une action à l'utilisateur dans une application Angular. 
+    Elles sont conçues pour être utilisées avec la bibliothèque UI Angular material; 
+    qui fournit des composants de conception pour les applications web Angular.
+</p>
+
+<p>
+    Il existe plusieurs types de modales d'Angular Material, chacune ayant un but spécifique. Les modales courantes incluent :
+</p>
+
+<ul>
+    <li>
+        La modale d'alerte : qui permet d'afficher une alerte ou un message d'avertissement à l'utilisateur.
+    </li>
+    <li>
+        La modale de confirmation : qui demande à l'utilisateur de confirmer une action avant de continuer.
+    </li>
+    <li>
+        La modale de formulaire : qui permet de collecter des informations de l'utilisateur à travers un formulaire.
+    </li>
+</ul>
+
+<p>
+    Pour utiliser les boîtes de dialogue d'Angular Material dans votre application, vous devrez d'abord installer Angular Material en utilisant npm :
+</p>
+
+{% highlight bash linenos %}
+npm install @angular/material
+{% endhighlight  %}
+
+<p>
+    Ensuite, vous devrez importer les modules de modale <code>MatDialog</code> dans votre module principal :
+</p>
+
+{% highlight ts linenos %}
+import { MatDialogModule } from '@angular/material/dialog';
+
+@NgModule({
+  imports: [MatDialogModule],
+  ...
+})
+export class AppModule {}
+{% endhighlight  %}
+<div class="code-caption">app.module.ts</div>
+
+<a id="creer-modale-dialogue-angular" class="anchor"></a>
+<h2>Créer une modale</h2>
+
+<p>
+    Dans votre composant injectez le service <code>MatDialog</code> :
+</p>
+
+{% highlight ts linenos %}
+constructor(private dialog: MatDialog) { }
+{% endhighlight  %}
+<div class="code-caption">app.module.ts</div>
+
+<p>
+    Créez un nouveau composant qui sera utilisé comme contenu de la modale :
+</p>
+
+{% highlight html linenos %}
+<mat-dialog-content>
+    <mat-nav-list>
+      <button mat-menu-item >ENTRER</button>
+      <button mat-menu-item >SORTIR</button>
+    </mat-nav-list>
+  </mat-dialog-content>
+{% endhighlight  %}
+<div class="code-caption">dialog-content.component.html</div>
+
+<p>
+    Ajoutez un bouton pour ouvrir la modale dans votre composant :
+</p>
+
+{% highlight html linenos %}
+<button mat-raised-button (click)="openDialog()">Ouvrir</button>
+{% endhighlight  %}
+<div class="code-caption">your.component.ts</div>
+
+
+<a id="ouvrir-fermer-modale" class="anchor"></a>
+<h2>Ouvrir/Fermer une modale</h2>
+
+<p>
+    Pour ouvrir une modale dans votre composant utilisez le service MatDialog :
+</p>
+
+{% highlight ts linenos %}
+import { MatDialog } from '@angular/material/dialog';
+
+constructor(public dialog: MatDialog) {}
+
+openDialog(): void {
+  const dialogRef = this.dialog.open(DialogExampleComponent);
+}
+{% endhighlight  %}
+<div class="code-caption">your.component.ts</div>
+
+<p>
+    Il existe plusieurs méthodes pour fermer une modale :
+</p>
+
+<ul>
+    <li>
+        Utilisez le bouton de fermeture intégré : 
+        Si vous avez configuré une modale pour inclure un bouton de fermeture (en utilisant l'attribut mat-dialog-close), 
+        l'utilisateur peut simplement cliquer sur ce bouton pour fermer la modale.
+    </li>
+    <li>
+        Utilisez la méthode <code>close()</code> de l'objet de modale :  Cela peut être fait à partir du composant qui gère la modale.
+    </li>
+</ul>
+
+<h4> Utiliser le bouton de fermeture intégré</h4>
+
+{% highlight html linenos %}
+<mat-dialog-content>
+    <h1 mat-dialog-title>Fermer la boîte avec bouton intégré</h1>
+    <mat-dialog-actions>
+        <button mat-dialog-close>Fermer</button>
+    </mat-dialog-actions>
+  </mat-dialog-content>
+{% endhighlight  %}
+<div class="code-caption">dialog-content.component.html</div>
+
+<a id="configurer-modale" class="anchor"></a>
+<h2>Configurer une modale</h2>
+
+<p>
+    La classe <code>MatDialogConfig</code> est utilisée pour configurer des options pour une modale ouverte avec MatDialog. Voici comment vous pouvez l'utiliser :
+</p>
+
+<p>
+    Importez MatDialogConfig à partir de @angular/material/dialog:
+</p>
+
+{% highlight html linenos %}
+import { MatDialogConfig } from '@angular/material/dialog';
+{% endhighlight  %}
+<div class="code-caption">your.component.ts</div>
+
+<p>
+    Créez une nouvelle instance de MatDialogConfig:
+</p>
+
+{% highlight html linenos %}
+const dialogConfig = new MatDialogConfig();
+{% endhighlight  %}
+<div class="code-caption">your.component.ts</div>
+
+<p>
+    Utilisez les propriétés de MatDialogConfig pour configurer la modale. Par exemple :
+</p>
+
+{% highlight ts linenos %}
+position:DialogPosition = {top: '80px'};
+
+dialogConfig.hasBackdrop = false; // Enlève l'arrière plan de superposition
+dialogConfig.height = '80%' // Règle la hauteur de la modale
+dialogConfig.width = '100%' // Règle la largeur de la modale
+dialogConfig.position = this.position; // La position exacte de la modale
+
+{% endhighlight  %}
+<div class="code-caption">your.component.ts</div>
+
+<a id="echanger-données-parent-modale" class="anchor"></a>
+<h2>Échange des données entre la modale et le composant parent</h2>
+
+<p>
+    Il est possible de spécifier des données à renvoyer au parent lorsque la modale se ferme, en utilisant la directive mat-dialog-close :
+</p>
+
+{% highlight html linenos %}
+<mat-dialog-content>
+    {%raw%}<h2 mat-dialog-title>{{ data.title }}</h2>{%endraw%}
+      <p>Votre texte</p>
+      <mat-dialog-actions>
+        <button mat-button mat-dialog-close="confirm">
+          Confirmer
+        </button>
+        <button mat-button mat-dialog-close="cancel">
+          Annuler
+        </button>
+      </mat-dialog-actions>
+  </mat-dialog-content>
+{% endhighlight  %}
+<div class="code-caption">confirm-dialog.component.html</div>
+
+<p>
+    Dans cet exemple les données renvoyées sont : 'cancel' ou 'confirm' en fonction du bouton cliqué.
+</p>
+
+<p>
+    Cela va renvoyer les données spécifiées via l'observable <code>afterClosed</code> de l'objet <code>MatDialogRef</code>, et vous pourrez ainsi les utiliser dans le subscribe :
+</p>
+
+{% highlight ts linenos %}
+open(){
+    this.dialog
+        .open(ConfirmDialogComponent, {
+            data: {
+            title: 'Votre titre de modale'
+            },
+        })
+        .afterClosed()
+        .subscribe((action) => {
+            if (action === 'confirm') {
+            console.log('L'action a été confirmée');
+            }else{
+                console.log('L'action a été annulée');
+            }
+        });
+    }
+{% endhighlight  %}
+<div class="code-caption">your.component.ts</div>
+
+<p>
+    Remarquez que vous pouvez aussi faire passer des données à la modale depuis le composant parent avec la propriété <code>data</code> de la configuration de <code>MatDialogconfig</code> .
+</p>
+
+<p>
+    Mais pour que la modale reçoivent les données il faut en amont injecter le token <code>MAT_DIALOG_DATA</code> dans le constructeur de la modale.
+</p>
+
+{% highlight ts linenos %}
+constructor(@Inject(MAT_DIALOG_DATA) public data: { title: string }) {}
+{% endhighlight  %}
+<div class="code-caption">confirm-dialog.component.ts</div>
