@@ -1,0 +1,105 @@
+---
+layout: post
+title: "Angular - ViewChild"
+date: 2023-01-18 10:10:50 +0100
+description: "Dans cet article, découvrez le décorateur viewChild d'Angular."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/angular-viewchild/cover_viewchild.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction : Qu'est-ce que ViewChild et à quoi sert-il dans Angular ?</h2>
+
+<p>
+    <code>ViewChild</code> est un décorateur dans Angular qui permet à un composant parent d'accéder aux propriétés et aux méthodes d'un composant enfant ou d'une directive. 
+</p>
+
+<p>
+    Il permet également d'accéder aux éléments DOM d'un composant enfant. Ce décorateur est utilisé pour effectuer des opérations de liaison de données ou pour appeler des méthodes sur l'enfant, ainsi que pour accéder aux propriétés de l'enfant. 
+</p>
+
+<p>
+    Il permet aussi de créer des composants plus flexibles et réutilisables en permettant une communication bidirectionnelle entre les composants parent et enfant. 
+</p>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        Il est important de noter que ViewChild ne fonctionne qu'après que les vues enfant ont été initialisées, il est donc recommandé d'utiliser la méthode <code>ngAfterViewInit()</code> pour accéder aux propriétés et aux méthodes des composants enfants.
+    </div>
+</div>
+
+<a id="utilisation-viewchild" class="anchor"></a>
+<h2>Utilisation de ViewChild</h2>
+
+<p>
+    Pour utiliser ViewChild, il suffit de déclarer une propriété dans le composant parent et de l'annoter avec le décorateur ViewChild, en spécifiant le type de composant ou de directive enfant auquel vous souhaitez accéder.
+</p>
+
+<a id="exemple-utilisation" class="anchor"></a>
+<h3>Exemple d'utilisation </h3>
+
+{% highlight ts linenos %}
+import { Component, ViewChild } from '@angular/core';
+import { ChildComponent } from './child.component';
+
+@Component({
+  selector: 'app-parent',
+  template: `
+    <app-child #child></app-child>
+  `,
+})
+export class ParentComponent {
+  @ViewChild(ChildComponent, {static: false}) child: ChildComponent;
+
+  ngAfterViewInit() {
+    console.log(this.child);
+  }
+}
+{% endhighlight %}
+<div class="code-caption">parent.component.ts</div>
+
+<p>
+    Vous devez déclarer une propriété child dans le composant parent et l'annoter avec ViewChild, en spécifiant que vous voulez accéder au composant ChildComponent.
+</p>
+
+<p>
+    Voyez l'utilisation de la variable de template <code>#child</code> pour référencer le composant enfant dans le template parent.
+</p>
+
+<p>
+    Dans la méthode ngAfterViewInit(), vous pouvez ensuite accéder à la propriété child pour accéder aux propriétés et aux méthodes du composant enfant.
+</p>
+
+<a id="acceder-elements-DOM-enfant" class="anchor"></a>
+<h2>Accéder aux éléments DOM enfants</h2>
+
+<p>
+    Il est important de noter que si vous voulez accéder à un élément DOM enfant pour pouvoir le modifier, vous devez utiliser la propriété nativeElement de l'objet renvoyé par ViewChild.
+</p>
+
+{% highlight ts linenos %}
+@ViewChild('myElement', {static: false}) element: ElementRef;
+
+ngAfterViewInit() {
+    console.log(this.element.nativeElement);
+}
+{% endhighlight %}
+<div class="code-caption">parent.component.ts</div>
+
+<p>
+    Il est également important de noter que ViewChild ne fonctionnera qu'après que les vues enfant aient été initialisées. Pour cela, il est recommandé d'utiliser la méthode ngAfterViewInit() pour accéder aux propriétés et aux méthodes des composants enfants.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    En résumé, le décorateur ViewChild est un outil puissant qui permet aux composants parents d'accéder aux propriétés et aux méthodes des composants enfants et de leur élément DOM. Il est facile à utiliser et permet de créer des composants plus flexibles et réutilisables en permettant une communication bidirectionnelle entre les composants parent et enfant.
+</p>
