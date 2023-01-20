@@ -1,0 +1,68 @@
+---
+layout: post
+title: "Angular - KeyValue Pipe"
+date: 2023-01-20 10:10:50 +0100
+description: "Dans cet article, découvrez le pipe KeyValue d'Angular."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-keyvalue-pipe/cover_pipe-keyvalue.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction : Le pipe keyValue d'Angular</h2>
+
+<p>
+    Le pipe <code>keyValue</code> d'Angular est un pipe intégré qui permet de créer une itération sur les objets de type clé-valeur.
+</p>
+
+<p>
+    Il est utilisé pour afficher les propriétés d'un objet sous forme de liste. Il est souvent utilisé avec *ngFor pour afficher les propriétés d'un objet dans un tableau ou une liste.
+</p>
+
+<a id="utilisation" class="anchor"></a>
+<h2>Utilisation</h2>
+
+<p>
+    Pour utiliser le pipe keyValue, vous devez d'abord l'importer dans votre composant :
+</p>
+
+{% highlight ts linenos %}
+import { Component } from '@angular/core';
+import { KeyValuePipe } from '@angular/common';
+
+{% endhighlight %}
+<div class="code-caption">your.component.ts</div>
+
+<p>
+    Ensuite, vous pouvez l'utiliser dans votre html de votre composant :
+</p>
+
+{% highlight html linenos %}
+<div *ngFor="let item of object | keyvalue">
+{%raw%}{{ item.key }}: {{ item.value }}{%endraw%}
+</div>
+{% endhighlight %}
+<div class="code-caption">your.component.html</div>
+
+<p>
+    Dans cet exemple, vous pouvez voir l'utilisation du pipe keyValue avec *ngFor pour créer une itération sur les propriétés de l'objet "object" et afficher les propriétés sous forme de clé-valeur.
+</p>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        Il est important de noter que le pipe keyValue ne fonctionne qu'avec les objets de type clé-valeur, il ne peut pas être utilisé avec des tableaux ou des types de données similaires
+    </div>
+</div>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    En résumé, le pipe keyValue d'Angular est un outil pratique pour afficher les propriétés d'un objet sous forme de liste, il est souvent utilisé avec *ngFor pour créer une itération sur les propriétés d'un objet.
+</p>
