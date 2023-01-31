@@ -1,0 +1,103 @@
+---
+layout: post
+title: "Angular - Différences entre directive et pipe"
+date: 2023-01-30 10:10:50 +0100
+description: "Dans cet article, découvrez les différences entre les directives et pipe d'Angular."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/angular-diff-pipe-directive/cover_diff_pipe_directive.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="directive-pipe" class="anchor"></a>
+<h2>Introduction : Directives et Pipes </h2>
+
+<p>
+    Si vous n'avez aucune notions sur les directives, veuillez vous référez à cet article <a href="https://blog.codewise.fr/angular-directives">là</a>  pour en apprendre d'avantages,
+    et pour les pipes consultez cet <a href="https://blog.codewise.fr/angular-pipes">article</a> .
+</p>
+
+<p>
+    Un <code>pipe</code> est un opérateur de transformation de données dans Angular qui prend une entrée et retourne une sortie transformée. Les pipes sont utilisées pour formater des données pour l'affichage.
+</p>
+
+<p>
+    Une <code>directive</code> est un élément qui permet de modifier le comportement ou l'apparence d'un composant ou d'un élément HTML. Elles peuvent ajouter, supprimer ou modifier des éléments HTML ou des comportements de composant. Mais elles peuvent aussi être utilisées pour contrôler la logique de présentation de l'interface utilisateur.
+</p>
+
+<a id="ressemblances-directives-pipes" class="anchor"></a>
+<h2>Directives et Pipes leurs ressemblances</h2>
+
+<p>
+    Les pipes et les directives utilisent tous les deux des expressions pour travailler avec les données.
+</p>
+
+<p>
+    D'un côté, les pipes utilisent des expressions pour définir la transformation de données à effectuer, tandis que les directives utilisent des expressions pour contrôler le comportement et l'apparence d'un composant ou d'un élément HTML.
+</p>
+
+<p>
+    Ils se ressemblent parce que : 
+</p>
+
+<ul>
+    <li>Les deux peuvent être utilisés pour transformer ou contrôler les données affichées à l'écran.</li>
+    <li>Les deux peuvent être réutilisés dans plusieurs endroits de l'application.</li>
+    <li>Les deux peuvent être personnalisés en fonction des besoins de l'application.</li>
+</ul>
+
+<a id="differences-directives-pipe" class="anchor"></a>
+<h2>Directives et Pipes leurs différences</h2>
+
+<p>
+    Maintenant ces deux éléments sont différents en plusieurs choses : 
+</p>
+
+<h4>La fléxibilité : </h4>
+<p>
+     Les pipes sont généralement plus simples et plus faciles à utiliser, tandis que les directives sont plus flexibles et peuvent contrôler des aspects plus complexes du comportement et de l'apparence d'un composant ou d'un élément HTML.
+</p>
+
+<h4>La Portée : </h4>
+<p>Les pipes sont des fonctionnalités définies au niveau de l'application et peuvent être réutilisées dans plusieurs composants, tandis que les directives peuvent être définies au niveau de l'application ou au niveau de composant et peuvent n'être utilisées que dans le composant auquel elles appartiennent pour restreindre son utilisation.</p>
+
+<h4>Fonctionnalité : </h4>
+<p>Les pipes sont utilisés pour transformer les données avant de les afficher à l'écran, tandis que les directives sont utilisées pour contrôler la logique de présentation et le comportement d'un composant ou d'un élément HTML.</p>
+
+<h4>Utilisation : </h4>
+<p>Les pipes sont utilisés dans des expressions pour définir la transformation de données à effectuer, tandis que les directives peuvent être utilisées dans des éléments HTML ou des composants pour contrôler leur comportement et leur apparence.</p>
+
+
+<a id="quand-utiliser-directives-pipe" class="anchor"></a>
+<h2>Quand utiliser les Pipes ou les Directives ?</h2>
+
+<p>
+    Avec toutes ces informations il est simple de se perdre et de se demander quand est-ce que vous devez utiliser l'un ou l'autre.
+</p>
+
+<p>
+    Pour cela, un petit rappel : 
+</p>
+
+<p>
+    Un pipe est plus léger qu'une directive, il faut l'utiliser quand le cas d'utilisation est de transformer la donnée à la volée dans le template sans modifier la variable de base.
+</p>
+
+<p>
+    Et donc un pipe n'est pas adapté pour modifier le DOM, on privilégiera une directive donc un élément plus lourd à créer, mais qui octroiera plus de possibilité.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Les pipes et les directives sont deux outils permettant de transformer et contrôler les données dans une application Angular. Bien qu'ils puissent se ressembler en certains aspects, il est important de comprendre leur fonctionnement et leur utilisation spécifiques.
+</p>
+
+<p>
+    En utilisant les pipes et les directives ensemble, vous pouvez créer une expérience utilisateur fluide et personnalisée pour vos applications.
+</p>
