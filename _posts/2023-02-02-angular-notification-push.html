@@ -1,0 +1,274 @@
+---
+layout: post
+title: "Angular - Notifications push"
+date: 2023-02-01 10:10:50 +0100
+description: "Dans cet article, découvrez les notifications push d'angular."
+tags: developpement web Typescript
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/angular-notifications-push/cover_angular_notifications_push.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction-notification-push" class="anchor"></a>
+<h2>Introduction aux notifications push</h2>
+
+<p>
+    Les notifications push sont un moyen essentiel d'informer les utilisateurs de mises à jour importantes en temps réel dans une application. 
+</p>
+
+<p>
+    Angular propose un service de notification Web API qui utilise la technologie Push API pour implémenter les notifications push.
+</p>
+
+<p>
+    Cette fonctionnalité peut améliorer considérablement l'expérience utilisateur en permettant aux utilisateurs de recevoir des notifications push sur des événements importants, tels que les nouvelles notifications, les messages, les tâches à effectuer, etc.
+</p>
+
+<a id="push-api" class="anchor"></a>
+<h3>Push API</h3>
+
+<p>
+    Avant de commencer, il est important de comprendre ce qu'est Push API.
+</p>
+
+<p>
+    Push API est une spécification du W3C qui définit comment les applications peuvent recevoir des notifications push à partir d'un serveur externe.
+</p>
+
+<p>
+    Cette technologie est supportée par les navigateurs modernes, ce qui signifie que les notifications push peuvent être utilisées dans les applications web.
+</p>
+
+<p>
+    Angular propose un service de notification Web API qui utilise la Push API pour implémenter les notifications push.
+</p>
+
+<p>
+    Ce service permet aux développeurs de recevoir des notifications push à partir d'un serveur externe, sans avoir à s'inquiéter des détails techniques de la communication avec le serveur.
+</p>
+
+<p>
+    Pour utiliser ce service, il est nécessaire de déclarer une notification Web API dans le code de votre application. Pour cela créez un service exemple :
+</p>
+
+{% highlight ts linenos %}
+import { Injectable } from '@angular/core';
+import { ServiceWorkerModule, SwPush } from '@angular/service-worker';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class NotificationService {
+  readonly VAPID_PUBLIC_KEY = 'your-public-key';
+
+  constructor(private swPush: SwPush) { }
+
+  subscribeToNotifications(): void {
+    this.swPush.requestSubscription({
+      serverPublicKey: this.VAPID_PUBLIC_KEY
+    })
+      .then(sub => {
+        console.log('Notification subscription: ', sub);
+      })
+      .catch(err => console.error('Could not subscribe to notifications', err));
+  }
+}
+
+{% endhighlight %}
+<div class="code-caption">notifications.service.ts</div>
+
+<a id="angular-service-worker" class="anchor"></a>
+<h3>Angular service worker</h3>
+
+<p>
+    Petite précision sur le service worker d'Angular vu plus haut dans le code :
+</p>
+
+<p>
+    Le Angular Service Worker est un mécanisme de cache de progressive Web App qui permet aux applications Angular de fonctionner hors connexion et d'offrir une expérience utilisateur rapide et fiable.
+</p>
+
+<p>
+    Il utilise un cache de navigateur pour stocker les ressources nécessaires à l'application, telles que les fichiers HTML, CSS, JavaScript et les images.
+</p>
+
+<p>
+    De cette façon, lorsque l'application est chargée hors ligne, les ressources sont immédiatement disponibles depuis le cache, offrant une expérience utilisateur sans interruption.
+</p>
+
+
+<a id="fournisseurs-services-navigateur-push" class="anchor"></a>
+<h3>Fournisseurs de services de navigateur push</h3>
+
+<p>
+    Comme nous le voyons parfois en ligne, les notifications push peuvent être très perturbatrices pour l'utilisateur, et les implémenteurs de navigateur (Chrome, Firefox, Safari, Edge) veulent s'assurer que les utilisateurs du navigateur ont une bonne expérience en ligne à tout moment.
+</p>
+
+<p>
+    Cela signifie que les fournisseurs de navigateurs souhaitent pouvoir empêcher l'affichage de certaines notifications à l'utilisateur, par exemple si les notifications sont trop fréquentes.
+</p>
+
+<p>
+    La façon dont les navigateurs garantissent que les messages push ne causent pas de problèmes d'expérience utilisateur est de canaliser tous les messages push sous leurs serveurs.
+</p>
+
+<a id="identifier-serveur-source-push" class="anchor"></a>
+<h2>Identifier son serveur comme source Push</h2>
+
+<p>
+    La première chose que vous devez faire est d'identifier de manière unique votre serveur auprès des différents fournisseurs de services de navigateur push disponibles.
+</p>
+
+<p>
+    Chaque service push analysera les modèles de comportement des messages envoyés afin d'éviter les expériences perturbatrices.
+</p>
+
+<p>
+    Par conséquent, l'identification de notre serveur et l'utilisation correcte des messages push au fil du temps augmenteront vos chances que le service push délivre vos messages en temps opportun.
+</p>
+
+<a id="cle-vapid" class="anchor"></a>
+<h3>Clé VAPID</h3>
+
+<p>
+    VAPID signifie Voluntary Application Server Identification pour le protocole Web Push.
+</p>
+
+<p>
+    Une paire de clés VAPID est une paire de clés publique/privée cryptographique
+</p>
+
+<p>
+    La clé publique est utilisée comme identifiant de serveur unique pour abonner l'utilisateur aux notifications envoyées par ce serveur.
+</p>
+
+<p>
+    la clé privée doit être gardée secrète et utilisée par le serveur d'application pour signer les messages, avant de les envoyer au service Push.
+</p>
+
+<a id="generer-paire-cle-vapid" class="anchor"></a>
+<h4>Génération d'une paire de clés VAPID</h4>
+
+<p>
+    Pour générer une clé VAPID il faut installer la bibliothèque node webpush : 
+</p>
+
+{% highlight bash linenos %}
+npm install web-push -g
+{% endhighlight %}
+
+<p>
+    Ensuite, générez une paire de clé avec la commande : 
+</p>
+
+{% highlight bash linenos %}
+web-push generate-vapid-keys --json
+{% endhighlight %}
+
+<p>
+    Et voici à quoi ressemble une paire de clé VAPID : 
+</p>
+
+{% highlight ts linenos %}
+{
+    "publicKey":"BLBx-hf2WrL2qEa0qKb-aCJbcxEvyn62GDTyyP9KTS5K7ZL0K7TfmOKSPqp8vQF0DaG8hpSBknz_x3qf5F4iEFo",
+    "privateKey":"PkVHOUKgY29NM7myQXXoGbp_bH_9j-cxW5cO-fGcSsA"
+  }
+{% endhighlight %}
+
+<a id="abonnement-notifications-push" class="anchor"></a>
+<h3>Abonnement aux notifications push</h3>
+
+<p>
+    À partir de là, vous aurez besoin du service worker d'Angular.
+</p>
+
+<p>
+    Pour l'ajouter à une application déjà existante utilisez cette commande : 
+</p>
+
+{% highlight bash linenos %}
+ng add @angular/pwa --project <Nom du projet écrit dans le fichier angular.json>
+{% endhighlight %}
+
+<p>
+    Après avoir installé l'Angular service worker, vous pouvez demandez l'autorisation à l'utilisateur de lui envoyer des notifications push :
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-component',
+    template: `
+        <button class="button button-primary" (click)="subscribeToNotifications()">
+          S'abonner
+        </button>
+`})
+export class YourComponent {
+
+    readonly VAPID_PUBLIC_KEY = "your-vapid-key-public";
+
+    constructor(
+        private swPush: SwPush,
+        private newsletterService: NewsletterService) {}
+
+    subscribeToNotifications() {
+
+        this.swPush.requestSubscription({
+            serverPublicKey: this.VAPID_PUBLIC_KEY
+        })
+        .then(sub => this.newsletterService.addPushSubscriber(sub).subscribe())
+        .catch(err => console.error("Impossible de s'abonner aux notifications", err));
+    }
+}
+{% endhighlight %}
+<div class="code-caption">your.component.ts</div>
+
+<p>
+    Lorsque l'utilisateur clique sur le bouton s'abonner la méthode subscribeToNotifications() s'éxécute.
+</p>
+
+<p>
+    Avec la clé publique VAPID, le service <code>swPush</code> va demander au serveur d'envoyer des messages web push à l'utilisateur.
+</p>
+
+<p>
+    Si l'utilisateur autorise les notifications, la méthode requestSubscription() émet l'abonnement push.
+</p>
+
+<p>
+    Enfin l'utilisateur verra une fenêtre contextuelle s'afficher lui demandant d'autoriser ou de refuser d'afficher les notifications.
+</p>
+
+<p>
+    Si l'utilisateur accepte la demande, la promesse renvoyée par requestSubscription() sera évaluée avec succès et un objet d'abonnement push sera transmis à then().
+</p>
+
+<a id="push-subscription" class="anchor"></a>
+<h3>Push Subscription</h3>
+
+<p>
+    Une fois l'abonnement push obtenu, vous devez le stocker pour pouvoir l'utiliser plus tard.
+</p>
+
+<p>
+    Dans l'exemple ci-dessus l'objet d'abonnement est envoyé au backend par le NewsletterService et l'objet d'abonnement doit être stocké en base de données pour une utilisation ultérieure.
+</p>
+
+<p>
+    Pour la partie backend suivez ce <a href="https://www.section.io/engineering-education/push-notification-in-nodejs-using-service-worker/">tutoriel</a>  Node.js sur le framework express.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Les notifications push sont un moyen puissant d'informer vos utilisateurs de nouvelles mises à jour, de promotions et d'autres informations importantes sans qu'ils n'aient à ouvrir l'application.
+</p>
+
+<p>
+    En utilisant judicieusement les notifications push, vous pouvez offrir une expérience utilisateur plus engageante et personnalisée, tout en améliorant la performance de votre application.
+</p>
