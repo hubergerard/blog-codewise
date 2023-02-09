@@ -1,0 +1,155 @@
+---
+layout: post
+title: "Angular - Erreur Can't bind to"
+date: 2023-02-07 10:10:50 +0100
+description: "Dans cet article, découvrez l'erreur récurente Can't bind to dans Angular et apprenez comment l'éviter."
+tags: developpement web Typescript
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/angular-error-cant-bind/cover_error_cant_bind_to.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction-erreur-cant-bind" class="anchor"></a>
+<h2>Introduction à l'erreur : "Can't bind to"</h2>
+
+<p>
+    L'erreur <code>Can't bind to 'x' since it isn't a known property of 'y'</code> peut survenir de plusieurs causes, elle est assez récurente dans Angular et peut se produire lorsqu'une directive, un composant ou un élément HTML n'a pas accès à une propriété déclarée dans le modèle ou déclarée de manière incorrect.
+</p>
+
+<p>
+    Mais vous allez voir cela en détails dans la suite de cet article.
+</p>
+
+<a id="comment-cette-erreur-est-provoquer" class="anchor"></a>
+<h2>Comment cette erreur est provoquée ?</h2>
+
+<a id="import" class="anchor"></a>
+<h3>Syntaxe incorrect</h3>
+
+<p>
+   Une mauvaise syntaxe peut provoquer cette erreur, par exemple si le nom de la directive, du composant, du pipe ou du module dans le fichier typescript ou html est incorrect.
+</p>
+
+<p>
+    Pour cela, assurez vous que la syntaxe de votre élément est correct dans le composant où il est appelé exemple : 
+</p>
+
+{% highlight ts linenos %}
+<div ngFor="post of posts"></div>
+{% endhighlight %}
+<div class="code-caption">your.component.html</div>
+
+<p>
+    Là on peut voir deux erreurs de syntaxe sur cette ligne, une sur l'appelation de la directive, une autre sur la déclaration d'une variable.
+</p>
+
+<p>
+    Après correction cela donnerait :
+</p>
+
+{% highlight ts linenos %}
+<div *ngFor="let post of posts"></div>
+{% endhighlight %}
+<div class="code-caption">your.component.html</div>
+
+<a id="syntaxe" class="anchor"></a>
+<h3>Problème d'import</h3>
+
+<p>
+    Une deuxième cause serait l'oubli d'importation du module dans votre fichier app.module.ts dont vous essayer d'utiliser la directive ou autre élément dans votre html exemple :
+</p>
+
+{% highlight html linenos %}
+<form [formGroup]="newTaskForm" (submit)="createNewTask()">
+    <div class="form-group">
+       <label for="name">Nom</label>
+       <input type="text" name="name" required>
+    </div>
+    <button type="submit" class="btn btn-default">Créer</button>
+ </form>
+{% endhighlight %}
+<div class="code-caption">your.component.html</div>
+
+{% highlight ts linenos %}
+import { Component } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormBuilder }  from '@angular/forms';
+import {FormsModule,ReactiveFormsModule} from '@angular/forms';
+import { Task } from './task';
+
+@Component({
+    selector: 'app-your',
+    templateUrl: 'app/task-add.component.html'
+
+})
+export class yourComponent {
+
+    newTaskForm: FormGroup;
+
+    constructor(fb: FormBuilder)
+    {
+        this.newTaskForm = fb.group({
+            name: ["", Validators.required]
+        });
+    }
+
+    createNewTask()
+    {
+        console.log(this.newTaskForm.value)
+    }
+}
+{% endhighlight %}
+<div class="code-caption">your.component.ts</div>
+
+<p>
+    Vous ne remarquez rien d'anormal jusqu'ici mais l'erreur est présente et pourtant les modules sont bien importé dans le composant.
+</p>
+
+<p>
+    En réalité, l'erreur provient du fait que les modules n'ont pas été importé dans le fichier app.module.ts :
+</p>
+
+{% highlight ts linenos %}
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppComponent }  from './app.component';
+
+@NgModule({
+    imports: [
+        BrowserModule,
+        FormsModule,
+        ReactiveFormsModule
+    ],
+    declarations: [
+        AppComponent,
+        yourComponent
+    ],
+    bootstrap: [AppComponent]
+})
+
+export class AppModule { }
+{% endhighlight %}
+<div class="code-caption">your.component.html</div>
+
+<a id="bonnes-pratiques" class="anchor"></a>
+<h2>Bonnes pratiques</h2>
+
+<ul>
+    <li>Vérifier l'import du module dans le fichier app.module.ts pour chaque directive importé dans votre composant</li>
+    <li>Utiliser un IDE qui permet de mettre en surbrillance les référence non importé et les erreurs syntaxique</li>
+</ul>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    En fin de compte pour résoudre cette erreur, vous devez vous assurer que la référence que vous souhaitez utiliser est importée et déclarée correctement dans le composant et dans le fichier app.module.ts, et que le nom de la référence est correctement appelé syntaxiquement dans le html. 
+</p>
+
+<p>
+    Si la propriété ou référence est déclarée dans un autre module, assurez-vous qu'elle est correctement exportée et importée dans le composant.
+</p>
