@@ -1,0 +1,208 @@
+---
+layout: post
+title: "Angular - Erreur : property does not exist"
+date: 2023-02-20 10:10:50 +0100
+description: "Dans cet article, découvrez l'erreur property does not exist dans Angular et apprenez comment l'éviter."
+tags: developpement web Angular Typescript
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/angular-error-property/cover_error_angular_property.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction" class="anchor"></a>
+<h2> Introduction : Comprendre les erreurs "property does not exist" dans Angular</h2>
+
+<p>
+    L'un des avantages d'Angular est son fort typage grâce à typescript, ce qui peut aider à détecter les erreurs plus tôt dans le processus de développement.
+</p>
+
+<p>
+    Cependant, les erreurs de propriété sont toujours un défi courant lors du développement avec Angular. 
+</p>
+
+<p>
+    Dans cet article, nous examinerons les causes de l'erreur "property does not exist" en Angular et comment la résoudre pour développer des applications Angular robustes sans trop de difficultés.
+</p>
+
+<a id="causes-erreur-property-not-exist" class="anchor"></a>
+<h2>Causes de l'erreur "property does not exist"</h2>
+
+<p>
+    L'erreur "property does not exist" se produit généralement lorsque vous essayez d'accéder à une propriété qui n'existe pas ou qui n'a pas été définie. Voici les causes les plus courantes de cette erreur :
+</p>
+
+<a id="typage-incorrect-variables" class="anchor"></a>
+<h3>Typage incorrect des variables</h3>
+
+<p>
+    Si vous essayez d'accéder à une propriété d'un objet qui n'a pas été correctement typé, cela peut entraîner cette erreur.
+</p>
+
+<p>
+    Cela signifie que chaque variable et chaque propriété a un type spécifique. Si le type d'une variable est incorrect, cela peut entraîner des erreurs "property does not exist".
+</p>
+
+<p>
+    Exemple : 
+</p>
+
+{% highlight ts linenos %}
+export class YourComponent {
+    message: string;
+  
+    constructor() {
+      this.message = 42;
+      console.log(this.message);
+    }
+  }
+{% endhighlight %}
+<div class="code-caption">exemple.component.ts</div>
+
+<p>
+    Pour résoudre cette erreur, vous pouvez modifier la valeur de "message" pour qu'elle soit de type "string" :
+</p>
+
+{% highlight ts linenos %}
+export class YourComponent {
+    message: string;
+  
+    constructor() {
+      this.message = "Hello World!";
+      console.log(this.message);
+    }
+  }
+{% endhighlight %}
+<div class="code-caption">exemple.component.ts</div>
+
+<a id="utilisation-nom-proprietes-incorrects" class="anchor"></a>
+<h3>Utilisation de noms de propriétés incorrects</h3>
+
+<p>
+    Il peut arriver que vous ayez tapé le nom d'une propriété incorrectement, ou que vous ayez utilisé une propriété qui n'a pas été définie.
+</p>
+
+<p>
+    Dans ce cas, Angular ne pourra pas trouver la propriété et affichera une erreur "property does not exist".
+</p>
+
+<p>
+    Exemple : 
+</p>
+
+{% highlight ts linenos %}
+export class YourComponent {
+    person = {
+      age: 30,
+      city: "Paris"
+    };
+  
+    constructor() {
+      console.log(person.name);
+    }
+  }
+{% endhighlight %}
+<div class="code-caption">exemple.component.ts</div>
+
+<p>
+    Pour résoudre cette erreur, vous pouvez ajouter la propriété "name" à l'objet "person" :
+</p>
+
+{% highlight ts linenos %}
+export class YourComponent {
+    person = {
+      name: "John",
+      age: 30,
+      city: "Paris"
+    };
+  
+    constructor() {
+      console.log(person.name);
+    }
+  }
+{% endhighlight %}
+<div class="code-caption">exemple.component.ts</div>
+
+<a id="utilisation--proprietes-non-definies" class="anchor"></a>
+<h3>Utilisation de propriétés non définies</h3>
+
+<p>
+    Il peut arriver que vous ayez une variable ou une propriété qui n'a pas été définie, ou qui a été définie à null ou à undefined. Dans ce cas, lorsque vous essayez d'accéder à une propriété de cette variable ou de cette propriété, vous obtiendrez une erreur "property does not exist".
+</p>
+
+<a id="problemes-de-portee" class="anchor"></a>
+<h3>Problèmes de portée</h3>
+
+<p>
+    Les problèmes de portée peuvent également entraîner des erreurs "property does not exist". 
+</p>
+
+<p>
+    Par exemple, si vous essayez d'accéder à une propriété dans une méthode qui ne possède pas la portée appropriée, cela peut entraîner cette erreur.
+</p>
+
+<p>
+    Exemple : 
+</p>
+
+{% highlight ts linenos %}
+export class YourComponent {
+    private showMessage() {
+      let message = "Hello World!";
+    }
+  
+    public displayMessage() {
+      console.log(message);
+    }
+  }
+{% endhighlight %}
+<div class="code-caption">exemple.component.ts</div>
+
+<p>
+    Pour résoudre cette erreur, vous pouvez définir la propriété "message" en dehors de la méthode "showMessage" pour qu'elle soit accessible à l'extérieur de la méthode :
+</p>
+
+{% highlight ts linenos %}
+export class AppComponent {
+    private message: string;
+  
+    private showMessage() {
+      this.message = "Hello World!";
+    }
+  
+    public displayMessage() {
+      console.log(this.message);
+    }
+  }
+{% endhighlight %}
+<div class="code-caption">exemple.component.ts</div>
+
+
+<a id="meilleures-pratiques-eviter-erreur-property-not-exist" class="anchor"></a>
+<h2>Meilleures pratiques pour éviter l'erreur "property does not exist"</h2>
+
+<ul>
+    <li>Utilisation de TypeScript pour détecter les erreurs de typage</li>
+    <li>Utilisation d'outils de débogage pour identifier les erreurs</li>
+    <li>Vérification de la portée des propriétés</li>
+    <li>Éviter l'utilisation de propriétés dynamiques</li>
+    <li>Utilisation de la syntaxe Angular pour éviter les erreurs de typage</li>
+</ul>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Les erreurs "property does not exist" sont courantes lors du développement d'applications Angular. 
+</p>
+
+<p>
+    Pour éviter ces erreurs, il est important de comprendre les causes de ces erreurs et les meilleures pratiques pour les résoudre.
+</p>
+
+<p>
+    En suivant les bonnes pratiques, vous pourrez développer des applications Angular robustes et éviter les erreurs "property does not exist".
+</p>
