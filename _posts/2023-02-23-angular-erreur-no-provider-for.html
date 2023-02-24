@@ -1,0 +1,147 @@
+---
+layout: post
+title: "Angular - Erreur : No provider for"
+date: 2022-09-01 10:10:50 +0100
+description: "Dans cet article, découvrez l'erreur 'No provider for' d'Angular, apprenez comment la résoudre et l'éviter."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: ""
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction-erreur-no-provider-for" class="anchor"></a>
+<h2>Introduction : L'erreur 'No provider for'</h2>
+
+<p>
+    Angular utilise l'injection de dépendances, elle s'attend à ce que les fournisseurs soient disponibles pour fournir des instances de classes de services ou de composants.
+</p>
+
+<p>
+    L'erreur "No provider for" se produit lorsqu'un composant, un service ou un test unitaire demande une dépendance, mais que le système d'injection de dépendances ne peut pas la trouver.
+</p>
+
+<a id="causes-courantes" class="anchor"></a>
+<h2>Les causes courantes</h2>
+
+<p>
+    Les erreurs "No provider for" dans Angular peuvent être causées par plusieurs raisons. 
+</p>
+
+<p>
+    Les causes courantes incluent des problèmes liés à l'importation et à l'exportation des modules, aux conflits de noms, et aux problèmes avec les services.
+</p>
+
+<a id="probleme-import-export-module" class="anchor"></a>
+<h3>Problèmes liés à l'importation et à l'exportation des modules</h3>
+
+<p>
+    Lorsqu'un module est importé dans un autre module, il peut être nécessaire d'exporter certains de ses composants ou services pour qu'ils soient disponibles pour l'injection de dépendances. 
+</p>
+
+<p>
+    Si un module est importé sans exporter ses fournisseurs nécessaires, cela peut entraîner une erreur "No provider for".
+</p>
+
+<p>
+    Par exemple, si un composant A dépend d'un service B qui est fourni par le module B, le module A doit importer le module B et exporter le service B pour que le système d'injection de dépendances puisse l'injecter dans le composant A.
+</p>
+
+{% highlight ts linenos %}
+import { Component } from '@angular/core';
+import { BService } from './b.service';
+
+@Component({
+  selector: 'app-component-a',
+  template: '<p>{{ value }}</p>',
+})
+export class AComponent {
+  constructor(private bService: BService) {}
+}
+{% endhighlight %}
+<div class="code-caption">a.component.ts</div>
+
+<p>
+    Cela entraînera donc l'erreur : No provider for BService.
+</p>
+
+<a id="erreur-module" class="anchor"></a>
+<h3>Erreur dans un module</h3>
+
+<p>
+    Supposons qu'un module A importe un module B qui fournit un service C, mais que le service C n'est pas exporté depuis le module B. Cela peut entraîner une erreur "No provider for" dans le module A. Par exemple :
+</p>
+
+{% highlight ts linenos %}
+import { NgModule } from '@angular/core';
+import { BModule } from './b.module';
+import { DService } from './d.service';
+
+@NgModule({
+  imports: [BModule],
+  providers: [DService],
+})
+export class AModule {}
+
+{% endhighlight %}
+<div class="code-caption">a.module.ts</div>
+
+<p>
+    le module A importe le module B, mais le service C fourni par le module B n'est pas exporté. Si le service D dépend du service C, cela entraînera une erreur "No provider for CService".
+</p>
+
+<a id="conflits-noms" class="anchor"></a>
+<h3>Conflits de noms</h3>
+
+<p>
+    Les conflits de noms peuvent également causer des erreurs "No provider for". Si deux fournisseurs ont le même nom ou sont mal référencés, le système d'injection de dépendances ne peut pas les différencier et ne peut pas les fournir correctement.
+</p>
+
+<a id="problemes-services" class="anchor"></a>
+<h3>Problèmes avec les services</h3>
+
+<p>
+    Les services peuvent également causer des erreurs "No provider for". Si un service n'est pas correctement référencé ou déclaré avec le décorateur @Injectable, le système d'injection de dépendances ne pourra pas le fournir correctement.
+</p>
+
+<a id="resoudre-erreur-no-provider-for" class="anchor"></a>
+<h2>Meilleures pratiques pour éviter l'erreur "No provider for"</h2>
+
+<a id="eviter-service-globaux" class="anchor"></a>
+<h3>Éviter les services globaux</h3>
+
+<p>
+    Les services globaux peuvent créer des dépendances implicites et rendre le code difficile à maintenir. Au lieu de cela, il est recommandé d'utiliser les services spécifiques à un composant ou à un module.
+</p>
+
+<a id="utiliser-portee-appropriee" class="anchor"></a>
+<h3>Utiliser la portée appropriée</h3>
+
+<p>
+    Il est important de choisir la portée appropriée pour les services. Si un service doit être partagé entre plusieurs composants, il doit être fourni au niveau du module. Si un service est spécifique à un composant, il doit être fourni au niveau du composant.
+</p>
+
+<a id="utiliser-portee-appropriee" class="anchor"></a>
+<h3>Éviter les services circulaires</h3>
+
+<p>
+    Les services circulaires peuvent créer des dépendances cycliques et rendre le code difficile à maintenir. Il est recommandé d'éviter les services circulaires et de chercher des solutions alternatives pour les besoins de l'application.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Les erreurs "No provider for" sont courantes dans les applications Angular et peuvent être causées par diverses raisons.
+</p>
+
+<p>
+    En suivant les bonnes pratiques, tels que l'utilisation de la portée appropriée pour les services, l'utilisation du décorateur @Injectable, vous pouvez réduire le risque d'erreur "No provider for" dans vos applications Angular. 
+</p>
+
+<p>
+    En outre, ces bonnes pratiques peuvent aider à rendre l'application plus facile à maintenir et à développer.
+</p>
