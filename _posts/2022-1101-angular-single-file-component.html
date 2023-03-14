@@ -1,0 +1,100 @@
+---
+layout: post
+title: "Angular - Single file component"
+date: 2022-11-01 10:10:50 +0100
+description: "Dans cet article, vous allez découvrir ce qu'est un single file component pourquoi en utiliser et comment."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/angular-single-file-component/cover_single_file_comp.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="single-file-component" class="anchor"></a>
+<h2>Qu'est-ce qu'un single file component ?</h2>
+
+<p>
+   
+    Par défaut, lorsque vous générez un composant avec la CLI, cela génère un fichier CSS et HTML séparés du fichier TS.
+</p>
+
+<p>
+    <span class="fw-bold">Mais il est aussi possible d'avoir un composant avec un seul fichier qui réunit le CSS, le HTML et le TS.</span>
+</p>
+
+<p>
+    C'est ce qu'on appel un <span class="fw-bold">single file component.</span>
+</p>
+
+<a id="quand-utiliser-single-file-component" class="anchor"></a>
+<h2>Dans quel cas est-ce pertinent d'en utiliser ?</h2>
+
+<p>
+    Alors dans quel cas est-ce utile ?
+</p>
+
+<p>
+    Avant toute chose il faut savoir qu'<span class="fw-bold">Angular ne recommande pas d'utiliser cette méthode</span>, ceci dit elle peut être envisagée dans le cas où votre composant contient un template et un style très simples ! Ou pas de template du tout (utile dans certains cas).
+</p>
+
+<p>
+    Cela permettra <span class="fw-bold">d'alléger votre application.</span>
+</p>
+
+<a id="comment-creer-single-file-component" class="anchor"></a>
+<h2>Comment créer un single file component ?</h2>
+
+<p>
+    Quand vous générez votre composant, dans le décorateur <code>Component</code> remplacez les metadatas <code>templateUrl</code> et <code>styleUrl</code> par <code>template</code> et <code>styles</code>.
+</p>
+
+<p>
+    Pour <code>template</code> une string est attendue et pour <code>styles</code> un tableau.
+    Si vous voulez faire une string multi-ligne, pensez à utiliser des back quotes ``
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-page',
+    templateUrl: './page.component.html',
+    styleUrls: ['./page.component.css']
+  })
+{% endhighlight %}
+
+{% highlight ts linenos %}
+@Component ( {
+    selector : 'app-page' , 
+    template : `<h1>Super titre</h1>
+                <p>Paragraphe quelconque</p>` , 
+    styles : [ 'h1 { color : blue }' ] , 
+  } )
+{% endhighlight %}
+
+<p>
+    Maintenant vous pouvez simplement <span class="fw-bold">supprimez le fichier CSS et HTML du dossier de votre composant.</span>
+</p>
+
+<a id="with-cli" class="anchor"></a>
+<h3>Avec la CLI</h3>
+
+<p>
+    Vous pouvez également <span class="fw-bold">utiliser la CLI pour générer directement un single file component</span> avec cette commande : 
+</p>
+
+{% highlight sh linenos %}
+ng g c your-component --inline-style --inline-template
+{% endhighlight %}
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    C'est tout pour cet article sur le single file component, en espérant que cela vous soit utile.
+</p>
+
+<p>
+    N'hésitez pas à laisser un commentaire !
+</p>
