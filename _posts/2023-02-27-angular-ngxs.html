@@ -1,0 +1,262 @@
+---
+layout: post
+title: "Angular - NGXS"
+date: 2023-02-27 10:10:50 +0100
+description: "Dans cet article, découvrez le store NGXS d'Angular"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/angular-ngxs/cover_angular_ngxs.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction-ngxs" class="anchor"></a>
+<h2>Introduction à NGXS</h2>
+
+<p>
+    NGXS est une bibliothèque de gestion d'état pour les applications Angular. Elle fournit une solution pour gérer l'état de l'application de manière prévisible et cohérente, en utilisant le modèle de conception Flux.
+</p>
+
+<p>
+    Le modèle de conception Flux est basé sur une architecture à sens unique où les données circulent dans une seule direction : de la source de données vers les vues. Dans ce modèle, l'état de l'application est stocké dans un magasin (store), qui peut être modifié uniquement par des actions spécifiques déclenchées par l'utilisateur ou par l'application elle-même.
+</p>
+
+<p>
+    NGXS fournit des fonctionnalités telles que des observables pour écouter les changements d'état, la gestion des effets secondaires (par exemple, l'appel à des API) et la gestion de plusieurs états dans une seule application.
+</p>
+
+<a id="concepts-ngxs" class="anchor"></a>
+<h2>Les concepts d'NGXS</h2>
+
+<p>
+    NGXS utilise plusieurs concepts clés pour gérer l'état de l'application de manière prévisible et cohérente. Dans cette section vous allez voir les 4 concepts principaux pour apréhender les notions de bases.
+</p>
+
+<a id="concept-store" class="anchor"></a>
+<h3>Store</h3>
+
+<p>
+    Le store est un objet qui contient l'état global de l'application et les fonctions nécessaires pour le gérer. Le store est créé au lancement de l'application et est initialisé avec un état par défaut. Les données dans le store sont accessibles par des composants Angular via des observables.
+</p>
+
+<a id="concept-state" class="anchor"></a>
+<h3>State</h3>
+
+<p>
+    Les States sont des classes qui définissent un conteneur d'état car elles contiennent toutes les données qui décrivent l'état global de l'application à un moment donné. Cela inclut toutes les informations qui doivent être stockées pour que l'application fonctionne correctement, comme les données utilisateur, les données de configuration, les données de contexte, etc.
+</p>
+
+<a id="concept-action" class="anchor"></a>
+<h3>Action</h3>
+
+<p>
+    Les actions sont des objets qui décrivent un changement d'état à apporter au store. Elles contiennent une propriété type qui identifie l'action et éventuellement des données supplémentaires qui sont nécessaires pour modifier l'état de l'application.
+</p>
+
+<a id="concept-selector" class="anchor"></a>
+<h3>Selector</h3>
+
+<p>
+    Les selectors sont des fonctions qui permettent de récupérer une partie de l'état global stocké dans le store. Les selectors sont utiles pour obtenir des informations spécifiques à partir de l'état global de l'application.
+</p>
+
+<a id="utilisation-ngxs" class="anchor"></a>
+<h2>Utilisation d'NGXS</h2>
+
+<p>
+    Maintenant place à un exemple pratique :
+</p>
+
+<a id="installation-ngxs" class="anchor"></a>
+<h3>Installation d'NGXS</h3>
+
+<p>
+    La première étape consiste à installer NGXS et ses dépendances nécessaires dans votre projet Angular. Pour cela, ouvrez un terminal et exécutez la commande suivante :
+</p>
+
+{% highlight sh linenos %}
+npm install --save @ngxs/store
+{% endhighlight %}
+<div class="code-caption">Terminal bash</div>
+
+<a id="configuration-ngxs" class="anchor"></a>
+<h3>Configuration d'NGXS</h3>
+
+<p>
+    La deuxième étape consiste à configurer NGXS dans votre projet Angular. Pour cela, ouvrez le fichier app.module.ts et ajoutez le module StoreModule de NGXS dans les imports :
+</p>
+
+{% highlight ts linenos %}
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { AppComponent } from './app.component';
+import { StoreModule } from '@ngxs/store';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    StoreModule.forRoot([])
+  ],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+{% endhighlight %}
+<div class="code-caption">app.module.ts</div>
+
+<p>
+    Le tableau vide dans la méthode <code>forRoot()</code> sera remplacé par un état initial dans la prochaine étape.
+</p>
+
+<a id="definition-etat-initial" class="anchor"></a>
+<h3>Définition de l'état initial</h3>
+
+<p>
+    La troisième étape consiste à définir l'état initial de votre application. Pour cela, créez un fichier state.ts dans un dossier appelé 'store' et définissez un objet qui représente l'état initial de votre application. Par exemple :
+</p>
+
+{% highlight ts linenos %}
+export interface AppState {
+    counter: number;
+  }
+  
+  export const initialState: AppState = {
+    counter: 0
+  };
+{% endhighlight %}
+<div class="code-caption">state.ts</div>
+
+<a id="definition-des-actions" class="anchor"></a>
+<h3>Définition des actions</h3>
+
+<p>
+    La quatrième étape consiste à définir les actions qui seront utilisées pour modifier l'état de votre application. Pour cela, créez un fichier actions.ts dans le même dossier que le fichier state.ts et définissez les actions souhaitées. Par exemple :
+</p>
+
+{% highlight ts linenos %}
+export class IncrementCounter {
+    static readonly type = '[Counter] Increment';
+  }
+  
+  export class DecrementCounter {
+    static readonly type = '[Counter] Decrement';
+  }
+  
+{% endhighlight %}
+<div class="code-caption">actions.ts</div>
+
+<a id="definition-des-gestionnaires-actions" class="anchor"></a>
+<h3>Définition des gestionnaires d'actions</h3>
+
+<p>
+    La cinquième étape consiste à définir les gestionnaires d'actions, également appelés "action handlers". Les gestionnaires d'actions sont des fonctions qui décrivent comment l'état de l'application doit être mis à jour en réponse à une action.
+</p>
+
+<p>
+     Créez un fichier handlers.ts dans le même dossier que 'state.ts', ensuite vous devez d'abord créer une classe qui représente le gestionnaire. Cette classe doit être décorée avec le décorateur @State(), qui prend en charge l'objet d'état que le gestionnaire gérera.
+</p>
+
+<p>
+    Ensuite, vous pouvez créer des méthodes qui seront appelées en réponse à des actions spécifiques. Ces méthodes doivent être décorées avec le décorateur @Action(). Par exemple :
+</p>
+
+{% highlight ts linenos %}
+import { Injectable } from '@angular/core';
+import { Action, State, StateContext } from '@ngxs/store';
+import { IncrementCounter, DecrementCounter } from './actions';
+import { AppState } from './state';
+
+@Injectable()
+@State<AppState>({
+  name: 'app',
+  defaults: {
+    counter: 0
+  }
+})
+export class AppActionsHandlers {
+  @Action(IncrementCounter)
+  increment({ getState, setState }: StateContext<AppState>) {
+    const state = getState();
+    setState({
+      ...state,
+      counter: state.counter + 1
+    });
+  }
+
+  @Action(DecrementCounter)
+  decrement({ getState, setState }: StateContext<AppState>) {
+    const state = getState();
+    setState({
+      ...state,
+      counter: state.counter - 1
+    });
+  }
+}
+{% endhighlight %}
+<div class="code-caption">handlers.ts</div>
+
+<p>
+    Chacun des gestionnaires prend en charge une action spécifique et modifie l'état de l'application en conséquence.
+</p>
+
+<a id="utilisation-etat-composant-angular" class="anchor"></a>
+<h3>Utilisation de l'état dans les composants Angular</h3>
+
+<p>
+    La sixième étape consiste à utiliser l'état dans les composants Angular. Pour cela, importez le Store de NGXS dans le composant et utilisez-le pour lire l'état de l'application et dispatcher les actions appropriées. Par exemple :
+</p>
+
+{% highlight ts linenos %}
+import { Component } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { IncrementCounter, DecrementCounter } from './store/actions';
+import { AppState } from './store/state';
+
+@Component({
+  selector: 'app-your-component',
+  template: `
+    <h1>Counter: {{ counter }}</h1>
+    <button (click)="increment()">Increment</button>
+    <button (click)="decrement()">Decrement</button>
+  `
+})
+export class YourComponent {
+  counter: number;
+
+  constructor(private store: Store) {
+    this.store.select(state => state.app.counter).subscribe(counter => {
+      this.counter = counter;
+    });
+  }
+
+  increment() {
+    this.store.dispatch(new IncrementCounter());
+  }
+
+  decrement() {
+    this.store.dispatch(new DecrementCounter());
+  }
+}
+
+{% endhighlight %}
+<div class="code-caption">your.component.ts</div>
+
+<p>
+    Dans cet exemple, le Store de NGXS est importé dans le composant et l'avons utilisé pour lire la propriété counter de l'état de l'application. Nous avons également dispatché les actions IncrementCounter et DecrementCounter lorsque les boutons correspondants ont été cliqués.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Dans cet article, vous avez appris à utiliser NGXS, une bibliothèque de gestion de l'état pour les applications Angular.
+</p>
+
+<p>
+    Vous avez appris comment définir l'état initial, les actions et les gestionnaires d'actions, et comment les utiliser dans les composants Angular. Vous pouvez maintenant utiliser NGXS pour gérer l'état de votre application de manière plus efficace et plus cohérente.
+</p>
