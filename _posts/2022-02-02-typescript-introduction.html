@@ -1,0 +1,287 @@
+---
+layout: post
+title: "Typescript - Introduction"
+date: 2021-11-26 16:10:50 +0100
+description: "Dans cet article, découvrez les bases de TypeScript, et les raisons de l'utiliser ou non."
+tags: developpement web Typescript
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/typescript-intro/cover_typescript_intro.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="typescript" class="anchor"></a>
+<h2>Qu'est-ce que Typescript ?</h2>
+
+<p class="fw-bold">
+    Typescript est un langage de programmation fortement typé et open-source, développé par Microsoft.
+</p>
+<p>
+    Aucun environnement n'exécute à proprement parler du TypeScript. Il est d'abord transpilé
+    en JavaScript avant d'etre exécuté, généralement par un navigateur ou Node.js.
+</p>
+<p class="fw-bold">L'objectif de TypeScript est d'améliorer la maintenabilité et la lisibilité du code Javascript en permettant le
+    typage des variables.</p>
+
+<a id="compilation-typescript" class="anchor"></a>
+<h2>Typescript, langage compilé ?</h2>
+<p>
+    Par abus de langage, on parle de compilation TypeScript. Mais si on veut être exact, on doit parler de <span class="fw-bold">transpilation</span>
+    : en effet Typescript n'est pas réellement compilé.
+</p>
+<p> Une compilation transforme un langage "humain" en langage machine.
+    Or, TypeScript est transformé en JavaScript, qui est un langage interpreté.
+    Un langage interpreté est exécuté par un logiciel (un interpréteur de code), alors qu'un langage compilé est
+    transformé en langage machine, et exécuté par un système d'exploitation.
+</p>
+
+<a id="pourquoi-typescript" class="anchor"></a>
+<h2>Pourquoi Typescript ?</h2>
+
+<p>
+    <span class="fw-bold">Typescript a été créé pour pallier certains manquements de Javascript.</span>
+    Principalement : le typage (d'où le nom TypeScript).
+</p>
+
+<p> Le typage est souhaitable dans le sens où il permet d'améliorer la maintenabilité, la propreté et la lisibilité du
+    code.</p>
+
+<p>Le typage est aussi connu pour améliorer les performances mais <span class="fw-bold">à l'inverse des langages compilés, le typage n'améliore pas les performances dans le cas de TypeScript</span> : le code
+    est transformé en JavaScript, qui n'utilise pas les types ajoutés par TypeScript.</p>
+
+<a id="fonctionnalites-typescript" class="anchor"></a>
+<h3>Les fonctionnalités de TypeScript</h3>
+
+<p>
+    Voici une liste non exhaustive des fonctionnalités apportées par Typescript :
+</p>
+
+<ul>
+    <li>Le typage explicite/implicite</li>
+    <li>Les classes</li>
+    <li>L'héritage</li>
+    <li>Accesseurs public/private</li>
+    <li>Les interfaces</li>
+    <li>Les modules</li>
+    <li>Les énumérations</li>
+    <li>Les types génériques</li>
+</ul>
+
+<p>
+    Typescript s'adapte à la version de JavaScript que vous utilisez et est compatible avec Node.Js.
+</p>
+
+<a id="typage-annotation" class="anchor"></a>
+<h2>Le typage par annotation</h2>
+
+<p>
+    <span class="fw-bold">Pour typer une variable explicitement, on utilise en TypeScript la notation ":" suivi du type.</span>
+    C'est ce qu'on appelle une annotation.
+</p>
+
+{% highlight ts linenos %}
+const title: string = 'test';
+const page: number = 25;
+const person: object = {};
+{% endhighlight %}
+<div class="code-caption">Typage par annotation</div>
+
+<p>
+    Remarquez qu'un type a été attribué à chaque propriété.
+    Mais si on essaie d'assigner une valeur qui ne correspond pas au type de la propriété cela produira une erreur :
+</p>
+
+{% highlight ts linenos %}
+let title: string = 'test';
+title = 12; // TypeError: 12 is not a string
+{% endhighlight %}
+<div class="code-caption">Erreur de compilation</div>
+
+<p>
+    Dans cet exemple, TypeScript n'ira pas au bout de la compilation car il détectera une erreur de typage.
+</p>
+
+<a id="typage-inference" class="anchor"></a>
+<h2>Le typage par inférence</h2>
+
+{% highlight ts linenos %}
+let title = "Hello";
+title = 12; // TypeError: 12 is not a string
+{% endhighlight %}
+<div class="code-caption">Typage par inférence</div>
+
+<p>
+    Ce code produit une erreur de compilation. Est-ce que vous devinez pourquoi ?
+</p>
+<p>C'est parce que même si vous n'avez pas typé la variable<code>title</code>,
+    le compilateur aura défini lui-même le type en fonction de la première valeur qui a été affectée à la variable.
+    <code>title</code> est donc de type string et ne peut pas se voir attribué une valeur de type number.
+</p>
+<p class="fw-bold">On appelle ça le typage par inférence.</p>
+
+<a id="typage-composition" class="anchor"></a>
+<h2>Composition de types</h2>
+
+<p>
+    <span class="fw-bold">Vous pouvez aussi typer une variable de plusieurs types différents</span>, grâce à la composition de types.
+    Cela peut s'avérer utile, par exemple pour typer le retour des fonctions qui implémentent des conditions.
+</p>
+
+{% highlight ts linenos %}
+let age : string | number;
+age = 12;
+age = '12 ans';
+{% endhighlight %}
+<div class="code-caption">Compositon de types</div>
+
+<p>
+    Ce code ne produira pas d'erreur car la variable est explicitement typée string OU number.
+    Attention à ne pas abuser de cette fonctionnalité cependant, il est rarement une bonne idée de joindre des types
+    aussi distincts que string et number.
+</p>
+
+<p> La composition de type s'utilisera plutôt dans ce genre de cas :</p>
+
+{% highlight ts linenos %}
+let vehicle : Car | Boat;
+let age: number | null;
+{% endhighlight %}
+
+<a id="typage-fonctions" class="anchor"></a>
+<h2>Typage des fonctions</h2>
+
+<p>
+    Pour les fonctions, vous pouvez typer les paramètres et/ou la valeur de retour comme ceci :
+</p>
+
+<a id="typage-retour" class="anchor"></a>
+<h3>Valeur de retour</h3>
+
+<p><span class="fw-bold">Pour typer une valeur de retour, placez une annotion de typage juste avant l'ouverture du bloc d'éxecution</span> de la
+    fonction (après la fermeture de la parenthèse).</p>
+{% highlight ts linenos %}
+function getAdminUser(): User {
+//...
+}
+{% endhighlight %}
+<div class="code-caption">Typage de retour de fonction</div>
+
+<a id="typage-parametres" class="anchor"></a>
+<h3>Paramètres</h3>
+
+<p class="fw-bold">Pour typer un paramètre, placez une annotion de typage juste après le nom du paramètre.</p>
+
+{% highlight ts linenos %}
+function searchUserById(userId: number) {
+// ...
+}
+{% endhighlight %}
+<div class="code-caption">Typage de paramètre</div>
+
+<p>Vous pouvez (et devriez!) bien sûr utiliser les 2 approches sur une même fonction :</p>
+
+{% highlight ts linenos %}
+function searchUserById(userId: number): User {
+// ...
+}
+{% endhighlight %}
+<div class="code-caption">Typage de fonction complet</div>
+
+<a id="les-classes" class="anchor"></a>
+<h2>Les classes</h2>
+
+<a id="declarer-classes" class="anchor"></a>
+<h3>Déclarer une classe</h3>
+
+<p>
+    En TypeScript, pour déclarer une classe vous devez utiliser le mot-clé <code>class</code>,
+    suivi du nom de la classe et les accolades.
+</p>
+
+{% highlight ts linenos %}
+class MyNewClass {}
+{% endhighlight %}
+<div class="code-caption">Déclaration de classe</div>
+
+<a id="declarer-attributs-classe" class="anchor"></a>
+<h3>Déclarer des attributs</h3>
+
+<p>
+    <span class="fw-bold">Voici comment déclarer les attributs de vos classes.</span> De manière facultative, vous pouvez choisir de les typer :
+</p>
+
+{% highlight ts linenos %}
+class MyNewClass {
+  x: number;
+  y: number;
+}
+{% endhighlight %}
+<div class="code-caption">Déclaration d'attributs</div>
+
+<p>
+    Par ailleurs, vous pouvez aussi donner une valeur initiale à l'attribut comme ceci :
+</p>
+
+{% highlight ts linenos %}
+class MyNewClass {
+  x: number = 0;
+  y: number = 2;
+}
+{% endhighlight %}
+<div class="code-caption">Initialisation des attributs d'une classe</div>
+
+<p>
+    Implicitement, les attributs sont accessibles publiquement et vous pouvez donc y accéder en dehors de
+    la classe pour modifier leur valeur.
+</p>
+
+<a id="typescript-interfaces" class="anchor"></a>
+<h2>Les interfaces</h2>
+
+<p class="fw-bold">
+    L'interface vous permet de typer un objet sans avoir à utiliser de classe et à gérer des instances.
+</p>
+
+<p>
+    Elle peut aussi vous pemettre de contraindre une classe en implémentant une interface.
+</p>
+
+<p>Exemple :</p>
+
+{% highlight ts linenos %}
+interface Exemple {
+  a: string;
+  b: number;
+  c: any;
+}
+let obj: Exemple = {a: 'Hello', b: 12, c: {test: 'hello'}};
+{% endhighlight %}
+<div class="code-caption">Exemple d'interface</div>
+
+<p>
+    Dans cet exemple, <code>obj</code> est typé Exemple (qui est une interface) et donc <code>obj</code> doit contenir obligatoirement une
+    propriété <code>a</code> de type string, une propriété <code>b</code> de type number et une propriété <code>c</code> de n'importe quel type (any).
+</p>
+
+<div class="quote-block">
+    <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+    <div class="quote">
+        À savoir : Après compilation TypeScript, la classe reste présente dans l'exécutable. Elle consommera donc des ressources, contrairement à l'interface qui elle, disparait complètement après
+        compilation.    
+    </div>
+</div>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà pour cette introduction à Typescript, retenez que ce langage est un ajout des fonctionnalités de typage manquantes à JavaScript.
+    TypeScript nous donne tous les outils pour produire un code correct et maintenable, n'hésitez pas à creuser le sujet !
+</p>
+
+<p>
+    J'espère que cet article vous a plu, n'hésitez pas à laisser un commentaire si vous avez des idées d'amélioration.
+</p>
