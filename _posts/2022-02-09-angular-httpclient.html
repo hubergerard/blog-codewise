@@ -1,0 +1,413 @@
+---
+layout: post
+title: "Angular - HttpClient"
+date: 2022-09-02 10:10:50 +0100
+description: "Dans cet article, vous allez découvrir ce qu'est le service HttpClient d'Angular pour communiquer avec les back-end, demander des objets de réponses typés, la gestion simplifiée des erreurs, l'interception des requêtes et des réponses."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-httpclient/cover_httpclient.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+linked-ressource: "starter-kit-angular"
+lang: fr
+---
+
+<a id="why-use-httpclient" class="anchor"></a>
+<h2>Pourquoi utiliser HttpClient ?</h2>
+
+<p>
+    <span class="fw-bold">La plupart des applications front doivent communiquer avec un serveur et utilisent le protocole HTTP pour accéder ou envoyer des données</span>. Angular fournit une API HTTP cliente native.
+</p>
+
+<p>
+    Elle permet :
+</p>
+
+<ul>
+    <li>
+        La possibilité de demander et envoyer des données
+    </li>
+    <li>
+        Gérer de manière simple les erreurs du serveur
+    </li>
+    <li>
+        L'interception des requêtes et des réponses
+    </li>
+</ul>
+
+<p>
+    Tout d'abord, <span class="fw-bold">afin de pouvoir utiliser le service <code>HttpClient</code> vous devez importez le module <code>HttpClientModule</code></span> dans le fichier app.module.ts
+</p>
+
+<a id="request-data-server" class="anchor"></a>
+<h2>Demander des données à un serveur</h2>
+
+<p>
+    <span class="fw-bold">Pour pouvoir récupérer des données auprès d'un serveur, utilisez la méthode <code>get()</code></span>. Cette méthode prend deux arguments :
+</p>
+
+<ul>
+    <li>L'URL du point de terminaison à partir duquel la ressource est accessible</li>
+    <li>Un objet d'options pour configurer la requête</li>
+</ul>
+
+<P>
+    Les options importantes sont <code>observe</code> et <code>responseType</code>.
+</P>
+
+<p>
+    Les applications demandent souvent des données JSON à un serveur. Pour récupérer ce type de données, la méthode get() a besoin des options suivantes :
+</p>
+
+{% highlight ts linenos %}
+HttpClient.get('https://example-terminaison/res',{observe: 'body', responseType: 'json'})
+{% endhighlight %}
+<div class="code-caption">Exemple de la méthode get</div>
+
+<p>
+    Ces valeurs d'options sont par défauts vous n'aurez donc pas besoin de les stipuler.
+</p>
+
+<p>
+    <span class="fw-bold">Pour toutes les méthodes HttpClient, la méthode ne commence pas sa requête HTTP tant que vous n'avez pas <code>subscribe()</code></span> l'observable renvoyé par la méthode.
+</p>
+
+{% highlight ts linenos %}
+const req = http.get<Heroes>('/api/heroes');
+// 0 requête faite - subscribe() n'a pas été appelé.
+req.subscribe();
+// 1 requête faite.
+req.subscribe();
+// 2 requêtes faites.
+{% endhighlight %}
+<div class="code-caption">Exemple de subscribe sur la méthode get</div>
+
+
+<a id="typed-response-requester" class="anchor"></a>
+<h3>Demander des réponses typés</h3>
+
+<p>
+    Vous pouvez typés la demande de la requête get() afin de rendre la consommation de plus simple et évidente.
+</p>
+
+<p>
+    <span class="fw-bold">Pour spécifier le type de réponse, définissez une interface typescript avec les propriétés</span>. Utilisez une interface plutôt qu'une classe car la réponse est un objet simple qui ne pourra pas être converti en une intance de classe.
+</p>
+
+{% highlight ts linenos %}
+export interface Hero {
+    name: string;
+    power: string;
+  }
+  getHeroes() {
+    return this.http.get<Hero[]>(url);
+  }
+{% endhighlight %}
+<div class="code-caption">Exemple de typage de réponse sur la méthode get</div>
+
+<a id="read-complete-response" class="anchor"></a>
+<h3>Lire la réponse complète</h3>
+
+<p>
+    Parfois vous aurez besoin de plus d'informations que celles contenues dans le corps de la réponse. 
+    Par exemple les en-têtes que les serveurs peuvent aussi envoyer ou des codes d'état spéciaux pour indiquer certaines conditions importantes pour l'application.
+</p>
+
+{% highlight ts linenos %}
+return this.http.get<any>(
+    url, { observe: 'response' });
+{% endhighlight %}
+<div class="code-caption">Exemple de réponse complète avec la méthode get</div>
+
+<p>
+    Désormais la méthode get() renvoie un observable de type <code>HttpResponse</code> plutôt que simplement les données JSON.
+</p>
+
+<a id="request-jsonp" class="anchor"></a>
+<h3>Faire une requête JSONP</h3>
+
+<p>
+    <span class="fw-bold"> Vous pouvez utilisez HttpClient pour faire des requêtes JSONP lorsqu'un serveur ne prend pas en charge le <code>protocole CORS</code></span>.
+</p>
+
+<p>
+    Les requêtes JSONP d'Angular renvoient un fichier observable.
+</p>
+
+<p>
+    Dans votre fichier app.module importez le <code>HttpClientJsonpModule</code>.
+</p>
+
+{% highlight ts linenos %}
+searchHeroes(term: string): Observable {
+    term = term.trim();
+  
+    const heroesURL = `${this.heroesURL}?${term}`;
+    return this.http.jsonp(heroesUrl, 'callback').pipe(
+        catchError(this.handleError('searchHeroes', [])) // then handle the error
+      );
+  }
+{% endhighlight %}
+<div class="code-caption">Exemple de réponse complète avec la méthode get</div>
+
+<a id="utiliser-pipe-async" class="anchor"></a>
+<h3>Demander des données non JSON</h3>
+
+<p>
+    <span class="fw-bold">Toutes les API ne renvoient pas forcément de données JSON</span>, pour cela vous allez voir comment procéder avec la méthode get :
+</p>
+
+{% highlight ts linenos %}
+getTextFile(filename: string) {
+    // The Observable returned by get() is of type Observable<string>
+    // because a text response was specified.
+    // There's no need to pass a <string> type parameter to get().
+    return this.http.get(filename, {responseType: 'text'})
+      .pipe(
+        tap( // Log the result or error
+        {
+          next: (data) => this.log(filename, data),
+          error: (error) => this.logError(filename, error)
+        }
+        )
+      );
+  }
+{% endhighlight %}
+<div class="code-caption">Exemple méthode get avec des données non JSON</div>
+
+<p>
+    Dans cet exemple, la méthode get() renvoie une chaîne plutôt que du JSON en raison de l'option <code>responseType: 'text'</code>.
+</p>
+
+<p>
+    La méthode lit un fichier à partir du serveur et enregistre le contenu du fichier avant de renvoyer ce contenu en tant que fichier observable de type string.
+</p>
+
+<p>
+    Bien entendu il vous faudra subscribe l'observable pour en récupérer les données et les manipuler.
+</p>
+<a id="utiliser-pipe-async" class="anchor"></a>
+<h2>Gestion des erreurs de requête</h2>
+
+<p>
+    <span class="fw-bold">Lorsque votre requête échoue, HttpClient renvoie un objet d'erreur au lieu d'une réponse de succès</span>.
+</p>
+
+<p>
+    Le service qui effectue vos transactions doit également effectuer l'inspection, l'interprétation et la résoultion d'erreur. Vous pouvez obtenir les détails de l'erreur et en informer vos utilisateurs.
+</p>
+
+<p>
+    Deux types d'erreurs peuvent se produire : 
+</p>
+
+<ul>
+    <li>
+        Une erreur serveur, mauvaise requête, ressource introuvable ou encore une erreur serveur interne renvoyer avec un code d'état HTTP, 404, 403, 500...
+    </li>
+    <li>
+        Une erreur côté client, problème réseau ou autres.
+    </li>
+</ul>
+
+<p>
+    HttpClient capture les deux types d'erreurs dans HttpErrorResponse, si vous inspectez cette réponse vous pourrez identifiez la cause.
+</p>
+
+{% highlight ts linenos %}
+getConfig() {
+    return this.http.get(url)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+{% endhighlight %}
+<div class="code-caption">Gestion d'erreur d'une requête</div>
+
+<p>
+    Voici une configuration qui vous permettra d'avoir un message d'erreur plus convivial :
+</p>
+
+{% highlight ts linenos %}
+private handleError(error: HttpErrorResponse) {
+    if (error.status === 0) {
+      // // Une erreur côté client ou réseau s'est produite
+      console.error('Une erreur a eu lieu:', error.error);
+    } else {
+      // Le backend a renvoyé un code de réponse d'échec.
+      // Le corps de la réponse peut contenir des indices sur ce qui a posé problème
+      console.error(
+        `Le serveur retourne le code ${error.status}: `, error.error);
+    }
+    // Renvoie un observable avec un message d'erreur destiné à l'utilisateur.
+    return throwError(() => new Error("Quelque chose s'est mal passé; Réessayer plus tard."));
+  }
+{% endhighlight %}
+<div class="code-caption">config.service.ts</div>
+
+<a id="utiliser-pipe-async" class="anchor"></a>
+<h2>Envoi de données à un serveur</h2>
+
+<p>
+    Vous avez vu comment récupérer des données à un serveur, maintenant vous allez voir comment en envoyer.<span class="fw-bold">HttpClient prend en charge d'autres méthodes HTTP telles que PUT,POST et DELETE pour ajouter, supprimer ou modifier des données distantes</span>.
+</p>
+
+<a id="utiliser-pipe-async" class="anchor"></a>
+<h3>Faire une requête POST</h3>
+
+<p>
+    Lorsque vous avez un ou plusieurs formulaires dans votre application, à la soumission du formulaire l'application doit envoyer les données avec une requête POST.
+</p>
+
+<p>
+    Utilisez donc la méthode <code>post()</code>.
+</p>
+
+{% highlight ts linenos %}
+/** POST: ajout d'un nouvel héro dans la base de données */
+addHero(hero: Hero): Observable<Hero> {
+  return this.http.post<Hero>(this.heroesUrl, hero, httpOptions)
+    .pipe(
+      catchError(this.handleError('addHero', hero))
+    );
+}
+{% endhighlight %}
+<div class="code-caption">Exemple d'envoi de données avec la méthode post</div>
+
+<a id="utiliser-pipe-async" class="anchor"></a>
+<h3>Faire une requête DELETE</h3>
+
+<p>
+    Pour pouvoir supprimer une donnée distante utilisez la méthode <code>delete()</code>
+</p>
+
+{% highlight ts linenos %}
+/** DELETE: Supprimer le héro de la base de données */
+deleteHero(id: number): Observable<unknown> {
+  const url = `${this.heroesUrl}/${id}`; // DELETE api/heroes/42
+  return this.http.delete(url, httpOptions)
+    .pipe(
+      catchError(this.handleError('deleteHero'))
+    );
+}
+{% endhighlight %}
+<div class="code-caption">Exemple de suppression de données avec la méthode delete</div>
+
+<p>
+    Dans cet exemple vous pouvez voir qu'un paramètre id de type number est passé, cela fait référence à l'id du héro (clé primaire), pour ne supprimer que celui-ci.
+</p>
+
+<p>
+    Même si vous n'attendez pas de résultat de cette requête vous devez quand même vous abonner car n'oubliez pas que subscribe exécute l'observable.
+</p>
+
+{% highlight ts linenos %}
+this.heroesService
+  .deleteHero(hero.id)
+  .subscribe();
+{% endhighlight %}
+<div class="code-caption">Subscribe l'observable pour l'exécuter</div>
+
+<a id="utiliser-pipe-async" class="anchor"></a>
+<h3>Faire une requête PUT</h3>
+
+<p>
+    Pour mettre à jour une ressource, modifier des données dans la bas il faut utiliser la requête PUT.
+</p>
+
+{% highlight ts linenos %}
+/** PUT: mise à jour du héro dans la base de données. retourne le succès de la mise à jour. */
+updateHero(hero: Hero): Observable<Hero> {
+  return this.http.put<Hero>(this.heroesUrl, hero, httpOptions)
+    .pipe(
+      catchError(this.handleError('updateHero', hero))
+    );
+}
+{% endhighlight %}
+<div class="code-caption">Exemple de modification de ressource avec la méthode put</div>
+
+<a id="utiliser-pipe-async" class="anchor"></a>
+<h3>Ajout et mise à jour des en-têtes</h3>
+
+<p>
+    <span class="fw-bold">Certains serveurs nécessitent des en-têtes supplémentaires. Par exemple un serveur peut exiger une en-tête d'authorisation</span>.
+</p>
+
+<p>
+    Pour cela procéder comme ceci :
+</p>
+
+{% highlight ts linenos %}
+import { HttpHeaders } from '@angular/common/http';
+
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/json',
+    Authorization: 'my-auth-token'
+  })
+};
+{% endhighlight %}
+<div class="code-caption">Exemple de d'ajout d'en-tête</div>
+
+<p>
+    Spécifiez le content-type puis l'authorisation dans l'objet headers de type <code>HttpHeaders</code> qui lui même est l'objet de configuration de votre requête.
+</p>
+
+<p>
+    Vous ne pouvez pas directement modifier les en-têtes existantes dans l'objet d'options précédent. Pour cela utiliser la méthode <code>set()</code>.
+</p>
+
+<p>
+    Par exemple quand un jeton expire vous pouvez mettre à jour l'en-tête comme ceci :
+</p>
+
+{% highlight ts linenos %}
+httpOptions.headers =
+  httpOptions.headers.set('Authorization', 'my-new-auth-token');
+{% endhighlight %}
+<div class="code-caption">Exemple de mise à jour d'en-tête</div>
+
+<a id="utiliser-pipe-async" class="anchor"></a>
+<h2>Configuration des paramètres d'URL HTTP</h2>
+
+<p>
+    <span class="fw-bold">Si vous souhaitez ajouter des chaînes de requête d'URL utilisez <code>HttpParams</code> avec l'option <code>params</code></span>.
+</p>
+
+<p>
+    Par exemple si vous faites une recherche par un terme, importez d'abord la classe HttpParams : 
+</p>
+
+{% highlight ts linenos %}
+import {HttpParams} from "@angular/common/http";
+{% endhighlight %}
+<div class="code-caption">Import d'HttpParams</div>
+
+{% highlight ts linenos %}
+/* Récupère les héros qui contiennent le terme de recherche */
+searchHeroes(term: string): Observable<Hero[]> {
+  term = term.trim();
+
+  const options = term ?
+   { params: new HttpParams().set('name', term) } : {};
+
+  return this.http.get<Hero[]>(this.heroesUrl, options)
+    .pipe(
+      catchError(this.handleError<Hero[]>('searchHeroes', []))
+    );
+}
+{% endhighlight %}
+<div class="code-caption">Exemple de recherche avec paramètres d'URL</div>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà c'est article est un aperçu des principales utilisation du service HttpClient, il existe des situations plus complexes encore mais que vous découvrirez dans un autre article.
+</p>
+
+<p>
+    En espérant que cet article vous aidera, n'oubliez pas de laissez un commentaire !
+</p>
