@@ -1,0 +1,155 @@
+---
+layout: post
+title: "Angular - NgModel"
+date: 2023-02-14 12:10:50 +0100
+description: "Vous souhaitez en savoir plus sur NgModel ? C'est par ici !"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-ngmodel/cover_ngmodel.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="que-fait-directive-ngmodel" class="anchor"></a>
+<h2>Que fait la directive NgModel ?</h2>
+
+<p>
+    La directive ngModel permet de lier la valeur d'un contrôle HTML (input, select, textarea) à une propriété du composant TS associé. 
+    Cette liaison est bidirectionnelle, c'est à dire que dans la liaison template/composant, si un des 2 côtés est modifié, l'autre côté se synchronise.
+</p>
+
+<p>
+    Autrement dit, si vous écrivez dans l'input, la valeur de la variable sera automatiquement mise à jour dans le fichier typescript du composant. 
+    Et inversement, si vous modifiez la propriété du composant depuis le script, vous verrez en temps réel le contenu de votre input se mettre à jour.
+</p>
+
+<a id="quel-cas-utiliser-ngmodel" class="anchor"></a>
+<h2>Dans quel cas utiliser ngModel ?</h2>
+
+<p>
+    La directive ngModel s'utilise dans le cas où vous souhaitez :
+    <ul>
+      <li>lire le contenu d'un contrôle (input, select, textarea) depuis votre code</li>
+      <li>écrire dans un contrôle depuis votre code</li>
+    </ul>
+</p>
+
+<p>
+    Vous pouvez combiner NgModel avec NgForm pour interagir avec un formulaire entier.
+</p>
+
+<a id="exemple-utilisation" class="anchor"></a>
+<h2>Exemple d'utilisation</h2>
+
+<p>
+    Pour commencer, vous devrez importer FormsModule dans le module de votre composant, afin de pouvoir y utiliser la directive ngModel.
+</p>
+
+{% highlight ts linenos %}
+import { FormsModule } from '@angular/forms';
+
+@NgModule({
+  ...,
+  imports: [
+    ...,
+    FormsModule
+  ],
+  ...
+})
+{% endhighlight %}
+
+<a id="ngmodel-sans-form" class="anchor"></a>
+<h3>Utilisation de ngModel sans formulaire</h3>
+
+<p>
+    Dans cet exemple, utilisons simplement NgModel pour récupérer la valeur d'un input.
+</p>
+
+{% highlight ts linenos %}
+import {Component} from '@angular/core';
+
+@Component({
+  selector: 'app-my-component',
+  template: `
+    <input [(ngModel)]="name">
+    <p>Value: {{ name }}</p>
+    <button (click)="printValue()">Set value</button>
+  `,
+})
+export class SimpleNgModelComp {
+  name = '';
+
+  printValue(): void {
+    console.log(this.name);
+  }
+}
+{% endhighlight %}
+
+<p>
+  Ici, on a relié la valeur de l'input à la propriété name du composant.
+</p>
+<p>
+  name est affiché dans le composant grâce à l'interpolation en ligne 7. Donc à chaque changement de valeur dans l'input, l'interpolation affiche la nouvelle valeur.
+</p>
+<p> Le bouton permet d'afficher en console la valeur présente dans l'input au moment du clic. On peut imaginer à la place de l'affichage en console, un appel vers un service qui utilise cette valeur.</p>
+
+<a id="ngmodel-avec-form" class="anchor"></a>
+<h3>Utilisation de ngModel dans un formulaire</h3>
+
+<p>Maintenant, prenons l'exemple d'une combinaison des directives ngForm et ngModel pour relier un formulaire à un composant.
+</p>
+{% highlight ts linenos %}
+import {Component} from '@angular/core';
+import {NgForm} from '@angular/forms';
+
+@Component({
+  selector: 'my-component',
+  template: `
+    <form #f="ngForm" (ngSubmit)="onSubmit(f.value)" novalidate>
+      <input name="first" ngModel>
+      <input name="last" ngModel>
+      <button>Submit</button>
+    </form>
+
+    <p>Form value: {{ f.value | json }}</p>
+    <p>Form valid: {{ f.valid }}</p>
+  `,
+})
+export class SimpleFormComp {
+  onSubmit(formValue:  {first: string, last: string}) {
+    console.log(formValue);  // { first: '', last: '' }
+  }
+}
+{% endhighlight %}
+
+<p>
+  La directive ngForm créée un FormGroup et le lie au formulaire grâce aux directives ngModel. Le FormGroup va vous permettre de suivre les valeurs du formulaire et ses différents états.
+</p>
+<p>
+  Vous remarquez que le FormGroup est ensuite placé dans une variable de template ici, appelée f.
+  On peut récupérer la valeur du FormGroupe grâce à <code>f.value</code> ainsi que des informations sur l'état du formulaire avec <code>f.valid</code> par exemple.
+</p>
+
+<div class="quote-block">
+  <i class="fa fa-info-circle quote-icon" aria-hidden="true"></i>
+  <div class="quote">
+    Pour mieux comprendre les variables de template, référez-vous à :  <a target= "_blank" href="/angular-template-driven-form#template-reference-variable">Angular - Les template-driven forms</a>.
+  </div>
+</div>
+
+<p> Il y a beaucoup de manières de relier votre formulaire au composant avec NgModel et/ou NgForm, celle-ci est simplement un exemple de cas possible.</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà pour la directive NgModel ! Pour résumer, NgModel permet de faire transiter en temps réel une donnée entre le template et l'application.
+    J'espère que cela vous a aidé à comprendre le concept du "two-way-binding".
+</p>
+
+<p>
+    N'hésitez pas à laisser un commentaire si vous avez des suggestions d'améliorations !
+</p>
