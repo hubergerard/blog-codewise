@@ -1,0 +1,331 @@
+---
+layout: post
+title: "Angular - Upload de fichier"
+date: 2022-10-26 07:30:50 +0100
+description: "Dans cet article découvrez comment gérer l'upload de fichier avec Angular"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-upload-fichier/cover_upload_fichier.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+linked-ressource: "starter-kit-angular"
+lang: fr
+---
+
+<a id="telecharger-fichier-navigateur" class="anchor"></a>
+<h2>Comment uploader des fichiers depuis une app Angular ?</h2>
+
+<p>
+    Pour commencer à créer un composant d'upload de fichier, vous devez d'abord comprendre ce qu'il se passe lors d'un upload en HTML et javascript.
+</p>
+
+<p>
+    Pour uploader un fichier depuis le navigateur en HTML vous devez créez un input de type file :
+</p>
+
+{% highlight html linenos %}
+<input type="file" class="file-upload" onchange="console.log(event.target.files)">
+{% endhighlight  %}
+<div class="image-caption">File input standard</div>
+
+<p>
+    Cela permettra d'ouvrir une boîte de dialogue à l'utilisateur pour qu'il selectionne un ou plusieurs fichiers (un seul par défaut).
+</p>
+
+<p>
+    Le problème avec cette méthode c'est qu'il est très difficile de styliser l'input, en effet certains style qui lui sont appliqués ne peuvent pas être modifié.
+</p>
+<div class="row">
+    <figure class="text-center">
+        <img class="article-img" src="assets/img/blog/angular-upload-fichier/file-input.png" alt="File input standard"/>
+    </figure>
+</div>
+<div class="image-caption">File input standard</div>
+<p>
+    Le bouton et l'input ne représentant qu'une balise HTML il est quasi-impossible de customiser cet input avec du CSS.
+    Ce comportement par défaut vient des navigateurs et comme dit précédemment il ne peut être modifié. C'est pourquoi vous ne voyez généralement pas de file input sur les interfaces web que vous utilisez quotidiennement.
+</p>
+
+<p>
+   L'option la plus courante consiste à masquer l'input à l'utilisateur et construire son propre composant d'upload.
+</p>
+
+<a id="interface-utilisateur-composant-upload" class="anchor"></a>
+<h3>Construire l'interface d'un composant d'upload de fichiers</h3>
+
+<p>
+    Comme dit précédemment, ayant l'impossibilité de styliser l'input file, vous devez le cacher à l'utilisateur pour créer un composant à vous qui utilise l'input file dans les coulisses.
+</p>
+
+{% highlight html linenos %}
+<input type="file" class="file-input"
+       (change)="onFileSelected($event)" #fileUpload>
+
+<div class="file-upload">
+
+   {% raw %}{{fileName || "Pas de fichier sélectionné."}} {% endraw %}
+
+    <button mat-mini-fab color="primary" class="upload-btn"
+      (click)="fileUpload.click()">
+        <mat-icon>attach_file</mat-icon>
+    </button>
+</div>
+{% endhighlight  %}
+<div class="code-caption">file-upload.component.html</div>
+
+{% highlight css linenos %}
+.file-input {
+    display: none;
+  }
+  ...
+{% endhighlight  %}
+<div class="code-caption">file-upload.component.css</div>
+
+<p>
+    En dessous de l'input de fichier caché, il y a une balise div qui contient l'interface que l'utilisateur verra à l'écran.
+</p>
+
+<p>
+    Pour cet exemple la librairie d'Angular Material est utilisé mais vous pouvez bien entendu styliser comme vous le souhaitez.
+</p>
+
+<p>
+    Voici un exemple de rendu :
+</p>
+
+<div class="row">
+    <figure class="text-center">
+        <img class="article-img" src="assets/img/blog/angular-upload-fichier/angular-file-upload-component.png" alt="File input customisé"/>
+    </figure>
+</div>
+<div class="image-caption">Composant personnalisé d'upload de fichier</div>
+
+<p>
+    Remarquez que quand vous appuyez sur le bouton, cela ouvre la boîte de dialogue de selection de fichier via <code>fileUpload.click()</code>.
+</p>
+
+<a id="uploader-fichier-backend" class="anchor"></a>
+<h2>Uploader un fichier sur le backend</h2>
+
+<p>
+    Maintenant vous allez voir comment envoyer une requête HTTP au backend :
+</p>
+
+{% highlight ts linenos %}
+@Component({
+  selector: 'file-upload',
+  templateUrl: "file-upload.component.html",
+  styleUrls: ["file-upload.component.scss"]
+})
+export class FileUploadComponent {
+  fileName = '';
+
+  constructor(private http: HttpClient) {}
+
+  onFileSelected(event) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.fileName = file.name;
+      const formData = new FormData();
+      formData.append("file", file);
+      const upload$ = this.http.post("/api/file-upload", formData);
+      upload$.subscribe();
+    }
+  }
+}
+{% endhighlight  %}
+<div class="code-caption">file-upload.component.ts</div>
+
+<p>
+    Dans la méthode <code>onFileSelected()</code> vous pouvez voir que tout d'abord vous obtenez une référence aux fichiers que l'utilisateur à sélectionné en accédant à la propriété <code>event.target.files</code>.
+</p>
+
+<p>
+    Ensuite, voyez la création d'une charge utile de type FormData.
+</p>
+
+<p>
+    Et pour terminer, l'appel HTTP avec la charge utile à envoyer au backend.
+</p>
+
+<p>
+    Désormais avec ceci vous avez un composant d'upload de fichier fonctionnel, maintenant voyez dans les prochaines parties comment vous pouvez ajouter de la valeur à ce composant.
+</p>
+
+<a id="afficher-indicateur-progression-telechargement" class="anchor"></a>
+<h3>Afficher la progression de l'upload de fichier</h3>
+
+<p>
+    Vous allez voir comment ajouter une barre de progression de l'upload du fichier. Voyez cet exemple : 
+</p>
+
+{% highlight html linenos %}
+<input type="file" class="file-input"
+       [accept]="requiredFileType"
+       (change)="onFileSelected($event)" #fileUpload>
+
+<div class="file-upload">
+  {% raw %}{{fileName || 'No file uploaded yet.'}}{% endraw %}
+  <button mat-mini-fab color="primary" class="upload-btn"
+      (click)="fileUpload.click()">
+    <mat-icon>attach_file</mat-icon>
+  </button>
+</div>
+
+<div class="progress">
+  <mat-progress-bar class="progress-bar" mode="determinate"
+                    [value]="uploadProgress" *ngIf="uploadProgress">
+  </mat-progress-bar>
+  <mat-icon class="cancel-upload" (click)="cancelUpload()" 
+            *ngIf="uploadProgress">
+    delete_forever
+  </mat-icon>
+</div>
+{% endhighlight  %}
+<div class="code-caption">file-upload.component.html</div>
+
+<p>
+  Ici, vous remarquez l'implémentation d'une progress-bar Material et d'un bouton d'annulation d'upload.
+</p>
+
+<p>
+  La progress bar utilise le reportProgress du client HTTP d'Angular. Grâce à ceci vous êtes informé de la progression de l'upload du fichier via les events émis par l'Observable HTTP.
+</p>
+
+<p>
+  Voici comment cela s'articule côté TS :
+</p>
+
+{% highlight ts linenos %}
+@Component({
+  selector: 'file-upload',
+  templateUrl: "file-upload.component.html",
+  styleUrls: ["file-upload.component.scss"]
+})
+export class FileUploadComponent {
+  @Input()
+  requiredFileType: string;
+
+  fileName = '';
+  uploadProgress: number;
+  uploadSub: Subscription;
+
+  constructor(private http: HttpClient) {}
+
+  onFileSelected(event): void {
+    const file:File = event.target.files[0];
+    
+    if (file) {
+      this.fileName = file.name;
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const upload$ = this.http.post("/api/file-upload", formData, {
+        reportProgress: true,
+        observe: 'events'
+      })
+      .pipe(
+        finalize(() => this.reset())
+      );
+    
+      this.uploadSub = upload$.subscribe(event => {
+        if (event.type == HttpEventType.UploadProgress) {
+          this.uploadProgress = Math.round(100 * (event.loaded / event.total));
+        }
+      })
+    }
+  }
+
+  cancelUpload(): void {
+    this.uploadSub.unsubscribe();
+    this.reset();
+  }
+
+  reset(): void {
+    this.uploadProgress = null;
+    this.uploadSub = null;
+  }
+}
+{% endhighlight  %}
+<div class="code-caption">file-upload.component.html</div>
+
+<p>
+    Dans l'appel HTTP, remarquez que la propriété reportProgress est défini sur <code>true</code> et 'events' sur la propriété observe. Donc au fur et a mesure que la requête POST se poursuit, vous allez recevoir des objets d'événements signalant la progression de l'envoi.
+</p>
+
+<p>
+    Il y aura deux types d'événements émis en tant que valeurs de l'observable <code>http$</code> :
+</p>
+
+<ul>
+    <li>De type <code>UploadProgress</code> qui rapporte le pourcentage de fichier uploadé.</li>
+    <li>De type <code>Response</code> pour signaler que l'upload est terminé.</li>
+</ul>
+
+<p>
+    Avec l'événement de type UploadProgress, le pourcentage d'upload en cours est enregistré dans la propriété <code>uploadProgress</code> qui est ensuite utilisée pour mettre à jour la bar de progression.
+</p>
+
+<p>
+    L'opérateur RxJs <code>finalize</code> va appeler la méthode <code>reset()</code> dans les deux cas : succès ou échec de l'upload.
+</p>
+
+<a id="annuler-telechargement-fichier" class="anchor"></a>
+<h2>Annuler l'upload de fichier en cours</h2>
+
+<p>
+    Afin d'annuler l'upload du fichier en cours, il faut conserver une référence à l'objet d'abonnement RxJs que nous obtenons à l'abonnement de l'observable http$.
+</p>
+
+<p>
+    Dans le composant, cette référence est stockée dans la variable <code>uploadSub</code>.
+</p>
+
+<p>
+    Pendant l'upload, l'utilisateur peut décider d'annuler en cliquant sur le bouton. La méthode <code>cancelUpload()</code> sera appelée et la requête HTTP sera annulée via le désabonnement d'uploadSub.
+</p>
+
+<a id="restreindre-type-fichier-upload" class="anchor"></a>
+<h2>Comment restreindre l'upload de fichier à un type spécifié</h2>
+
+<p>
+    Si vous voulez spécifier un type de fichier à uploader à votre utilisateur, utilisez la propriété requiredFileType du composant :
+</p>
+
+{% highlight html linenos %}
+<file-upload requiredFileType="image/png"></file-upload>
+{% endhighlight  %}
+<div class="code-caption">Appel du composant file-upload</div>
+
+<p>
+    Cela sera transmis à la propriété <code>accept</code> de l'input file. Cela obligera l'utilisateur à sélectionner un fichier png dans la boîte de dialogue.
+</p>
+
+<a id="telecharger-plusieurs-fichier" class="anchor"></a>
+<h2>Comment uploader plusieurs fichiers</h2>
+
+<p>
+    Par défaut, la boîte de dialogue de sélection de fichier permet à l'utilisateur de sélectionner un seul fichier.
+</p>
+
+<p>
+    La propriété <code>multiple</code> vous permet de sélectionner plusieurs fichiers : 
+</p>
+
+{% highlight html linenos %}
+<input type="file" class="file-upload" multiple>
+{% endhighlight  %}
+<div class="code-caption">Ajout de la propriété multiple</div>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    La meilleure façon de gérer l'upload de fichier avec Angular est de créer un composant personnalisé. Pense également à utiliser les FormDatas pou envoyer la donnée à un serveur.
+</p>
+
+<p>
+    J'espère que cet article vous aidera et si vous avez des questions n'hésitez pas à les poser ci-dessous !
+</p>
