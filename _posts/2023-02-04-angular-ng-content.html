@@ -1,0 +1,178 @@
+---
+layout: post
+title: "Angular - Projection de contenu avec ng-content"
+date: 2023-02-04 16:10:50 +0100
+description: "Cet article décrit comment utiliser la projection de contenu pour créer des composants flexibles et réutilisables."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/angular-ng-content/cover_angular_ng_content.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<p>
+    La projection de contenu est une méthode de communication entre composant.
+    Avec cette méthode, vous pouvez projeter (transmettre) un morceau de template HTML depuis un composant, 
+    vers un autre composant. 
+</p>
+
+<a id="why-use-projection" class="anchor"></a>
+<h2>Pourquoi utiliser la projection de contenu ?</h2>
+
+<p class="fw-bold">
+    La projection de contenu est très intéressante pour créer des composants réutilisables, à contenu variable.
+</p>
+
+<p>
+    Dans quel cas préférer la projection de contenu à un @Input ? C'est assez simple :
+</p>
+
+<p>
+    <span class="fw-bold">
+        @Input transmet une variable à un élément enfant, tandis que la projection de contenu passe un morceau de DOM.
+    </span>
+    Tout simplement.
+</p>
+
+<a id="projection-one-emplacement" class="anchor"></a>
+<h2>Projection de contenu à un seul emplacement</h2>
+
+<p>
+    Avec ce type de projection de contenu, un composant reçoit un seul morceau de DOM. C'est la forme la plus courante et la plus élémentaire de projection de contenu.
+</p>
+
+<p>
+   Vous pouvez tester très rapidement par vous-même ! Pour commencer, créez un composant.
+</p>
+
+<p>
+    Dans le template de votre composant, ajoutez une balise ng-content à l'endroit où vous souhaitez que le contenu s'affiche.
+</p>
+
+{% highlight ts linenos %}
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-my-component,
+  template: `
+    <h3>Ce composant affiche du contenu projeté !</h3>
+    <ng-content></ng-content>
+  `
+})
+export class MyComponent {}
+{% endhighlight %}
+<div class="code-caption">my-component.component.ts</div>
+
+<p>
+    Désormais vous pouvez transmettre du contenu dans le composant au moment ou vous l'appelez via ses balises, comme ceci :
+</p>
+
+{% highlight html linenos %}
+<app-my-component>
+    <p>Ce message apparaîtra dans le template de my-component !</p>
+</app-my-component>
+{% endhighlight %}
+<div class="code-caption">app.component.html</div>
+
+<p>Et voici le résultat que vous obtiendrez en affichant le composant App :</p>
+
+<div class="row">
+    <figure class="text-center">
+        <img class="article-img" src="assets/img/blog/angular-ng-content/resultat-projection-contenu.png" alt="affichage contenu projeté"/>
+    </figure>
+</div>
+<div class="image-caption">Résultat affiché</div>
+
+<p>
+    Au lieu de placer les balises vides de votre composant MyComponent, vous mettez du HTML à l'intérieur.
+    Ce HTML remplacera la balise <code>ng-content</code> pendant l'exécution.
+</p>
+<p> MyComponent est donc un composant réutilisable, qui prend une partie de son template en paramètre d'entrée !</p>
+
+<a id="projection-multi-emplacement" class="anchor"></a>
+<h2>Projection de contenu multi-slots</h2>
+
+<p>
+    Un composant peut avoir plusieurs emplacements. 
+    Lorsque c'est le cas, vous devez nommer ces emplacements et spécifier vers quel emplacement le contenu va être projeté.
+</p>
+
+<p>
+    Exemple
+</p>
+
+{% highlight ts linenos %}
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-my-component,
+  template: `
+    <h3>Projection à plusieurs emplacements</h3>
+
+    <h4>Première projection:</h4>
+    <ng-content></ng-content>
+
+    <h4>Seconde projection:</h4>
+    <ng-content select="[second]"></ng-content>
+  `
+})
+export class MyComponent {}
+{% endhighlight %}
+<div class="code-caption">my-component.component.ts</div>
+
+<p>Vous remarquez qu'on a placé 2 balises <code>ng-content</code> ce qui représente 2 emplacements dans lesquels on peut projeter du template.</p>
+
+{% highlight html linenos %}
+<app-my-component>
+    <p second>
+        Je suis projeté dans la 2ème section !
+    </p>
+    <p>La première section est pour moi !</p>
+</app-my-component>  
+{% endhighlight %}
+<div class="code-caption">app.component.html</div>
+
+<p>Ici vous pouvez voir comment on cible l'emplacement voulu au moment d'appeler les balises du composant.
+    Et le résultat obtenu est le suivant :
+</p>
+
+<div class="row">
+    <figure class="text-center">
+        <img class="article-img" src="assets/img/blog/angular-ng-content/resultat-projection-contenu-2.png" alt="affichage contenu projeté"/>
+    </figure>
+</div>
+<div class="image-caption">Résultat affiché</div>
+
+<p> Tout simplement !</p>
+
+<a id="projection-conditionnal-" class="anchor"></a>
+<h2>Projection conditionnelle du contenu</h2>
+
+<p>
+    Si votre composant doit projeter le contenu de manière conditionnelle ou projeter le contenu plusieurs fois, 
+    vous devez configurer ce composant pour qu'il accepte un élément ng-template contenant le contenu que vous souhaitez restituer de manière conditionnelle.
+</p>
+
+<p>
+    L'utilisation d'un élément ng-content dans ces cas n'est pas recommandée, 
+    car lorsque le parent d'un composant fournit le contenu, ce contenu est toujours initialisé, 
+    même si le composant enfant ne définit pas d'élément ng-content ou si ce ng-content est à l'intérieur d'une instruction *ngIf.
+</p>
+
+<p>
+    C'est assez spécifique, si vous voulez en savoir plus allez voir <a href="https://angular.io/guide/content-projection#conditional-content-projection">cet extrait de doc Angular</a>
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Voilà c'est tout pour la projection de contenu, j'espère que cela vous sera utile ! N'hésitez pas à prendre le temps si vous ne comprenez pas du premier coup. C'est moins difficile qu'il n'y parait, et après quelques utilisations vous serez à l'aise avec le sujet.
+</p>
+
+<p>
+    Vous pouvez laissez un commentaire si vous avez des idées d'améliorations pour cet article !
+</p>
