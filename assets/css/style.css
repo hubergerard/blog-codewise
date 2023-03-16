@@ -73,7 +73,7 @@ a.anchor {
   position: relative;
   visibility: hidden;
   display: block;
-  top: -112.5px;
+  top: -92.5px;
 }
 
 a:focus,
@@ -426,7 +426,6 @@ label {
   display: block;
   font-weight: 600;
   position: relative;
-  margin-bottom: 20px;
 }
 
 .main-menu.second-menu ul li a {
@@ -592,6 +591,10 @@ label {
   display: none;
 }
 
+#sticky-header{
+  height: 90px;
+}
+
 .transparent-bg.sticky {
   background: #111;
 }
@@ -601,6 +604,10 @@ button.icon-button{
   border:none;
   color: #020d26;
   padding: 0;
+}
+
+#container-menu{
+  max-height: 90px;
 }
 
 /* search modal */
