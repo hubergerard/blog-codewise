@@ -1,0 +1,114 @@
+---
+layout: post
+title: "RxJS - L'opérateur map"
+date: 2022-12-01 9:30:50 +0100
+description: "Dans cet article, découvrez comment utiliser l'opérateur map d'RxJS."
+tags: developpement web Angular RxJS
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/rxjs-operator-map/cover_operator_map.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    <span class="fw-bold">Les opérateurs RxJs sont des fonctions applicable dans le cadre de la programmation réactive. </span> Un des opérateurs les plus courants est l'opérateur <a href="https://rxjs.dev/api/operators/map" rel="nofollow" target="_blank"><code>map</code></a>.
+</p>
+
+<p>
+    <span class="fw-bold">L'opérateur <code>map</code> d'RxJs fonctionne de la même manière que le <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map" rel="nofollow" target="_blank"><code>Array.prototype.map()</code></a> de JavaScript.</span>
+</p>
+
+<p>
+    La méthode <code>Array.prototype.map()</code> s'applique sur un tableau et renvoie une nouvelle instance de ce tableau après avoir appliqué une fonction à chaque élément. Pour l'opérateur <code>map</code> d'RxJS, c'est pareil mais la fonction s'applique sur le contenu d'un Observable RxJS.
+</p>
+
+<a id="fonctionnement-operateur-map" class="anchor"></a>
+<h2>Fonctionnement de l'opérateur map</h2>
+
+<p>
+    Alors comment fonctionne précisément l'opérateur <code>map</code> ?
+</p>
+
+<p>
+    <span class="fw-bold">Il applique une fonction donnée à chaque valeur émise par l'Observable et renvoi les valeurs résultantes dans un nouvel Observable.</span>
+</p>
+
+<p>
+    Exemple :
+</p>
+
+<img class="img" src="/assets/img/blog/rxjs-operator-map/mapjs.png" alt="exemple marble diagram">
+<div class="code-caption">Transformation</div>
+
+<p>
+    Chaque valeur émise par l'Observable source (x) passe dans la fonction (x => 10*x), puis est émise par l'Observable renvoyée par l'opérateur map.
+</p>
+
+{% highlight ts linenos %}
+const newOb = of(1,2,3).pipe(map(n => 10 * n)); 
+newOb.subscribe(n => console.log(n)); // 10, 20, 30
+{% endhighlight %}
+
+<p>
+    L'opérateur <code>of()</code> étant l'Observable source dans cet exemple,  <span class="fw-bold">avec l'utilisation de <code>map()</code> et de <code>pipe()</code>, <code>newOb</code> est l'Observable de sortie.</span>
+</p>
+
+<p>
+    Si vous vous souscrivez à newOb, vous recevrez les donc les valeurs de l'Observable source, après transformation par l'opérateur map. Vous recevrez donc le même nombre de valeur que si vous aviez souscrit à l'Observable source, elles auront juste été "mappées" en une autre valeur.
+</p>
+
+<a id="signature-operateur-map" class="anchor"></a>
+<h2>Signature de l'opérateur</h2>
+
+<p>
+    La signature de l'opérateur <code>map</code> est complexe à lire. Décryptons-la ensemble :
+</p>
+
+{% highlight ts linenos %}
+map<T, R>(project: (value: T, index: number) => R, thisArg?: any): OperatorFunction<T, R>
+{% endhighlight %}
+
+<p>
+    Qu'est-ce que cela veut dire ?
+</p>
+
+<p>
+    Tout d'abord T et R sont des types quelquonques. <span class="fw-bold">T est le type de la valeur émise et R le type de la valeur après transformation.</span>
+</p>
+
+<p>
+    Le paramètre <code>project</code> <span class="fw-bold">est la fonction de mapping qui s'applique sur la valeur émise (de type T)</span> de l'Observable source. Cette fonction <code>project</code> renvoie donc un objet de type R.
+</p>
+
+<p>
+    Ensuite l'<code>index</code> (optionnel) <span class="fw-bold">représente le nombre d'émission</span> qui s'est produite depuis l'abonnement (à partir de 0).
+</p>
+
+<p>
+    Et enfin le paramètre optionnel <code>thisArg</code> <span class="fw-bold">sert à définir définir le contenu du <code>this</code> de la fonction de mapping <code>project</code> dans le cas où cette fonction utiliserait une valeur de <code>this</code>.</span>
+</p>
+
+<a id="cas-utilisation-operateur-map" class="anchor"></a>
+<h2>Cas d'utilisation de map</h2>
+
+<p> <span class="fw-bold">En cas réel, l'opérateur map est principalement utilisé pour transformer la donnée renvoyée par un Observable avant consommation de l'Observable</span> dans un composant d'application.</p>
+<p> Par exemple, dans Angular vous avez des services qui contactent votre serveur et vous donne la donnée du serveur via un Observable.</p>
+<p> Si votre composant ne consomme pas exactement le même format de donnée que ce que le serveur vous a renvoyé, vous voudrez placer un opérateur map sur votre Observable, pour formater la donnée pour les besoins de votre application.</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    J'espère que cet article vous a aidé à y voir plus clair sur cet opérateur et que vous savez désormais comment l'utiliser.
+</p>
+
+<p>
+    N'hésitez pas à laisser un commentaire si vous avez des remarques ou des questions !
+</p>
