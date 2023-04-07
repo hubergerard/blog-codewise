@@ -1,0 +1,187 @@
+---
+layout: post
+title: "Angular - Le pipe i18nPlural"
+date: 2023-04-05 10:10:50 +0100
+description: "Dans cet article, vous allez découvrir le pipe i18nPlural."
+tags: developpement web Typescript
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-i18nplural/cover_angular-i18nplural.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    La localisation est un élément crucial pour les applications web car elle permet de fournir une expérience utilisateur adaptée à chaque pays ou région. Cela inclut la traduction des textes, la présentation des dates et des devises.
+</p>
+
+<p>
+    En permettant une interaction fluide avec l'application dans leur langue et leur culture, les utilisateurs sont plus susceptibles d'adopter l'application et d'y revenir.
+</p>
+
+<p>
+    Le pipe i18nPlural est un outil fourni par Angular qui permet de gérer les pluriels dans les textes. 
+</p>
+
+<p>
+    Cela permet d'afficher différents textes en fonction de la valeur numérique d'une variable, par exemple pour différencier le singulier et le pluriel.
+</p>
+
+<p>
+    Mais aussi d'adapter automatiquement les textes en fonction de la langue sélectionnée par l'utilisateur, sans avoir à écrire de code supplémentaire pour chaque cas de figure.
+</p>
+
+<a id="utilisation-basique-i18nplural" class="anchor"></a>
+<h2>Utilisation de base du pipe i18nPlural</h2>
+
+<p>
+    Pour commencer vérifiez si vous avez le Common Module importé dans votre composant et votre app.module.ts :
+</p>
+
+{% highlight ts linenos %}
+import { CommonModule } from '@angular/common';
+...
+@NgModule({
+  imports: [
+    CommonModule,
+    ...
+  ],
+  ...
+})
+export class AppModule { }
+{% endhighlight %}
+
+<p>
+   
+  
+    Le pipe s'utilise dans votre template HTML en utilisant la syntaxe <br> {% raw %} <code>{{ nomVariable | i18nPlural }}.</code>{% endraw %}
+</p>
+
+<p>
+    La variable doit contenir une valeur numérique, exemple : 
+</p>
+
+{% highlight ts linenos %}
+<p>
+    {% raw %}{{ count }} {{ count | i18nPlural: { '=0': 'Aucun message', '=1': 'Un message', 'other': '# messages' } }}{% endraw %}
+</p>  
+{% endhighlight %}
+
+<p>
+    Comme vous pouvez voir, le texte affiché dépend de la valeur de la variable "count".
+</p>
+
+<p>
+    Si "count" vaut 0, le texte "Aucun message" sera affiché. Si "count" vaut 1, le texte "Un message" sera affiché.
+</p>
+
+<p>
+    Sinon, le texte "# messages" sera affiché, où "#" représente la valeur de la variable "count".
+</p>
+
+<p>
+    Le pipe i18nPlural est un outil pratique pour gérer les textes pluriels et singuliers dans les applications web.
+</p>
+
+<a id="utilisation-avancee-i18nplural" class="anchor"></a>
+<h2>Utilisation avancée du pipe i18nPlural</h2>
+
+<p>
+    Le pipe i18nPlural peut également être utilisé de manière plus avancée en combinant des règles de pluralisation et des traductions de textes. Cela peut être utile pour gérer des textes plus complexes qui nécessitent des traductions en plusieurs langues.
+</p>
+
+<p>
+    Pour cela importez <code>TranslateModule</code> :
+</p>
+
+{% highlight ts linenos %}
+import { TranslateModule } from '@ngx-translate/core';
+...
+@NgModule({
+  imports: [
+    TranslateModule.forRoot(),
+    ...
+  ],
+  ...
+})
+export class AppModule { }
+{% endhighlight %}
+
+<p>
+    Les fichiers de traduction doivent être ajoutés dans un dossier "assets/i18n" de l'application. Il est possible d'utiliser différents formats de fichier de traduction, comme JSON, YAML, ou XLIFF.
+</p>
+
+<p>
+    Pour l'exemple nous allons utiliser un fichier de traduction française au format JSON :
+</p>
+
+{% highlight ts linenos %}
+{
+    "messages": {
+      "zero": "Aucun message",
+      "one": "Un message",
+      "other": "# messages"
+    },
+    "users": {
+      "zero": "Aucun utilisateur",
+      "one": "Un utilisateur",
+      "other": "# utilisateurs"
+    }
+  }  
+{% endhighlight %}
+
+<p>
+    Ensuite, injectez <code>TranslateService</code> dans le composant ou service qui ont besoin de traduction : 
+</p>
+
+{% highlight ts linenos %}
+import { TranslateService } from '@ngx-translate/core';
+...
+constructor(private translateService: TranslateService) {
+  this.translateService.setDefaultLang('fr');
+  this.translateService.use('fr');
+}
+{% endhighlight %}
+
+<p>
+    le module de traduction est utilisé pour définir la langue par défaut de l'application (français) et pour utiliser le fichier de traduction en français.
+</p>
+
+<p>
+    Maintenant le pipe i18nPlural peut être utilisé avec des traductions en utilisant la syntaxe <br> {% raw %}<code>{{ variable | translate | i18nPlural }}</code>{% endraw %}.
+</p>
+
+<p>
+    Le pipe translate est utilisé pour traduire le texte avant l'application du pipe i18nPlural.
+</p>
+
+{% highlight ts linenos %}
+<p>
+    {% raw %}{{ count }} {{ 'messages' | translate | i18nPlural: { '=0': 'Aucun message', '=1': 'Un message', 'other': '# messages' } }}{% endraw %}
+    {% raw %}( {{ userCount }} {{ 'users' | translate | i18nPlural: { '=0': 'aucun utilisateur', '=1': 'un utilisateur', 'other': '# utilisateurs' } }}){% endraw %}
+</p>  
+{% endhighlight %}
+
+<p>
+    Dans cet exemple, le texte "messages" est traduit en français en utilisant le fichier de traduction "fr.json".
+</p>
+
+<p>
+    Le texte entre parenthèses dépend de la variable "userCount" et du fichier de traduction "fr.json". 
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Le pipe i18nPlural est un outil très utile pour gérer les textes pluriels dans une application Angular multilingue. En combinant ce pipe avec le module de traduction "@ngx-translate/core", il est possible de gérer efficacement les traductions de textes complexes en plusieurs langues.
+</p>
+
+<p>
+    Les développeurs peuvent ansi créer des applications Angular multilingues facilement.
+</p>
