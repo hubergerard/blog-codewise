@@ -1,0 +1,97 @@
+---
+layout: post
+title: "Angular - Erreur : Can't bind to ngModel is not a known property of input"
+date: 2023-02-25 10:10:50 +0100
+description: "Dans cet article, vous allez découvrir comment éviter et résoudre l'erreur : Can't bind to ngModel is not a known property of input"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-error-ngmodel/cover_error_ngModel.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    Si vous débuté le développement avec Angular, vous avez peut-être déjà rencontré l'erreur "Can't bind to 'ngModel' since it isn't a known property of 'input'" (Impossible de lier à 'ngModel' car ce n'est pas une propriété connue de 'input') lors de la création de formulaires.
+</p>
+
+<p>
+    Dans cet article, nous allons examiner ce que signifie cette erreur, pourquoi elle se produit et comment la résoudre.
+</p>
+
+<a id="comprendre-l-erreur" class="anchor"></a>
+<h2>Comprendre l'erreur</h2>
+
+<p>
+    Cette erreur se produit généralement lorsque vous essayez de lier un modèle à un élément d'entrée dans un formulaire Angular.
+</p>
+
+<p>
+    Le modèle ngModel est utilisé pour lier les valeurs d'entrée à une variable dans le composant Angular correspondant. 
+</p>
+
+<p>
+    Cela permet de récupérer facilement les données saisies par l'utilisateur et de les utiliser dans votre application.
+</p>
+
+<p>
+    Cependant, pour utiliser le modèle ngModel, vous devez d'abord importer le module FormsModule dans votre application Angular. Le module FormsModule fournit les directives et les pipes nécessaires pour créer des formulaires réactifs.
+</p>
+
+<p>
+    Si vous n'importe pas le module FormsModule, vous verrez l'erreur "Can't bind to 'ngModel' since it isn't a known property of 'input'". Cela signifie que le système ne reconnaît pas la propriété ngModel et ne peut donc pas la lier à l'élément d'entrée.
+</p>
+
+<a id="resoudre-l-erreur" class="anchor"></a>
+<h2>Résoudre l'erreur</h2>
+
+<p>
+    Pour résoudre cette erreur, vous devez importer le module FormsModule dans votre application Angular. Vous pouvez le faire en ajoutant la ligne suivante à votre fichier app.module.ts :
+</p>
+
+{% highlight ts linenos %}
+import { FormsModule } from '@angular/forms';
+{% endhighlight %}
+
+<p>
+    Ensuite, vous devez ajouter FormsModule à la liste des imports dans la section @NgModule de votre fichier app.module.ts :
+</p>
+
+{% highlight ts linenos %}
+@NgModule({
+    imports: [
+      BrowserModule,
+      FormsModule
+    ],
+    declarations: [
+      AppComponent
+    ],
+    bootstrap: [AppComponent]
+  })
+  export class AppModule { }
+  
+{% endhighlight %}
+
+<p>
+    Une fois que vous avez importé le module FormsModule et que vous l'avez ajouté à la liste des imports, vous devriez être en mesure d'utiliser le modèle ngModel sans rencontrer l'erreur "Can't bind to 'ngModel' since it isn't a known property of 'input'".
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    L'erreur "Can't bind to 'ngModel' since it isn't a known property of 'input'" est une erreur courante que les développeurs Angular rencontrent lorsqu'ils créent des formulaires. 
+</p>
+
+<p>
+    Cette erreur se produit généralement lorsque le module FormsModule n'est pas importé dans l'application Angular.
+</p>
+
+<p>
+    Pour résoudre cette erreur, vous devez importer le module FormsModule et l'ajouter à la liste des imports de votre fichier app.module.ts.
+</p>
