@@ -18,7 +18,7 @@
       </div>
       <div class="modal-body">
         <!-- Begin Sendinblue Form -->
-        <p>AGZYDSJDJDJD</p>
+        <p>VZKVEVEFK</p>
         <div class="sib-form" style="text-align: center;
          background-color: transparent;                                 ">
   <div id="sib-form-container" class="sib-form-container">
@@ -138,15 +138,16 @@
   </div>
 </div>
 
-
-        <script src="../assets/js/send_in_blue_form_config.js"></script>
-        <script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
-        <script src="https://www.google.com/recaptcha/api.js?render=6LeF1Q4mAAAAAFKRJAvwucjH2ztTP7HWWRgG4dy2"></script>
+<script>
+function handleCaptchaResponse() {
+var event = new Event('captchaChange');
+document.getElementById('sib-captcha').dispatchEvent(event);
+}
+</script>
+<script src="../assets/js/send_in_blue_form_config.js"></script>
+<script defer src="https://sibforms.com/forms/end-form/build/main.js"></script>
+<script src="https://www.google.com/recaptcha/api.js"></script>
       </div>
     </div>
   </div>
 </div>
-
-
-
-
