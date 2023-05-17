@@ -1,0 +1,237 @@
+---
+layout: post
+title: "Angular - Dumb Vs Smart component"
+date: 2023-05-05 08:10:50 +0100
+description: "Dans cet article, vous allez découvrir la différence entre un composant dit Dump et Smart."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: ""
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    L'objectif de cet article est d'expliquer ce que sont les <code>dumb components</code> et les <code>smart components</code> dans Angular, de présenter les avantages et les inconvénients de chaque approche, et de proposer des conseils pour choisir la meilleure approche en fonction des besoins de son projet.
+</p>
+
+<a id="dump-component" class="anchor"></a>
+<h2>Dumb component</h2>
+
+<p>
+    Pour Comprendre facilement ce que sont les dumb components :
+</p>
+
+<p>
+    Ce sont <span class="fw-bold">des composants Angular qui ont pour rôle de recevoir des données en entrée et de les afficher</span>. Ils ne contiennent pas de logique métier et sont donc considérés comme "bêtes". Ils sont faciles à réutiliser et à tester.
+</p>
+
+<p>
+    <span class="fw-bold">Les avantages des dumb components sont leur simplicité, leur réutilisabilité et leur testabilité</span>. En revanche, ils peuvent être trop basiques pour certains scénarios d'utilisation et nécessiter l'ajout de directives pour ajouter de la logique.
+</p>
+
+<a id="smart-component" class="anchor"></a>
+<h2>Smart component</h2>
+
+<p>
+    <span class="fw-bold">Les smart components sont des composants Angular qui contiennent de la logique métier et qui sont capables de modifier des données en réponse à des événements</span>. 
+</p>
+
+<p>
+    Ils sont considérés comme "intelligents". Ils peuvent communiquer avec des services et des APIs, et sont donc plus flexibles que les dumb components.
+</p>
+
+<p>
+    Les avantages des smart components sont leur flexibilité, leur capacité à gérer des états complexes et à communiquer avec des services et des APIs. En revanche, ils peuvent être plus difficiles à tester et à réutiliser que les dumb components.
+</p>
+
+<a id="smart-component-vs-dumb-component" class="anchor"></a>
+<h2>Smart component vs Dumb component</h2>
+
+<a id="smart-component-vs-dumb-component" class="anchor"></a>
+<h3>Comprendre la différence</h3>
+
+<p>
+    Pour bien comprendre la différence entre les deux types de composants, commençons par un exemple simple, dans lequel la séparation n'est pas encore présente.
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'app-home',
+    template: `
+      <h2>All Products</h2>
+      <h4>Total Products: {{products?.length}}</h4>
+  
+      <div class="products-list-container v-h-center-block-parent">
+          <table class="table products-list card card-strong">
+              <tbody>
+              <tr *ngFor="let product of products" (click)="selectProduct(product)">
+                  <td class="product-title"> {{product.description}} </td>
+                  <td class="duration">
+                      <i class="md-icon duration-icon">access_time</i>
+                      <span>{{products.duration}}</span>
+                  </td>
+              </tr>
+              </tbody>
+          </table>
+      </div>
+  `,
+    styleUrls: ['./home.component.css']
+  })
+  export class HomeComponent implements OnInit {
+  
+      products: product[];
+  
+    constructor(private productsService: ProductsService) {
+    }
+  
+    ngOnInit() {
+        this.productsService.findAllProducts()
+            .pipe(
+                tap(console.log)
+             )
+            .subscribe(
+                products => this.allProducts = products
+            );
+    }
+  
+    selectProduct(product) {
+      ...
+    }
+  }
+{% endhighlight %}
+
+<p>
+    Même si cette partie de la page d'accueil est encore très simple, elle commence déjà à avoir une taille importante. Par exemple, nous avons mis en place un tableau contenant une liste de produits.
+</p>
+
+<p>
+    Mais peut être que vous aurez besoin de cette liste de produits ailleurs que le composant <code>Home</code> ? Dans ce cas là, vous ne devriez pas simplement copier-coller mais plutôt créer un composant réutilisable.
+</p>
+
+<a id="creer-dumb-component" class="anchor"></a>
+<h4>Créer un dumb component</h4>
+
+<p>
+    Dans cette situation, il faut extraire la partie tableau dans un autre composant spécialement fait pour cela :
+</p>
+
+{% highlight ts linenos %}
+import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
+import {Product} from "../shared/model/product";
+
+@Component({
+  selector: 'products-list',
+  template: `
+      <table class="table products-list card card-strong">
+          <tbody>
+          <tr *ngFor="let product of products" (click)="selectProduct(product)">
+              <td class="product-title"> {{product.description}} </td>
+              <td class="duration">
+                  <i class="md-icon duration-icon">access_time</i>
+                  <span>{{product.duration}}</span>
+              </td>
+          </tr>
+          </tbody>
+      </table>  
+  `,
+  styleUrls: ['./products-list.component.css']
+})
+export class ProductsListComponent {
+
+  @Input()
+  products: Product[];
+
+  @Output('product')
+  productEmitter = new EventEmitter<Product>();
+
+    selectProduct(product:Product) {
+        this.productEmitter.emit(product);
+    }
+}
+{% endhighlight %}
+
+<p>
+    Vous pouvez voir la différence, ce composant ne reçoit plus le service <code>Product</code> injecté dans son constructeur, mais à la place il reçoit les produits en entrée via <code>@Input</code>.
+</p>
+
+<p>
+    Cela veut dire que le composant lui même ne sait pas d'où provient les produits. La responsabilité du composant est uniquement de présenter la donnée, et non de la recupérer.
+</p>
+
+<p>
+    C'est pourquoi on appelle ce type de composant "bête", dumb ou composant de présentation.
+</p>
+
+<a id="creer-smart-component" class="anchor"></a>
+<h4>Créer un smart component</h4>
+
+<p>
+    Après avoir créé le dumb composant et refactoring, le composant Home ressemblerait à ceci :
+</p>
+
+{% highlight ts linenos %}
+import { Component, OnInit } from '@angular/core';
+import {ProductsService} from "../shared/model/products.service";
+import {Product} from "../shared/model/product";
+
+@Component({
+  selector: 'app-home',
+  template: `
+      <h2>All Products</h2>
+      <h4>Total Products: {{products?.length}}</h4>
+      <div class="products-list-container v-h-center-block-parent">
+          <products-list [products]="products" (product)="selectProduct($event)"></products-list>
+      </div>
+`,
+  styleUrls: ['./home.component.css']
+})
+export class HomeComponent implements OnInit {
+
+    products: Product[];
+
+  constructor(private productsService: ProductsService) {
+  }
+
+  ngOnInit() {
+     ...
+  }
+
+  selectProduct(product) {
+    ...
+  }
+}
+{% endhighlight %}
+
+<p>
+    Comme vous pouvez le voir, la liste a été remplacé par le composant de liste de produits. Le Home component lui sait toujours comment récupérer les produits grâce au service mais ne sait pas les présenter.
+</p>
+
+<p>
+    Alors nous pouvons appeler ce type de composant, "intelligent", smart. Ce type de composant est très coupler à l'application et serait très difficile de l'utiliser dans une autre.
+</p>
+
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Lorsque nous commençons à créer notre application, il n'est pas toujours évident de déterminer  ce qui sera un smart component par rapport à un dumb component.
+</p>
+
+<p>
+    Rappelez vous que le composant de niveau supérieur de notre vue sera probablement toujours un smart component.
+</p>
+
+<p>
+    Mais le fait est que ce n'est parfois pas si simple. Par exemple, si vous avez une arborescence profonde de composants et que vous souhaitez qu'un composant situé à plusieurs niveaux au-dessus connaisse l'événement, l'événement ne se propagera pas.
+</p>
+
+<p>
+    Dans ce cas là il faudra peut être opter à utiliser un store <code>NGRX</code> ou <code>NGXS</code>.
+</p>
