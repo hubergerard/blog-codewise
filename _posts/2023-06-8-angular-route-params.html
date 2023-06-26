@@ -1,0 +1,133 @@
+---
+layout: post
+title: "Angular - Route params"
+date: 2023-06-08 10:50:50 +0100
+description: "Dans cet article, vous allez découvrir comment utiliser les paramètres de route Angular."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/angular-route-param/cover_angular_param_route.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+linked-ressource: "starter-kit-angular"
+lang: fr
+---
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    Lors du développement d'applications avec Angular, il est fréquent de devoir accéder aux paramètres d'itinéraire. Que ce soit pour récupérer des paramètres de requête ou des paramètres de route, Angular propose plusieurs approches pour gérer cette tâche de manière efficace.
+</p>
+
+<p>
+    Dans cet article, vous explorerez en détail les différentes méthodes pour accéder aux paramètres d'itinéraire dans Angular.
+</p>
+
+<a id="snapshot-activated-route" class="anchor"></a>
+<h2>Snapshot d'ActivatedRoute</h2>
+
+<p>
+    L'une des méthodes les plus courantes pour accéder aux paramètres d'itinéraire consiste à utiliser l'objet <code>snapshot</code> de la classe <code>ActivatedRoute</code>.
+</p>
+
+<p>
+    Cet objet vous permet d'obtenir des valeurs statiques des paramètres, ce qui signifie que les changements dans les paramètres ne seront détectés qu'après le rechargement du composant. Voici comment l'utiliser :
+</p>
+
+{% highlight ts linenos %}
+testId = this.activatedRoute.snapshot.params['testId'];
+authorization = this.activatedRoute.snapshot.data['permission'];
+user = this.activatedRoute.snapshot.queryParams['user'];
+{% endhighlight %}
+<div class="code-caption">Utilisations snapshot</div>
+
+<p>
+    Cette approche est simple et directe, mais elle n'est pas réactive aux changements des paramètres d'itinéraire.
+</p>
+
+<a id="acceder-parametres-itineraire-observables" class="anchor"></a>
+<h2>Accéder aux paramètres d'itinéraire avec des observables</h2>
+
+<p>
+    Une autre approche consiste à utiliser des observables pour accéder aux paramètres d'itinéraire. Cela permet une gestion réactive des changements de paramètres. Voici comment le mettre en œuvre :
+</p>
+
+{% highlight ts linenos %}
+testId$ = this.activatedRoute.params.pipe(map(params => params['testId']));
+authorization$ = this.activatedRoute.data.pipe(map(data => data['permission']));
+user$ = this.activatedRoute.queryParams.pipe(map(queryParams => queryParams['user']));
+{% endhighlight %}
+<div class="code-caption">Utilisations des observables</div>
+
+<p>
+    En utilisant des observables, vous pouvez vous abonner à ces flux de données et recevoir des notifications chaque fois que les paramètres d'itinéraire changent. Cela permet une mise à jour dynamique des valeurs dans nos composants.
+</p>
+
+<a id="utilisation-store-ngrx" class="anchor"></a>
+<h2>Utilisation du store du routeur Ngrx</h2>
+
+<p>
+    Si vous utilisez Ngrx dans votre application Angular, vous pouvez tirer parti du store du routeur pour gérer les paramètres d'itinéraire. Cela facilite l'intégration des paramètres d'itinéraire dans le flux de données géré par Ngrx. Voici comment l'utiliser :
+</p>
+
+<ul>
+    <li>Ajoutez le package @ngrx/router-store à votre application.</li>
+    <li>Configurez le store du routeur dans le fichier main.ts.</li>
+    <li>Utilisez les sélecteurs fournis par @ngrx/router-store pour accéder aux paramètres d'itinéraire.</li>
+</ul>
+
+{% highlight ts linenos %}
+import { getRouterSelectors } from '@ngrx/router-store';
+
+const { selectRouteParam, selectRouteDataParam, selectQueryParam } = getRouterSelectors();
+
+testId$ = this.store.select(selectRouteParam('testId'));
+authorization$ = this.store.select(selectRouteDataParam('permission'));
+user$ = this.store.select(selectQueryParam('user'));
+
+{% endhighlight %}
+<div class="code-caption">Utilisation du store Ngrx</div>
+
+<p>
+    En utilisant le store du routeur Ngrx, vous pouvez accéder aux paramètres d'itinéraire de manière cohérente avec le reste de votre état d'application géré par Ngrx.
+</p>
+
+<a id="router-input-angular-v16" class="anchor"></a>
+<h2>Utilisation de RouterInput dans Angular v16</h2>
+
+<p>
+    Angular v16 a introduit une nouvelle fonctionnalité appelée RouterInput, qui permet de lier directement les paramètres d'itinéraire aux propriétés des composants via des liaisons d'entrée. Voici comment l'utiliser :
+</p>
+
+<ul>
+    <li>Mettez à jour votre fournisseur de route dans le fichier main.ts.</li>
+    <li>Utilisez le décorateur @Input pour lier les paramètres d'itinéraire aux propriétés des composants.</li>
+</ul>
+
+{% highlight ts linenos %}
+import { Input as RouterInput } from '@angular/router';
+
+export class Component {
+  @RouterInput() testId!: string;
+  @RouterInput() authorization!: string;
+  @RouterInput() user!: string;
+}
+{% endhighlight %}
+<div class="code-caption">Utilisation de RouterInput</div>
+
+<p>
+    Avec RouterInput, les paramètres d'itinéraire sont directement accessibles dans les propriétés du composant, permettant une intégration plus étroite et une réactivité immédiate aux changements.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Chaque approche a ses avantages et inconvénients, et le choix dépendra des besoins spécifiques de votre application. En comprenant ces différentes options, vous serez en mesure de gérer efficacement les paramètres d'itinéraire dans vos projets Angular.
+</p>
+
+<p>
+    N'oubliez pas de consulter la documentation officielle d'Angular pour obtenir des informations plus détaillées sur ces fonctionnalités.
+</p>
