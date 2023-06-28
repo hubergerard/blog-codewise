@@ -15,7 +15,7 @@ lang: fr
 ---
 
 <p>
-<span class="fw-bold">Le routeur Angular permet la navigation d’une vue à l’autre de l’application lorsque l’utilisateur interagit avec le DOM, dans cet article nous allons aborder ce sujet en détails.  
+  <span class="fw-bold">Le routeur Angular permet la navigation d’une vue à l’autre de l’application lorsque l’utilisateur interagit avec le DOM, dans cet article nous allons aborder le sujet du routing en détails.  
 </p>
 
 <a id="qu-est-ce-que-le-routing" class="anchor"></a>
@@ -26,8 +26,8 @@ lang: fr
 
 <h3>Historique</h3>
 <p>
-Pendant longtemps, pour naviguer sur internet, le visiteur cliquait sur un lien pour recharger intégralement une nouvelle page.
-Ce n'est qu'au milieu des années 2000 (Entre 2002 et 2005) qu'une nouvelle API Javascript fait son apparition dans les navigateurs internet: <span class="fw-bold">XMLHttpRequest</span> (souvent appelé Ajax).
+  Pendant longtemps, pour naviguer sur internet, le visiteur cliquait sur un lien pour recharger intégralement une nouvelle page.
+  Ce n'est qu'au milieu des années 2000 (Entre 2002 et 2005) qu'une nouvelle API Javascript fait son apparition dans les navigateurs internet: <span class="fw-bold">XMLHttpRequest</span> (souvent appelé Ajax).
 </p>
 
 <p>
@@ -54,8 +54,6 @@ Elle permet le changement de l'adresse courante dans le navigateur et de manipul
   <div class="text-center image-caption">Manipulation d'URL via l'API History</div>
 </div>
 
-
-
 <h3> Définition</h3>
   <p class="fw-bold">
     Le routing correspond au fait d'associer une action à un certain chemin d'URL</p>
@@ -66,8 +64,8 @@ Elle permet le changement de l'adresse courante dans le navigateur et de manipul
 <h2>Créer des routes</h2>
 
 <p>
-Si votre projet est créé via la CLI, on vous proposera le routing pour votre application. 
-Si vous avez acceptez, un fichier app-routing.module.ts sera créé dans votre projet.
+  Si votre projet est créé via la CLI, on vous proposera le routing pour votre application. 
+  Si vous avez acceptez, un fichier app-routing.module.ts sera créé dans votre projet.
 </p>
 
 <p>
@@ -88,14 +86,14 @@ const routes: Routes = [
 <div class="code-caption">app-routing.module.ts</div>
 
 <p>
-Dans notre constante "routes", on retrouve la configuration des routes. 
-La propriété "path"  contient le nom de la route qui sera dans l’URL.
+  Dans notre constante "routes", on retrouve la configuration des routes. 
+  La propriété "path"  contient le nom de la route qui sera dans l’URL.
 </p>
 <p>
-La deuxième propriété de l’objet route correspond au component qui sera affiché lors du chargement de cette URL.
+  La deuxième propriété de l’objet route correspond au component qui sera affiché lors du chargement de cette URL.
 </p>
 <p>
-Par exemple, dans le code ci-dessus on a défini les routes suivantes :
+  Par exemple, dans le code ci-dessus on a défini les routes suivantes :
 </p>
 
 <p>
@@ -104,7 +102,7 @@ http://localhost:4200/
 </p>
 
 <p>
-La première URL chargera le component FirstComponent et la deuxième chargera SecondComponent.
+  La première URL chargera le component FirstComponent et la deuxième chargera SecondComponent.
 </p>
 
 <p>
@@ -172,10 +170,10 @@ La première URL chargera le component FirstComponent et la deuxième chargera S
 <h3>Naviguer avec l'objet Router</h3>
 
 <p>
-Il existe aussi une deuxième option de navigation qui permet de naviguer depuis la partie TS du component. Pour cela, il suffit d’injecter le service Router dans le composant.
+  Il existe aussi une deuxième option de navigation qui permet de naviguer depuis la partie TS du component. Pour cela, il suffit d’injecter le service Router dans le composant.
 </p>
 <p>
-C’est avec la méthode 'navigate' que nous déclenchons la navigation vers la nouvelle adresse passée en paramètre.
+  C’est avec la méthode 'navigate' que nous déclenchons la navigation vers la nouvelle adresse passée en paramètre.
 </p>
 
 {% highlight ts linenos %}
@@ -202,8 +200,8 @@ Notez qu'il faut passer un tableau en paramètre.
 <h2>Les paramètres de route</h2>
 
 <p>
-Imaginons que nous avons un service qui permet de gérer une liste de pokémons.
-Ce service nous permet d'obtenir les données concernant un Pokemon en passant l'id en paramètre.
+  Imaginons que nous avons un service qui permet de gérer une liste de pokémons.
+  Ce service nous permet d'obtenir les données concernant un Pokemon en passant l'id en paramètre.
 </p>
 
 <p>
