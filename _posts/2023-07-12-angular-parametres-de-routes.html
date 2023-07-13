@@ -1,0 +1,155 @@
+---
+layout: post
+title: "Angular - Les paramètres de routes"
+date: 2023-07-12 10:10:50 +0100
+description: "Dans cet article, vous allez découvrir comment utiliser les paramètres de routes dans Angular."
+tags: developpement web Typescript
+categories: [Développement web]
+author: "lucas"
+post_image: ""
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    Les paramètres de routes sont utilisés dans Angular pour transmettre des données entre les différentes routes de votre application. 
+</p>
+
+<p>
+    Cela vous permet de créer des URL dynamiques et de passer des valeurs spécifiques à une route donnée.
+</p>
+
+<p>
+    Les paramètres de routes sont souvent utilisés pour afficher des détails spécifiques d'une ressource ou pour filtrer les données affichées.
+</p>
+
+<a id="definition-des-routes" class="anchor"></a>
+<h2>Définition des routes</h2>
+
+<p>
+    Tout d'abord, vous devez définir vos routes dans le fichier de configuration des routes de votre application, généralement appelé <code>app-routing.module.ts</code>. Vous pouvez utiliser le <code>RouterModule</code> d'Angular pour définir vos routes.
+</p>
+
+<p>
+    Par exemple :
+</p>
+
+{% highlight ts linenos %}
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home.component';
+import { DetailsComponent } from './details.component';
+
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'details/:id', component: DetailsComponent },
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+{% endhighlight %}
+<div class="code-caption">App-routing.module.ts</div>
+
+<p>
+    Dans cet exemple, nous avons défini deux routes : une route racine (path: '') qui correspond au composant <code>HomeComponent</code>, et une route <code>details/:id</code> qui correspond au composant <code>DetailsComponent</code>. 
+</p>
+
+<p>
+    La partie<code> :id</code> dans la deuxième route indique qu'il s'agit d'un paramètre dynamique qui peut prendre différentes valeurs.
+</p>
+
+<a id="recuperation-parametres-de-route" class="anchor"></a>
+<h2>Récupération des paramètres de route</h2>
+
+<p>
+    Une fois que vous avez défini vos routes, vous pouvez accéder aux paramètres de route dans votre composant en utilisant le service <code>ActivatedRoute</code> fourni par Angular. Vous devez injecter ce service dans votre composant.
+</p>
+
+<p>
+    Voici un exemple :
+</p>
+
+{% highlight ts linenos %}
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  template: `
+    <h2>Details Component</h2>
+    <p>ID: {{ id }}</p>
+  `
+})
+export class DetailsComponent implements OnInit {
+  id: string;
+
+  constructor(private route: ActivatedRoute) { }
+
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.id = params['id'];
+    });
+  }
+}
+{% endhighlight %}
+<div class="code-caption">Details.component.ts</div>
+
+<p>
+    Dans cet exemple, nous injectons le service <code>ActivatedRoute</code> dans le constructeur du composant et utilisons la méthode <code>params.subscribe()</code> pour écouter les changements des paramètres de route. 
+</p>
+
+<p>
+    Lorsque les paramètres de route changent, la fonction de rappel est appelée, et nous pouvons récupérer la valeur du paramètre <code>id</code> à l'intérieur.
+</p>
+
+<a id="navigation-parametres-de-route" class="anchor"></a>
+<h2>Navigation avec des paramètres de route</h2>
+
+<p>
+    Pour naviguer vers une route avec des paramètres, vous pouvez utiliser le service <code>Router</code> d'Angular.
+</p>
+
+<p>
+    Par exemple :
+</p>
+
+{% highlight ts linenos %}
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+@Component({
+  template: `
+    <button (click)="goToDetails(1)">Voir les détails</button>
+  `
+})
+export class HomeComponent {
+  constructor(private router: Router) { }
+
+  goToDetails(id: number) {
+    this.router.navigate(['/details', id]);
+  }
+}
+{% endhighlight %}
+<div class="code-caption">Home.component.ts</div>
+
+<p>
+    Dans cet exemple, nous avons un bouton dans le composant <code>HomeComponent</code> qui déclenche la fonction <code>goToDetails()</code> lorsqu'il est cliqué.
+</p>
+
+<p>
+    Cette fonction utilise le service <code>Router</code> pour naviguer vers la route <code>details/:id </code>en passant l'ID en tant que paramètre.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    C'est ainsi que vous pouvez utiliser les paramètres de routes dans Angular pour transmettre des données entre les différentes routes de votre application. Les paramètres de routes sont un outil puissant pour créer des applications dynamiques et interactives.
+</p>
