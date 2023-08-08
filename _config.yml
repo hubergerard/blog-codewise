@@ -28,8 +28,8 @@ plugins:
   - jekyll-archives
   - jekyll/tagging
 
-cover_image: /assets/img/bg/page-title.png
-cover_image_post: /assets/img/bg/page-title-post.png
+cover_image: /assets/img/bg/bg-title.png
+cover_image_post: /assets/img/bg/bg-title-post.png
 
 
 #collections
