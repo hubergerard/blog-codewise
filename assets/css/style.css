@@ -324,6 +324,14 @@ label {
   padding-right: 10px;
   color: #4a43d9;
 }
+#logo-container{
+  width: 20vw;
+}
+#logo-blog{
+  width: 14%;
+  margin-left: 25px; 
+  margin-top:8px
+}
 
 .top-social-links span {
   font-size: 13px;
@@ -426,7 +434,6 @@ label {
   display: block;
   font-weight: 600;
   position: relative;
-  margin-bottom: 20px;
 }
 
 .main-menu.second-menu ul li a {
@@ -517,10 +524,10 @@ label {
   left: 10px;
 }
 
-.main-menu ul li:hover > a, .main-menu ul li:hover > button {
+.main-menu ul li:hover > a,
+.main-menu ul li:hover > button {
   color: #4a43d9;
 }
-
 
 .main-menu ul li:hover a::before,
 .main-menu ul li:hover a::after {
@@ -596,9 +603,9 @@ label {
   background: #111;
 }
 
-button.icon-button{
+button.icon-button {
   background-color: transparent;
-  border:none;
+  border: none;
   color: #020d26;
   padding: 0;
 }
@@ -2440,7 +2447,7 @@ button.icon-button{
 
 /* blog column */
 
-#time-read{
+#time-read {
   position: absolute;
   z-index: 1;
   top: 10px;
@@ -2715,7 +2722,7 @@ blockquote {
 
 #results-container li a:hover {
   color: #625cde;
-} 
+}
 
 .features-icon {
   margin-bottom: 15px;
@@ -2774,11 +2781,11 @@ blockquote {
   bottom: 20px;
   right: 30px;
   z-index: 99;
-  border: none; 
-  outline: none; 
+  border: none;
+  outline: none;
   background-color: #fff;
   box-shadow: 2px 5px 30px rgba(0, 0, 0, 0.1);
-  color: #4a43d9; 
+  color: #4a43d9;
   padding: 15px;
   border-radius: 100px;
   width: 60px;
@@ -2940,11 +2947,11 @@ code {
   box-shadow: 0 0 60px 0 rgba(0, 0, 0, 0.07);
 }
 
-.table .primary-bg{
+.table .primary-bg {
   background-color: #5254eb;
 }
 
-.table .secondary-bg{
+.table .secondary-bg {
   background-color: #9a9eff;
 }
 
@@ -2974,7 +2981,7 @@ code {
   background-color: rgb(221, 221, 221);
 }
 
-#image_author_post{
+#image_author_post {
   width: 10%;
   height: 10%;
 }
