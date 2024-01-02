@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Angular v17 - Les nouvelles structures de contrôle"
+title: "Angular v17 - Les flux de contrôle"
 date: 2023-12-26 10:10:50 +0100
 description: "Vous allez découvrir Les nouvelles structures de contrôle de la dernière version d'Angular 17"
 tags: developpement web Angular
@@ -29,11 +29,11 @@ lang: fr
 </p>
 
 <p>
-    Cette introduction explore l'impact et les avantages de ces nouveautés sur le développement Angular.
+    Cet article explore l'impact et les avantages de ces nouveautés sur le développement Angular.
 </p>
 
 <a id="nouvelles-structures-contrôle" class="anchor"></a>
-<h2>Nouvelles structures de contrôle</h2>
+<h2>Les flux de contrôle</h2>
 
 <a id="@if-Blocs" class="anchor"></a>
 <h3>@if</h3>
@@ -58,7 +58,13 @@ lang: fr
 
 {% highlight html linenos %}
 {% raw %}
-@if(condition) {...}  
+@if (a > b) {
+    <p>{{a}} est plus grand que {{b}}</p>
+  } @else if (b > a) {
+    <p>{{a}} est plus petit que {{b}}</p>
+  } @else {
+    <p>{{a}} est égal à {{b}}</p>
+  }
 {% endraw %}
 {% endhighlight %} 
 
@@ -80,11 +86,11 @@ lang: fr
 <h3>@for</h3>
 
 <p>
-    Le bloc @for d'Angular 17 révolutionne la manière dont les boucles sont gérées dans les templates. 
+    Le bloc <code>@for</code> d'Angular 17 révolutionne la manière dont les boucles sont gérées dans les templates. 
 </p>
 
 <p>
-    Il remplace la directive *ngFor et offre une syntaxe plus intuitive pour itérer sur des listes ou des objets.
+    Il remplace la directive <code>*ngFor</code> et offre une syntaxe plus intuitive pour itérer sur des listes ou des objets.
 </p>
 
 <p>
@@ -93,7 +99,7 @@ lang: fr
 
 {% highlight html linenos %}
 {% raw %}
-<div *ngFor="let item of items">...</div>    
+<div *ngFor="let item of items">{{item.name}}</div>    
 {% endraw %}
 {% endhighlight %} 
 
@@ -102,9 +108,11 @@ lang: fr
 </p>
 
 {% highlight html linenos %}
+{% raw %}
 @for(let item of items) {
-    <div>{{ item.nom }}</div>
-  }  
+    <div>{{ item.name }}</div>
+  }
+{% endraw %}
 {% endhighlight %} 
 
 
@@ -112,7 +120,7 @@ lang: fr
 <h3>@switch</h3>
 
 <p>
-    Pareil pour le bloc @switch, il permet la gestion de flux plus complexes basés sur plusieurs conditions. Il simplifie les structures de décision en évitant l'imbrication de multiples instructions if-else.
+    Pareil pour le bloc <code>@switch</code>, il permet la gestion de flux plus complexes basés sur plusieurs conditions. Il simplifie les structures de décision en évitant l'imbrication de multiples instructions if-else.
 </p>
 
 <p>
@@ -132,8 +140,8 @@ lang: fr
   }  
 {% endhighlight %} 
 
-<a id="flux-contrôle-intégré-vs-directives-structurelles" class="anchor"></a>
-<h2>Flux de contrôle intégré vs Directives structurelles</h2>
+<a id="avantages-flux-contrôle-intégré" class="anchor"></a>
+<h2>Les avantages des Flux de contrôle intégré</h2>
 
 <a id="syntaxe-simplifiée" class="anchor"></a>
 <h3>Syntaxe simplifiée</h3>
@@ -154,7 +162,7 @@ lang: fr
 </p>
 
 <p>
-    En réduisant le surcoût associé à la manipulation du DOM, ils offrent des améliorations en termes de vitesse et d'efficacité, en particulier pour les applications complexes et les grandes listes.
+    Grâce à un nouvel algorithme, ils offrent des améliorations en termes de vitesse et d'efficacité en réduisant le nombre d'opérations liées à la manipulation du DOM. En particulier pour les applications complexes et les grandes listes.
 </p>
 
 <a id="facilité-compréhension" class="anchor"></a>
@@ -168,15 +176,36 @@ lang: fr
     Cela rend non seulement l'écriture du code plus rapide, mais facilite également sa maintenance et sa compréhension par d'autres développeurs.
 </p>
 
-<a id="transition-coexistence" class="anchor"></a>
-<h3>Transition et Coexistence</h3>
+<a id="gestion-else" class="anchor"></a>
+<h3>Gestion des else</h3>
 
 <p>
-    Bien que les contrôles de flux intégrés offrent une alternative moderne, les directives structurelles restent pleinement fonctionnelles et continueront de coexister dans Angular 17. 
+    Dans les versions précédentes d'Angular, pour utiliser un else, on écrivait <code>*ngIf="taCondition; else unTemplateId"</code>. 
+
 </p>
 
 <p>
-    Cela permet aux développeurs de choisir l'approche la plus adaptée à leur cas d'utilisation spécifique et facilite la transition pour les projets existants.
+    Si la condition était vraie, le bloc avec le <code>ngIf</code> s'affichait. Dans le cas contraire, Angular chargeait un <code>ng-template</code> ayant pour identifiant <code>unTemplateId</code>.
+</p>
+
+<p>
+    <span class="fw-bold">Pour chaque <code>else</code>, il fallait déclarer un ng-template distinct</span>. Ce processus pouvait devenir fastidieux, surtout lorsqu'il s'agissait de gérer plusieurs conditions de ce type dans un même fichier HTML.
+</p>
+
+<p>
+    <span class="fw-bold">Depuis la nouvelle syntaxe, il n'est plus nécessaire de se familiariser avec les ng-template</span>. La gestion des conditions devient plus directe et intuitive.
+</p>
+
+
+<a id="transition-facilitee" class="anchor"></a>
+<h3>Transition facilitée</h3>
+
+<p>
+    Bien que les contrôles de flux intégrés offrent une alternative moderne, les directives structurelles restent pleinement fonctionnelles et continuent de fonctionner dans Angular 17. 
+</p>
+
+<p>
+    Cela permet aux développeurs de faciliter la transition pour les projets antérieur à la version 17.
 </p>
 
 
@@ -184,5 +213,17 @@ lang: fr
 <h2>Conclusion</h2>
 
 <p>
-    En conclusion, les flux de contrôle intégrés introduits dans Angular 17 offrent une nouvelle méthode pour gérer la logique conditionnelle et les boucles dans les applications. Cette innovation apporte une clarté, une performance et une simplicité accrues, tout en coexistant avec les directives structurelles pour offrir aux développeurs une gamme complète d'options pour leurs projets Angular.
+    En conclusion, les flux de contrôle intégrés introduits dans Angular 17 offrent une nouvelle méthode pour gérer la logique conditionnelle et les boucles dans les applications.
 </p>
+
+<p>
+    Cette innovation apporte une clarté, une performance et une simplicité accrues, tout en coexistant avec les directives structurelles pour laisser le temps aux développeurs d'engager une transition de leurs projets Angular.
+</p>
+
+<a id="sources" class="anchor"></a>
+<h2>Sources</h2>
+
+<ul>
+    <li>Angular Dev - <a href="https://angular.dev/guide/templates/control-flow#built-in-control-flow-and-the-ngif-ngswitch-and-ngfor-structural-directives">Built-in control flow</a></li>
+</ul>
+
