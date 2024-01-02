@@ -1,0 +1,229 @@
+---
+layout: post
+title: "Angular v17 - Les flux de contrôle"
+date: 2023-12-26 10:10:50 +0100
+description: "Vous allez découvrir Les nouvelles structures de contrôle de la dernière version d'Angular 17"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/angularv17-structure-control/cover_structure_control.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    Le contrôle de flux dans Angular a toujours été un élément central de la création d'applications interactives et dynamiques. 
+</p>
+
+<p>
+    Avec la sortie d'Angular 17, une nouvelle ère s'annonce avec l'introduction des contrôles de flux intégrés.
+</p>
+
+<p>
+    Ces nouveaux contrôles, tels que les blocs @if, @for, et @switch, offrent une syntaxe plus claire et plus concise, simplifiant la gestion des conditions et des boucles dans les templates Angular. 
+</p>
+
+<p>
+    Cet article explore l'impact et les avantages de ces nouveautés sur le développement Angular.
+</p>
+
+<a id="nouvelles-structures-contrôle" class="anchor"></a>
+<h2>Les flux de contrôle</h2>
+
+<a id="@if-Blocs" class="anchor"></a>
+<h3>@if</h3>
+
+<p>
+    Les blocs @if d'Angular 17 simplifient la gestion des conditions en permettant une syntaxe plus directe et moins verbeuse que l'ancienne directive <code>*ngIf</code> .
+</p>
+
+<p>
+    Par exemple, au lieu d'utiliser :
+</p>
+
+{% highlight html linenos %}
+{% raw %}
+<div *ngIf="condition">...</div>    
+{% endraw %}
+{% endhighlight %} 
+
+<p>
+    on peut désormais écrire simplement :
+</p>
+
+{% highlight html linenos %}
+{% raw %}
+@if (a > b) {
+    <p>{{a}} est plus grand que {{b}}</p>
+  } @else if (b > a) {
+    <p>{{a}} est plus petit que {{b}}</p>
+  } @else {
+    <p>{{a}} est égal à {{b}}</p>
+  }
+{% endraw %}
+{% endhighlight %} 
+
+<p>
+    Cela rend le code plus lisible et facile à comprendre.
+</p>
+
+<p>
+    Prenons un exemple concret. Supposons que nous ayons une variable isVisible dans notre composant. Avec le nouveau bloc @if, nous pouvons contrôler l'affichage d'un élément de cette manière :
+</p>
+
+{% highlight html linenos %}
+@if(isVisible) {
+    <p>Ce paragraphe est visible uniquement si 'isVisible' est vrai.</p>
+  }  
+{% endhighlight %} 
+
+<a id="@if-Blocs" class="anchor"></a>
+<h3>@for</h3>
+
+<p>
+    Le bloc <code>@for</code> d'Angular 17 révolutionne la manière dont les boucles sont gérées dans les templates. 
+</p>
+
+<p>
+    Il remplace la directive <code>*ngFor</code> et offre une syntaxe plus intuitive pour itérer sur des listes ou des objets.
+</p>
+
+<p>
+    Par exemple, au lieu d'utiliser : 
+</p>
+
+{% highlight html linenos %}
+{% raw %}
+<div *ngFor="let item of items">{{item.name}}</div>    
+{% endraw %}
+{% endhighlight %} 
+
+<p>
+    Vous pouvez maintenant utiliser :
+</p>
+
+{% highlight html linenos %}
+{% raw %}
+@for(let item of items) {
+    <div>{{ item.name }}</div>
+  }
+{% endraw %}
+{% endhighlight %} 
+
+
+<a id="@if-Blocs" class="anchor"></a>
+<h3>@switch</h3>
+
+<p>
+    Pareil pour le bloc <code>@switch</code>, il permet la gestion de flux plus complexes basés sur plusieurs conditions. Il simplifie les structures de décision en évitant l'imbrication de multiples instructions if-else.
+</p>
+
+<p>
+    Voici un exemple d'utilisation du bloc @switch :
+</p>
+
+{% highlight html linenos %}
+@switch(expression) {
+    @case valeur1: 
+      <p>Cas pour la valeur 1</p>
+      @break
+    @case valeur2: 
+      <p>Cas pour la valeur 2</p>
+      @break
+    @default: 
+      <p>Cas par défaut</p>
+  }  
+{% endhighlight %} 
+
+<a id="avantages-flux-contrôle-intégré" class="anchor"></a>
+<h2>Les avantages des Flux de contrôle intégré</h2>
+
+<a id="syntaxe-simplifiée" class="anchor"></a>
+<h3>Syntaxe simplifiée</h3>
+
+<p>
+    Les contrôles de flux intégrés proposent une syntaxe moins verbeuse et plus directe. 
+</p>
+
+<p>
+    Par exemple, le bloc <code>@if</code>  remplace <code>*ngIf</code>  avec une syntaxe qui élimine la nécessité d'encapsuler des éléments dans des balises supplémentaires, rendant le code plus lisible et plus facile à maintenir.
+</p>
+
+<a id="meilleure-performance" class="anchor"></a>
+<h3>Meilleure performance</h3>
+
+<p>
+    Ces nouveaux blocs de contrôle sont conçus pour être plus performants.
+</p>
+
+<p>
+    Grâce à un nouvel algorithme, ils offrent des améliorations en termes de vitesse et d'efficacité en réduisant le nombre d'opérations liées à la manipulation du DOM. En particulier pour les applications complexes et les grandes listes.
+</p>
+
+<a id="facilité-compréhension" class="anchor"></a>
+<h3>Facilité de compréhension</h3>
+
+<p>
+    Avec une syntaxe épurée, le code devient plus intuitif.
+</p>
+
+<p>
+    Cela rend non seulement l'écriture du code plus rapide, mais facilite également sa maintenance et sa compréhension par d'autres développeurs.
+</p>
+
+<a id="gestion-else" class="anchor"></a>
+<h3>Gestion des else</h3>
+
+<p>
+    Dans les versions précédentes d'Angular, pour utiliser un else, on écrivait <code>*ngIf="taCondition; else unTemplateId"</code>. 
+
+</p>
+
+<p>
+    Si la condition était vraie, le bloc avec le <code>ngIf</code> s'affichait. Dans le cas contraire, Angular chargeait un <code>ng-template</code> ayant pour identifiant <code>unTemplateId</code>.
+</p>
+
+<p>
+    <span class="fw-bold">Pour chaque <code>else</code>, il fallait déclarer un ng-template distinct</span>. Ce processus pouvait devenir fastidieux, surtout lorsqu'il s'agissait de gérer plusieurs conditions de ce type dans un même fichier HTML.
+</p>
+
+<p>
+    <span class="fw-bold">Depuis la nouvelle syntaxe, il n'est plus nécessaire de se familiariser avec les ng-template</span>. La gestion des conditions devient plus directe et intuitive.
+</p>
+
+
+<a id="transition-facilitee" class="anchor"></a>
+<h3>Transition facilitée</h3>
+
+<p>
+    Bien que les contrôles de flux intégrés offrent une alternative moderne, les directives structurelles restent pleinement fonctionnelles et continuent de fonctionner dans Angular 17. 
+</p>
+
+<p>
+    Cela permet aux développeurs de faciliter la transition pour les projets antérieur à la version 17.
+</p>
+
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    En conclusion, les flux de contrôle intégrés introduits dans Angular 17 offrent une nouvelle méthode pour gérer la logique conditionnelle et les boucles dans les applications.
+</p>
+
+<p>
+    Cette innovation apporte une clarté, une performance et une simplicité accrues, tout en coexistant avec les directives structurelles pour laisser le temps aux développeurs d'engager une transition de leurs projets Angular.
+</p>
+
+<a id="sources" class="anchor"></a>
+<h2>Sources</h2>
+
+<ul>
+    <li>Angular Dev - <a href="https://angular.dev/guide/templates/control-flow#built-in-control-flow-and-the-ngif-ngswitch-and-ngfor-structural-directives">Built-in control flow</a></li>
+</ul>
+
