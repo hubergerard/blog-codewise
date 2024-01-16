@@ -1,0 +1,328 @@
+---
+layout: post
+title: "Angular - SSR avec Analog.js"
+date: 2024-01-03 10:10:50 +0100
+description: "Dans cet article, découvrez le Server side Rendering avec AnalogJs pour Angular"
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/analogjs-ssr/cover_ssr_analogjs.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<style>
+    #route-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  #route-table, #route-table th, #route-table td {
+    border: 1px solid black;
+    margin-bottom: 20px;
+  }
+  #route-table th, #route-table td {
+    padding: 8px;
+    text-align: left;
+  }
+  #route-table th {
+    background-color: #f2f2f2;
+  }
+</style>
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    Dans le paysage en constante évolution du développement web, l'efficacité et la performance sont des pierres angulaires pour la création d'applications web réactives et engageantes.
+</p>
+
+<p>
+    C'est dans ce contexte qu'AnalogJS émerge comme un méta-framework innovant pour Angular, offrant une nouvelle dimension dans la construction d'applications web modernes.
+</p>
+
+<p>
+    AnalogJS se distingue par sa capacité à intégrer le Server-Side Rendering (SSR) dans les projets Angular, une technique de plus en plus prisée pour ses avantages significatifs en termes de performance et d'optimisation SEO.
+</p>
+
+<p>
+    Cet article vise à explorer l'intégration et les avantages du SSR au sein d'AnalogJS.
+</p>
+
+<a id="comprendre-ssr" class="anchor"></a>
+<h2>Comprendre le SSR</h2>
+
+<a id="definition" class="anchor"></a>
+<h3>Définition</h3>
+
+<p>
+    Le SSR est une méthode de rendu des applications web où les pages sont générées sur le serveur avant d'être envoyées au navigateur client.
+</p>
+
+<p>
+    Lorsqu'un utilisateur accède à une page web, le serveur prépare le contenu HTML complet, y compris les données dynamiques, et l'envoie au navigateur. 
+</p>
+
+<p>
+    Le navigateur affiche alors la page sans avoir besoin d'exécuter des scripts JavaScript pour construire le contenu.
+</p>
+
+<a id="avantages-ssr" class="anchor"></a>
+<h3>Avantages du SSR</h3>
+
+<ul>
+    <li><b>Amélioration du SEO</b></li>
+    <p>
+        Les moteurs de recherche indexent plus efficacement le contenu généré côté serveur.
+    </p>
+    <li><b>Performance de Chargement</b></li>
+    <p>Le SSR peut améliorer significativement le temps de chargement initial d'une page, en fournissant un contenu entièrement formé dès le premier chargement. Vous pouvez même implémenter un cache côté serveur pour améliorer encore plus les performances.</p>
+    <li><b>Expérience Utilisateur Améliorée</b></li>
+    <p>Les utilisateurs perçoivent les pages chargées via SSR comme étant plus rapides, cela est particulièrement important pour les utilisateurs avec des connexions Internet lentes ou des appareils moins puissants.</p>
+
+    <li><b>Indépendance de l'appareil de l'utilisateur</b></li>
+    <p>
+        Le chargement de la page ne dépendra pas de la puissance de l'appareil de l'utilisateur. Il dépendra uniquement de la puissance de votre serveur donc vous contrôlez mieux les performances.
+    </p>
+    <p>
+        De plus, votre serveur sera généralement plus puissant qu'un pc ordinaire ou qu'un smartphone.
+    </p>
+</ul>
+
+<a id="analogjs-ssr" class="anchor"></a>
+<h2>AnalogJS et le SSR</h2>
+
+<a id="analogjs-ssr" class="anchor"></a>
+<h3>Fonctionnement avec Angular</h3>
+<p>
+    AnalogJS étend les capacités d'Angular, en incorporant le SSR.
+</p>
+
+<p>
+    Cela permet aux applications Angular de bénéficier des avantages du contenu généré côté serveur tout en conservant la richesse et la flexibilité pour le rendu côté client.
+</p>
+
+<a id="creation-analogjs" class="anchor"></a>
+<h3>Création d'une application avec AnalogJs</h3>
+
+<p>
+    Assurez-vous que vous avez Node.js (version 16.17.0, 18.13.0 ou supérieure) et Angular v15 ou plus installés.
+</p>
+
+<p>
+    Pour créer une nouvelle application AnalogJs, utilisez la commande :
+</p>
+
+
+{% highlight bash linenos %}
+npm create analog@latest
+{% endhighlight %} 
+
+<p>
+    Après la création, installez les dépendances :
+</p>
+
+{% highlight bash linenos %}
+npm i
+{% endhighlight %} 
+
+<p>
+    Pour lancez le serveur :
+</p>
+
+{% highlight bash linenos %}
+npm run start
+{% endhighlight %} 
+
+<a id="configuration-routes" class="anchor"></a>
+<h3>Configuration des routes</h3>
+
+<p>
+    Dans AnalogJS, la configuration du Server-Side Rendering (SSR) est étroitement liée au système de routage de l'application.
+</p>
+
+<p>
+    Le routage basé sur le système de fichiers d'AnalogJS permet de définir comment les différentes pages et composants de votre application Angular sont servis et rendus.
+</p>
+
+<p>
+    En configurant correctement le routage, vous pouvez assurer que le contenu de votre application est correctement généré côté serveur.
+</p>
+
+<p>
+    Voici quelques exemples :
+</p>
+
+<ul>
+    <p><b>1. Routes Statiques : </b> Créez un fichier '.page.ts' pour chaque route statique. Par exemple, 'src/app/pages/about.page.ts' représenterait une route vers /about.</p>
+    <p><b>2. Groupe de Routes : </b> Permet de regrouper plusieurs routes sous un dossier sans préfixe. Par exemple, 'src/app/pages/(auth)/signup.page.ts' et 'src/app/pages/(auth)/login.page.ts' représentent les routes /signup et /login. (auth) est un dossier nommé avec les parenthèses.</p>
+    <p><b>3. Routes Dynamiques : </b> Pour les paramètres dynamiques dans l'URL, utilisez des crochets. Par exemple, 'src/app/pages/blog/[id].page.ts' correspond à des routes comme /blog/1, /blog/2, etc.</p>
+    <p><b>4. Routes Globales : </b> Utilisez '[...not-found].page.ts' pour capturer toutes les routes non spécifiées ailleurs. (page d'erreur 404)</p>
+</ul>
+
+<p>
+    Exemple de structure de fichier et routes correspondante : 
+</p>
+
+{% highlight text linenos %}
+src/
+└── app/
+    └── pages/
+        ├── (auth)/
+        │   ├── login.page.ts
+        │   └── signup.page.ts
+        ├── (marketing)/
+        │   ├── about.md
+        │   └── contact.md
+        ├── products/
+        │   ├── (product-list).page.ts
+        │   ├── [productId].edit.page.ts
+        │   └── [productId].page.ts
+        ├── (auth).page.ts
+        ├── (home).page.ts
+        ├── [...not-found].md
+        └── products.page.ts
+{% endhighlight %} 
+
+<table id="route-table">
+    <tr>
+      <th>Chemin</th>
+      <th>Page</th>
+    </tr>
+    <tr>
+      <td>/</td>
+      <td>(home).page.ts</td>
+    </tr>
+    <tr>
+      <td>/about</td>
+      <td>(marketing)/about.md</td>
+    </tr>
+    <tr>
+      <td>/contact</td>
+      <td>(marketing)/contact.md</td>
+    </tr>
+    <tr>
+      <td>/login</td>
+      <td>(auth)/login.page.ts (mise en page: (auth).page.ts)</td>
+    </tr>
+    <tr>
+      <td>/signup</td>
+      <td>(auth)/signup.page.ts (mise en page: (auth).page.ts)</td>
+    </tr>
+    <tr>
+      <td>/products</td>
+      <td>products/(product-list).page.ts (mise en page: products.page.ts)</td>
+    </tr>
+    <tr>
+      <td>/products/1</td>
+      <td>products/[productId].page.ts (mise en page: products.page.ts)</td>
+    </tr>
+    <tr>
+      <td>/products/1/edit</td>
+      <td>products/[productId].edit.page.ts (mise en page: products.page.ts)</td>
+    </tr>
+    <tr>
+      <td>/unknown-url</td>
+      <td>[...not-found].md</td>
+    </tr>
+  </table>
+  
+<p></p>
+
+<a id="verifier-ssr" class="anchor"></a>
+<h3>Vérifier que le SSR fonctionne</h3>
+
+<p>
+    Pour vérifier le bon fonctionnement du Server-Side Rendering (SSR) avec AnalogJS, suivez les étapes suivantes :
+</p>
+
+<ul>
+    <li><b>1. Ouvrez l'Application dans le Navigateur : </b></li>
+    <p>
+        Lancez votre application AnalogJS dans un navigateur web. Assurez-vous que l'application est accessible via l'URL appropriée, généralement localhost suivi du numéro de port spécifié dans votre configuration (http://localhost:5173).
+    </p>
+    <li><b>2. Accédez à l'Onglet 'Network' des Outils de Développement : </b></li>
+    <p>
+        Faites un clic droit sur la page et sélectionnez "Inspecter" ou utilisez le raccourci clavier (comme F12 sur Windows) pour ouvrir les outils de développement du navigateur. Naviguez vers l'onglet "Network" (Réseau).
+    </p>
+    <li><b>3. Rafraîchissez la Page</b></li>
+    <p>
+        Rafraîchissez votre page pour s'assurer que les requêtes récentes apparaissent dans l'onglet Network. Cela permet de capturer le trafic réseau associé au chargement initial de la page.
+    </p>
+    <li><b>4. Recherchez la Requête 'localhost'</b></li>
+    <p>
+        Dans la liste des requêtes réseau, recherchez la requête correspondant à l'URL de votre serveur local (par exemple, localhost). Cliquez sur cette requête pour l'examiner plus en détail.
+    </p>
+    <li><b>5. Vérifiez la Réponse du Serveur</b></li>
+    <p>
+        Dans les détails de la requête, accédez à l'onglet "Response" (Réponse) ou un nom similaire. Vous devriez voir le HTML généré par le serveur.
+    </p>
+    <li><b>6. Vérifiez les Signes de SSR</b></li>
+    <p>
+        Cherchez des indices montrant que le rendu a été effectué côté serveur. Par exemple, la présence de contenu dans les balises <app-root> ou d'autres éléments Angular spécifiques indique que le rendu initial a été fait sur le serveur avant d'être envoyé au navigateur.
+    </p>
+</ul>
+
+<p>Exemple de page généré côté serveur : </p>
+
+{% highlight html linenos %}
+<!DOCTYPE html><html lang="en"><head>
+    <script type="module" src="/@vite/client"></script>
+
+    <meta charset="utf-8">
+    <title>MyApp</title>
+    <base href="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/src/styles.css">
+  <style ng-app-id="ng">[_nghost-ng-c3984273398] {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 2rem;
+        text-align: center;
+      }</style><style ng-app-id="ng">.logo[_ngcontent-ng-c1047899640] {
+        will-change: filter;
+      }
+      .logo[_ngcontent-ng-c1047899640]:hover {
+        filter: drop-shadow(0 0 2em #646cffaa);
+      }
+      .logo.angular[_ngcontent-ng-c1047899640]:hover {
+        filter: drop-shadow(0 0 2em #42b883aa);
+      }
+      .read-the-docs[_ngcontent-ng-c1047899640] {
+        color: #888;
+      }</style></head>
+  <body><!--nghm-->
+    <app-root _nghost-ng-c3984273398="" ng-version="17.0.8" ngh="1" ng-server-context="ssr-analog"><router-outlet _ngcontent-ng-c3984273398=""></router-outlet><app-home _nghost-ng-c1047899640="" ngh="0"><div _ngcontent-ng-c1047899640=""><a _ngcontent-ng-c1047899640="" href="https://analogjs.org/" target="_blank"><img _ngcontent-ng-c1047899640="" alt="Analog Logo" src="/analog.svg" class="logo analog"></a></div><h2 _ngcontent-ng-c1047899640="">Analog</h2><h3 _ngcontent-ng-c1047899640="">The fullstack meta-framework for Angular!</h3><div _ngcontent-ng-c1047899640="" class="card"><button _ngcontent-ng-c1047899640="" type="button">Count 0</button></div><p _ngcontent-ng-c1047899640="" class="read-the-docs"> For guides on how to customize this project, visit the <a _ngcontent-ng-c1047899640="" href="https://analogjs.org" target="_blank">Analog documentation</a></p></app-home><!--container--></app-root>
+    <script type="module" src="/src/main.ts?t=1705316978359"></script>
+  
+
+<script id="ng-state" type="application/json">{"__nghData__":[{},{"c":{"0":[{"i":"c1047899640","r":1}]}}]}</script></body></html>
+{% endhighlight %} 
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    AnalogJS est un méta-framework pour Angular qui facilite la mise en œuvre du Server-Side Rendering (SSR).
+</p>
+
+<p>
+    Il améliore les performances initiales du chargement des pages et optimise l'indexation SEO en préchargeant le contenu côté serveur avant d'être envoyé au navigateur.
+</p>
+
+<p>
+    AnalogJS utilise une approche basée sur des fichiers pour le routage, ce qui simplifie la configuration du SSR. 
+</p>
+
+<p>
+
+</p>
+
+<a id="sources" class="anchor"></a>
+<h2>Sources</h2>
+
+<ul>
+    <li>AnalogJs : <a href="https://analogjs.org/fr/docs" rel="nofollow" target="_blank">Documentation</a></li>
+</ul>
