@@ -1,0 +1,166 @@
+---
+layout: post
+title: "Angular - Standalone component"
+date: 2024-01-16 14:10:50 +0100
+description: "Cet article est dédié aux standalone component, "
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/angular-standalone/cover_standalone.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    Depuis ses débuts, Angular a constamment évolué, notamment dans sa manière de gérer le partage de code entre modules. Cette évolution nous a menés à l'introduction des standalone component, une innovation significative pour les développeurs Angular.
+</p>
+
+<p>
+    Dans cet article vous comprendrez pourquoi les standalone component sont arrivé dans Angular et comment ils fonctionnent.
+</p>
+
+<a id="retrospective" class="anchor"></a>
+<h2>Rétrospective</h2>
+
+<a id="sharedmodule" class="anchor"></a>
+<h3>SharedModule</h3>
+
+<p>
+    À l'origine, Angular adoptait le SharedModule pour le partage de code. Cette méthode consiste à créer un module unique regroupant tous les composants, directives, pipes et services réutilisables.
+</p>
+<p>
+    Les différents modules de fonctionnalités (feature modules) de l'application importent ensuite ce SharedModule pour accéder aux éléments partagés. Cela semblait être une solution efficace, cependant, elle présentait un inconvénient majeur : l'alourdissement du SharedModule.
+</p>
+<p>
+    Avec le temps, le SharedModule pouvait devenir très volumineux, contenant plus de composants que nécessaire pour certains modules.
+</p>
+<p>
+    Cela entraînait une augmentation du poids des modules et, par conséquent, une baisse de performance.
+</p>
+
+<a id="methode-scam" class="anchor"></a>
+<h3>Méthode SCAM</h3>
+
+<p>
+    Pour remédier à ce problème, la méthode SCAM a été introduite. Dans cette approche, chaque composant, directive ou pipe est déclaré dans son propre module.
+</p>
+
+<p>
+    Cela permet à chaque module de fonctionnalités d'importer uniquement les composants dont il a besoin, offrant ainsi une gestion plus granulaire et focalisée des imports. 
+</p>
+
+<p>
+    Les modules SCAM, en se concentrant sur les éléments nécessaires à un composant spécifique, simplifient également les imports pour les tests unitaires.
+</p>
+
+<a id="standalone-component" class="anchor"></a>
+<h3>Les standalone component</h3>
+
+<p>
+    Cependant, même avec la méthode SCAM, <span class="fw-bold">la création d'un module pour chaque composant était fastidieuse</span>. De plus, <span class="fw-bold">la complexité des modules pouvait être un obstacle pour les nouveaux développeurs</span> Angular.
+
+</p>
+
+<p>
+</p>
+
+<p>
+    <span class="fw-bold">Pour résoudre ces problèmes, l'équipe d'Angular a introduit les standalone component </span>. Ces composants, directives ou pipes n'ont pas besoin d'être déclaré dans un NgModule contrairement aux composants traditionnels.
+</p>
+
+<p>
+    Les standalone component représentent une simplification significative. <span class="fw-bold">Ils éliminent le besoin de créer de multiples modules, réduisant ainsi la complexité du projet</span>. 
+</p>
+
+<p>
+    Cette approche facilite non seulement le travail des développeurs expérimentés, mais rend également Angular plus accessible aux débutants.
+</p>
+
+<p>
+    <span class="fw-bold">Avec les standalone component, Angular s'éloigne progressivement de la notion de module</span>, se dirigeant vers une structure plus légère et flexible.
+</p>
+
+<p>
+    Le concept de standalone component ne se limite pas au dossier shared. Il est également applicable dans les parties non partagées du code, permettant une gestion encore plus granulaire des imports.
+</p>
+
+<a id="en-pratique" class="anchor"></a>
+<h2>En pratique</h2>
+
+<p>
+    Dans un standalone component, la déclaration est simplifiée. Plutôt que de déclarer des composants, directives et pipes dans un NgModule, chaque standalone component est capable de s'auto-déclarer.
+</p>
+
+<p>
+    Ceci est accompli grâce à l'utilisation de nouvelles métadonnées dans les décorateurs de composants, telles que <code>standalone: true</code>.
+</p>
+
+{% highlight ts linenos %}
+@Component({
+    selector: 'my-standalone-component',
+    standalone: true, // ICI
+    imports: [CommonModule, AutreDirective, PipeReutilisable],
+    templateUrl: './my-standalone-component.component.html',
+    styleUrls: ['./my-standalone-component.component.css']
+  })
+  export class MyStandaloneComponent { /* ... */ }
+  
+{% endhighlight %}
+
+<a id="avantages" class="anchor"></a>
+<h2>Avantages</h2>
+
+<a id="avantages" class="anchor"></a>
+<h3>Performance et réutilisabilité</h3>
+
+<p>
+    L'utilisation des composants autonomes offre des avantages significatifs en termes de performance et de réutilisabilité.
+</p>
+
+<p>
+    En réduisant la dépendance à des modules externes, chaque standalone component ne charge que ce qui est strictement nécessaire à son fonctionnement.
+</p>
+
+<p>
+    Cela se traduit par une réduction de la taille globale du bundle et une amélioration des performances de l'application.
+</p>
+
+<a id="tests-maintenance" class="anchor"></a>
+<h3>Tests et maintenance</h3>
+
+<p>
+    Les tests deviennent plus simples car il n'est plus nécessaire d'importer un module entier pour tester un composant.
+</p>
+
+<p>
+    Chaque standalone component peut être testé de manière isolée, réduisant ainsi la complexité et le temps nécessaire pour écrire et exécuter des tests.
+</p>
+
+<p>
+    De plus, la maintenance du code est facilitée grâce à une structure plus claire et à une moindre dépendance entre les composants.
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    Les composants autonomes représentent une avancée majeure dans l'écosystème Angular, offrant une simplification du processus de développement, une amélioration des performances et une meilleure expérience de test.
+</p>
+
+<p>
+    En adoptant cette approche, Angular continue de se moderniser et de répondre aux besoins des développeurs d'aujourd'hui.
+</p>
+
+<a id="sources" class="anchor"></a>
+<h2>Sources</h2>
+
+<ul>
+    <li>Documentation Angular - <a rel="external nofollow" target="_blank" href="https://angular.io/guide/standalone-components"> Standalone component </a></li>
+    <li>Angular.fr - <a rel="external nofollow" target="_blank" href="https://angular.fr/components/standalone.html">Composant Standalone</a></li>
+    <li>Delia.tech- <a rel="external nofollow" target="_blank" href="https://www.delia.tech/delia-academy-articles/angular-les-standalone-components-une-revolution">Les standalone components, une révolution ?</a></li>
+</ul>
