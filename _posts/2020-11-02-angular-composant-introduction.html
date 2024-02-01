@@ -69,154 +69,59 @@ export class TodoComponent  {
 
 <p>On a également accès à son cycle de vie, via des hooks et il peut posséder n entrée/sortie pour communiquer avec d'autres composants.</p>
 
-<a id="communication" class="anchor"></a>
-<h2>Communication entre composants</h2>
+<a id="selector-component" class="anchor"></a>
+<h2>Sélecteur de composant</h2>
 
-<p>Les méthodes dites <em>view </em>et <em>content </em>sont 2 approches différentes pour faire communiquer des
-    composants. </p>
-
-<p>La principale différence se trouve dans le partage du <em>scope </em>(la portée des variables) entre les
-    composants parent et enfant.</p>
-
-<a id="view" class="anchor"></a>
-<h3>La méthode view</h3>
-
-<ul>
-    <li>Scope isolé entre les composants</li>
-    <li>Couplage composant parent/enfant lourd</li>
-</ul>
-
-<p>Chaque composant gardant son scope isolé de l'autre, les directives @Inputs et @Outputs leur permettent de
-    s’échanger des valeurs.</p>
-
-<a id="input" class="anchor"></a>
-<h4>@Input</h4>
-
-<!-- wp:paragraph -->
-<p>Input, permet de spécifier une valeur en entrée du composant. Pour l'utiliser, vous allez devoir modifier le code
-    à 2 endroits :</p>
-
-<ul>
-    <li>Déclarez-le avec l'annotation @Input() dans le composant (fichier ts)</li>
-    <li>Liez-le en “one-way” binding avec [myInputVarNameHere] dans le template html du parent</li>
-</ul>
-
-{% highlight ts linenos %}
-@Component({
-    selector: 'app-todo',
-})
-export class TodoComponent {
-    @Input()
-    todo: any;
-    ...
-}
-{% endhighlight %}
-<div class="code-caption">todo.component.ts (enfant)</div>
-
-{% highlight html linenos %}
-<app-todo [todo]="todo"></app-todo>
-{% endhighlight %}
-<div class="code-caption">todo-list.component.html (parent)</div>
-
-<a id="output" class="anchor"></a>
-<h4>@Output</h4>
-
-<p>@Output, permet de spécifier un événement en sortie du composant. Pour l'utiliser, vous devez modifier le
-    code à 3 endroits : </p>
-
-<ul>
-    <li>Instanciez un attribut de type EventEmitter dans le composant (ts) qu'on décore avec la directive @Output
-    </li>
-    <li>Liez-le en event-binding avec (myOutputVariableName) dans le template HTML du parent</li>
-    <li>Faîtes appel à la fonction emit() de l'EventEmitter au moment ou l'output doit se produire</li>
-</ul>
-
-{% highlight ts linenos %}
-@Component({
-    selector: 'app-todo'
-})
-export class TodoComponent {
-    @Output()
-    notify: EventEmitter<any> = new EventEmitter();
-    ...
-}
-{% endhighlight %}
-<div class="code-caption">todo.component.ts (enfant)</div>
-
-{% highlight html linenos %}
-<app-todo (notify)="displayChecked($event)"></app-todo>
-{% endhighlight %}
-<div class="code-caption">todo-list.component.html (parent)</div>
-
-<a id="content" class="anchor"></a>
-<h3>La méthode content</h3>
-
-<ul>
-    <li>pas d’input/output</li>
-    <li>scope partagé entre les composants</li>
-    <li>plus souple, plus facilement réutilisable</li>
-</ul>
-
-<a id="ng-content" class="anchor"></a>
-<h4>La balise ng-content</h4>
-
-<p>Pour mettre en place la projection de contenu de la méthode content, vous allez devoir modifier le code à 2
-    endroits :
+<p>
+    Tout les composants angular disposent d'un sélecteur CSS qui déterminera la déclaration du composant dans le HTML (tag) :
 </p>
 
-<ul>
-    <li>Ajoutez du HTML à l'intérieur des balises de l'enfant, dans le fichier HTML du parent</li>
-    <li>Récupérez-le dans le composant enfant, en projetant son contenu dans une balise &lt;ng-content&gt;</li>
-</ul>
+{% highlight ts linenos %}
+@Component({
+    selector: 'component-home',
+    ...
+  })
+  export class ComponentHeader { }
+{% endhighlight %} 
+<div class="code-caption">Exemple de composant Angular</div>
+
+<p>
+    Pour appeler ce composant à un endroit de votre HTML faites ceci :
+</p>
 
 {% highlight ts linenos %}
 @Component({
-    selector: 'fa-input',
     template: `
-            <i class="fa" [ngClass]="classes"></i>
-            <ng-content></ng-content>
-`
-})
-export class FaInputComponent {
-}
-{% endhighlight %}
-<div class="code-caption">fa-input.component.ts (composant enfant)</div>
+      <component-home />
+      <button>Nous contacter</button>`,
+    ...,
+  })
+  export class ComponentHome { }
+{% endhighlight %} 
+<div class="code-caption">Déclaration de composant Angular</div>
 
-{% highlight html linenos %}
-<h1>FA Input</h1>
-<fa-input>
-    <input type=”email” placeholder=”Email”/>
-</fa-input>
-{% endhighlight %}
-<div class="code-caption">app.component.html (parent)</div>
+<p>
+    La plupart des composants devraient être identifiés par un nom d'élément personnalisé servant de sélecteur. Il est impératif que tous les noms d'éléments personnalisés comportent un trait d'union, conformément aux directives de la spécification HTML.
+</p>
 
-<p>Vous remarquez que, dans le composant parent, on a placé du contenu html à l'intérieur de notre balise de composant &lt;fa-input&gt;</p>
-<p>Ce contenu est rendu disponible dans le composant fils via la balise &lt;ng-content&gt;. 
-    On dit que le contenu de la balise &lt;fa-input&gt; (parent) est projeté dans la balise &lt;ng-content&gt;</p>
+<p>
+    De manière standard, Angular génère une erreur lorsqu'il détecte un nom de balise personnalisé ne correspondant à aucun composant connu, évitant ainsi les erreurs provoquées par des fautes de frappe dans les noms de composants.
+</p>
 
-<p>Vous connaissez maintenant les principes de la méthode view et de la projection de contenu !</p>
+<a id="selector-prefix" class="anchor"></a>
+<h3>Préfixes de sélecteur</h3>
 
-<a id="quel-cas-content" class="anchor"></a>
-<h4>Dans quel cas l'utiliser ?</h4>
+<p>
+    L'équipe Angular suggère d'adopter un préfixe uniforme et concis pour tous les composants personnalisés de votre projet.
+</p>
 
-<p>La plupart du temps, on utilise la méthode view avec des Input/Output pour structurer la circulation des données au sein d'une page.
-    Cela s'explique car le couplage entre les composants est fort, il s'agit d'un découpage spécifique à la page. De plus on souhaite isoler les scopes au possible.</p>
-<p>Mais dans certains cas, il n'est vraiment pas pratique de garder des scopes isolés, et donc d'utiliser <a href="#view">la méthode view.</a></p>
+<p>
+    Si, par exemple, vous développiez YouTube en utilisant Angular, vous pourriez débuter le nom de vos composants par "yt-", donnant lieu à des composants tels que yt-menu, yt-player, etc.
+</p>
 
-<p>Par exemple, si vous comptez réutiliser un composant souvent et que vous devez accéder à 5 de ses attributs,
-    vous allez devoir gérer beaucoup d'Input/Output. C'est souvent le cas quand vous voulez séparer des
-    formulaires sur plusieurs composants, ou rendre un formulaire générique.</p>
-
-<p>Pour ces cas-là, vous pouvez choisir <a href="#content">la méthode content</a>. </p>
-
-<p>Vous aurez donc un couplage plus faible mais une séparation néante des scopes entre les composants (le scope
-    de l'enfant n'existe pas, celui du parent contient tout).</p>
-<p>Si vous souhaitez bien comprendre les différents cas d'utilisation, je vous recommande ce tutoriel d'Angular
-    University : <a href="https://blog.angular-university.io/angular-ng-content/" target="_blank">Tutoriel pour
-        maitriser la différence
-        view/content</a></p>
-
-<p>Passons maintenant au cycle de vie des composants !</p>
+<p>
+    Par défaut, le préfixe utilisé par l'interface en ligne de commande d'Angular est "app-".
+</p>
 
 <a id="lifecycle" class="anchor"></a>
 <h2>Cycle de vie d'un composant</h2>
@@ -247,7 +152,7 @@ export class FaInputComponent {
 <ul>
     <li>ne s’exécute pas si pas d’@Input</li>
     <li>1er hook appelé après l’appel au constructeur</li>
-    <li>déclenché à chaque changement de donnée en entrée @Input()</li>
+    <li>déclenché à chaque changement de donnée en entrée <code>@Input</code></li>
 </ul>
 
 <h3>ngOnInit</h3>
@@ -309,7 +214,6 @@ export class FaInputComponent {
 <h2>Sources</h2>
 <ul>
     <li>Guide officiel d'Angular sur les composants : <a href="https://angular.io/guide/architecture-components" target="_blank">Angular - Introduction to components and templates</a></li>
-    <li>Les Input/Output : <a href="https://angular.io/guide/inputs-outputs" target="_blank">@Input() and @Output() properties</a></li>
-    <li>Bien utiliser la méthode content : <a href="https://blog.angular-university.io/angular-ng-content/" target="_blank">How To Use ng-content To Improve Component API Design</a></li>
     <li>Cycle de vie des composants : <a href="https://angular.io/guide/lifecycle-hooks" target="_blank">Angular - Hooking into the component lifecycle</a></li>
+    <li>Anatomie des composants : <a href="https://angular.dev/guide/components" target="_blank">Angular.Dev</a></li>
 </ul>
