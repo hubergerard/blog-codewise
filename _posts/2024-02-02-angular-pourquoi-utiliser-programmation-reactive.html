@@ -1,0 +1,177 @@
+---
+layout: post
+title: "Pourquoi utiliser la programmation réactive ?"
+date: 2024-01-29 10:10:50 +0100
+description: "Dans cet article, explorez la puissance de la programmation réactive : découvrez ses principes clés, avantages. Idéal pour développeurs et architectes logiciels."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "assets/img/blog/reactive-programming/cover_prog_reactive.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction-programmation-reactive" class="anchor"></a>
+<h2>Introduction à la programmation réactive</h2>
+
+<p>
+    <span class="fw-bold">La programmation réactive est une approche de développement logiciel</span> centrée sur la création d'applications capables de répondre de manière dynamique aux changements d'état et aux flux de données en temps réel.
+</p>
+
+<p>
+    Cette méthodologie s'est imposée comme un paradigme incontournable dans le paysage technologique actuel.
+</p>
+
+<p>
+    L'évolution de la programmation réactive a été largement influencée par l'avènement des applications web et mobiles interactives, où la capacité à traiter des flux de données en continu et à réagir instantanément aux actions des utilisateurs est primordiale.
+</p>
+
+<p>
+    Dans cet article, nous plongerons au cœur de la programmation réactive, en explorant ses avantages
+</p>
+
+<a id="principes-cles-programmation-reactive" class="anchor"></a>
+<h2>Principes clés de la programmation réactive</h2>
+
+<p>
+    La programmation réactive repose sur quatre principes clés, souvent résumés par l'acronyme "RESPOND":
+</p>
+
+<p>
+    <span class="fw-bold">Réactivité (Responsiveness) </span>: Les systèmes réactifs doivent rester réactifs en toutes circonstances, offrant des temps de réponse rapides et cohérents. Cette réactivité garantit que l'utilisateur a toujours un retour immédiat, contribuant à une meilleure expérience utilisateur.
+</p>
+
+<p>
+    <span class="fw-bold">Élasticité (Elasticity) </span>: Les applications réactives peuvent s'adapter à la charge de travail, augmentant ou réduisant leurs ressources en fonction de la demande. Cette flexibilité permet de gérer efficacement les pics d'activité sans compromettre la performance.
+</p>
+
+<p>
+    <span class="fw-bold">Souplesse (Resilience) </span>: Les systèmes sont conçus pour gérer les défaillances et continuer à fonctionner, isolant et gérant les erreurs de manière à ce que les défaillances d'une partie du système n'affectent pas l'ensemble.
+</p>
+
+<p>
+    <span class="fw-bold">Orientée Message (Message Driven) </span>: La communication entre les différents composants d'un système réactif se fait via l'échange de messages. Ce modèle décentralisé favorise une séparation claire des préoccupations, permettant une meilleure scalabilité et une plus grande flexibilité dans le traitement des opérations asynchrones.
+</p>
+
+<a id="pattern-observer" class="anchor"></a>
+<h3>Le modèle Observer</h3>
+
+<p>
+    Dans le modèle Observer, un sujet (ou observable) représente la source des données ou des événements, tandis que les observateurs sont les entités qui s'intéressent à ces données ou événements.
+</p>
+
+<p>
+    Lorsque l'état du sujet change ou lorsqu'un événement se produit, tous les observateurs inscrits sont automatiquement notifiés et peuvent réagir en conséquence.
+</p>
+
+<img src="assets/img/blog/reactive-programming/Observer_example1.png" alt="exemple analogique des enchères avec le principe de programmation réactive">
+<div class="code-caption mt-2">Exemple de réactivité : les enchères</div>
+
+<p>
+    On peux voir que le sujet émet un prix, les participants choisissent de réagir ou non à l'enchère.
+</p>
+
+<a id="fonctionnement" class="anchor"></a>
+<h4>Fonctionnement</h4>
+
+<ul>
+    <p><span class="fw-bold">Inscription</span> : Les observateurs s'inscrivent auprès du sujet pour recevoir des notifications de changement. Cette inscription permet au sujet de conserver une liste des observateurs intéressés par ses changements d'état.</p>
+    <p><span class="fw-bold">Notification</span> :  Lorsqu'un changement d'état se produit dans le sujet, il envoie une notification à tous les observateurs inscrits. Cette notification peut inclure des détails sur le changement, permettant aux observateurs de réagir de manière appropriée.</p>
+    <p><span class="fw-bold">Réaction</span>: À la réception de la notification, chaque observateur exécute une fonction de rappel ou une action spécifique, en réponse au changement d'état observé. Cette réaction peut inclure la mise à jour de leur propre état, l'exécution d'une logique métier, ou toute autre action pertinente.</p>
+
+</ul>
+
+<a id="avantages-programmation-reactive" class="anchor"></a>
+<h2>Avantages de la programmation réactive</h2>
+
+<ul>
+    <li>1. 
+        <p>
+            <span class="fw-bold">La programmation réactive offre une multitude d'avantages</span> qui la rendent particulièrement adaptée aux exigences des applications modernes
+        </p>
+    </li>
+    <li>2.
+        <p>
+            <span class="fw-bold">Elle simplifie la gestion des opérations asynchrones</span>, réduisant la complexité du code et minimisant les risques d'erreurs.
+        </p>        
+    </li>
+    <li>
+        3. 
+        <p>
+            <span class="fw-bold">Des réponses rapides et évitant les blocages de l'interface utilisateur</span>, la programmation réactive améliore significativement l'expérience de l'utilisateur. 
+        </p>
+    </li>
+    <li>
+        4.
+        <p>
+            <span class="fw-bold">Les applications réactives sont conçues pour être résilientes face aux échecs</span>, isolant et gérant les erreurs de manière à ce que la défaillance d'un composant n'entraîne pas la panne de l'ensemble du système.
+        </p>
+    </li>
+    <li>
+        5.
+        <p>
+            <span class="fw-bold">Elle s'intègre bien avec les technologies modernes</span>, telles que les microservices, les conteneurs et les plateformes cloud.
+        </p>
+    </li>
+    <li>
+        6.
+        <p>
+            Grâce au modèle observateur, <span class="fw-bold">les applications réactives peuvent répondre instantanément aux changements d'état et aux événements</span>, assurant une synchronisation en temps réel entre l'interface utilisateur et les données.
+        </p>
+    </li>
+
+</ul>
+
+<a id="frameworks-outils-programmation-reactive" class="anchor"></a>
+<h2>Frameworks et outils pour la programmation réactive</h2>
+
+<p>
+    L'écosystème de la programmation réactive est riche en frameworks et outils
+</p>
+
+<p>
+    Ces bibliothèques offrent des abstractions et des fonctionnalités qui permettent aux développeurs de mettre en œuvre les principes réactifs de manière efficace et soignée.
+</p>
+
+<p>
+    Voici une sélection de frameworks et outils populaires dans le domaine :
+</p>
+
+<ul>
+    <li>RxJava / RxJS / Rx.NET</li>
+    <li>Reactor (pour Java)</li>
+    <li>Redux (pour JavaScript)</li>
+    <li>Vert.x</li>
+</ul>
+
+<p>
+    Le choix du framework ou de l'outil adapté dépend de plusieurs facteurs tels que : 
+</p>
+<ul>
+    <li>le langage de programmation utilisé</li>
+    <li>les exigences spécifiques du projet</li>
+    <li>les préférences personnelles ou d'équipe</li>
+    <li>la courbe d'apprentissage</li>
+    <li>la communauté</li>
+    <li>le support</li>
+    <li>
+        la compatibilité avec l'architecture globale de l'application
+    </li>
+</ul>
+
+<p>
+
+</p>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    En résumé, la programmation réactive offre une approche puissante et flexible pour développer des applications capables de répondre aux défis posés par les environnements hautement interactifs et en constante évolution d'aujourd'hui.
+</p>
+
+<p>
+    En adoptant cette méthodologie, les développeurs peuvent créer des systèmes plus robustes, réactifs et maintenables, capables de fournir une expérience utilisateur exceptionnelle.
+</p>
