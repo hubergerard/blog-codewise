@@ -1024,6 +1024,10 @@ button.icon-button{
   padding-top: 15px;
 }
 
+.about-block-responsive{
+  width: 100%;
+}
+
 /* 5. Service */
 
 .services-box {
