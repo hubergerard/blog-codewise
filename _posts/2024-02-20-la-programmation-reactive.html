@@ -1,0 +1,245 @@
+---
+layout: post
+title: "La programmation réactive"
+date: 2024-02-20 10:10:50 +0100
+description: "Dans cet article, découvrez la programmation réactive, une approche puissante pour construire des applications réactives et robustes."
+tags: developpement web Typescript
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/programmation-reactive/cover_program_reactive.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    La programmation réactive est née de la nécessité de gérer efficacement les flux de données asynchrones et les événements dans des systèmes à grande échelle.
+</p>
+
+<p>
+    La programmation réactive offre un paradigme où les applications peuvent réagir de manière dynamique aux changements d'état, aux entrées utilisateur, ou encore aux communications réseau.
+</p>
+
+<p>
+    La programmation réactive trouve ses origines dans la théorie des systèmes réactifs, un concept qui met l'accent sur la non-blocage des opérations et l'asynchronisme, permettant aux applications de rester réactives, résilientes, élastiques et orientées message.
+</p>
+
+<a id="concepts-fondamentaux" class="anchor"></a>
+<h2>Concepts fondamentaux</h2>
+
+<a id="flux-données" class="anchor"></a>
+<h3>Flux de données (Data Streams)</h3>
+
+<p>
+    Au cœur de la programmation réactive se trouve le concept de flux de données. Un flux est une séquence d'éléments de données qui sont émis au fil du temps. 
+</p>
+
+<p>
+    Ces données peuvent représenter une variété d'événements, tels que des clics d'utilisateurs, des messages réseau, ou des valeurs de capteurs.
+</p>
+
+<p>
+    La caractéristique essentielle d'un flux est qu'il permet de traiter des données asynchrones de manière séquentielle, facilitant ainsi la gestion d'opérations non bloquantes.
+</p>
+
+<a id="flux-données" class="anchor"></a>
+<h3>Observateur (Observer)</h3>
+
+<p>
+    L'observateur est un élément clé dans le modèle de programmation réactive. Il souscrit à un flux de données et réagit à chaque nouvel élément émis.
+</p>
+
+<p>
+    Pour illustrer le concept d'observateur dans la programmation réactive, considérons un exemple simple utilisant RxJS, une bibliothèque populaire pour la programmation réactive avec JavaScript.
+</p>
+
+<p>
+    Dans cet exemple, nous allons créer un flux de données simple (un "Observable") qui émet des nombres, et nous allons souscrire à ce flux avec un observateur qui réagit à chaque émission de données :
+</p>
+
+{% highlight js linenos %}
+// Importation de la bibliothèque RxJS
+import { Observable } from 'rxjs';
+
+// Création d'un Observable qui émet des nombres de 1 à 5, un par seconde
+const numberObservable = new Observable(subscriber => {
+  let value = 1;
+  const interval = setInterval(() => {
+    subscriber.next(value++);
+    if (value > 5) {
+      subscriber.complete(); // Signal la fin de l'émission des valeurs
+      clearInterval(interval); // Nettoie l'intervalle pour éviter des effets secondaires
+    }
+  }, 1000);
+});
+
+// Création d'un observateur
+const numberObserver = {
+  next: x => console.log('Nombre reçu: ' + x),
+  error: err => console.error('Erreur capturée: ' + err),
+  complete: () => console.log('Flux completé')
+};
+
+// Souscription de l'observateur à l'Observable
+numberObservable.subscribe(numberObserver);
+{% endhighlight %}
+
+<p>
+    Dans cet exemple, l'observable <code>numberObservable</code> est le flux de donnée. Il commence à émettre des nombres (de 1 à 5) toutes les secondes.
+</p>
+
+<p>
+    Après avoir émis le nombre 5, il signale la fin de la séquence en appelant <code>subscriber.complete()</code> et nettoie l'intervalle établi avec <code>setInterval</code>.
+</p>
+
+<p>
+    L'observer (ou l'observateur en français) <code>numberObserver</code>, est défini par un objet qui contient trois méthodes : <code>next</code>, <code>error</code>, et <code>complete</code>.
+</p>
+
+<ul>
+    <li> <code>next(x)</code> est appelée à chaque fois qu'un nouvel élément (x) est émis par l'Observable. Dans cet exemple, elle affiche simplement le nombre reçu dans la console.</li>
+    <li><code>error(err)</code> serait appelée si l'Observable rencontrait une erreur. Ici, elle se contenterait d'afficher l'erreur.</li>
+    <li> <code>complete()</code> est appelée une fois que l'Observable a fini d'émettre tous ses éléments, indiquant que le flux est terminé. Ici, elle affiche simplement un message dans la console.</li>
+</ul>
+
+<p>
+    Souscription : L'observer est "souscrit" à l'Observable avec <code>numberObservable.subscribe(numberObserver)</code>. Cela signifie que l'observer commencera à recevoir les valeurs émises par l'Observable et réagira selon les méthodes définies (next, error, complete).
+</p>
+
+<a id="operateurs" class="anchor"></a>
+<h3>Opérateurs</h3>
+
+<p>
+    Les opérateurs sont des fonctions qui permettent de manipuler, transformer, combiner ou filtrer les flux de données.
+</p>
+
+<p>
+    Ils jouent un rôle crucial dans la programmation réactive, offrant une grande flexibilité et puissance pour traiter des séquences de données asynchrones.
+</p>
+
+<p>
+    Les opérateurs peuvent être catégorisés en plusieurs types, en fonction de leur fonctionnalité :
+</p>
+
+<ul>
+    <li>Transformation : changent la forme des éléments d'un flux. Exemples : map, flatMap.</li>
+    <li>Filtrage : sélectionnent certains éléments d'un flux selon un critère. Exemples : filter, distinct.</li>
+    <li>Combinaison : combinent les éléments de plusieurs flux en un seul. Exemples : merge, concat.</li>
+</ul>
+
+<p>
+    Ces opérateurs permettent de composer des flux de données complexes de manière déclarative, rendant le code plus lisible et plus facile à maintenir.
+</p>
+
+{% highlight js linenos %}
+import { of } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+
+// Création d'un Observable qui émet une séquence de nombres de 1 à 10
+const numbers = of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+// Application de l'opérateur 'filter' pour ne garder que les nombres pairs
+const evenNumbers = numbers.pipe(
+  filter(n => n % 2 === 0)
+);
+
+// Application de l'opérateur 'map' pour multiplier chaque nombre pair par 10
+const multipliedEvenNumbers = evenNumbers.pipe(
+  map(n => n * 10)
+);
+
+// Souscription à l'Observable pour afficher les résultats
+multipliedEvenNumbers.subscribe({
+  next: n => console.log(n),
+  complete: () => console.log('Flux complété')
+});
+{% endhighlight %}
+
+<p>
+    L'observable <code>numbers</code> est créé avec la fonction <code>of</code> de RxJS et émet une séquence de nombres de 1 à 10.
+</p>
+
+<p>
+    L'opérateur <code>filter</code> est appliqué au flux <code>numbers</code> en utilisant la méthode <code>pipe</code>. <code>filter(n => n % 2 === 0)</code> permet de ne garder que les nombres pairs. Le résultat est un nouvel Observable evenNumbers qui émettra uniquement les nombres pairs.
+</p>
+
+<p>
+    L'opérateur <code>map</code> est ensuite appliqué au flux evenNumbers. <code> map(n => n * 10)</code> transforme chaque élément du flux en le multipliant par 10. Le résultat est un nouvel Observable multipliedEvenNumbers qui émettra les nombres pairs de la séquence initiale, chacun étant multiplié par 10.
+</p>
+
+<a id="paradigmes-programmation-reactive" class="anchor"></a>
+<h2>Paradigmes de la programmation réactive</h2>
+
+<a id="reactif" class="anchor"></a>
+<h3>Réactif</h3>
+
+<p>
+    La programmation réactive est sa capacité à réagir à des événements de manière non bloquante.
+</p>
+
+<p>
+    Cela signifie que le système est conçu pour répondre dans les plus brefs délais, en utilisant des callbacks ou des événements au lieu d'attendre que les opérations se terminent. 
+</p>
+
+<a id="resilient" class="anchor"></a>
+<h3>Résilient</h3>
+
+<p>
+    La résilience est la capacité d'un système à rester opérationnel, même en cas de défaillance.
+</p>
+
+<p>
+    Dans la programmation réactive, cela est souvent réalisé grâce à la gestion des erreurs comme des événements de flux, permettant aux applications de traiter et de se remettre des erreurs sans s'arrêter ou perdre l'état.
+</p>
+
+<a id="elastique" class="anchor"></a>
+<h3>Élastique</h3>
+
+<p>
+    L'élasticité réfère à la capacité d'un système à s'adapter à la charge de travail, en allouant et en libérant des ressources de manière dynamique.
+</p>
+
+<p>
+    La programmation réactive facilite l'élasticité par son modèle asynchrone et non bloquant, permettant à des systèmes de s'ajuster plus facilement aux pics de charge sans dégradation de performance.
+</p>
+
+<a id="elastique" class="anchor"></a>
+<h3>Orienté message</h3>
+
+<p>
+    La communication basée sur les messages permet à des composants de l'application de rester faiblement couplés, en favorisant une architecture plus modulaire et flexible.
+</p>
+
+<p>
+    Dans la programmation réactive, les interactions entre les composants sont souvent réalisées à travers l'échange de messages asynchrones, ce qui permet de construire des systèmes distribués et décentralisés plus robustes et évolutifs.
+</p>
+
+
+<a id="mise-en-œuvre-programmation-reactive" class="anchor"></a>
+<h2>Mise en œuvre de la programmation réactive</h2>
+
+<p>
+    La conception d'une application réactive nécessite une approche différente, centrée sur la gestion des flux de données et des événements. Voici quelques points à considérer :
+</p>
+
+<ul>
+    <p><span class="fw-bold">Modélisation des données et des événements comme des flux</span> : Pensez aux données de votre application en termes de flux qui peuvent être observés et manipulés à l'aide d'opérateurs.</p>
+    <p><span class="fw-bold">Décomposition en composants réactifs </span> : Structurez votre application en composants ou services qui interagissent via des flux de données, en favorisant le découplage et la modularité.</p>
+    <p><span class="fw-bold">Utilisation judicieuse des opérateurs </span> : Choisissez les opérateurs appropriés pour transformer, combiner, et filtrer les flux de données. Une utilisation excessive ou incorrecte peut rendre le code difficile à comprendre et à maintenir.</p>
+    <p><span class="fw-bold">Gestion de la backpressure </span> : Assurez-vous que votre application peut gérer les cas où la production de données dépasse la capacité de traitement, en utilisant des mécanismes de régulation de flux appropriés.</p>
+</ul>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    La programmation réactive est bien plus qu'un simple ensemble de technologies ou de bibliothèques; elle représente un changement fondamental dans la manière dont nous concevons et développons des applications logicielles.
+</p>
+
+<p>
+    En adoptant ce paradigme, les développeurs peuvent construire des systèmes plus robustes, flexibles et adaptés aux défis posés par les environnements informatiques modernes, caractérisés par des exigences élevées en termes de réactivité, de performances et de tolérance aux pannes.
+</p>
