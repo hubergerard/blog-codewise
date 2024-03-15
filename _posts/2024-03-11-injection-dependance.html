@@ -1,0 +1,329 @@
+---
+layout: post
+title: "L'injection de dépendance"
+date: 2024-03-11 10:10:50 +0100
+description: "Cet article fournit une introduction approfondie à l'injection de dépendance, expliquant ses principes fondamentaux, ses types, et comment elle peut être utilisée pour créer des applications modulaires et maintenables."
+tags: developpement web Angular
+categories: [Développement web]
+author: "lucas"
+post_image: "/assets/img/blog/injection-dependance/cover_injection_dependance.png"
+toc-text-mode: false
+toc-depth: 5
+author: lucas
+lang: fr
+---
+
+
+
+<a id="introduction" class="anchor"></a>
+<h2>Introduction</h2>
+
+<p>
+    <span class="fw-bold">L'injection de dépendance (ID) est une technique essentielle dans le développement logiciel</span>, qui fait partie du cadre plus large qu'est l'inversion de contrôle (IoC) <span class="fw-bold">pour gérer les dépendances entre les composants d'une application</span>.
+</p>
+
+<p>
+    Historiquement, les développeurs créaient des instances de classes dépendantes directement au sein de leurs classes. Cette approche, bien que simple, rendait le code fortement couplé et difficile à tester.
+</p>
+
+<p>
+    Avec l'évolution des paradigmes de programmation et les principes de conception comme SOLID, <span class="fw-bold">l'injection de dépendance a émergé comme une solution élégante pour décomposer les systèmes en composants plus petits, indépendants et interchangeables</span>.
+</p>
+
+<a id="definition-injection-dependance" class="anchor"></a>
+<h3>Définition de l'injection de dépendance</h3>
+
+<p>
+    L'injection de dépendance est une technique de conception ( ou dit design pattern) utilisé en programmation qui permet de recevoir d'autres classes qu'on appelle "dépendance" de l'extérieur de la classe où nous codons.
+</p>
+
+<p>
+    Imaginons une application simple où vous avez une classe Voiture qui dépend d'une autre classe Moteur pour fonctionner. 
+</p>
+
+<p>
+    Sans injection de dépendance, la classe Voiture pourrait créer une instance du Moteur directement à l'intérieur de sa propre définition, ce qui rend les deux classes étroitement liées et difficiles à tester séparément.
+</p>
+
+<p>
+    Avec l'injection de dépendance, au lieu que la Voiture crée le Moteur, le Moteur est créé à l'extérieur de la Voiture et lui est fourni (injecté) 
+</p>
+
+<p>
+    Voici un exemple en pseudo-code :
+</p>
+
+{% highlight js linenos %}
+class Moteur {
+    fonction démarrer() {
+        // Logique pour démarrer le moteur
+    }
+}
+
+class Voiture {
+    Moteur moteur;
+
+    // Injection de dépendance via le constructeur
+    constructeur(Moteur moteur) {
+        this.moteur = moteur;
+    }
+
+    fonction démarrer() {
+        this.moteur.démarrer();
+        // Logique supplémentaire pour démarrer la voiture
+    }
+}
+
+// Création d'une instance de Moteur à l'extérieur de la classe Voiture
+Moteur moteur = nouveau Moteur();
+
+// Création d'une Voiture avec le moteur injecté
+Voiture voiture = nouvelle Voiture(moteur);
+
+// Démarrage de la voiture, qui utilisera le moteur qui lui a été injecté
+voiture.démarrer();
+
+{% endhighlight %}
+<div class="code-caption">Pseudo code injection par constructeur</div>
+
+<p>
+    Dans cet exemple, Voiture ne crée pas son Moteur; elle le reçoit de l'extérieur. Cela rend les tests plus faciles car vous pouvez injecter différents types de moteurs.
+</p>
+
+<a id="principes-fondamentaux" class="anchor"></a>
+<h2>Principes fondamentaux</h2>
+
+<p>
+    Les principes fondamentaux de l'injection de dépendance s'ancrent dans la notion d'inversion de contrôle (Inversion of Control), un paradigme où le contrôle du flux du programme est inversé par rapport à la programmation traditionnelle.
+</p>
+
+<p>
+    Voici quelques-unes des idées clés qui sous-tendent l'injection de dépendance :
+</p>
+
+<h4>1. Séparation de la configuration</h4>
+
+<p>
+    <span class="fw-bold">L'Injection de dépendance encourage une nette séparation entre la configuration des composants d'une application et le code qui exécute leur logique métier</span>. Cela permet de rendre le code plus clair, plus facile à maintenir et à étendre.
+</p>
+
+<h4>2. Couplage faible</h4>
+
+<p>
+    <span class="fw-bold">En injectant les dépendances, les classes ne sont plus responsables de la création des instances de leurs dépendances</span>. Cela réduit le couplage entre les classes, car elles ne dépendent plus d'implémentations concrètes mais d'abstractions
+</p>
+
+<p>
+    Cela facilite le remplacement des composants et améliore la modularité du code.
+</p>
+
+<h4>3. Testabilité</h4>
+
+<p>
+    <span class="fw-bold">L'injection de dépendance facilite grandement la création de tests unitaires pour les composants d'une application</span>. Comme les dépendances peuvent être facilement remplacées par des mocks ou des stubs dans le contexte des tests, il est plus simple de tester chaque composant isolément.
+</p>
+
+<h4>4. Gestion de la durée de vie et des configurations</h4>
+
+<p>
+    Les conteneurs d'injection de dépendance, qui sont souvent utilisés pour implémenter l'ID, permettent une gestion centralisée de la durée de vie des objets et de leurs configurations. 
+</p>
+
+<h4>4. Gestion de la durée de vie et des configurations</h4>
+
+<p>
+    <span class="fw-bold">Avec l'ID, ajouter de nouvelles fonctionnalités ou modifier des composants existants devient plus facile</span>, car les changements dans une partie du système ont moins de chances d'affecter d'autres parties. Cela rend le code plus évolutif et adaptable aux changements.
+</p>
+
+<a id="difference-injection-et-inversion" class="anchor"></a>
+<h3>Différence entre injection de dépendance et inversion de contrôle</h3>
+
+<p>
+    L'Inversion de Contrôle (IoC) et l'Injection de Dépendance sont des concepts étroitement liés en génie logiciel, mais ils se distinguent par leurs rôles et leurs applications dans la conception et le développement des applications.
+</p>
+
+<h4>Définition</h4>
+
+<p>
+    L'IoC est un principe de conception où le contrôle du flux d'exécution d'un programme est inversé par rapport à la programmation procédurale traditionnelle. Dans la programmation traditionnelle, le code écrit par le développeur contrôle le flux de l'application. 
+</p>
+
+<p>
+    Avec l'IoC, ce flux est inversé : c'est le framework ou le conteneur qui prend le contrôle, et le code écrit par le développeur est appelé par ce dernier en réponse à des événements spécifiques.
+</p>
+
+<p>
+    <span class="fw-bold">L'IoC est souvent utilisé dans la conception de frameworks</span>, où le framework appelle le code du développeur plutôt que l'inverse. 
+</p>
+
+<h4>Différences clés</h4>
+
+<p>
+    <span class="fw-bold">L'IoC est un principe plus large</span> qui peut être mis en œuvre de diverses manières, dont l'ID est une technique spécifique. L'IoC englobe d'autres formes telles que les callbacks, les événements, et les frameworks qui prennent en charge le cycle de vie des composants d'une application.
+</p>
+
+<p>
+    <span class="fw-bold">L'ID se concentre spécifiquement sur la gestion des dépendances entre les objets</span>, tandis que l'IoC concerne de manière plus générale l'inversion du contrôle du flux du programme.
+</p>
+
+<p>
+    Bien que l'ID soit une forme d'IoC, toutes les formes d'IoC ne sont pas des ID. Par exemple, un framework MVC (Modèle-Vue-Contrôleur) utilise l'IoC pour contrôler l'ordre dans lequel le code utilisateur est appelé, mais cela ne relève pas nécessairement de l'ID.
+</p>
+
+<a id="types-injections" class="anchor"></a>
+<h2>Types d'injection de dépendance</h2>
+
+<p>
+    Les types d'injection de dépendance se réfèrent aux différentes manières par lesquelles les dépendances peuvent être fournies à un composant ou une classe dans un programme.
+</p>
+
+<p>
+    Trois des types d'injection les plus courants sont l'injection par constructeur, l'injection par setter (ou méthode), et l'injection par interface (ou injection par propriété).
+</p>
+
+<p>
+    Chacun de ces types a ses propres avantages et cas d'utilisation. Voici une explication détaillée de chacun :
+</p>
+
+<a id="injection-constructeur" class="anchor"></a>
+<h3>Injection de constructeur</h3>
+
+<p>
+    L'injection par constructeur se produit lorsque les dépendances d'une classe sont fournies via son constructeur.
+</p>
+
+<h4>Comment cela fonctionne</h4>
+
+<p>
+    Lors de la création d'une instance de la classe, les dépendances sont passées en arguments au constructeur, et la classe les assigne à ses champs internes.
+</p>
+
+<h4>Avantages</h4>
+
+<ul>
+    <li>Les dépendances sont clairement définies et obligatoires, ce qui garantit que l'objet est toujours dans un état valide.</li>
+    <li>Favorise l'immuabilité des dépendances, car une fois que l'objet est construit, ses dépendances ne peuvent plus être modifiées.</li>
+</ul>
+
+<h4>Cas d'utilisation</h4>
+
+<p>
+    Quand les dépendances ne sont pas censées changer durant toute la durée de vie de l'objet, ou quand une classe a des dépendances obligatoires sans lesquelles elle ne peut pas fonctionner.
+</p>
+
+<p>
+    Vous avez l'exemple de ce type d'injection plus haut dans l'article.
+</p>
+
+
+<a id="injection-setter" class="anchor"></a>
+<h3>Injection de setter</h3>
+
+<p>
+    L'injection par setter (ou méthode) implique l'utilisation de méthodes setter pour injecter les dépendances après que l'objet a été créé.
+</p>
+
+<h4>Comment cela fonctionne</h4>
+
+<p>
+    Après l'instanciation de l'objet, les méthodes setter spécifiques sont appelées pour fournir les dépendances nécessaires.
+</p>
+
+<h4>Avantages</h4>
+
+<ul>
+    <li>Permet la modification des dépendances après l'instanciation de l'objet, offrant ainsi plus de flexibilité.</li>
+    <li>Utile pour les dépendances optionnelles qui ne sont pas strictement nécessaires pour le fonctionnement de l'objet.</li>
+</ul>
+
+<h4>Cas d'utilisation</h4>
+
+<p>
+    Quand une classe a des dépendances optionnelles ou quand il est nécessaire de changer les dépendances de l'objet après son instanciation.
+</p>
+
+{% highlight js linenos %}
+class Moteur {
+    fonction démarrer() {
+        // Logique pour démarrer le moteur
+    }
+}
+
+class Voiture {
+    Moteur moteur;
+
+    // Injection par setter
+    fonction setMoteur(Moteur moteur) {
+        this.moteur = moteur;
+    }
+
+    fonction démarrer() {
+        this.moteur.démarrer();
+    }
+}
+
+Voiture voiture = nouvelle Voiture();
+Moteur moteur = nouveau Moteur();
+voiture.setMoteur(moteur);
+voiture.démarrer();
+{% endhighlight %}
+<div class="code-caption">Pseudo code injection par setter</div>
+
+<a id="injection-interface" class="anchor"></a>
+<h3>Injection par interface</h3>
+
+<p>
+    L'injection par interface, aussi connue sous le nom d'injection par propriété, se produit lorsque les dépendances sont assignées directement aux champs ou propriétés de l'objet, souvent à travers des interfaces publiques.
+</p>
+
+<h4>Comment cela fonctionne</h4>
+
+<p>
+    Les dépendances sont fournies en assignant directement des valeurs aux champs ou propriétés publiques de l'objet, sans passer par des constructeurs ou des setters.
+</p>
+
+<h4>Avantages</h4>
+
+<ul>
+    <li>Simplifie la syntaxe de l'injection de dépendance, en particulier pour les configurations simples.</li>
+    <li>Offre une grande flexibilité pour configurer les dépendances, notamment dans les conteneurs IoC où la configuration est faite de manière déclarative.</li>
+</ul>
+
+<h4>Cas d'utilisation</h4>
+
+<p>
+    Dans des scénarios où la simplicité et la flexibilité de configuration sont prioritaires, ou dans des environnements de conteneur IoC qui prennent en charge ce type d'injection.
+</p>
+
+{% highlight js linenos %}
+interface Moteur {
+    fonction démarrer();
+}
+
+class MoteurEssence implémente Moteur {
+    fonction démarrer() {
+        // Logique spécifique au moteur à essence
+    }
+}
+
+class Voiture {
+    Moteur moteur;
+}
+
+Voiture voiture = nouvelle Voiture();
+voiture.moteur = nouveau MoteurEssence(); // Assignation directe
+voiture.moteur.démarrer();
+
+{% endhighlight %}
+<div class="code-caption">Pseudo code injection par interface</div>
+
+<a id="conclusion" class="anchor"></a>
+<h2>Conclusion</h2>
+
+<p>
+    En conclusion, l'injection de dépendance est une technique puissante et flexible qui joue un rôle crucial dans la construction de logiciels modernes, modulaires et maintenables. 
+</p>
+
+<p>
+    En permettant aux composants de recevoir leurs dépendances de l'extérieur plutôt que de les créer eux-mêmes, elle favorise un couplage faible, une grande testabilité et une séparation claire des préoccupations.
+</p>
